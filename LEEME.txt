@@ -1,0 +1,12 @@
+BioPeat como app del móvil
+==========================
+Archivos de esta carpeta:
+- preparar_index.html : conversor. Ábrelo en el ordenador, elige tu HTML de BioPeat y descarga index.html.
+- manifest.json       : nombre, colores e icono de la app.
+- sw.js               : permite abrir la app sin conexión. Siempre carga la última versión publicada si hay internet.
+- icon-*.png          : iconos.
+
+Sube a GitHub Pages: index.html (el generado), manifest.json, sw.js y los tres iconos.
+NO hace falta subir preparar_index.html ni este LEEME.
+
+Cada vez que cambies la web: vuelve a pasar el HTML nuevo por preparar_index.html y sustituye index.html en GitHub.

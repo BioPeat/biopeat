@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Preparar BioPeat como app</title>
+<style>body{font-family:system-ui,sans-serif;background:#26374d;color:#f4f7fc;max-width:560px;margin:0 auto;padding:24px;line-height:1.5}
+label,button{display:block;width:100%;box-sizing:border-box;margin:14px 0;padding:14px;border-radius:14px;font-weight:700;font-size:16px;text-align:center;cursor:pointer}
+label{background:#405671;border:1px solid #8095af}button{background:#fbbf24;border:0;color:#17243a}button:disabled{opacity:.4}
+#msg{min-height:48px}.ok{color:#6ee7b7}.err{color:#fda4af}input{display:none}</style></head><body>
+<h1>Convertir tu web en app</h1>
+<p>1. Elige el archivo HTML de BioPeat (por ejemplo <b>BioPeat_Diego_v23.html</b>).<br>2. Pulsa el botón amarillo: se descargará <b>index.html</b> listo para la app.<br>Tu archivo original no se modifica.</p>
+<label>Elegir archivo HTML<input id="f" type="file" accept=".html,.htm,.txt,text/html,text/plain"></label>
+<button id="go" disabled>Descargar index.html</button><p id="msg" role="status"></p>
+<script>
+let html='';const msg=(t,c)=>{const m=document.getElementById('msg');m.textContent=t;m.className=c;};
+document.getElementById('f').onchange=async e=>{const file=e.target.files[0];if(!file)return;html=await file.text();
+ if(!/<html[\s>]/i.test(html)||!/<\/head>/i.test(html)||!/<\/body>/i.test(html)){html='';msg('Ese archivo no parece el HTML completo de BioPeat.','err');document.getElementById('go').disabled=true;return;}
+ msg('Archivo cargado: '+file.name,'ok');document.getElementById('go').disabled=false;};
+document.getElementById('go').onclick=()=>{let h=html.replace(/<link rel="manifest"[^>]*>\s*/gi,'').replace(/<script id="app-install">[\s\S]*?<\/script>\s*/gi,'');
+ h=h.replace(/<\/head>/i,'<link rel="manifest" href="manifest.json">\n<link rel="apple-touch-icon" href="icon-192.png">\n</head>');
+ h=h.replace(/<\/body>(?![\s\S]*<\/body>)/i,'<script id="app-install">if("serviceWorker" in navigator&&location.protocol!=="file:")navigator.serviceWorker.register("sw.js").catch(()=>{});<\/script>\n</body>');
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([h],{type:'text/html'}));a.download='index.html';a.click();msg('Descargado index.html. Súbelo a GitHub junto con los demás archivos de esta carpeta.','ok');};
+</script></body></html>
