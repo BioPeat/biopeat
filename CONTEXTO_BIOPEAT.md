@@ -65,7 +65,7 @@ Documento maestro del proyecto. Lo leen **Gemini** (para pensar y redactar tarea
 vitA, vitD, vitE, vitK, vitC, b1, b2, b3, b5, b6, b7, b9, b12, colina, ca, phos, mg, k, na, fe, zn, cu, se, i, mn.
 Extras: kcal, p, c, f, pufa, retinol, fiber, sugars, freeSugar, satFat, monoFat, glycine, creatine, benfotiamine.
 
-## 6. Qué hace la app hoy (v27)
+## 6. Qué hace la app hoy (v28)
 Una sola página con desplazamiento; barra inferior **Hoy · Registro · Añadir · Semana · Más** (solo desplaza; **no cambiar este orden**) y botón flotante redondo de **Gimnasio** siempre visible.
 - **Hoy:** energía con %, recomendación del día (ideas sencillas + botón «Pedir sugerencia a la IA» que aprende de lo que suele comer), anillos de macros con % sin tope y «Te quedan X g», equilibrio del día (Ca:P, PUFA, C:P), comidas del día con «Igual que ayer», «Marcar día completo», aviso de copia de seguridad, «Modo resumen».
 - **Añadir:** «¿Qué has comido?» (texto libre de varias comidas en un mensaje → se reparte en desayuno/comida/merienda/cena), **Foto aquí** (IA directa; la foto y el texto se vacían tras analizar), **Foto en Gemini** (copiar prompt + pegar respuesta `BIOPEAT:`), Manual, «Tus rápidos»/favoritos, desayuno, batido, suplemento extra, **Mi despensa** (lo que analiza la IA se guarda solo y se reutiliza sin IA).
