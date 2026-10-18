@@ -1,17 +1,29 @@
 # AGENTS.md · Instrucciones para Jules (y cualquier agente de código)
 
-## ⚡ VELOCIDAD: MODO RÁPIDO POR DEFECTO
-El usuario quiere cambios rápidos. Salvo que la tarea diga «MODO COMPLETO»:
-- **No instales nada** (ni npm, ni Playwright, ni navegadores, ni dependencias). No crees archivos de tests.
-- **No abras la app en un navegador sin cabeza** ni hagas capturas.
-- Lee solo lo necesario: `MAPA_DEL_CODIGO.md` para localizar la función y después esa zona de `index.html` (búscala por nombre). No leas el archivo entero si no hace falta.
-- Haz el cambio mínimo que cumpla la tarea. Plan corto (3-5 pasos).
-- Única comprobación obligatoria (tarda segundos):
-  `python3 -c "import re;s=open('index.html',encoding='utf-8').read();open('/tmp/a.js','w',encoding='utf-8').write(re.search(r'<script id=\"app\">([\s\S]*?)</script>',s).group(1));assert s.rstrip().endswith('</html>')" && node --check /tmp/a.js`
-- Si un paso se atasca más de 2 minutos, abandónalo, termina con lo que tengas y explícalo en la nota.
-- Las tareas de **solo análisis** se responden en el chat, sin plan largo, sin ejecutar nada y sin Pull Request.
+## ⚡ MODO DE TRABAJO: LO ELIGES TÚ, AUTOMÁTICAMENTE
+El usuario no programa: **no esperes que te diga el modo**. Decide tú al hacer el plan y escribe en su primera línea «Modo: rápido» o «Modo: completo» y por qué.
 
-Solo con «MODO COMPLETO» en la tarea: además abre la página con un navegador sin cabeza, comprueba que no hay errores en consola y que `document.body.dataset.ready === 'true'`, y prueba a 320 px.
+**MODO COMPLETO (obligatorio si se cumple CUALQUIERA):**
+- Tocas `migrate()`, `upgradeToNN`, `defaults()`, `save()`, la carga de datos, `storableState()`, las copias JSON/HTML o cualquier campo guardado en `state`.
+- Tocas cálculos: `totals()`, `targetFor()`, `bmr()`, `rollingMicro()`, `effectiveEntries()`, `seedPlan()`, ratios, porcentajes, depósitos, metas o la pauta.
+- Tocas la importación de HEVY, `extractBiopeat()`, el texto multicomida o `requestAI()`.
+- Cambias más de ~150 líneas o más de 3 secciones a la vez.
+- La tarea dice «MODO COMPLETO».
+
+En modo completo, además de la comprobación rápida: abre la página con un navegador sin cabeza y confirma que no hay errores en consola, que `document.body.dataset.ready === 'true'`, que los datos guardados siguen ahí tras recargar y que no hay desplazamiento horizontal a 320 px.
+
+**MODO RÁPIDO (todo lo demás: textos, colores, estilos, botones, diseño de una sección):**
+- No instales nada ni abras navegadores. No crees archivos de tests.
+- Lee `MAPA_DEL_CODIGO.md`, localiza la función y lee solo esa zona de `index.html`.
+- Cambio mínimo y plan corto (3-5 pasos).
+- Si un paso se atasca más de 2 minutos, termina con lo que tengas y explícalo en la nota.
+
+**Comprobación rápida (siempre; tarda segundos):**
+```
+python3 -c "import re;s=open('index.html',encoding='utf-8').read();open('/tmp/a.js','w',encoding='utf-8').write(re.search(r'<script id=\"app\">([\s\S]*?)</script>',s).group(1));assert s.rstrip().endswith('</html>')" && node --check /tmp/a.js
+```
+
+Las tareas de **solo análisis** se responden en el chat, sin ejecutar nada y sin Pull Request.
 
 ## El proyecto
 **BioPeat Diego**: app personal de nutrición, suplementos y gimnasio. PWA publicada con GitHub Pages desde `main`. El usuario la usa en el móvil y **no sabe programar**. Contexto completo en `CONTEXTO_BIOPEAT.md`; índice de funciones en `MAPA_DEL_CODIGO.md`.
@@ -42,5 +54,5 @@ Solo con «MODO COMPLETO» en la tarea: además abre la página con un navegador
 
 ## Al terminar cada tarea con cambios
 1. Sube `APP_VERSION` en uno y añade al registro de cambios: `vNN · Jules · resumen`.
-2. Ejecuta la comprobación rápida de arriba.
-3. Descripción del Pull Request = **NOTA DE TRASPASO** breve en español: qué cambia para el usuario · ¿datos tocados? · qué has comprobado · pendiente.
+2. Ejecuta la comprobación rápida (y la completa si toca).
+3. Descripción del Pull Request = **NOTA DE TRASPASO** breve en español: modo usado (rápido/completo) · qué cambia para el usuario · ¿datos tocados? · qué has comprobado · pendiente.
