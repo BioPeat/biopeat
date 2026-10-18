@@ -164,6 +164,7 @@
 - L6404 `localMeal(raw,meal)`
 - L6410 constante `AI_FALLBACK`
 - L6411 `requestAI(prompt,img,signal,modelOverride='')`
+- L6538 `applyAIConfig(raw)` — Ejecuta un bloque JSON devuelto por la IA para modificar opciones de la app.
 - L6424 constante `AI_PREF`
 - L6425 `aiConnected()`
 - L6426 `syncAI()`
@@ -267,6 +268,7 @@
 - L7064 `renderGym()`
 - L7084 `upgradeTo19(s,o)` — v26: calcio 1.500 → 2.000 mg (Peat/Dinkov) solo donde seguía el valor antiguo por defecto; el pasado no se toca.
 - L7093 `upgradeTo20(s,o)` — v27: azúcar con micros a 0, fichas USDA para las vacías, sin campos de día que no se usan.
+- L7342 `upgradeTo21(s,o)` — Actualización a versión 21.
 - L7099 `upgradeTo18(s,o)`
 - L7123 `openMoreMenu()` — Menú «Más»: secciones poco frecuentes, sin saturar la barra inferior.
 - L7130 `showHelp()`
@@ -299,3 +301,6 @@
 ```js
 {version:10,appRevision:20,updated:0,profile:{weight:77.5,height:185,age:23,pufa:4.5,cap:1.1},foods:clone(FOODS),plan:clone(PLAN),targets:Object.fromEntries(MICRO.map(m=>[m.k,m.target])),context:CONTEXT,days:{},legacy:{},compare17:cleanCompare(),workouts18:[],favorites22:[],aiNotes:''}
 ```
+
+- L6538 `applyAIConfig(raw)` — Ejecuta un bloque JSON devuelto por la IA para modificar opciones de la app.
+- L7342 `upgradeTo21(s,o)` — ===== Actualización a versión 21: Soporte para perfil Prometabólico y límites =====
