@@ -1,0 +1,11 @@
+1. **Fix photo upload button state in #view-add**
+   - Modify `resetPhoto` to also ensure that `$('#photo-file').value = ''` and `$('#photo-camera').value = ''` (these are already cleared, but we also need to clear `photoURL`). Actually, in `analyzeDay` at the end (or in `resetPhoto`), make sure to un-toggle the "Foto aquí" button active state (by calling `syncAddTools()` or explicitly checking). Currently `$('bp-photo').classList.toggle('on', !$('photo-panel').hidden);`. Wait, the issue says: "al terminar de analizar una foto o limpiar el resultado, vacía el input file (value = '') y desactiva el estado activo del botón «Foto aquí» automáticamente para poder subir otra foto seguida sin deseleccionar a mano". I'll add the closing of the panel in `resetPhoto` or `analyzeDay`. I will probably hide `$('#photo-panel')` in `resetPhoto()` and call `syncAddTools()`. Wait, if we hide the panel, they have to click "Foto" again. The prompt says "para poder subir otra foto seguida sin deseleccionar a mano", this means they shouldn't need to manually click to deselect the button. So yes, closing the panel automatically and resetting the input file makes sense. Or maybe we just clear the input file in `resetPhoto`, and when a photo is selected, it's just one action. Let's make `resetPhoto` hide `photo-panel` and call `syncAddTools()`.
+2. **Compact "Tus rápidos" in #view-add**
+   - In `drawQuickFoods`, modify `#bp-chips` to have a CSS class that makes it a single horizontal scrollable line. It says "con botón «Ver todos» plegable, priorizando favoritos y más usados". I will change the logic in `drawQuickFoods` to slice the list if not expanded, or use CSS to hide the overflow and add a "Ver todos" button.
+3. **Simplify "Modo resumen" (Compact mode) in #view-today**
+   - In `applyDensity` or CSS, hide secondary texts, breakdowns, and leave only kcal, 3 macro rings, 3 ratios in one compact line, and quick meals access.
+4. **Mini-simulator for Ca:P or C:P in Hoy (#balance-card > renderRatios / ratioDetail)**
+   - Modify `ratioDetail(key)` for `ca` and `c` to show a simulator with buttons for 5 common foods (milk, cheese, orange juice, banana, sugar) that dynamically calculate how much the ratio would increase.
+5. **Complete pre commit steps**
+   - Run the validation scripts as specified in AGENTS.md.
+6. **Submit changes**
