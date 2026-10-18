@@ -1,11 +1,9 @@
 {
   "name": "BioPeat Diego",
   "short_name": "BioPeat",
-  "description": "Nutrición, suplementos y entrenamiento",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#26374d",
   "theme_color": "#26374d",
   "lang": "es",

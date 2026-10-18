@@ -1,0 +1,301 @@
+# MAPA DEL CÓDIGO · BioPeat v27 (index.html)
+
+Índice generado automáticamente a partir del código real. Sirve para que Gemini sepa qué existe y dónde, sin tener que leer los 425 KB. Los números de línea son aproximados y cambian con cada versión: Jules debe buscar por nombre.
+
+## Secciones visibles de la página (id del HTML)
+
+- `#view-today`
+- `#day-coach`
+- `#balance-card`
+- `#view-add`
+- `#view-log`
+- `#view-micros`
+- `#view-supplements`
+- `#weekly`
+- `#exercise`
+- `#view-settings`
+
+## Funciones y bloques del script (en orden)
+
+- L5433 constante `ZERO_MICRO` — Valores de referencia USDA FoodData Central por 100 g (aprox.). Revisa tu etiqueta si difiere.
+- L5434 constante `AZUCAR_N`
+- L5435 constante `USDA_N`
+- L5441 constante `FOODS`
+- L5443 constante `EXTRA`
+- L5444 constante `KEYS`
+- L5446 constante `DEPOSIT` — Micros de «depósito»: el cuerpo los almacena, así que se valoran con la media de 7 días. «limit»: mejor por debajo.
+- L5447 constante `MICRO_NOTE`
+- L5449 constante `DAYS`
+- L5450 constante `FAF`
+- L5454 `number(v,min=0,max=1e6)`
+- L5460 `decimalInputs(root=document)`
+- L5461 `localDate(d=new Date()`
+- L5462 `validDate(s)`
+- L5467 `shift(s,n)`
+- L5475 constante `CONTEXT`
+- L5476 `defaults()`
+- L5478 `bmr()`
+- L5482 `targetFor(d)`
+- L5486 `cleanNutrients(o,required=false)`
+- L5498 `cleanEntry(e)`
+- L5503 `cleanPlan(p)`
+- L5507 `planEntry(p)`
+- L5516 `seedPlan(d,whichDate)`
+- L5520 `ensureDay(d=date)`
+- L5526 `effectiveEntries(d=day()`
+- L5527 `totals(entries=effectiveEntries()`
+- L5534 `change(fn,message='Guardado')`
+- L5538 `undo()`
+- L5545 `toast(text,canUndo=false)`
+- L5553 constante `CLICK_HANDLERS` — Un solo listener de clic para toda la página; cada sección registra su manejador con onClick().
+- L5554 `onClick(fn)`
+- L5556 `attempt(fn)`
+- L5558 `modal(title,body)`
+- L5567 `modalRestore()`
+- L5577 `afterModal(fn)` — Cierra la ventana y espera a que el historial se asiente antes de desplazar la página.
+- L5578 `modalBack()`
+- L5579 `goDate(d)`
+- L5586 `renderHeader()`
+- L5594 `renderRows(entries)`
+- L5598 `entryValues(e)`
+- L5599 `renderLog()`
+- L5606 `fromFood(id,amount,meal)`
+- L5612 `pantryId(name)`
+- L5614 `rememberFood(e)` — Guarda en Mi despensa (por 100 g) un plato analizado por la IA, para reconocerlo después sin IA.
+- L5620 `addEntries(entries,message='Añadido',d=date,opts={})`
+- L5628 `recipe(kind)`
+- L5634 `summary(entries)`
+- L5638 `renderPresetInfo()`
+- L5642 `stripCode(raw)`
+- L5648 `parseBIO(raw,meal=$('meal-select')`
+- L5654 `parseSmart(raw)`
+- L5661 `nutrientFields(n,prefix='n_')`
+- L5662 `readNutrients(form,prefix='n_')`
+- L5667 `editEntry(id)`
+- L5676 `editFood(id,pending=null)`
+- L5681 `usageStats(days=90)`
+- L5687 `renderFoods()`
+- L5695 `nutrientSources(key)`
+- L5701 `renderSupps()`
+- L5708 `editPlan(id)`
+- L5715 `renderSettings()`
+- L5730 `makePrompt(meal='Comida',note='')` — ===== IA y fotos: prompt BIOPEAT (ración completa; lo desconocido queda null, nunca 0) =====
+- L5734 `resetPhoto()`
+- L5743 `openPhoto()`
+- L5749 `shrinkPhoto(file)`
+- L5752 `selectPhoto(file)`
+- L5775 `cleanTarget(t,d)` — ===== Datos: validación, migración de copias antiguas, almacenamiento y copias =====
+- L5781 `cleanFood(id,f)`
+- L5785 `migrateBase(o)`
+- L5804 `download(name,text,type)`
+- L5813 `portable()`
+- L5837 `storageStatus()`
+- L5843 `idbReadWrite(mode,value)`
+- L5844 `openDB()`
+- L5845 `save()`
+- L5857 `setQuantity(id,value,msg='Cantidad actualizada')`
+- L5861 `niceStep(v)`
+- L5862 `stepQuantity(id,dir)`
+- L5895 `renderAppInfo()`
+- L5910 `init()`
+- L5928 `planFamily(e)` — ===== Corrección de la pauta declarada (revisión 11 de los datos) =====
+- L5940 `correctedPlan(plan)`
+- L5946 `syncCorrectedDay(s,dt)`
+- L5955 `upgradeTo11(s,o)`
+- L5961 `setNav(v)` — ===== Navegación: una sola página; la barra inferior solo desplaza =====
+- L5966 `go(v,focus)`
+- L5978 `syncDatePill()`
+- L5982 `animateValue(el,to,suffix='%',digits=0)`
+- L5994 `progressParts(food,supp,goal)`
+- L5998 `macroCard(key,name,color)`
+- L5999 `renderToday()`
+- L6022 `kindTag(k)`
+- L6024 constante `HOME` — ===== Recomendación del día: ideas sencillas con lo que hay en casa y lo que sueles comer; IA opcional =====
+- L6026 `coachCandidates()`
+- L6032 `coachIdeas(t,g,ref,meal)`
+- L6045 `renderCoach()`
+- L6062 `coachPrompt()`
+- L6070 `renderMicroCards()`
+- L6095 `nutrientDetailStandard(key)`
+- L6108 `updateMacroPreview()`
+- L6114 `upgradeTo12(s,o)` — ===== Hoy: anillos de macros, ratios, micros (B1 = benfotiamina aparte) =====
+- L6119 `benfotiamineTotals(entries=effectiveEntries()`
+- L6128 `dayActive(d)` — Un día cuenta si tiene comidas o alguna toma real (manual o confirmada). Los días sin registro restan: el depósito se vacía.
+- L6130 `rollingMicro(key,dt=date,source='all')` — Depósito de 7 días que termina en dt: suma de lo ingerido / (7 × meta). Cada día nuevo entra y el más antiguo sale.
+- L6139 `microStat(m,t=totals()`
+- L6144 `metric(m)`
+- L6149 `ratioGauge(o)`
+- L6154 `renderRatios()`
+- L6164 `renderMicrosForDay()`
+- L6187 `renderMicroMap()`
+- L6191 `nutrientDetailForDay(key)`
+- L6196 `editTargetsForm()`
+- L6197 `mealData()`
+- L6202 `renderMealSegments()`
+- L6210 `mealDetail(index)`
+- L6216 `ratioDetail(key)`
+- L6226 constante `FAT_KEYS` — ===== Registro: origen de la energía, tipos de grasa y «probar una ración» =====
+- L6227 constante `FAT_PROFILES`
+- L6229 `fatData(entries=effectiveEntries()`
+- L6235 `energyData(entries=effectiveEntries()`
+- L6239 `segmentedBar(items,total,attr)`
+- L6243 `renderMealChart()`
+- L6248 `renderFat()`
+- L6256 `fatDetail(key)`
+- L6261 `energyDetail(key)`
+- L6268 `portionCandidates(q='')`
+- L6273 `openPortion()`
+- L6286 `previewPortion()`
+- L6301 `templates()`
+- L6305 `renderExtra()`
+- L6316 `updateExtra(reset=true)`
+- L6328 `addExtra(id,amount)`
+- L6344 `shakePreview()`
+- L6345 `renderPresets()`
+- L6360 constante `LENS` — ===== Contexto Peat al tocar un gráfico (educativo, no clínico) =====
+- L6366 `lensKey(key)`
+- L6367 `lensHTML(key)`
+- L6371 `appendLens(key)`
+- L6380 `weekDates()`
+- L6391 constante `MEAL_WORD`
+- L6392 `mealOfWord(w)`
+- L6393 `mealFromText(raw,fallback)`
+- L6397 `canonMeal(v,fallback)`
+- L6404 `localMeal(raw,meal)`
+- L6410 constante `AI_FALLBACK`
+- L6411 `requestAI(prompt,img,signal,modelOverride='')`
+- L6424 constante `AI_PREF`
+- L6425 `aiConnected()`
+- L6426 `syncAI()`
+- L6428 `saveAIPrefs()`
+- L6429 `loadAIPrefs()`
+- L6430 `openAISetup()`
+- L6436 `upgradeTo16(s,o)`
+- L6443 constante `MACROS` — ===== Semana: totales, 25 micros, ratios, mapa por día =====
+- L6445 `cleanGoals(o,fallback)`
+- L6450 `cleanCompare(o={})`
+- L6454 `snapshotDay(d,reference='saved')`
+- L6459 `upgradeTo17(s,o)`
+- L6464 `entriesFor(d,source=weekSource)`
+- L6468 `dayRow(dt,source=weekSource)`
+- L6472 `goalsFor(dt)`
+- L6476 `metricValue(r,key)`
+- L6481 `targetOf(dt,key)`
+- L6485 `weekSummary()`
+- L6489 `aggregate(key,summary=weekSummary()`
+- L6493 `tone(pct,mode='macro')`
+- L6500 `pctText(a)`
+- L6501 `weekProgress(a,color)`
+- L6502 `renderWeekTotals()`
+- L6517 `renderWeekChart(s)`
+- L6524 `renderWeekMicros(s)`
+- L6533 `ratioAggregate(s,num,den)`
+- L6537 `renderWeekRatios(s)`
+- L6543 `renderWeekTable(s)`
+- L6544 `weeklyDetail(key,oneDate=null)`
+- L6552 `weekRatioDetail(key)`
+- L6560 `dayAssessment(dt)` — Calendar: compare explicit personal goals, never classify health or infer unrecorded days.
+- L6572 `calendarCell(dt)`
+- L6579 `renderCalendar()`
+- L6588 `renderCalendarDetail()`
+- L6592 `shiftMonth(n)`
+- L6598 `weekDetail(dt)`
+- L6606 `openDay(dt)`
+- L6631 `withDayGoals(fn)`
+- L6636 `renderMicros()`
+- L6637 `nutrientDetail(key)`
+- L6638 `editTargets()`
+- L6639 `revealSection(id)`
+- L6650 `summaryFor(start)`
+- L6654 `overviewData(start=weekDates()`
+- L6659 `ringSVG(pct,color,marker)`
+- L6661 `renderWeekVisual(d)` — Vista rápida de la semana: 4 anillos de macros, micros y ratios, y una tira de 7 días con colores.
+- L6670 `renderOverview()`
+- L6689 `trendData()`
+- L6693 `renderTrends()`
+- L6706 `renderWeekly()`
+- L6712 constante `MEALS` — One message can describe multiple meals; all-or-nothing import, no forced single meal.
+- L6713 `splitMeals(raw)`
+- L6723 `localDay(raw,fallback)`
+- L6730 `promptDay(raw,fallback)`
+- L6731 `analyzeDay(usePhoto=false)`
+- L6737 `parseCsv(text)` — ===== Gimnasio: importación de CSV de HEVY, sesiones y análisis IA =====
+- L6752 `hevyDate(value,format='auto')`
+- L6761 constante `MAP`
+- L6762 `hevyMapping()`
+- L6763 `renderMapping(parsed)`
+- L6770 `optionalNum(v,min=0,max=1e7)`
+- L6774 `buildHevy(parsed,map)`
+- L6784 `cleanWorkout(s)`
+- L6791 `analyzeGym()`
+- L6806 constante `GP` — Lee state.workouts18 (formato existente). No modifica los entrenamientos salvo «Eliminar sesión».
+- L6807 constante `GP_ALIAS`
+- L6817 `gpNorm(s)`
+- L6818 `gpKey(name)`
+- L6822 `gpF(n,d=0)`
+- L6823 `gpDate(d,opt)`
+- L6824 `gpMonday(d)`
+- L6825 constante `GP_GROUPS`
+- L6840 constante `GP_COLORS`
+- L6841 `gpGroup(name)`
+- L6842 `gpWorkSets(s)`
+- L6843 `gpModel()`
+- L6867 `gpSessionMetrics(e,sets)`
+- L6882 constante `GP_METRICS`
+- L6887 `gpMetricsFor(e)`
+- L6888 `gpRangeHist(e)`
+- L6889 `gpPRs(model)`
+- L6912 `gpStatus(e)`
+- L6924 `gpNext(e)`
+- L6932 `gpChart(e)`
+- L6960 `gpPointDetail(e)`
+- L6966 `gpRepTable(e)`
+- L6973 `gpKpis(model)`
+- L6981 `gpWeekly(model)`
+- L6987 `gpMuscles(model)`
+- L6994 `gpHeat(model)`
+- L7001 `gpExList(model)`
+- L7008 `gpExDetail(model)`
+- L7021 `gpDayFood(dt)`
+- L7022 `gpNutrition(model)`
+- L7029 `gpRecentPRs(model)`
+- L7033 `gpSessions(model)`
+- L7039 `gpSessionModal(id)`
+- L7050 `gpWeekModal(w)`
+- L7051 `gpSelect(key)`
+- L7052 `gpClick(e)`
+- L7064 `renderGym()`
+- L7084 `upgradeTo19(s,o)` — v26: calcio 1.500 → 2.000 mg (Peat/Dinkov) solo donde seguía el valor antiguo por defecto; el pasado no se toca.
+- L7093 `upgradeTo20(s,o)` — v27: azúcar con micros a 0, fichas USDA para las vacías, sin campos de día que no se usan.
+- L7099 `upgradeTo18(s,o)`
+- L7123 `openMoreMenu()` — Menú «Más»: secciones poco frecuentes, sin saturar la barra inferior.
+- L7130 `showHelp()`
+- L7134 constante `BACKUP_KEY` — Copias JSON: una sola función para todos los botones.
+- L7136 `markBackup()`
+- L7140 `exportJSON()`
+- L7145 `drawBackupReminder()`
+- L7155 `applyDensity()`
+- L7165 `syncDayComplete()`
+- L7168 `drawMeals()` — Comidas del día de un vistazo.
+- L7176 `filterLog()` — Buscador de Registro.
+- L7189 `clampNotes()` — Textos largos: dos líneas y «ver más».
+- L7195 `recentFoods()`
+- L7200 `quickChip(e,fav)`
+- L7218 `drawQuickFoods()`
+- L7229 `syncAddTools()` — Botones de «¿Qué has comido?»: un panel abierto cada vez.
+- L7233 `toggleAddPanel(id)`
+- L7245 `extractBiopeat(raw)` — Pegar la respuesta de Gemini: localiza el bloque BIOPEAT o el JSON dentro del texto.
+- L7256 `pasteMessage(text,ok)`
+- L7263 `migrate(o)`
+- L7278 `storableState()` — ===== Guardado: no se almacenan días que solo contienen la pauta automática sin cambios =====
+- L7286 `nearView(el)`
+- L7288 `flushLazy(force='')` — Semana y Gimnasio son las partes más pesadas: se repintan cuando están cerca de la pantalla o al ir a ellas.
+- L7292 `render()`
+- L7327 `mealByHour(h=new Date()`
+- L7328 `syncMealByHour()`
+
+## Campos guardados en `state` (no renombrar)
+
+```js
+{version:10,appRevision:20,updated:0,profile:{weight:77.5,height:185,age:23,pufa:4.5,cap:1.1},foods:clone(FOODS),plan:clone(PLAN),targets:Object.fromEntries(MICRO.map(m=>[m.k,m.target])),context:CONTEXT,days:{},legacy:{},compare17:cleanCompare(),workouts18:[],favorites22:[],aiNotes:''}
+```
