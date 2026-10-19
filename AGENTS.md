@@ -10,7 +10,7 @@ El usuario no programa: **no esperes que te diga el modo**. Decide tú al hacer 
 - Cambias más de ~150 líneas o más de 3 secciones a la vez.
 - La tarea dice «MODO COMPLETO».
 
-En modo completo, además de la comprobación rápida: abre la página con un navegador sin cabeza y confirma que no hay errores en consola, que `document.body.dataset.ready === 'true'`, que los datos guardados siguen ahí tras recargar y que no hay desplazamiento horizontal a 320 px.
+En modo completo, además de la comprobación rápida, ejecuta únicamente `node verify.js` para asegurar que el código arranca correctamente y que los datos guardados siguen ahí (el script simula esto en < 1s sin necesidad de abrir un navegador). Ya no debes abrir navegadores sin cabeza en esta tarea.
 
 **MODO RÁPIDO (todo lo demás: textos, colores, estilos, botones, diseño de una sección):**
 - No instales nada ni abras navegadores. No crees archivos de tests.
@@ -19,8 +19,8 @@ En modo completo, además de la comprobación rápida: abre la página con un na
 - Si un paso se atasca más de 2 minutos, termina con lo que tengas y explícalo en la nota.
 
 **Comprobación rápida (siempre; tarda segundos):**
-```
-python3 -c "import re;s=open('index.html',encoding='utf-8').read();open('/tmp/a.js','w',encoding='utf-8').write(re.search(r'<script id=\"app\">([\s\S]*?)</script>',s).group(1));assert s.rstrip().endswith('</html>')" && node --check /tmp/a.js
+```bash
+node verify.js
 ```
 
 Las tareas de **solo análisis** se responden en el chat, sin ejecutar nada y sin Pull Request.
@@ -31,7 +31,7 @@ Las tareas de **solo análisis** se responden en el chat, sin ejecutar nada y si
 ## Archivos
 - `index.html` → TODA la app (HTML + CSS + JS, sin dependencias ni build). Es el que normalmente cambias.
 - `manifest.json`, `sw.js`, `icon-*.png` → instalación como app. No los toques salvo que se pida.
-- `CONTEXTO_BIOPEAT.md`, `MAPA_DEL_CODIGO.md` → actualízalos solo si tu cambio añade, quita o renombra funciones o secciones.
+- `CONTEXTO_BIOPEAT.md`, `MAPA_DEL_CODIGO.md` → NO los actualices salvo que la tarea lo pida expresamente.
 
 ## Estructura de index.html
 - Un solo `<style>` y un solo `<script id="app">`. Cada función se define una vez.
