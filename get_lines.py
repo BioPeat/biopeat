@@ -1,12 +1,9 @@
 import sys
 
-def get_lines(filename, search_str):
+def get_lines(filename, start, end):
     with open(filename, 'r') as f:
         lines = f.readlines()
-
-    for i, line in enumerate(lines):
-        if search_str in line:
-            print(f"{i+1}: {line.strip()}")
+        print(''.join(lines[start-1:end]))
 
 if __name__ == "__main__":
-    get_lines(sys.argv[1], sys.argv[2])
+    get_lines(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]))
