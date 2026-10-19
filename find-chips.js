@@ -1,5 +1,3 @@
 const fs = require('fs');
-const content = fs.readFileSync('index.html', 'utf8');
-
-const chipsIdx = content.indexOf('.bp-chips {');
-console.log(content.substring(chipsIdx, chipsIdx + 200));
+let html = fs.readFileSync('index.html', 'utf8');
+console.log(html.includes('quick-chips') ? 'Has quick-chips' : 'No quick-chips');

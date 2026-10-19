@@ -1,14 +1,39 @@
-1. **Modo: rápido** (No se modifican cálculos ni migraciones ni nada core, solo se añade un script `verify.js` de utilidad para el repositorio y se modifica el archivo de instrucciones `AGENTS.md` de acuerdo con el usuario, evitando abrir navegadores en las siguientes tareas).
-2. Crear un archivo `verify.js` en la raíz del proyecto.
-   - Leerá `index.html`.
-   - Comprobará que termine con `</html>`.
-   - Extraerá el contenido dentro de `<script id="app">`.
-   - Utilizará el módulo `vm` de Node.js (`vm.Script`) para comprobar la sintaxis.
-   - Creará un sandbox mínimo simulando `window`, `document`, `localStorage` y otros objetos globales necesarios para que no dé `ReferenceError`.
-   - Ejecutará el script y llamará a funciones críticas como `init()` y `migrate()` simulando su ejecución inicial para asegurar que no haya errores inmediatos que den una pantalla blanca (debe completar todo en menos de 1 segundo).
-3. Modificar `AGENTS.md`:
-   - Cambiar la sección "En CADA tarea" o cómo el sistema valida el código, quitando la obligación de abrir el navegador sin cabeza ("headless browser") en el "Modo Completo".
-   - En su lugar, ejecutar únicamente `node verify.js`.
-   - Indicar explícitamente que NO se actualicen `CONTEXTO_BIOPEAT.md` ni `MAPA_DEL_CODIGO.md` a menos que la tarea lo pida explícitamente.
-4. Pre-commit steps.
-5. Hacer submit y push a `main`.
+Modo: completo
+Reason: The request modifies core calculations (macros, targets, 1RM), application state (upgrading appRevision), and AI context.
+
+1. *In `index.html`, Update `targetFor` and `goalsFor` functions*
+   - Execute `python3 modify_targets.py` using `run_in_bash_session` to unconditionally apply C calculation changes and goal references.
+   - Run `node verify.js` to read modified code to verify changes.
+
+2. *In `index.html`, Update `#btn-prometabolic` logic and `upgradeTo22` migration*
+   - Execute `python3 modify_prometabolic.py` to change `btn-prometabolic`'s onclick logic and apply `upgradeTo22` inside `migrate`.
+   - Execute `python3 modify_version.py` to bump `APP_VERSION` to `v31`.
+   - Execute `python3 modify_changelog.py` to add `v31` changelog entry.
+   - Run `node verify.js` to confirm syntax.
+
+3. *In `index.html`, Update `CONTEXT` and `state.context`*
+   - Execute `python3 modify_context.py` to update the `CONTEXT` constant with the Peat/Dinkov rules.
+   - Execute `grep -n "CONTEXT=" index.html` to read the updated `CONTEXT` and confirm it was modified correctly.
+
+4. *In `index.html`, Modify `#balance-card` ratios (`renderRatios`)*
+   - Execute `python3 modify_ratios.py` to change `cpRef` to use `3.0`, add A:D equilibrium, and Zn:Cu equilibrium to `#balance-card`.
+   - Execute `python3 get_functions.py index.html renderRatios` to read `renderRatios` and confirm syntax.
+
+5. *In `index.html`, Modify micro limits in 7-day accumulation*
+   - Execute `python3 modify_iron_selenium.py` to edit `LENS` array limits and add Iron, Selenium, Vitamin A, and Iodine to the `LIMIT` set.
+   - Execute `grep -n "LENS=" index.html` and `grep -n "LIMIT=" index.html` to ensure modifications are valid.
+
+6. *In `index.html`, Improve Gym progression detection (`gpSessionMetrics` and `gpStatus`)*
+   - Execute `python3 modify_gym.py` to change `m.e1rm` in `gpSessionMetrics` to Epley equation, and update `gpStatus` to mark "Progresión (+1RM)".
+   - Execute `python3 get_functions.py index.html gpSessionMetrics gpStatus` to read and verify the edits were correctly applied.
+
+7. *In `index.html`, Update Calendar and Header (`renderCalendar`, `renderHeader`)*
+   - Execute `python3 modify_calendar.py` and `python3 modify_cal_logic.py` to update tabs and mini-dots per day.
+   - Execute `python3 modify_header.py` to add the horizontal sliding chip bar in the header.
+   - Execute `python3 get_functions.py index.html renderCalendar calendarCell` to read modified components, and `node verify.js` again to verify no breakages.
+
+8. *Run Validation Check*
+   - Run the final verification test suite using `node verify.js` to ensure all changes are correct and no regressions were introduced.
+
+9. *Complete pre commit steps*
+   - Complete pre commit steps to ensure proper testing, verification, review, and reflection are done.

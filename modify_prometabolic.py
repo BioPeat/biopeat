@@ -1,24 +1,8 @@
-import sys
 import re
+with open('index.html', 'r') as f:
+    content = f.read()
 
-def update_file(filename):
-    with open(filename, 'r') as f:
-        content = f.read()
-
-    # insert the button in HTML
-    # We will insert it inside `<details class="card"><summary>Editar objetivos de macros del día</summary>...`
-    # or somewhere before `</details><div class="card"><h2>Notas para la IA</h2>`
-    # Let's put it right after the macro-target-form:
-    # `</form><p class="section-note">Carbohidratos = energía restante con 4/4/9. Es una planificación personal, no una medición del gasto ni un óptimo demostrado de Peat.</p>`
-
-    html_target = r'</form><p class="section-note">Carbohidratos = energía restante con 4/4/9. Es una planificación personal, no una medición del gasto ni un óptimo demostrado de Peat.</p>'
-    html_replacement = r'</form><p class="section-note">Carbohidratos = energía restante con 4/4/9. Es una planificación personal, no una medición del gasto ni un óptimo demostrado de Peat.</p><button id="btn-prometabolic" class="btn wide" style="margin-top:12px;width:100%">Aplicar perfil Prometabólico Peat/Dinkov</button>'
-    content = content.replace(html_target, html_replacement)
-
-    # insert the event listener
-    # `$('profile-form').onsubmit` is defined around line 6680. We can add our listener there.
-
-    js_listener = """$('btn-prometabolic').onclick=()=>{
+onClickOrig = """$('btn-prometabolic').onclick=()=>{
   attempt(()=>{
     change(()=>{
       state.targetMode='split';
@@ -35,10 +19,83 @@ def update_file(filename):
   });
 };"""
 
-    # We append it before `$('compare-form').onsubmit`
-    content = content.replace("$('compare-form').onsubmit=", js_listener + "\n$('compare-form').onsubmit=")
+onClickNew = """$('btn-prometabolic').onclick=()=>{
+  attempt(()=>{
+    change(()=>{
+      state.targetMode='split';
+      if(!state.macroGoals)state.macroGoals={all:{p:null,f:null},split:{workout:{p:null,f:null},rest:{p:null,f:null}}};
+      state.macroGoals.split.workout={p:130,f:65};
+      state.macroGoals.split.rest={p:115,f:60};
+      state.profile.cap=1.20;
+      state.profile.pufa=4.0;
+      if(!state.ratioGoals17)state.ratioGoals17={};
+      state.ratioGoals17.cp=3.0;
+      for(const [dt,d] of Object.entries(state.days)){
+        delete d.target;
+        delete d.microTargets17;
+        delete d.ratioGoals17;
+      }
+      state.compare17={};
+    },'Perfil Prometabólico Peat/Dinkov activado: 130P/65F entreno, 115P/60F descanso, Ca:P 1.20, PUFA <= 4g');
+    render();
+    renderSettings();
+    toast('Perfil Prometabólico Peat/Dinkov activado: 130P/65F entreno, 115P/60F descanso, Ca:P 1.20, PUFA <= 4g', true);
+  });
+};"""
 
-    with open(filename, 'w') as f:
-        f.write(content)
+content = content.replace(onClickOrig, onClickNew)
 
-update_file("index.html")
+# migration and context updates
+migrateOrig = """function migrate(o){
+  const s=migrateBase(o);
+  upgradeTo11(s,o);
+  upgradeTo12(s,o);
+  upgradeTo16(s,o);
+  upgradeTo17(s,o);
+  upgradeTo18(s,o);
+  upgradeTo19(s,o);
+  upgradeTo20(s,o);
+  upgradeTo21(s,o);
+  s.favorites22=Array.isArray(o&&o.favorites22)?o.favorites22.slice(0,40):[];
+  s.aiNotes=String(o&&o.aiNotes||'').slice(0,2000);
+  return s;
+}"""
+
+migrateNew = """function upgradeTo22(s,o){
+  if(s.appRevision>=22)return;
+  s.targetMode='split';
+  if(!s.macroGoals)s.macroGoals={all:{p:null,f:null},split:{workout:{p:null,f:null},rest:{p:null,f:null}}};
+  s.macroGoals.split.workout={p:130,f:65};
+  s.macroGoals.split.rest={p:115,f:60};
+  s.profile.cap=1.20;
+  s.profile.pufa=4.0;
+  if(!s.ratioGoals17)s.ratioGoals17={};
+  s.ratioGoals17.cp=3.0;
+  for(const [dt,d] of Object.entries(s.days)){
+    delete d.target;
+    delete d.microTargets17;
+    delete d.ratioGoals17;
+  }
+  s.compare17={};
+  s.appRevision=22;
+}
+function migrate(o){
+  const s=migrateBase(o);
+  upgradeTo11(s,o);
+  upgradeTo12(s,o);
+  upgradeTo16(s,o);
+  upgradeTo17(s,o);
+  upgradeTo18(s,o);
+  upgradeTo19(s,o);
+  upgradeTo20(s,o);
+  upgradeTo21(s,o);
+  upgradeTo22(s,o);
+  s.favorites22=Array.isArray(o&&o.favorites22)?o.favorites22.slice(0,40):[];
+  s.aiNotes=String(o&&o.aiNotes||'').slice(0,2000);
+  return s;
+}"""
+
+content = content.replace(migrateOrig, migrateNew)
+
+with open('index.html', 'w') as f:
+    f.write(content)
