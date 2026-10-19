@@ -304,3 +304,10 @@
 
 - L6538 `applyAIConfig(raw)` — Ejecuta un bloque JSON devuelto por la IA para modificar opciones de la app.
 - L7342 `upgradeTo21(s,o)` — ===== Actualización a versión 21: Soporte para perfil Prometabólico y límites =====
+
+
+## Actualización v32
+- Modificaciones en `renderSupps`: agrupación por `slot` (Desayuno, Comida, etc.) y checklist.
+- Modificaciones en `renderMicrosForDay`: separación de la constante `MICRO` en Escudo Peat, Diarios y Tanques de Reserva.
+- Modificaciones en `renderWeekTable`: ocultamiento por defecto de la tabla detallada en un elemento `<details>`.
+- `applyDensity` y `renderToday` fueron ajustados para manejar el nuevo botón de alternancia de vista (Resumen / Explicaciones).
