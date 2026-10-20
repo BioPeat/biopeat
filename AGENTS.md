@@ -1,58 +1,58 @@
-# AGENTS.md · Instrucciones para Jules (y cualquier agente de código)
+# AGENTS.md · Reglas para Jules (y cualquier agente que toque este repositorio)
 
-## ⚡ MODO DE TRABAJO: LO ELIGES TÚ, AUTOMÁTICAMENTE
-El usuario no programa: **no esperes que te diga el modo**. Decide tú al hacer el plan y escribe en su primera línea «Modo: rápido» o «Modo: completo» y por qué.
+Este es el **único** archivo de instrucciones para agentes. No crees otros (`agents.md`, `.jules/`, `plan.md`, notas…).
+Escribe siempre en **español de España**, claro y corto. Diego no programa: nunca le pidas que edite código a mano.
 
-**MODO COMPLETO (obligatorio si se cumple CUALQUIERA):**
-- Tocas `migrate()`, `upgradeToNN`, `defaults()`, `save()`, la carga de datos, `storableState()`, las copias JSON/HTML o cualquier campo guardado en `state`.
-- Tocas cálculos: `totals()`, `targetFor()`, `bmr()`, `rollingMicro()`, `effectiveEntries()`, `seedPlan()`, ratios, porcentajes, depósitos, metas o la pauta.
-- Tocas la importación de HEVY, `extractBiopeat()`, el texto multicomida o `requestAI()`.
-- Cambias más de ~150 líneas o más de 3 secciones a la vez.
-- La tarea dice «MODO COMPLETO».
+## 0. Antes de empezar
+1. Lee `CONTEXTO_BIOPEAT.md` (qué quiere Diego) y `MAPA_DEL_CODIGO.md` (dónde está cada cosa). Busca en el código **por nombre**, no por número de línea.
+2. Prepara el entorno de pruebas (una vez por sesión):
+   `pip install playwright && python -m playwright install --with-deps chromium`
+3. Ejecuta `python tests/smoke.py`. Debe terminar en `TODO OK` **antes** de cambiar nada. Si no, avisa en el Pull Request.
 
-En modo completo, además de la comprobación rápida, ejecuta únicamente `node verify.js` para asegurar que el código arranca correctamente y que los datos guardados siguen ahí (el script simula esto en < 1s sin necesidad de abrir un navegador). Ya no debes abrir navegadores sin cabeza en esta tarea.
+## 1. Archivos permitidos (no puede haber ninguno más)
+`index.html`, `manifest.json`, `sw.js`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `AGENTS.md`, `CONTEXTO_BIOPEAT.md`, `MAPA_DEL_CODIGO.md`, `README.md`, `.gitignore`, `tests/smoke.py`, `tests/datos_prueba.json`, `tools/mapa.py`, `.github/workflows/check.yml`.
 
-**MODO RÁPIDO (todo lo demás: textos, colores, estilos, botones, diseño de una sección):**
-- No instales nada ni abras navegadores. No crees archivos de tests.
-- Lee `MAPA_DEL_CODIGO.md`, localiza la función y lee solo esa zona de `index.html`.
-- Cambio mínimo y plan corto (3-5 pasos).
-- Si un paso se atasca más de 2 minutos, termina con lo que tengas y explícalo en la nota.
+- **Prohibido subir** scripts temporales (`fix_*.py`, `patch-*.js`, `check-*.js`, `extracted.js`…), copias de datos de Diego (`*.json` con sus registros) o planes. Si necesitas un script auxiliar, créalo fuera del repositorio (por ejemplo en `/tmp`). `.gitignore` ya los ignora; no uses `git add -f`.
+- La prueba falla si hay archivos de más.
 
-**Comprobación rápida (siempre; tarda segundos):**
-```bash
-node verify.js
+## 2. Cómo editar
+- Edita `index.html` **directamente** con tu herramienta de edición. No uses scripts de «buscar y reemplazar» que fallan en silencio. Si aun así usas uno, comprueba que el texto aparecía **exactamente una vez** y que el cambio se aplicó.
+- Cambios pequeños y centrados en la tarea. No reescribas ni «limpies» partes que no te han pedido.
+- Cada función se define **una sola vez**. Si cambias una función, sustitúyela; no la dupliques ni la «envuelvas» reasignándola.
+
+## 3. Reglas del código (importantes: su incumplimiento rompió v30-v32)
+- **Metas del día:** usa siempre `targetFor(fecha)`, `dayGoal()` o `goalsFor(fecha)`. **Nunca** guardes metas calculadas dentro de `state.days[fecha]`. El único ajuste por día permitido es `state.days[fecha].macroGoals = {p, f, kcal?}`.
+- **Cambiar datos:** solo dentro de `change(() => { ... }, 'mensaje')`. No llames a `save()` ni a `render()` por tu cuenta tras un `change`.
+- **Migraciones de datos guardados:** crea `upgradeToNN(s, o)` que empiece con `if((Number(o.appRevision)||0) >= NN) return;`, llámala en `migrate()` y sube `APP_REVISION` a NN. Nunca hagas cambios de datos que se repitan en cada arranque.
+- **Claves guardadas que no se renombran:** `biopeat_pro_v10`, compare17, workouts18, favorites22, microTargets17, goalOrigin17, ratioGoals17, macroGoals, targetMode.
+- **Clics:** registra manejadores con `onClick(fn)` o atributos `data-*`; no uses `onclick="..."` en el HTML ni `alert()` (usa `toast()`).
+- **Ventanas:** usa `modal(título, html)`. No toques `history` por tu cuenta.
+- **Estilos:** reutiliza las variables de `:root` (`--bg-card`, `--text-muted`…). Para estilos nuevos, añade un bloque al final del `<style>` con un comentario `/* vNN: qué es */`.
+- **IA:** no cambies la conexión, el modelo ni el formato `BIOPEAT:` sin que la tarea lo pida. Nunca pongas claves en el código.
+- **Contenido Peat:** no inventes cifras atribuidas a Peat; nada de tono médico ni juzgón.
+
+## 4. Al terminar (obligatorio, en este orden)
+1. **Versión:** sube `APP_VERSION` en una unidad (`'v33'` → `'v34'`). Una versión por Pull Request.
+2. **Registro de cambios del script:** en el comentario inicial de `<script id="app">`, añade arriba una línea `vNN · Jules · resumen`. Máximo 6 líneas: borra la más antigua.
+3. **`CONTEXTO_BIOPEAT.md`:** cambia «Versión actual» y **sustituye** el texto de los apartados afectados (normalmente el 6). En el apartado 10 añade una línea arriba y deja como máximo 8. **No añadas apartados nuevos ni bloques al final.**
+4. **Mapa:** ejecuta `python tools/mapa.py` (no edites `MAPA_DEL_CODIGO.md` a mano).
+5. **Prueba:** si añades una función visible, añade una comprobación en `tests/smoke.py` (sección 5 o 6). No debilites ni borres comprobaciones para que pase; si una comprobación está mal, explícalo.
+6. Ejecuta `python tests/smoke.py` → debe decir `TODO OK`. **No abras el Pull Request si falla.**
+
+## 5. Descripción del Pull Request (copia este formato)
+```
+## Qué cambia (para Diego, en 1-3 frases sencillas)
+...
+## Cómo probarlo en el móvil
+1. ...
+## Prueba automática
+TODO OK (python tests/smoke.py)
+## RESUMEN PARA GEMINI
+Versión: vNN → vNN+1
+Hecho: ...
+Funciones/ID tocados: ...
+Pendiente o dudas: ... (o «nada»)
 ```
 
-Las tareas de **solo análisis** se responden en el chat, sin ejecutar nada y sin Pull Request.
-
-## El proyecto
-**BioPeat Diego**: app personal de nutrición, suplementos y gimnasio. PWA publicada con GitHub Pages desde `main`. El usuario la usa en el móvil y **no sabe programar**. Contexto completo en `CONTEXTO_BIOPEAT.md`; índice de funciones en `MAPA_DEL_CODIGO.md`.
-
-## Archivos
-- `index.html` → TODA la app (HTML + CSS + JS, sin dependencias ni build). Es el que normalmente cambias.
-- `manifest.json`, `sw.js`, `icon-*.png` → instalación como app. No los toques salvo que se pida.
-- `CONTEXTO_BIOPEAT.md`, `MAPA_DEL_CODIGO.md` → NO los actualices salvo que la tarea lo pida expresamente.
-
-## Estructura de index.html
-- Un solo `<style>` y un solo `<script id="app">`. Cada función se define una vez.
-- Datos → solo con `change(fn, mensaje)`. Repintar → solo `render()`. Clics → `onClick(fn)`.
-- Migraciones → `migrate()` = `migrateBase` + `upgradeToNN` (sube `state.appRevision`).
-- Ventanas → `modal()`. Texto variable en HTML → siempre con `esc()`.
-- No quites `<link href="manifest.json" rel="manifest"/>` ni el registro de `sw.js` del final.
-
-## Reglas obligatorias
-1. No renombres: `biopeat_pro_v10`, `compare17`, `workouts18`, `favorites22`, `microTargets17`, `goalOrigin17`, `ratioGoals17`, `biopeat_lastBackup22`, `biopeat_backupSnooze22`, `biopeat_density19`, `biopeat_ai24`.
-2. Si cambias el formato de datos, añade `upgradeToNN`. Nunca borres ni reinicies datos.
-3. No reasignes funciones para «envolverlas».
-4. No cambies objetivos, dosis, pauta ni el orden de la barra inferior salvo que se pida.
-5. No pongas 0 en datos desconocidos ni inventes cifras atribuidas a Ray Peat.
-6. Nada de dependencias, CDN ni claves API en el código.
-7. No cambies la conexión con la IA (`requestAI`, `/v1beta/interactions`, `gemini-3.8-flash`, fallback `gemini-3.1-flash-lite`), ni el guardado opcional de la clave en localStorage: son intencionados.
-8. Sin confirmaciones al añadir ni bloqueos «médicos».
-9. Móvil primero: sin desplazamiento horizontal a 320 px, botones ≥ 44 px.
-10. Mantén diseño, colores y navegación salvo que se pida.
-
-## Al terminar cada tarea con cambios
-1. Sube `APP_VERSION` en uno y añade al registro de cambios: `vNN · Jules · resumen`.
-2. Ejecuta la comprobación rápida (y la completa si toca).
-3. Descripción del Pull Request = **NOTA DE TRASPASO** breve en español: modo usado (rápido/completo) · qué cambia para el usuario · ¿datos tocados? · qué has comprobado · pendiente.
+## 6. Si la tarea no está clara
+Haz lo más sencillo que cumpla el objetivo y explica tu decisión en «Pendiente o dudas». Solo pregunta si de verdad no puedes avanzar.
