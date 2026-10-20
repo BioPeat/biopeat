@@ -5561,7 +5561,8 @@ body.bp-compact .rg-say,body.bp-compact .rg-goal{display:none!important}
  Metas del día: SIEMPRE con targetFor(fecha) / dayGoal(). Nunca guardar metas calculadas dentro de cada día.
  Migraciones: upgradeToNN(s,o) se ejecuta UNA vez: comprobar (Number(o.appRevision)||0)<NN y subir APP_REVISION.
  Registro de cambios (una línea por versión, la más nueva arriba; detalle en CONTEXTO_BIOPEAT.md):
-   v35 · Día anterior completo al añadir comida; foto IA más exacta (por ingrediente, despensa, referencias de tamaño, revisión 4/4/9), contador, 45 s y errores claros.
+   v36 · Gemini · El botón del plan Peat por defecto indica si ya estás usando ese plan.
+v35 · Día anterior completo al añadir comida; foto IA más exacta (por ingrediente, despensa, referencias de tamaño, revisión 4/4/9), contador, 45 s y errores claros.
    v34 · Copilot · Equilibrio del día explicado (porqué y cómo), pauta simplificada, semana en 4 preguntas, calendario con tendencia.
    v33 · Copilot · Reparación de v30-v32: metas al vuelo, guardado que fallaba, pauta por momentos, objetivos que no se guardaban.
    v30-v32 · Jules · Perfil Peat/Dinkov, simulador Ca:P y C:P, tanques de 7 días, vista resumen.
@@ -5586,7 +5587,7 @@ const DEPOSIT=new Set(['vitA','vitD','vitE','b12','b9','se','i','cu','fe']),LIMI
 const MICRO_NOTE={ca:'Peat y Dinkov: en torno a 2.000–3.000 mg al día, sobre todo de leche y queso, con al menos tanto calcio como fósforo.',phos:'Peat: el problema es el exceso de fosfato frente al calcio; mira el ratio Ca:P más que la cifra sola.',fe:'Peat: el hierro se acumula y no se excreta bien; conviene no pasarse. Se mide como límite y media de 7 días.',cu:'Peat: el cobre ayuda a usar el oxígeno y a no acumular hierro (hígado, marisco).',vitA:'Depósito en el hígado: una ración semanal de hígado o tu retinol diario lo cubren; cuenta la media semanal.',vitE:'Peat: la necesidad sube con el PUFA de la dieta; con poco PUFA es menor.',na:'Peat: sal al gusto; no la restringía. La meta es una referencia mínima, no un límite.',k:'Zumo de naranja, fruta, leche y patata son las fuentes Peat habituales.',se:'Depósito: tu pauta lo aporta jueves y domingo; cuenta la media de 7 días.',i:'Depósito tiroideo: cuenta la media de 7 días.',b12:'Depósito de años en el hígado: cuenta la media de 7 días.',b9:'Depósito de meses: cuenta la media de 7 días.',vitD:'Liposoluble y almacenable: cuenta la media de 7 días.',mg:'Tu bisglicinato HSN más leche, zumo y fruta.'};
 const microKind=k=>k==='fe'||(typeof LIMIT!=='undefined'&&LIMIT.has(k))?'limit':DEPOSIT.has(k)?'deposit':'daily';
 const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'], ACTIVITIES=['Full body pesado','Descanso / pista','Full body potencia','Descanso / pista','Descanso / pista','Full body activación','Partido de baloncesto'];
-const FAF=[1.725,1.5,1.725,1.5,1.5,1.65,1.75], STORE='biopeat_pro_v10', APP_VERSION='v35', APP_REVISION=23;
+const FAF=[1.725,1.5,1.725,1.5,1.5,1.65,1.75], STORE='biopeat_pro_v10', APP_VERSION='v36', APP_REVISION=23;
 const $=id=>document.getElementById(id), own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k), clone=x=>JSON.parse(JSON.stringify(x));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=(n,d=0)=>Number(n).toLocaleString('es-ES',{maximumFractionDigits:d});
@@ -5893,6 +5894,10 @@ function renderSettings(){
   $('target-p').value=Number(t.p.toFixed(1));
   $('target-f').value=Number(t.f.toFixed(1));
   $('target-c').value=fmt(t.c,2);
+const mg=state.macroGoals||{},useG=g=>g&&g.p!=null&&g.f!=null,d=day();
+const isPeat=!useG(d.macroGoals)&&!(state.targetMode==='split'?useG(mg.split?.workout)||useG(mg.split?.rest):useG(mg.all))&&(state.profile.cap??1.2)===1.2&&(state.profile.pufa??4)===4&&(state.ratioGoals17?.cp??3)===3&&(d.ratioGoals17?.cap??1.2)===1.2&&(d.ratioGoals17?.pufa??4)===4;
+$('btn-prometabolic').textContent=isPeat?'✓ Ya estás usando el plan Peat por defecto':'Volver al plan Peat por defecto';
+$('btn-prometabolic').disabled=isPeat;
 }
 
 // ===== IA y fotos: prompt BIOPEAT (ración completa; lo desconocido queda null, nunca 0) =====
