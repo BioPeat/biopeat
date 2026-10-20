@@ -88,3 +88,10 @@ Una sola página con desplazamiento; barra inferior **Hoy · Registro · Añadir
 v10–v19: primeras versiones con Gemini/Copilot. v20: una sola página. v22: Añadir unificado, favoritos, aviso de copia. v23: reescritura en una sola capa. v24: conexión IA desde el móvil, modo resumen, Mis alimentos. v25: Gimnasio nuevo. v26: correcciones de Gemini, recomendación, ventanas con «Atrás», depósitos, calcio 2.000. v27: recomendación sencilla + IA, despensa automática, depósitos que se llenan y vacían, semana visual, −/+, fallback de modelo.
 
 **Pendiente conocido:** unificar las capas de CSS sin cambiar el aspecto (hacerlo con capturas antes/después).
+
+
+## v32 UI Changes
+- La vista de 'Tus nutrientes' se divide en 3 bloques: Escudo Peat (Límites máximos), Vitaminas y Minerales Diarios, y Tanques de Reserva (Depósitos 7 días) para simplificar y dar contexto visual.
+- La vista de 'Tu pauta' (suplementos) ahora es un checklist limpio agrupado por momentos del día (Desayuno, Comida, Merienda, Antes de dormir).
+- Se ha introducido un conmutador explícito entre 'Vista Resumen' y 'Vista con Explicaciones Peat' (toggle CSS `bp-compact`).
+- En 'Tu semana', la tabla detallada de 25 nutrientes se pliega en un `<details>` por defecto para simplificar el panel.
