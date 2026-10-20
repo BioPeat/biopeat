@@ -151,11 +151,22 @@ async def browser_checks():
         check_errs('guardar/recargar')
 
         print('5. Añadir comida')
+        # Preparar ayer con comida sin completar y vaciar hoy
+        await ev(f"const yd=shift(date,-1); state.days[yd]={{entries:[{{id:'foo',kind:'food',meal:'Desayuno',name:'Pan',amount:1,basis:1,unit:'u',nutrients:{{}} }}], complete:false}}; day().entries = day().entries.filter(e=>e.kind!=='food'); renderLog();")
         await ev("$('smart-input').value='200 ml de leche y 2 platanos';$('smart-add').click()"); await pg.wait_for_timeout(300)
         s = await ev("$('meal-ai-status').textContent")
         ok('Texto sin IA reconocido') if 'sin IA' in s else fail('No reconoce «200 ml de leche y 2 platanos» sin IA: ' + s)
-        await ev("""$('bp-paste').value='BIOPEAT:{"meal":"Cena","name":"Tortilla","grams":200,"kcal":300,"p":20,"c":5,"f":22,"pufa":2}';$('bp-paste-add').click()""")
-        ok('Pegar respuesta de Gemini') if 'Tortilla' in await ev("$('bp-paste-msg').textContent") else fail('No añade la respuesta BIOPEAT pegada')
+        # Comprobar que ayer se marcó como completo
+        ayer_completo = await ev("state.days[shift(date,-1)].complete")
+        ok('Ayer marcado como completo') if ayer_completo else fail('Añadir la primera comida de hoy no marcó ayer como completo')
+
+        await ev("$('bp-paste').value='Aquí tienes tu comida:\\n\\nBIOPEAT:{\"meal\":\"Cena\",\"name\":\"Tortilla\",\"grams\":200,\"kcal\":300,\"p\":20,\"c\":5,\"f\":22,\"pufa\":2}\\n\\n¡Espero que te sirva!';$('bp-paste-add').click()")
+        ok('Pegar respuesta con texto antes y después (Gemini)') if 'Tortilla' in await ev("$('bp-paste-msg').textContent") else fail('No extrae el JSON cuando hay texto alrededor')
+
+        await ev("$('bp-paste').value='Hola, soy una IA y esta es mi respuesta sin JSON.';$('bp-paste-add').click()")
+        err_msg = await ev("$('bp-paste-msg').textContent")
+        ok('Error por respuesta sin JSON') if 'formato esperado' in err_msg or 'JSON no es válido' in err_msg else fail('Falta error cuando la IA no devuelve JSON: ' + err_msg)
+
         await ev("$('ai-mode').value='direct';$('gemini-key').value='CLAVE_DE_PRUEBA';syncAI()")
         await ev("$('smart-input').value='un plato de lentejas';$('smart-add').click()"); await pg.wait_for_timeout(800)
         ok('Texto con IA (simulada)') if 'Guardado' in await ev("$('meal-ai-status').textContent") else fail('El análisis con IA no guarda la comida')
