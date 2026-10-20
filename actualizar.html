@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BioPeat · Actualizar</title>
+<style>
+body{font-family:system-ui,sans-serif;background:#26374d;color:#f4f7fc;margin:0;padding:16px;max-width:760px;margin:auto;line-height:1.5}
+h1{font-size:22px;margin:4px 0 2px}h2{font-size:16px;margin:0 0 8px}
+.card{background:#33465f;border:1px solid #60758e66;border-radius:16px;padding:16px;margin:14px 0}
+.btn{display:block;width:100%;min-height:50px;border:0;border-radius:12px;font-size:16px;font-weight:800;margin:8px 0;cursor:pointer}
+.amber{background:#fbbf24;color:#17243a}.green{background:#34d399;color:#0f2e25}.slate{background:#405671;color:#f4f7fc;border:1px solid #8095af66}
+.btn:disabled{opacity:.4}
+textarea{width:100%;box-sizing:border-box;min-height:160px;background:#293c54;color:#f4f7fc;border:1px solid #8196b066;border-radius:10px;padding:10px;font:13px ui-monospace,monospace}
+.muted{color:#c5d2e3;font-size:13px}.ok{color:#6ee7b7}.bad{color:#fda4af}.warn{color:#fcd34d}
+ul{padding-left:20px;margin:6px 0}li{margin:4px 0}
+.big{font-size:20px;font-weight:900;margin:6px 0}
+pre{white-space:pre-wrap;word-break:break-word;background:#1f3047;padding:10px;border-radius:10px;font-size:12px;max-height:300px;overflow:auto}
+</style></head><body>
+<h1>Actualizar BioPeat</h1>
+<p class="muted">Esta página aplica los cambios de Gemini y los comprueba antes de que lleguen a tu app. Tus datos nunca se modifican aquí.</p>
+
+<div class="card"><h2>Paso 1 · Archivo para Gemini</h2>
+<p id="cur" class="muted">Cargando la versión actual…</p>
+<button class="btn slate" id="dl-gemini">⬇ Descargar archivo para Gemini</button>
+<label class="muted">¿No carga sola? Elige index.html a mano: <input type="file" id="pick" accept=".html,.txt"></label>
+</div>
+
+<div class="card"><h2>Paso 2 · Pega la respuesta COMPLETA de Gemini</h2>
+<textarea id="patch" placeholder="Pega aquí toda la respuesta de Gemini (con los bloques @@@)"></textarea>
+<label class="muted"><input type="checkbox" id="usedata" checked> Probar también con una copia de mis datos (recomendado)</label>
+<button class="btn amber" id="run">Aplicar y comprobar</button>
+</div>
+
+<div class="card" id="res" hidden><div class="big" id="verdict"></div><ul id="checks"></ul>
+<div id="okbox" hidden>
+<button class="btn green" id="dl-new">⬇ Descargar index.html nuevo</button>
+<button class="btn slate" id="copy-review">Copiar texto para la REVISIÓN en Gemini</button>
+<button class="btn slate" id="dl-old">⬇ Guardar también la versión anterior (por si acaso)</button>
+</div>
+<div id="badbox" hidden><button class="btn amber" id="copy-err">Copiar mensaje del error para Gemini</button></div>
+<details><summary class="muted">Ver detalle técnico</summary><pre id="log"></pre></details>
+</div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const PROTECTED=["STORE='biopeat_pro_v10'","compare17","workouts18","favorites22","microTargets17","goalOrigin17","ratioGoals17","function migrate(","function render(","function storableState("];
+let current='',result=null,errText='',reviewText='';
+
+function setCurrent(t,src){current=t;const v=(t.match(/APP_VERSION='(v\d+)'/)||[])[1]||'¿?';$('cur').innerHTML='Versión actual: <b>'+v+'</b> · '+src+' · '+Math.round(t.length/1024)+' KB';}
+fetch('index.html?'+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.text();}).then(t=>setCurrent(t,'cargada de tu web')).catch(()=>{$('cur').innerHTML='<span class="warn">No se pudo cargar sola. Elige index.html abajo.</span>';});
+$('pick').onchange=async e=>{const f=e.target.files[0];if(f)setCurrent(await f.text(),'elegida a mano');};
+function download(name,text,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:type+';charset=utf-8'}));a.download=name;document.body.append(a);a.click();a.remove();}
+$('dl-gemini').onclick=()=>{if(!current)return alert('Primero carga index.html');download('BioPeat_actual_'+((current.match(/APP_VERSION='(v\d+)'/)||[])[1]||'')+'.txt',current);};
+
+// Formato de Gemini:  @@@ BUSCAR n  ...  @@@ CAMBIAR POR  ...  @@@ FIN
+function parse(txt){
+  txt=txt.replace(/\r\n/g,'\n');
+  const re=/@@@ BUSCAR[^\n]*\n([\s\S]*?)\n@@@ CAMBIAR POR[^\n]*\n([\s\S]*?)\n?@@@ FIN/g,out=[];let m;
+  while((m=re.exec(txt)))out.push({find:m[1],repl:m[2]});
+  return out;
+}
+const count=(h,n)=>{let c=0,i=0;if(!n)return 0;while((i=h.indexOf(n,i))>=0){c++;i+=n.length;}return c;};
+const ver=t=>Number((t.match(/APP_VERSION='v(\d+)'/)||[])[1]||0);
+const rev=t=>Number((t.match(/APP_REVISION=(\d+)/)||[])[1]||0);
+function appScript(t){const a=t.indexOf('<script id="app">');if(a<0)return null;const s=a+'<script id="app">'.length;return t.slice(s,t.indexOf('<'+'/script>',s));}
+
+function lineDiff(a,b){
+  const A=a.split('\n'),B=b.split('\n');let i=0;while(i<A.length&&i<B.length&&A[i]===B[i])i++;
+  let j=0;while(j<A.length-i&&j<B.length-i&&A[A.length-1-j]===B[B.length-1-j])j++;
+  return {from:i+1,old:A.slice(i,A.length-j),neu:B.slice(i,B.length-j)};
+}
+
+function runInSandbox(html,seed){
+  return new Promise(resolve=>{
+    const id='t'+Math.random().toString(36).slice(2);
+    const probe=`<script>window.__e=[];addEventListener('error',e=>__e.push(String(e.message||e.error)));addEventListener('unhandledrejection',e=>__e.push('Promesa: '+String(e.reason&&e.reason.message||e.reason)));const __ce=console.error;console.error=(...a)=>{__e.push('console.error: '+a.join(' '));__ce(...a);};<\/script>`;
+    const test=`<script>setTimeout(()=>{const r={id:'${id}',errors:__e,ready:document.body.dataset.ready==='true',title:document.title,steps:[]};
+      const step=(n,f)=>{try{f();r.steps.push([n,true]);}catch(e){r.steps.push([n,false,String(e&&e.message||e)]);}};
+      step('Pintar la página',()=>render());
+      step('Semana',()=>renderWeekly());
+      step('Gimnasio',()=>renderGym());
+      for(const v of ['today','add','log','micros','supplements','settings','week','exercise'])step('Ir a '+v,()=>go(v));
+      step('Día anterior',()=>goDate(shift(date,-1)));step('Volver a hoy',()=>goDate(localDate()));
+      step('Abrir menú Más',()=>{openMoreMenu();$('modal').close();});
+      step('Prompt de foto',()=>{const p=(typeof photoPrompt==='function'?photoPrompt:makePrompt)('Comida','');if(!p||p.length<200)throw Error('vacío');});
+      step('Añadir y deshacer',()=>{const n=day().entries.length;addEntries([fromFood('platano',120,'Merienda')],'test');if(day().entries.length!==n+1)throw Error('no se añadió');undo();});
+      try{r.days=Object.values(state.days).filter(d=>d.entries.some(e=>e.kind==='food')).length;r.foods=Object.keys(state.foods).length;r.workouts=(state.workouts18||[]).length;}catch(e){r.errors.push(String(e));}
+      r.errors=__e;parent.postMessage(r,'*');},3500);<\/script>`;
+    let h=html.replace(/<head>/i,'<head>'+probe);
+    if(seed)h=h.replace(/<\/head>/i,'<script type="application/json" id="biopeat-seed">'+seed.replace(/</g,'\\u003c')+'<\/script></head>');
+    h=h.replace(/<\/body>(?![\s\S]*<\/body>)/i,test+'</body>');
+    const f=document.createElement('iframe');f.sandbox='allow-scripts';f.style.cssText='width:390px;height:700px;position:absolute;left:-9999px';
+    const done=r=>{removeEventListener('message',on);clearTimeout(to);f.remove();resolve(r);};
+    const on=e=>{if(e.data&&e.data.id===id)done(e.data);};
+    addEventListener('message',on);
+    const to=setTimeout(()=>done({errors:['La app no terminó de arrancar en 15 s'],ready:false,steps:[]}),15000);
+    f.srcdoc=h;document.body.append(f);
+  });
+}
+
+$('run').onclick=async()=>{
+  const btn=$('run');btn.disabled=true;btn.textContent='Comprobando… (unos 10 s)';
+  const checks=[],log=[];let fail=false;const add=(ok,txt)=>{checks.push([ok,txt]);if(ok===false)fail=true;};
+  try{
+    if(!current)throw Error('No hay index.html cargado (paso 1).');
+    const blocks=parse($('patch').value);
+    if(!blocks.length)throw Error('No encuentro bloques «@@@ BUSCAR … @@@ CAMBIAR POR … @@@ FIN». Pega la respuesta entera de Gemini.');
+    let t=current;
+    blocks.forEach((b,i)=>{const c=count(t,b.find);
+      if(c===1){t=t.replace(b.find,()=>b.repl);log.push('Bloque '+(i+1)+': aplicado');}
+      else{add(false,'Bloque '+(i+1)+(c===0?': el texto a buscar NO existe en el archivo':': el texto a buscar aparece '+c+' veces (debe ser único)'));log.push('Bloque '+(i+1)+' BUSCAR:\n'+b.find.slice(0,400));}});
+    if(!fail)add(true,blocks.length+' cambios aplicados exactamente donde tocaba');
+    else throw Error('stop');
+    // Reglas fijas
+    const v0=ver(current),v1=ver(t);
+    add(v1===v0+1,'Versión: v'+v0+' → v'+v1+(v1===v0+1?'':' (debe subir exactamente 1)'));
+    add(new RegExp("\\n\\s*v"+v1+" · ").test(t),'Línea v'+v1+' en el «Registro de cambios»');
+    const missing=PROTECTED.filter(p=>!t.includes(p));add(!missing.length,missing.length?'Falta algo protegido: '+missing.join(', '):'Claves de tus datos intactas');
+    const r0=rev(current),r1=rev(t);
+    if(r1<r0)add(false,'APP_REVISION ha bajado ('+r0+'→'+r1+')');
+    else if(r1>r0)add(new RegExp('function upgradeTo'+r1+'\\(').test(t)&&new RegExp('upgradeTo'+r1+'\\(s,o\\);').test(t),'Migración de datos upgradeTo'+r1+' creada y llamada en migrate()');
+    const js=appScript(t);
+    try{new Function(js);add(true,'Código sin errores de escritura');}catch(e){add(false,'Error de escritura en el código: '+e.message);}
+    if(fail)throw Error('stop');
+    // Prueba real en un entorno aislado (no puede leer ni escribir tus datos reales)
+    let seed=null;if($('usedata').checked){try{seed=localStorage.getItem('biopeat_pro_v10');}catch(e){}}
+    const base=seed?await runInSandbox(current,seed):null;
+    const r=await runInSandbox(t,seed);
+    log.push(JSON.stringify(r,null,1));
+    add(r.ready,'La app arranca');
+    add(!r.errors.length,r.errors.length?'Errores al usarla: '+r.errors.slice(0,3).join(' | '):'Ningún error al usarla');
+    (r.steps||[]).forEach(s=>{if(!s[1])add(false,'Falla «'+s[0]+'»: '+s[2]);});
+    if((r.steps||[]).length&&(r.steps||[]).every(s=>s[1]))add(true,'Recorrido completo: '+r.steps.length+' pruebas superadas');
+    if(seed&&base){add(r.days===base.days&&r.foods>=base.foods&&r.workouts===base.workouts,'Tus datos se leen igual: '+r.days+' días con comidas, '+r.workouts+' entrenos'+(r.days===base.days?'':' (antes '+base.days+')'));}
+    else if($('usedata').checked)add(null,'Sin datos en este navegador: prueba hecha con app vacía');
+    result=t;
+    const d=lineDiff(current,t);
+    reviewText='REVISAR v'+v1+'\nCambios aplicados (desde la línea '+d.from+'):\n--- ANTES ---\n'+d.old.join('\n').slice(0,60000)+'\n--- DESPUÉS ---\n'+d.neu.join('\n').slice(0,60000);
+  }catch(e){if(e.message!=='stop')add(false,e.message);}
+  $('res').hidden=false;
+  $('checks').innerHTML=checks.map(([ok,t])=>`<li class="${ok===true?'ok':ok===false?'bad':'warn'}">${ok===true?'✓':ok===false?'✗':'•'} ${t.replace(/</g,'&lt;')}</li>`).join('');
+  $('verdict').innerHTML=fail?'<span class="bad">✗ NO subir. Hay que corregir.</span>':'<span class="ok">✓ Todo correcto</span>';
+  $('okbox').hidden=fail;$('badbox').hidden=!fail;
+  errText='CORREGIR. La herramienta ha rechazado tus cambios:\n'+checks.filter(c=>c[0]===false).map(c=>'- '+c[1]).join('\n')+'\nVuelve a entregar TODOS los bloques @@@ corregidos (la respuesta completa), copiando el texto de BUSCAR literalmente del archivo.';
+  $('log').textContent=log.join('\n\n');
+  btn.disabled=false;btn.textContent='Aplicar y comprobar';
+  $('res').scrollIntoView({behavior:'smooth'});
+};
+$('dl-new').onclick=()=>download('index.html',result,'text/html');
+$('dl-old').onclick=()=>download('index_anterior_v'+ver(current)+'.html',current,'text/html');
+const copy=t=>navigator.clipboard.writeText(t).then(()=>alert('Copiado. Pégalo en Gemini.')).catch(()=>{$('log').textContent=t;$('log').parentElement.open=true;alert('Cópialo a mano del «detalle técnico».');});
+$('copy-review').onclick=()=>copy(reviewText);
+$('copy-err').onclick=()=>copy(errText);
+</script></body></html>
