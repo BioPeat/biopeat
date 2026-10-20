@@ -1,6 +1,6 @@
 # CONTEXTO · BioPeat Diego
 
-**Versión actual: v34** (revisión de datos 23)
+**Versión actual: v35** (revisión de datos 23)
 
 Documento maestro. Lo leen Gemini (para planificar) y Jules (para programar). **Se actualiza sustituyendo el texto de cada apartado, nunca añadiendo apartados nuevos al final.** Si algo de aquí contradice al código, manda el código; avisa de la diferencia en el Pull Request.
 

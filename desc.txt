@@ -1,0 +1,19 @@
+## Qué cambia (para Diego, en 1-3 frases sencillas)
+Al añadir la primera comida del día, la aplicación marcará automáticamente el día de ayer como completo. Además, la subida de fotos usa una nueva compresión más ligera que evita que se cuelgue, y el envío de peticiones a la IA detecta mejor los errores y gestiona formatos diferentes o caídas, mostrando siempre el mensaje exacto.
+
+## Cómo probarlo en el móvil
+1. Entra a un nuevo día. Añade cualquier comida o bebida manualmente; verás que el día anterior pasa a estar completo.
+2. Sube una foto a través del panel de IA; la respuesta será más rápida y si te has quedado sin clave de Google, se indicará el error en un toast.
+3. Envía una consulta normal; la app no debería bloquearse en "Analizando todas las comidas".
+
+## Prueba automática
+TODO OK (python tests/smoke.py)
+
+## RESUMEN PARA GEMINI
+Versión: v34 → v35
+Hecho: Se modificó addEntries para marcar el día anterior como completo. En IA, se optimizó shrinkPhoto, se ajustaron promptDay, makePrompt y requestAI con timeout de 45s, AbortController, y fallback en cuotas 429. Se extrae JSON con extractBiopeat y parseBIO dentro de analyzeDay, informando errores reales vía toast.
+Funciones/ID tocados: addEntries, shrinkPhoto, analyzeDay, extractBiopeat, parseBIO, requestAI, promptDay, makePrompt, tests/smoke.py
+Pendiente o dudas: nada
+
+NOTA DE TRASPASO
+Se ha implementado el autocompletado del día anterior en `addEntries`, la compresión rápida de fotos en `shrinkPhoto` con timeout y validación, y se reestructuró la consulta de IA en `requestAI` y `analyzeDay` para pedir el formato JSON estricto e incorporar una gestión de fallos precisa (indicando el motivo real). También se han superado las pruebas de `smoke.py`.

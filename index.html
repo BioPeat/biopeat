@@ -5547,6 +5547,7 @@ body.bp-compact .rg-say,body.bp-compact .rg-goal{display:none!important}
 <button aria-controls="exercise" aria-label="Ir directamente a Gimnasio" data-view="exercise" id="gym-access" title="Ir a Gimnasio" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12" stroke-linecap="round"></path></svg><span>Gimnasio</span></button><script id="app">
 "use strict";
 /*
+ v35 · Jules · Autocompletar día anterior, compresión rápida de foto y resiliencia en IA
  BioPeat Diego · un solo script (la versión está en APP_VERSION), sin parches por versión.
  Estructura (en este orden):
    1. Datos base: FOODS, MICRO, PLAN, utilidades y estado (state, date…).
@@ -5585,7 +5586,7 @@ const DEPOSIT=new Set(['vitA','vitD','vitE','b12','b9','se','i','cu','fe']),LIMI
 const MICRO_NOTE={ca:'Peat y Dinkov: en torno a 2.000–3.000 mg al día, sobre todo de leche y queso, con al menos tanto calcio como fósforo.',phos:'Peat: el problema es el exceso de fosfato frente al calcio; mira el ratio Ca:P más que la cifra sola.',fe:'Peat: el hierro se acumula y no se excreta bien; conviene no pasarse. Se mide como límite y media de 7 días.',cu:'Peat: el cobre ayuda a usar el oxígeno y a no acumular hierro (hígado, marisco).',vitA:'Depósito en el hígado: una ración semanal de hígado o tu retinol diario lo cubren; cuenta la media semanal.',vitE:'Peat: la necesidad sube con el PUFA de la dieta; con poco PUFA es menor.',na:'Peat: sal al gusto; no la restringía. La meta es una referencia mínima, no un límite.',k:'Zumo de naranja, fruta, leche y patata son las fuentes Peat habituales.',se:'Depósito: tu pauta lo aporta jueves y domingo; cuenta la media de 7 días.',i:'Depósito tiroideo: cuenta la media de 7 días.',b12:'Depósito de años en el hígado: cuenta la media de 7 días.',b9:'Depósito de meses: cuenta la media de 7 días.',vitD:'Liposoluble y almacenable: cuenta la media de 7 días.',mg:'Tu bisglicinato HSN más leche, zumo y fruta.'};
 const microKind=k=>k==='fe'||(typeof LIMIT!=='undefined'&&LIMIT.has(k))?'limit':DEPOSIT.has(k)?'deposit':'daily';
 const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'], ACTIVITIES=['Full body pesado','Descanso / pista','Full body potencia','Descanso / pista','Descanso / pista','Full body activación','Partido de baloncesto'];
-const FAF=[1.725,1.5,1.725,1.5,1.5,1.65,1.75], STORE='biopeat_pro_v10', APP_VERSION='v34', APP_REVISION=23;
+const FAF=[1.725,1.5,1.725,1.5,1.5,1.65,1.75], STORE='biopeat_pro_v10', APP_VERSION='v35', APP_REVISION=23;
 const $=id=>document.getElementById(id), own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k), clone=x=>JSON.parse(JSON.stringify(x));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=(n,d=0)=>Number(n).toLocaleString('es-ES',{maximumFractionDigits:d});
