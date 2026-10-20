@@ -13,6 +13,8 @@
  Claves guardadas que NO deben renombrarse: compare17, workouts18, favorites22, microTargets17,
  goalOrigin17, ratioGoals17 y la clave de almacenamiento STORE ('biopeat_pro_v10').
  Registro de cambios (versión · autor · resumen):
+   v31 · Jules · Actualización total Perfil Prometabólico Peat/Dinkov en vivo, Epley 1RM, nuevo Calendario y Accesos rápidos.
+   v30 · Jules · Implementado el guardado de metas global/split, control total IA, Perfil Prometabólico Peat/Dinkov, y auto-completar del día anterior.
    v28 · Jules · Enlace biográfico a Ray Peat.
    v25 · Copilot · Gimnasio con progresión por peso y reps, equilibrio del día, notas para la IA.
    v26 · Copilot · Errores revisados por Gemini (texto con verbos, pauta, selector de micros, asistidos,
@@ -41,11 +43,11 @@ for(const id of Object.keys(USDA_N))if(FOODS[id])FOODS[id].source='USDA FoodData
 const EXTRA=[['kcal','Energía','kcal'],['p','Proteína alimentaria','g'],['c','Carbohidratos','g'],['f','Grasa total','g'],['pufa','PUFA','g'],['retinol','Vitamina A preformada','µg RAE'],['fiber','Fibra','g'],['sugars','Azúcares','g'],['freeSugar','Azúcares libres','g'],['satFat','Grasa saturada','g'],['glycine','Glicina libre','g'],['creatine','Creatina','g'],['monoFat','Grasa monoinsaturada','g']];
 const KEYS=[...EXTRA.map(x=>x[0]),...MICRO.map(x=>x.k),'benfotiamine'];
 // Micros de «depósito»: el cuerpo los almacena, así que se valoran con la media de 7 días. «limit»: mejor por debajo.
-const DEPOSIT=new Set(['vitA','vitD','vitE','b12','b9','se','i','cu','fe']),LIMIT=new Set(['fe']);
+const DEPOSIT=new Set(['vitA','vitD','vitE','b12','b9','se','i','cu','fe']),LIMIT=new Set(['fe','se','vitA','i']);
 const MICRO_NOTE={ca:'Peat y Dinkov: en torno a 2.000–3.000 mg al día, sobre todo de leche y queso, con al menos tanto calcio como fósforo.',phos:'Peat: el problema es el exceso de fosfato frente al calcio; mira el ratio Ca:P más que la cifra sola.',fe:'Peat: el hierro se acumula y no se excreta bien; conviene no pasarse. Se mide como límite y media de 7 días.',cu:'Peat: el cobre ayuda a usar el oxígeno y a no acumular hierro (hígado, marisco).',vitA:'Depósito en el hígado: una ración semanal de hígado o tu retinol diario lo cubren; cuenta la media semanal.',vitE:'Peat: la necesidad sube con el PUFA de la dieta; con poco PUFA es menor.',na:'Peat: sal al gusto; no la restringía. La meta es una referencia mínima, no un límite.',k:'Zumo de naranja, fruta, leche y patata son las fuentes Peat habituales.',se:'Depósito: tu pauta lo aporta jueves y domingo; cuenta la media de 7 días.',i:'Depósito tiroideo: cuenta la media de 7 días.',b12:'Depósito de años en el hígado: cuenta la media de 7 días.',b9:'Depósito de meses: cuenta la media de 7 días.',vitD:'Liposoluble y almacenable: cuenta la media de 7 días.',mg:'Tu bisglicinato HSN más leche, zumo y fruta.'};
-const microKind=k=>LIMIT.has(k)?'limit':DEPOSIT.has(k)?'deposit':'daily';
+const microKind=k=>k==='fe'||(typeof LIMIT!=='undefined'&&LIMIT.has(k))?'limit':DEPOSIT.has(k)?'deposit':'daily';
 const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'], ACTIVITIES=['Full body pesado','Descanso / pista','Full body potencia','Descanso / pista','Descanso / pista','Full body activación','Partido de baloncesto'];
-const FAF=[1.725,1.5,1.725,1.5,1.5,1.65,1.75], STORE='biopeat_pro_v10', APP_VERSION='v28';
+const FAF=[1.725,1.5,1.725,1.5,1.5,1.65,1.75], STORE='biopeat_pro_v10', APP_VERSION='v32';
 const $=id=>document.getElementById(id), own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k), clone=x=>JSON.parse(JSON.stringify(x));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=(n,d=0)=>Number(n).toLocaleString('es-ES',{maximumFractionDigits:d});
@@ -70,16 +72,42 @@ function shift(s,n){
 const weekday=s=>(new Date(s+'T12:00:00').getDay()+6)%7;
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,9);
 const normalize=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
-const CONTEXT="Diego · 77,5 kg · 185 cm · 23 años. Full body lunes, miércoles y sábado; partido el domingo. Objetivo: acercarme a las ideas de Ray Peat y apoyar mi metabolismo, sin atribuir cifras no verificadas.\nPauta corregida: vitamina E 200 UI y benfotiamina 250 mg en la comida; glicina 5 g en la comida y 5 g antes de dormir; bisglicinato HSN 2 g de polvo en la comida y 2 g antes de dormir. Aspirina: toda la cantidad diaria declarada (500 mg en lunes/miércoles/sábado/domingo; 250 mg martes/jueves/viernes) en la merienda con el batido y la K2. El resto de la pauta se conserva.\nNo se añaden comidas ficticias. Las tomas automáticas son previstas, no confirmadas. La glicina libre no se suma como proteína completa.";
-function defaults(){return {version:10,appRevision:20,updated:0,profile:{weight:77.5,height:185,age:23,pufa:4.5,cap:1.1},foods:clone(FOODS),plan:clone(PLAN),targets:Object.fromEntries(MICRO.map(m=>[m.k,m.target])),context:CONTEXT,days:{},legacy:{},compare17:cleanCompare(),workouts18:[],favorites22:[],aiNotes:''};}
+const CONTEXT="Diego · 77,5 kg · 185 cm · 23 años. Full body lunes, miércoles y sábado; partido el domingo. Objetivo: acercarme a las ideas de Ray Peat y apoyar mi metabolismo, sin atribuir cifras no verificadas. Proteína moderada 115-130 g para priorizar glucógeno y conversión T4->T3, grasa 60-65 g con PUFA <= 4 g, C:P 3-4:1, Ca:P >= 1.20, hierro límite <= 14 mg, selenio óptimo 100-200 ug/d, equilibrio A:D y Zn:Cu.\nPauta corregida: vitamina E 200 UI y benfotiamina 250 mg en la comida; glicina 5 g en la comida y 5 g antes de dormir; bisglicinato HSN 2 g de polvo en la comida y 2 g antes de dormir. Aspirina: toda la cantidad diaria declarada (500 mg en lunes/miércoles/sábado/domingo; 250 mg martes/jueves/viernes) en la merienda con el batido y la K2. El resto de la pauta se conserva.\nNo se añaden comidas ficticias. Las tomas automáticas son previstas, no confirmadas. La glicina libre no se suma como proteína completa.";
+function defaults(){return {version:10,appRevision:20,updated:0,profile:{weight:77.5,height:185,age:23,pufa:4.5,cap:1.1},foods:clone(FOODS),plan:clone(PLAN),targets:Object.fromEntries(MICRO.map(m=>[m.k,m.target])),context:CONTEXT,days:{},legacy:{},compare17:cleanCompare(),workouts18:[],favorites22:[],targetMode:'all',macroGoals:{all:{p:null,f:null},split:{workout:{p:null,f:null},rest:{p:null,f:null}}},aiNotes:''};}
 let state=defaults(),date=localDate(),view='today',microFilter='all',logFilter='food',undoStack=[],toastTimer,lastAddSignature='',lastAddTime=0,storageMode='memory',db=null,writeQueue=Promise.resolve(),ready=false,photo=null,photoURL=null;
 function bmr(){
   const p=state.profile;
   return 10*p.weight+6.25*p.height-5*p.age+5;
 }
-function targetFor(d){
-  const i=weekday(d),w=state.profile.weight/77.5,kcal=Math.round(bmr()*FAF[i]/5)*5,p=[165,150,165,150,150,160,160][i]*w,f=[90,85,90,85,85,90,85][i]*w,c=(kcal-p*4-f*9)/4;
-  return {kcal,p,c,f,activity:i};
+function targetFor(d, skipClean=false){
+  let t = {kcal:0,p:0,c:0,f:0,activity:weekday(d),cap:1.2,pufa:4.0,aspirin:0};
+  MICRO.forEach(m => t[m.k] = state?.targets?.[m.k] ?? m.d);
+  if(state&&state.profile){
+    const i=weekday(d),w=state.profile.weight/77.5,act=[1.725, 1.5, 1.725, 1.5, 1.5, 1.65, 1.75][i];
+    const tM=state.targetMode||'all';
+    let mG=null;
+    if(tM==='today'&&state.days[d]&&state.days[d].macroGoals)mG=state.days[d].macroGoals;
+    else if(tM==='split'&&state.macroGoals&&state.macroGoals.split)mG=[0,2,5,6].includes(i)?state.macroGoals.split.workout:state.macroGoals.split.rest;
+    else if(tM==='all'&&state.macroGoals&&state.macroGoals.all)mG=state.macroGoals.all;
+
+    let p,f,kcal,c;
+    if(mG&&mG.p!=null&&mG.f!=null){
+      p=mG.p; f=mG.f;
+      kcal=Math.round(bmr()*act/5)*5;
+      c=Math.max(p*3,(kcal-p*4-f*9)/4);
+      if(c*4+p*4+f*9 > kcal) kcal = Math.round((c*4+p*4+f*9)/5)*5;
+    } else {
+      kcal=Math.round(bmr()*act/5)*5;
+      p=[145,130,145,130,130,145,145][i]*w;
+      f=[75,65,75,65,65,75,75][i]*w;
+      c=Math.max(p*3,(kcal-p*4-f*9)/4);
+      if(c*4+p*4+f*9 > kcal) kcal = Math.round((c*4+p*4+f*9)/5)*5;
+    }
+    t.kcal=kcal; t.p=p; t.c=c; t.f=f; t.activity=i;
+    t.cap = state.profile.cap ?? 1.2;
+    t.pufa = state.profile.pufa ?? 4.0;
+  }
+  return skipClean ? t : cleanTarget(t, d);
 }
 function cleanNutrients(o,required=false){
   if(!o||typeof o!=='object'||Array.isArray(o))throw Error('Formato de nutrientes inválido.');
@@ -300,8 +328,60 @@ function renderSupps(){
   const d=day();
   $('auto-day').checked=d.autoEnabled!==false;
   const entries=effectiveEntries().filter(e=>e.kind!=='food');
-  $('day-supps').innerHTML=renderRows(entries);
+
+  const slots = ['Desayuno', 'Comida', 'Merienda', 'Antes de dormir', 'Otros'];
+  const grouped = {};
+  slots.forEach(s => grouped[s] = []);
+  entries.forEach(e => {
+    const s = slots.includes(e.slot) ? e.slot : 'Otros';
+    grouped[s].push(e);
+  });
+
+  let html = '';
+  slots.forEach(s => {
+    if (grouped[s].length) {
+      html += `<div class="supp-slot"><h3 style="margin:12px 0 6px;font-size:14px;color:#a9bbd2;">${s}</h3>`;
+      grouped[s].forEach(e => {
+        const checked = e.confirmed ? 'checked' : '';
+        html += `<label class="supp-item" style="display:flex;align-items:center;gap:10px;padding:8px;background:#2d425b;border-radius:8px;margin-bottom:4px;cursor:pointer;">
+          <input type="checkbox" onchange="toggleSuppConfirm('${e.id}', this.checked)" ${checked} style="width:18px;height:18px;accent-color:#34d399;">
+          <span style="${checked ? 'text-decoration:line-through;color:#8196b0;' : 'color:#f4f7fc;'}"><b>${e.name}</b> <small style="color:#a9bbd2;">(${e.dose} ${e.unit})</small></span>
+        </label>`;
+      });
+      html += `</div>`;
+    }
+  });
+
+  if (entries.length > 0) {
+    html += `<button class="btn btn-emerald full" style="margin-top:12px;" onclick="confirmAllSupps()">Confirmar las previstas de hoy ✓</button>`;
+  } else {
+    html += `<p class="empty">No hay tomas previstas ni registradas para hoy.</p>`;
+  }
+
+  $('day-supps').innerHTML = html;
+
   $('plan-list').innerHTML=state.plan.map(p=>`<div class="plan-item"><div><b>${esc(p.name)}</b><p class="progress-note">${p.dose==null?'Por confirmar':fmt(p.dose,3)} ${esc(p.unit)} · ${esc(p.slot)} · ${p.days.map(i=>['L','M','X','J','V','S','D'][i]).join(' ')}${p.enabled?'':' · Pausado'}</p></div><button class="btn ghost small" data-edit-plan="${esc(p.id)}">Editar</button></div>`).join('');
+}
+
+function toggleSuppConfirm(id, confirmed) {
+  const d = day();
+  const e = d.entries.find(x => x.id === id);
+  if (e) {
+    change(() => e.confirmed = confirmed, confirmed ? 'Toma confirmada' : 'Toma desmarcada');
+  }
+}
+
+function confirmAllSupps() {
+  const d = day();
+  let updated = 0;
+  change(() => {
+    d.entries.forEach(e => {
+      if (e.kind !== 'food' && !e.confirmed) {
+        e.confirmed = true;
+        updated++;
+      }
+    });
+  }, `Se confirmaron ${updated} tomas previstas.`);
 }
 function editPlan(id){
   const p=state.plan.find(x=>x.id===id)||{id:uid(),name:'',dose:1,unit:'mg',slot:'Desayuno',days:[0,1,2,3,4,5,6],key:'',value:null,kind:'supp',enabled:true,note:''};
@@ -373,10 +453,15 @@ async function selectPhoto(file){
 }
 // ===== Datos: validación, migración de copias antiguas, almacenamiento y copias =====
 function cleanTarget(t,d){
-  if(!t)return targetFor(d);
+  const ref = targetFor(d, true); // Prevent infinite recursion by passing true to targetFor
+  if(!t) return ref;
   const kcal=number(t.kcal,500,10000),p=number(t.p,0,600),f=number(t.f,0,500),c=(kcal-p*4-f*9)/4;
   if(c<0)throw Error('Objetivos incompatibles.');
-  return {kcal,p,c,f,activity:Number.isInteger(t.activity)&&t.activity>=0&&t.activity<=6?t.activity:weekday(d)};
+  const res = {kcal,p,c,f,activity:Number.isInteger(t.activity)&&t.activity>=0&&t.activity<=6?t.activity:weekday(d)};
+  // Append ratios and 25 micros from ref if missing
+  const extra = ['cap','pufa','aspirin', ...MICRO.map(m=>m.k)];
+  for(const k of extra) res[k] = t[k] ?? ref[k];
+  return res;
 }
 function cleanFood(id,f){
   if(!/^[a-zA-Z0-9_-]{1,100}$/.test(id)||['__proto__','constructor','prototype'].includes(id))throw Error('Identificador inválido.');
@@ -492,6 +577,30 @@ $('auto-day').onchange=()=>change(()=>day().autoEnabled=$('auto-day').checked,'P
 $('aspirin-form').onsubmit=e=>{e.preventDefault();attempt(()=>{const dose=number($('aspirin-dose').value,.1,1e6),meal=$('aspirin-time').value.trim();const entry=cleanEntry({id:uid(),kind:'medicine',name:'Aspirina',meal,amount:1,basis:1,unit:'toma',dose,doseUnit:'mg',nutrients:{},source:'Toma registrada por el usuario, sin recomendación de pauta.',confirmed:true});addEntries([entry],'Aspirina registrada');});};
 $('profile-form').onsubmit=e=>{e.preventDefault();attempt(()=>{const profile={weight:number($('weight').value,20,350),height:number($('height').value,80,250),age:number($('age').value,18,100),pufa:number($('pufa-goal').value,.1,100),cap:number($('cap-goal').value,.1,5)};change(()=>{state.profile=profile;if(day().ratioGoals17){day().ratioGoals17.pufa=profile.pufa;day().ratioGoals17.cap=profile.cap;}},'Perfil guardado y aplicado también a este día');});};
 $('ai-notes-form').onsubmit=e=>{e.preventDefault();change(()=>state.aiNotes=$('ai-notes').value.trim().slice(0,2000),state.aiNotes?'Notas guardadas: la IA las usará':'Notas guardadas');};
+$('btn-ai-apply').onclick=async()=>{
+  const notes = $('ai-notes').value.trim();
+  if(!notes) { toast('Escribe instrucciones en el cuadro de arriba.'); return; }
+  try {
+    const sum = {
+       profile: state.profile,
+       macroGoals: state.macroGoals,
+       ratioGoals: state.ratioGoals17 || {},
+       microTargets: state.targets,
+       plan: state.plan,
+       context: state.context
+    };
+    const prompt = "Instrucciones del usuario:\n" + notes + "\n\nResumen actual JSON:\n" + JSON.stringify(sum) + "\n\nGenera un JSON en la propiedad BIOPEAT_CONFIG: {...} con las actualizaciones correspondientes para profile, macroGoals (usando la estructura con all o split con workout y rest), ratioGoals, microTargets, plan, context, y un summary corto de lo que has modificado. Retorna solo el JSON en la respuesta.";
+    $('btn-ai-apply').disabled=true;
+    $('btn-ai-apply').textContent='Procesando...';
+    const res = await requestAI(prompt);
+    await applyAIConfig(res);
+  } catch (e) {
+    alert(e.message);
+  } finally {
+    $('btn-ai-apply').disabled=false;
+    $('btn-ai-apply').textContent='Aplicar instrucciones en toda la app con IA';
+  }
+};
 function renderAppInfo(){
   const days=Object.values(state.days).filter(d=>d.entries.some(e=>e.kind==='food')).length,foods=Object.values(state.foods).filter(f=>!f.legacy),inc=foods.filter(f=>!['kcal','p','c','f'].every(k=>own(f.nutrients,k))).length,last=Number(prefs.get(BACKUP_KEY))||0,ago=last?Math.floor((Date.now()-last)/864e5):null,kb=Math.round(JSON.stringify(storableState()).length/1024);
   const names={local:'En este navegador',idb:'Base alternativa',session:'Solo esta sesión',memory:'Sin guardar'};
@@ -606,8 +715,8 @@ function renderToday(){
   $('energy-fill').style.width=Math.min(100,pct)+'%';
   $('energy-card').classList.toggle('over',pct>100);
   $('energy-planned').textContent=t.planned.kcal?`Incluye ${fmt(t.planned.kcal)} kcal de pauta prevista. No confirma tomas reales.`:'Incluye alimentos y tomas activas del registro.';
-  if(!$('macro-progress-grid').children.length)$('macro-progress-grid').innerHTML=macroCard('c','Carbohidratos','#38bdf8')+macroCard('p','Proteína','#10b981')+macroCard('f','Grasa','#fbbf24');
-  for(const key of ['c','p','f']){const p=g[key]>0?t.all[key]/g[key]*100:null,card=$('macro-progress-grid').querySelector(`[data-macro="${key}"]`);animateValue(card.querySelector('[data-macro-pct]'),p);card.querySelector('[data-macro-current]').textContent=fmt(t.all[key],1);card.querySelector('[data-macro-goal]').textContent=fmt(g[key],1);card.querySelector('[data-ring]').setAttribute('stroke-dasharray',`${Math.min(100,p||0)} 100`);card.querySelector('[data-ring-over]').setAttribute('stroke-dasharray',`${Math.min(100,Math.max(0,(p||0)-100))} 100`);card.querySelector('[data-macro-fill]').style.width=Math.min(100,p||0)+'%';card.querySelector('[data-macro-remaining]').textContent=p==null?'Sin objetivo':p>100?'+'+fmt(t.all[key]-g[key],1)+' g sobre tu meta':'Faltan '+fmt(g[key]-t.all[key],1)+' g';card.classList.toggle('over',p>100);card.setAttribute('aria-label',`${{c:'Carbohidratos',p:'Proteína',f:'Grasa'}[key]}: ${fmt(t.all[key],1)} de ${fmt(g[key],1)} gramos, ${p==null?'sin objetivo':fmt(p)+' por ciento'}. Toca para ver aportes.`);}
+  if($('macro-progress-grid') && !$('macro-progress-grid').children?.length)$('macro-progress-grid').innerHTML=macroCard('c','Carbohidratos','#38bdf8')+macroCard('p','Proteína','#10b981')+macroCard('f','Grasa','#fbbf24');
+  if($('macro-progress-grid')) { for(const key of ['c','p','f']){const p=g[key]>0?t.all[key]/g[key]*100:null,card=$('macro-progress-grid').querySelector(`[data-macro="${key}"]`);if(card){animateValue(card.querySelector('[data-macro-pct]'),p);card.querySelector('[data-macro-current]').textContent=fmt(t.all[key],1);card.querySelector('[data-macro-goal]').textContent=fmt(g[key],1);card.querySelector('[data-ring]').setAttribute('stroke-dasharray',`${Math.min(100,p||0)} 100`);card.querySelector('[data-ring-over]').setAttribute('stroke-dasharray',`${Math.min(100,Math.max(0,(p||0)-100))} 100`);card.querySelector('[data-macro-fill]').style.width=Math.min(100,p||0)+'%';card.querySelector('[data-macro-remaining]').textContent=p==null?'Sin objetivo':p>100?'+'+fmt(t.all[key]-g[key],1)+' g sobre tu meta':'Faltan '+fmt(g[key]-t.all[key],1)+' g';card.classList.toggle('over',p>100);card.setAttribute('aria-label',`${{c:'Carbohidratos',p:'Proteína',f:'Grasa'}[key]}: ${fmt(t.all[key],1)} de ${fmt(g[key],1)} gramos, ${p==null?'sin objetivo':fmt(p)+' por ciento'}. Toca para ver aportes.`);}} }
   const macroEnergy=t.all.p*4+t.all.c*4+t.all.f*9;
   let offset=0;
   let svg='<circle cx="21" cy="21" r="15.915494" fill="none" stroke="#1e293b" stroke-width="5.5"/>';
@@ -616,6 +725,23 @@ function renderToday(){
   $('donut-value').textContent=fmt(t.all.kcal)+' kcal';
   $('donut-note').textContent='de macros';
   $('mix-legend').innerHTML=[['c','Carbohidratos',4,'#38bdf8'],['p','Proteína',4,'#10b981'],['f','Grasa',9,'#fbbf24']].map(([k,n,f,c])=>`<span><i style="background:${c}"></i>${n}<b>${macroEnergy?fmt(t.all[k]*f/macroEnergy*100):0} %</b></span>`).join('');
+  if($('kpis') && !$('kpis').querySelector('#bp-density-today')) {
+    // Inject at the very top of kpis, using DOM manipulation after initialization
+    const toggleDiv = document.createElement('div');
+    toggleDiv.className = 'bp-density-toggle';
+    toggleDiv.style = 'margin-bottom:8px;text-align:right;';
+    const btn = document.createElement('button');
+    btn.id = 'bp-density-today';
+    btn.className = 'btn small ghost';
+    btn.onclick = () => {
+      compactView = !compactView;
+      applyDensity();
+      try { localStorage.setItem('biopeat_density19', compactView ? 'compact' : 'comfortable'); } catch(e) {}
+      toast(compactView ? 'Modo resumen: solo datos y gráficos.' : 'Explicaciones visibles de nuevo.');
+    };
+    toggleDiv.appendChild(btn);
+    $('kpis').insertBefore(toggleDiv, $('kpis').firstChild);
+  }
   renderRatios();
   renderCoach();
 }
@@ -753,36 +879,116 @@ function ratioGauge(o){
 }
 function renderRatios(){
   const t=totals(),d=day(),g=d.target,capRef=d.ratioGoals17?.cap??state.profile.cap??1.1,pufaRef=d.ratioGoals17?.pufa??state.profile.pufa;
-  const cap=t.known.ca&&t.all.phos>0?t.all.ca/t.all.phos:null,cp=t.all.p>0&&t.all.c>0?t.all.c/t.all.p:null,cpRef=g.p>0?g.c/g.p:null,pufa=t.known.pufa?t.all.pufa:null;
-  const cpMax=Math.max(4,Math.ceil((cpRef||2)*2));
+  const cap=t.known.ca&&t.all.phos>0?t.all.ca/t.all.phos:null,cp=t.all.p>0&&t.all.c>0?t.all.c/t.all.p:null,cpRef=state.ratioGoals17?.cp??3.0,pufa=t.known.pufa?t.all.pufa:null;
+  const vitA=t.all.vitA||0,vitD=t.all.vitD||0,ad=vitA>0?(vitA*3.33)/Math.max(1,vitD*40):null;
+  const zn=t.all.zn||0,cu=t.all.cu||0,zncu=cu>0?zn/cu:null;
+  const cpMax=Math.max(4,Math.ceil((cpRef||3)*2));
   $('ratio-summary').innerHTML=[
-    ratioGauge({key:'ca',name:'Calcio : fósforo',value:cap,label:cap==null?'Sin datos':fmt(cap,2)+' : 1',min:0,max:2,ref:capRef,zone:[capRef,2],ok:v=>v>=capRef,ticks:['0','1','2'],chip:(k,o)=>!k?'Sin datos':o?'✓ En tu referencia':'Por debajo',foot:`Tu referencia: ≥ ${fmt(capRef,2)} : 1 · Ca ${fmt(t.all.ca)} mg / P ${fmt(t.all.phos)} mg${t.missing.ca||t.missing.phos?' · parcial':''}`}),
-    ratioGauge({key:'pufa',name:'PUFA · presupuesto',value:pufa,label:pufa==null?'Sin datos':fmt(pufa,1)+' de '+fmt(pufaRef,1)+' g',min:0,max:pufaRef*2,ref:pufaRef,zone:[0,pufaRef],ok:v=>v<=pufaRef,ticks:['0 g',fmt(pufaRef,1)+' g',fmt(pufaRef*2,1)+' g'],chip:(k,o)=>!k?'Sin datos':o?'✓ Quedan '+fmt(pufaRef-pufa,1)+' g':'+'+fmt(pufa-pufaRef,1)+' g sobre el límite',foot:`Tu límite máximo del día: ${fmt(pufaRef,1)} g. Menos es mejor.${t.missing.pufa?' · '+t.missing.pufa+' alimentos sin dato':''}`}),
-    ratioGauge({key:'c',name:'Hidratos por cada g de proteína',value:cp,label:cp==null?'Sin datos':fmt(cp,1)+' g',min:0,max:cpMax,ref:cpRef||0,zone:cpRef?[cpRef*.8,Math.min(cpMax,cpRef*1.2)]:[0,0],ok:v=>cpRef?v>=cpRef*.8&&v<=cpRef*1.2:true,ticks:['0',String(cpMax/2),String(cpMax)],chip:(k,o)=>!k?'Sin datos':o?'✓ Cerca de tu plan':cp<cpRef?'Pocos carbohidratos':'Muchos carbohidratos',foot:`Llevas ${fmt(t.all.c)} g de hidratos y ${fmt(t.all.p)} g de proteína. Tu plan de hoy: ${cpRef?fmt(cpRef,1)+' g de hidratos por cada g de proteína ('+fmt(g.c)+' / '+fmt(g.p)+' g)':'sin objetivo'}. Verde = ±20 %.`})
+    ratioGauge({key:'ca',name:'Calcio : fósforo',value:cap,label:cap==null?'Sin datos':fmt(cap,2)+' : 1',min:0,max:2,ref:capRef,zone:[capRef,2],ok:v=>v>=capRef,ticks:['0','1','2'],chip:(k,o)=>!k?'Sin datos':o?'✓ En tu referencia':'Por debajo',foot:`Tu referencia: ≥ ${fmt(capRef,2)} : 1 · Ca ${fmt(t.all.ca)} mg / P ${fmt(t.all.phos)} mg${t.missing.ca||t.missing.phos?' · parcial':''}`})+ `<div class="ratio-explanation" style="font-size:12px;color:#a9bbd2;margin-top:4px;padding:4px 8px;background:#1e293b;border-radius:6px;display:block;"><b>Ca:P:</b> Fundamental para la función tiroidea y evitar exceso de PTH. Mejora con leche, queso o caldo de huesos.</div>`,
+    ratioGauge({key:'pufa',name:'PUFA · presupuesto',value:pufa,label:pufa==null?'Sin datos':fmt(pufa,1)+' de '+fmt(pufaRef,1)+' g',min:0,max:pufaRef*2,ref:pufaRef,zone:[0,pufaRef],ok:v=>v<=pufaRef,ticks:['0 g',fmt(pufaRef,1)+' g',fmt(pufaRef*2,1)+' g'],chip:(k,o)=>!k?'Sin datos':o?'✓ Quedan '+fmt(pufaRef-pufa,1)+' g':'+'+fmt(pufa-pufaRef,1)+' g sobre el límite',foot:`Tu límite máximo del día: ${fmt(pufaRef,1)} g. Menos es mejor.${t.missing.pufa?' · '+t.missing.pufa+' alimentos sin dato':''}`}) + `<div class="ratio-explanation" style="font-size:12px;color:#a9bbd2;margin-top:4px;padding:4px 8px;background:#1e293b;border-radius:6px;display:block;"><b>PUFA:</b> Grasas inestables que ralentizan el metabolismo y promueven oxidación. Mejora reduciendo aceites de semillas, frutos secos y cerdo/pollo convencionales.</div>`,
+    ratioGauge({key:'c',name:'Hidratos por cada g de proteína',value:cp,label:cp==null?'Sin datos':fmt(cp,1)+' : 1',min:0,max:cpMax,ref:cpRef,zone:[3.0,4.0],ok:v=>v>=3.0,ticks:['0','3','6'],chip:(k,o)=>!k?'Sin datos':o?'✓ C:P óptimo':cp<3.0?'Pocos carbohidratos':'Muchos carbohidratos',foot:`Meta C:P ≥ 3.0 : 1. Llevas ${fmt(t.all.c)} g de hidratos y ${fmt(t.all.p)} g de proteína.`}) + `<div class="ratio-explanation" style="font-size:12px;color:#a9bbd2;margin-top:4px;padding:4px 8px;background:#1e293b;border-radius:6px;display:block;"><b>C:P:</b> Ratio esencial para que la proteína no se oxide como combustible (estrés). Mejora con zumos naturales, fruta y miel.</div>`,
+    ratioGauge({key:'ad',name:'Equilibrio A:D (UI)',value:ad,label:ad==null?'Sin datos':fmt(ad,1)+' : 1',min:0,max:10,ref:3,zone:[2.0,4.0],ok:v=>v<=5.0,ticks:['0','5','10'],chip:(k,o)=>!k?'Sin datos':ad>5.0?'Exceso de A frena tiroides':'Equilibrio A:D OK',foot:`Meta 2.0-4.0 : 1. Aviso si > 5.0. Vit A: ${fmt(vitA)} ug RAE / Vit D: ${fmt(vitD)} ug.`}) + `<div class="ratio-explanation" style="font-size:12px;color:#a9bbd2;margin-top:4px;padding:4px 8px;background:#1e293b;border-radius:6px;display:block;"><b>A:D:</b> Trabajan juntas en inmunidad y calcio. Exceso aislado de A inhibe tiroides. Mejora con sol/Vit D o equilibrando hígado.</div>`,
+    ratioGauge({key:'zncu',name:'Equilibrio Zn:Cu',value:zncu,label:zncu==null?'Sin datos':fmt(zncu,1)+' : 1',min:0,max:20,ref:10,zone:[8.0,12.0],ok:v=>v>=8.0&&v<=12.0,ticks:['0','10','20'],chip:(k,o)=>!k?'Sin datos':o?'✓ Respiración mitocondrial OK':'Desequilibrio',foot:`Meta ~10:1 (citocromo c oxidasa). Zn: ${fmt(zn,1)} mg / Cu: ${fmt(cu,1)} mg.`}) + `<div class="ratio-explanation" style="font-size:12px;color:#a9bbd2;margin-top:4px;padding:4px 8px;background:#1e293b;border-radius:6px;display:block;"><b>Zn:Cu:</b> Claves para el complejo IV mitocondrial y antioxidación (SOD). Mejora balanceando carnes rojas (Zn) con marisco/cacao (Cu).</div>`
   ].join('');
 }
-function renderMicrosForDay(){
-  renderMicroCards();
-  const card=$('micros-grid').querySelector('[data-micro="b1"]'),m=MICRO.find(m=>m.k==='b1'),x=metric(m),personal=$('micro-mode').value==='personal',goal=personal?x.goal:null,pct=goal?x.value/goal*100:null;
-  card.querySelector('.name').textContent='B1 / benfotiamina';
-  card.querySelector('[data-current]').textContent=x.known?fmt(x.value,2):'—';
-  card.querySelector('[data-unit]').textContent='mg benfotiamina';
-  card.querySelector('[data-goal]').textContent=goal?' / '+fmt(goal)+' mg de tu pauta':'';
-  if(x.known&&goal)animateValue(card.querySelector('[data-pct]'),pct);else card.querySelector('[data-pct]').textContent=x.known?'Registrado':'Sin registro';
-  card.querySelector('.micro-food').style.width='0%';
-  card.querySelector('.micro-supp').style.width=(goal?Math.min(100,pct||0):x.known?100:0)+'%';
-  card.querySelector('.micro-overflow').hidden=!(pct>100);
-  card.querySelector('.micro-overflow span').style.width=Math.min(100,Math.max(0,(pct||0)-100))+'%';
-  card.querySelector('[data-food]').textContent='Alimentos: '+fmt(x.foodB1,2)+' mg de tiamina';
-  card.querySelector('[data-supp]').textContent='Pauta: '+fmt(x.value,2)+' mg benfotiamina';
-  card.querySelector('[data-status]').textContent=x.known?(x.planned?'Incluida como prevista':'Dosis registrada')+' · equivalencia de tiamina no asumida':'No hay benfotiamina activa en esta fecha';
-  card.classList.toggle('over',pct>100);
-  card.setAttribute('aria-label',`B1, benfotiamina: ${fmt(x.value,2)} mg${pct==null?'':', '+fmt(pct)+' por ciento de tu pauta'}. Tiamina de alimentos: ${fmt(x.foodB1,2)} mg, por separado.`);
-  if(microFilter==='unknown')card.hidden=!(!x.known);
-  $('micros-grid').hidden=microView!=='cards';
-  $('micro-map').hidden=microView!=='map';
+function generateMicroCardHTML(m, x, personal) {
+  const goal = personal && x.goal ? x.goal : null;
+  const pct = goal ? (x.value / goal) * 100 : null;
+  const fill = x.known ? Math.min(100, pct ?? 100) : 0;
+  const over = pct > 100 ? Math.min(100, pct - 100) : 0;
+
+  // Custom logic for tanks to show optimal bands or limits
+  let subStatus = '';
+  if (m.k === 'se') {
+    subStatus = x.known ? (x.value < 100 ? 'Por debajo del óptimo' : x.value > 200 ? 'Sobre el óptimo' : '✓ En banda óptima (100-200)') : 'Sin registro';
+  } else if (m.k === 'vitA') {
+    subStatus = x.known ? (x.value > 3800 ? 'Techo superado' : '✓ Debajo del límite') : 'Sin registro';
+  } else if (m.k === 'i') {
+    subStatus = x.known ? (x.value > 225 ? 'Techo superado' : '✓ Debajo del límite') : 'Sin registro';
+  } else {
+    subStatus = x.known ? (pct == null ? 'Registrado' : fmt(pct) + '%') : 'Sin registro';
+  }
+
+  return `<button class="card micro-card ${pct > 100 ? 'over' : ''}" data-micro="${m.k}">
+    <div class="row between">
+      <div>
+        <b class="name">${esc(m.name)}</b>
+        <div class="micro-amount">
+          <strong data-current>${x.known ? fmt(x.value, 2) : '—'}</strong>
+          <small data-unit>${m.unit}</small>
+          <small class="bp-muted" data-goal>${goal ? ' / ' + fmt(goal) : ''}</small>
+        </div>
+      </div>
+      <div class="micro-status">
+        <b data-pct>${subStatus}</b>
+        <span data-status class="subtext">${x.partial ? 'Datos parciales' : x.known ? 'Conocido' : 'Desconocido'}</span>
+      </div>
+    </div>
+    <div class="micro-track">
+      <div class="micro-food" style="width:${goal ? Math.min(100, (x.food / goal) * 100) : x.known ? 100 : 0}%"></div>
+      <div class="micro-supp" style="width:${goal ? Math.min(100 - (x.food / goal) * 100, (x.supp / goal) * 100) : 0}%"></div>
+      <div class="micro-overflow" ${pct > 100 ? '' : 'hidden'}><span style="width:${over}%"></span></div>
+    </div>
+    <div class="row between micro-split">
+      <small data-food>Alimentos: ${fmt(x.food, 2)}</small>
+      <small data-supp>Suplementos: ${fmt(x.supp, 2)}</small>
+    </div>
+  </button>`;
+}
+
+function renderMicrosForDay() {
+  const personal = $('micro-mode').value === 'personal';
+  const escudoKeys = ['pufa', 'fe'];
+  const tanquesKeys = ['vitA', 'vitD', 'vitE', 'b12', 'b9', 'se', 'i', 'cu'];
+
+  const escudo = MICRO.filter(m => escudoKeys.includes(m.k));
+  const tanques = MICRO.filter(m => tanquesKeys.includes(m.k));
+  const diarios = MICRO.filter(m => !escudoKeys.includes(m.k) && !tanquesKeys.includes(m.k));
+
+  let html = '';
+
+  // 1. Escudo Peat
+  html += `<div class="micro-section"><h3 style="margin:20px 0 10px;font-size:16px;color:#fca5a5;">🛡️ Escudo Peat (Límites máximos)</h3><p class="section-note">PUFA (<= 4.0 g) y Hierro (<= 14 mg), donde menos es mejor (verde por debajo).</p><div class="micro-grid">`;
+  html += escudo.map(m => generateMicroCardHTML(m, metric(m), personal)).join('');
+  html += `</div></div>`;
+
+  // 2. Diarios
+  html += `<div class="micro-section"><h3 style="margin:20px 0 10px;font-size:16px;color:#60c9f4;">⚡ Vitaminas y Minerales Diarios</h3><p class="section-note">Los 17 micronutrientes de consumo diario.</p><div class="micro-grid">`;
+  html += diarios.map(m => generateMicroCardHTML(m, metric(m), personal)).join('');
+  html += `</div></div>`;
+
+  // 3. Tanques
+  html += `<div class="micro-section"><h3 style="margin:20px 0 10px;font-size:16px;color:#34d399;">🔋 Tanques de Reserva (Depósitos 7 días)</h3><p class="section-note">Los 8 nutrientes acumulables. Selenio (100-200 ug), Vit A (<= 3.800 ug), Yodo (<= 225 ug).</p><div class="micro-grid">`;
+  html += tanques.map(m => generateMicroCardHTML(m, metric(m), personal)).join('');
+  html += `</div></div>`;
+
+  $('micros-grid').innerHTML = html;
+
+  // Modify b1 card specific texts
+  const b1Card = $('micros-grid').querySelector('[data-micro="b1"]');
+  if(b1Card) {
+    const b1M = MICRO.find(m => m.k === 'b1');
+    const x = metric(b1M);
+    const goal = personal ? x.goal : null;
+    const pct = goal ? x.value / goal * 100 : null;
+    b1Card.querySelector('.name').textContent = 'B1 / benfotiamina';
+    b1Card.querySelector('[data-unit]').textContent = 'mg benfotiamina';
+    b1Card.querySelector('[data-food]').textContent = 'Alimentos: ' + fmt(x.foodB1, 2) + ' mg de tiamina';
+    b1Card.querySelector('[data-supp]').textContent = 'Pauta: ' + fmt(x.value, 2) + ' mg benfotiamina';
+  }
+
+  $('micros-grid').hidden = microView !== 'cards';
+  $('micro-map').hidden = microView !== 'map';
   renderMicroMap();
-  document.querySelectorAll('[data-microview]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.microview===microView)));
+  document.querySelectorAll('[data-microview]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.microview === microView)));
+
+  // Attach events for nutrient sources
+  $('micros-grid').querySelectorAll('.card').forEach(c => {
+    c.onclick = () => {
+      const k = c.dataset.micro;
+      if(k) nutrientDetailForDay(k);
+    };
+  });
 }
 function renderMicroMap(){
   const personal=$('micro-mode').value==='personal';
@@ -793,7 +999,41 @@ function nutrientDetailForDay(key){
   const b=benfotiamineTotals(),t=totals(),goal=state.targets.b1,pct=goal?b.total/goal*100:null;
   modal('B1 / benfotiamina',`<div class="detail-progress"><strong>${pct==null?'Sin meta':fmt(pct)+'%'}</strong><span>${fmt(b.total,2)} mg de benfotiamina${goal?' / '+fmt(goal)+' mg de tu pauta':''}</span><p class="progress-note">${b.planned?fmt(b.planned,2)+' mg están incluidos como previstos.':'Dosis registrada.'} Este porcentaje compara tu dosis con tu pauta, no con una equivalencia de tiamina.</p></div>${b.rows.map(({e,value})=>`<div class="plan-item"><div><b>${esc(e.name)}</b><p class="progress-note">${esc(e.meal)} · ${e.auto&&!e.confirmed?'Prevista':'Registrada'}</p></div><strong>${fmt(value,2)} mg</strong></div>`).join('')}<h3 style="margin-top:16px">Tiamina de alimentos, aparte</h3><p>${fmt(t.food.b1,2)} mg de B1 alimentaria${t.missing.b1?' · datos parciales':''}.</p><p class="safe-info">La benfotiamina es una fuente/derivado de B1, pero 250 mg del compuesto no se presentan aquí como 250 mg equivalentes de tiamina alimentaria sin una etiqueta que lo confirme. Si tu etiqueta declara esa equivalencia, puedes introducirla en la pauta sin cambiar la dosis del compuesto.</p><a class="tiny" href="https://efsa.onlinelibrary.wiley.com/doi/pdfdirect/10.2903/j.efsa.2008.864" target="_blank" rel="noopener">Fuente técnica sobre benfotiamina</a>`);
 }
-function editTargetsForm(){modal('Mis objetivos personales',`<form id="targets-form"><p class="section-note">Metas editables del contexto, no dosis recomendadas. B1 compara la pauta de benfotiamina, no suma su masa a la tiamina de alimentos.</p><div class="fields-micro">${MICRO.map(m=>`<label>${m.k==='b1'?'Benfotiamina · pauta (mg)':m.name+' ('+m.unit+')'}<input type="number" name="${m.k}" min="0.001" max="1000000" step="any" value="${state.targets[m.k]??''}"></label>`).join('')}</div><button class="btn btn-amber full" type="submit">Guardar objetivos</button></form>`);}
+function editTargetsForm(){modal('Mis objetivos personales',`<form id="targets-form"><p class="section-note">Metas de macros</p>
+<div class="inline-form">
+  <label class="wide">Aplicar metas de macros:
+    <select id="target-mode" name="targetMode" onchange="document.getElementById('macro-fields-all').style.display=this.value==='all'?'block':'none';document.getElementById('macro-fields-split').style.display=this.value==='split'?'block':'none';document.getElementById('macro-fields-today').style.display=this.value==='today'?'block':'none'">
+      <option value="all" ${state.targetMode==='all'?'selected':''}>Para todos los días</option>
+      <option value="split" ${state.targetMode==='split'?'selected':''}>Días de entreno L/X/S/D vs Descanso M/J/V</option>
+      <option value="today" ${state.targetMode==='today'?'selected':''}>Solo hoy</option>
+    </select>
+  </label>
+</div>
+<div id="macro-fields-all" style="display:${state.targetMode==='all'?'block':'none'}">
+  <div class="inline-form">
+    <label>Proteína (g)<input type="number" name="m_all_p" min="0" step="any" value="${state.macroGoals?.all?.p??''}"></label>
+    <label>Grasa (g)<input type="number" name="m_all_f" min="0" step="any" value="${state.macroGoals?.all?.f??''}"></label>
+  </div>
+</div>
+<div id="macro-fields-split" style="display:${state.targetMode==='split'?'block':'none'}">
+  <p class="subtext">Días de entreno (L/X/S/D)</p>
+  <div class="inline-form">
+    <label>Proteína (g)<input type="number" name="m_split_workout_p" min="0" step="any" value="${state.macroGoals?.split?.workout?.p??''}"></label>
+    <label>Grasa (g)<input type="number" name="m_split_workout_f" min="0" step="any" value="${state.macroGoals?.split?.workout?.f??''}"></label>
+  </div>
+  <p class="subtext">Días de descanso (M/J/V)</p>
+  <div class="inline-form">
+    <label>Proteína (g)<input type="number" name="m_split_rest_p" min="0" step="any" value="${state.macroGoals?.split?.rest?.p??''}"></label>
+    <label>Grasa (g)<input type="number" name="m_split_rest_f" min="0" step="any" value="${state.macroGoals?.split?.rest?.f??''}"></label>
+  </div>
+</div>
+<div id="macro-fields-today" style="display:${state.targetMode==='today'?'block':'none'}">
+  <div class="inline-form">
+    <label>Proteína (g)<input type="number" name="m_today_p" min="0" step="any" value="${state.days[date]?.macroGoals?.p??''}"></label>
+    <label>Grasa (g)<input type="number" name="m_today_f" min="0" step="any" value="${state.days[date]?.macroGoals?.f??''}"></label>
+  </div>
+</div>
+<p class="section-note">Metas editables del contexto, no dosis recomendadas. B1 compara la pauta de benfotiamina, no suma su masa a la tiamina de alimentos.</p><div class="fields-micro">${MICRO.map(m=>`<label>${m.k==='b1'?'Benfotiamina · pauta (mg)':m.name+' ('+m.unit+')'}<input type="number" name="${m.k}" min="0.001" max="1000000" step="any" value="${state.targets[m.k]??''}"></label>`).join('')}</div><button class="btn btn-amber full" type="submit">Guardar objetivos</button></form>`);}
 function mealData(){
   const groups=new Map();
   for(const e of effectiveEntries()){const key=e.kind==='food'?e.meal:'Pauta / tomas';if(!groups.has(key))groups.set(key,[]);groups.get(key).push(e);}
@@ -1036,6 +1276,65 @@ function localMeal(raw,meal){
   try{return parseSmart(stripped.replace(/\b(kg|ml|g)\s+de\s+/gi,'$1 ')).map(e=>({...e,meal}));}finally{$('meal-select').value=old;}
 }
 const AI_FALLBACK='gemini-3.1-flash-lite';
+async function applyAIConfig(raw){
+  let conf;
+  try {
+    const s = raw.substring(raw.indexOf('{'), raw.lastIndexOf('}')+1);
+    conf = JSON.parse(s);
+  } catch(e){
+    throw Error('No se pudo leer la respuesta de la IA como JSON. ' + e.message);
+  }
+
+  change(()=>{
+    if(conf.profile) {
+      if(conf.profile.weight) state.profile.weight = conf.profile.weight;
+      if(conf.profile.height) state.profile.height = conf.profile.height;
+      if(conf.profile.age) state.profile.age = conf.profile.age;
+      if(conf.profile.pufa) state.profile.pufa = conf.profile.pufa;
+      if(conf.profile.cap) state.profile.cap = conf.profile.cap;
+    }
+
+    if(conf.macroGoals) {
+      if(!state.macroGoals)state.macroGoals={all:{p:null,f:null},split:{workout:{p:null,f:null},rest:{p:null,f:null}}};
+      if(conf.macroGoals.all) {
+        state.targetMode = 'all';
+        state.macroGoals.all.p = conf.macroGoals.all.p;
+        state.macroGoals.all.f = conf.macroGoals.all.f;
+      } else if(conf.macroGoals.split) {
+        state.targetMode = 'split';
+        if(conf.macroGoals.split.workout){
+           state.macroGoals.split.workout.p = conf.macroGoals.split.workout.p;
+           state.macroGoals.split.workout.f = conf.macroGoals.split.workout.f;
+        }
+        if(conf.macroGoals.split.rest){
+           state.macroGoals.split.rest.p = conf.macroGoals.split.rest.p;
+           state.macroGoals.split.rest.f = conf.macroGoals.split.rest.f;
+        }
+      }
+    }
+
+    if(conf.ratioGoals) {
+      if(!state.ratioGoals17) state.ratioGoals17 = {};
+      if(conf.ratioGoals.cp) state.ratioGoals17.cp = conf.ratioGoals.cp;
+    }
+
+    if(conf.microTargets) {
+      for(const k of Object.keys(conf.microTargets)) {
+         if(MICRO.find(m=>m.k===k)) state.targets[k] = conf.microTargets[k];
+      }
+    }
+
+    if(conf.plan && Array.isArray(conf.plan)) {
+      state.plan = conf.plan.map(cleanPlan);
+    }
+
+    if(conf.context) {
+      state.context = conf.context;
+    }
+  }, 'Ajustes globales de IA aplicados');
+  toast(conf.summary || 'Ajustes aplicados correctamente');
+  render();
+}
 async function requestAI(prompt,img,signal,modelOverride=''){
   const mode=$('ai-mode').value,model=modelOverride||$('gemini-model').value.trim();
   if(!/^[a-zA-Z0-9._-]+$/.test(model))throw Error('Modelo inválido.');
@@ -1099,7 +1398,11 @@ function dayRow(dt,source=weekSource){
 }
 function goalsFor(dt){
   const d=state.days[dt];
-  return {macro:d?.target||targetFor(dt),micro:d?.microTargets17||state.targets,ratio:d?.ratioGoals17||{cap:state.profile.cap??1.1,pufa:state.profile.pufa},reference:!d||d.goalOrigin17!=='saved'};
+  let t = targetFor(dt);
+  if (d?.target) {
+     t = { ...t, ...d.target };
+  }
+  return cleanTarget(t, dt);
 }
 function metricValue(r,key){
   if(!r.has)return {known:false,value:0,food:0,supp:0,planned:0,partial:true};
@@ -1108,7 +1411,7 @@ function metricValue(r,key){
 }
 function targetOf(dt,key){
   const g=goalsFor(dt);
-  return ['kcal','p','c','f'].includes(key)?g.macro[key]:key==='pufa'?g.ratio.pufa:g.micro[key];
+  return g[key];
 }
 function weekSummary(){
   const rows=weekDates().map(dt=>dayRow(dt)),included=rows.filter(r=>r.eligible),denominator=weekBasis==='seven'?rows:included;
@@ -1145,13 +1448,28 @@ function renderWeekTotals(){
 function renderWeekChart(s){
   const key=$('week-metric').value;
   weekMetric=key;
-  const names={kcal:'Energía',p:'Proteína',c:'Hidratos',f:'Grasas',pufa:'PUFA',cap:'Calcio : fósforo'},values=s.rows.map(r=>key==='cap'?(r.has&&r.t.known.ca&&r.t.all.phos>0?r.t.all.ca/r.t.all.phos:null):(metricValue(r,key).known?metricValue(r,key).value:null)),goals=s.rows.map(r=>key==='cap'?goalsFor(r.dt).ratio.cap:targetOf(r.dt,key)),max=Math.max(1,...values.map(v=>v||0),...goals.map(v=>v||0));
+  const names={kcal:'Energía',p:'Proteína',c:'Hidratos',f:'Grasas',pufa:'PUFA',cap:'Calcio : fósforo'},values=s.rows.map(r=>key==='cap'?(r.has&&r.t.known.ca&&r.t.all.phos>0?r.t.all.ca/r.t.all.phos:null):(metricValue(r,key).known?metricValue(r,key).value:null)),goals=s.rows.map(r=>key==='cap'?goalsFor(r.dt).cap:targetOf(r.dt,key)),max=Math.max(1,...values.map(v=>v||0),...goals.map(v=>v||0));
   $('week-chart').innerHTML=s.rows.map((r,i)=>{const v=values[i],g=goals[i],pct=v!=null&&g?v/g*100:null;return `<button class="week-column ${r.dt===weekSelected?'selected':''} ${!r.eligible?'excluded':''}" data-week-day="${r.dt}" aria-label="${r.dt}: ${v==null?'sin dato':fmt(v,2)+(pct==null?'':', '+fmt(pct)+' por ciento de la referencia personal')}${r.has&&!r.d.complete?', parcial':''}"><span>${v==null?'—':fmt(v,key==='cap'?2:0)}</span><div class="week-track"><i style="height:${v==null?0:Math.max(1,v/max*100)}%"></i>${g?'<b style="bottom:'+g/max*100+'%"></b>':''}${v==null?'<em>Sin datos</em>':''}</div><small>${DAYS[i].slice(0,3)} ${r.dt.slice(8)}</small><em>${pct==null?'—':fmt(pct)+'%'}${r.has&&!r.d.complete?' · parcial':''}</em></button>`;}).join('');
   $('week-chart-caption').textContent=names[key]+'. Toca un día. Línea = referencia personal guardada'+(key==='pufa'?' (presupuesto máximo, no cantidad a alcanzar)':'')+'. Días ausentes no se dibujan como cero. Las columnas punteadas no entran en los totales con el filtro actual.';
 }
 function renderWeekMicros(s){
   const visible=MICRO.filter(m=>weekMicroFilter==='all'||m.group===weekMicroFilter);
-  $('week-micros').innerHTML=visible.map(m=>{const a=aggregate(m.k,s),name=m.k==='b1'?'B1 / benfotiamina':m.name,unit=m.k==='b1'?'mg de compuesto':m.unit;return `<button class="week-micro-card ${tone(a.pct,LIMIT.has(m.k)?'budget':'micro')}" data-weekdetail="${m.k}"><div class="row between"><b>${name}</b><strong>${pctText(a)}</strong></div><span>${a.known?fmt(a.value,2):'—'} ${unit}</span>${weekProgress(a,'#6ee7b7')}<p>Meta ${a.goal?fmt(a.goal,2)+' '+unit:'sin definir'}</p><small>${a.known}/${s.included.length} días con dato${a.partial?' · parcial':''}${a.planned?' · incluye previstos':''}</small>${m.k==='b1'?'<small>Tiamina alimentaria aparte: '+fmt(s.included.reduce((sum,r)=>sum+r.t.food.b1,0),2)+' mg · puede ser parcial</small>':''}</button>`;}).join('');
+  $('week-micros').innerHTML=visible.map(m=>{const a=aggregate(m.k,s),name=m.k==='b1'?'B1 / benfotiamina':m.name,unit=m.k==='b1'?'mg de compuesto':m.unit;
+    let extra='', t=tone(a.pct,LIMIT.has(m.k)?'budget':'micro');
+    if(m.k==='se') {
+      const v=a.value;
+      if(v>=100&&v<=200) t='macro-ok'; else if(v>200) t='macro-over';
+      if(v>200) extra='<small class="macro-over">Exceso satura desyodinasa y frena T3.</small>';
+      else extra='<small>Óptimo 100-200 ug/d.</small>';
+    } else if(m.k==='vitA') {
+      if(a.value>3800) {t='macro-over'; extra='<small class="macro-over">Aviso: posible freno a tiroides >3800.</small>';}
+    } else if(m.k==='i') {
+      if(a.value>225) {t='macro-over'; extra='<small class="macro-over">Exceso de yodo detectado.</small>';}
+    } else if(m.k==='fe') {
+      if(a.value<=14) t='macro-ok'; else t='macro-over';
+      extra='<small>Límite estricto ≤ 14 mg/d.</small>';
+    }
+    return `<button class="week-micro-card ${t}" data-weekdetail="${m.k}"><div class="row between"><b>${name}</b><strong>${pctText(a)}</strong></div><span>${a.known?fmt(a.value,2):'—'} ${unit}</span>${weekProgress(a,'#6ee7b7')}<p>Meta ${a.goal?fmt(a.goal,2)+' '+unit:'sin definir'}</p><small>${a.known}/${s.included.length} días con dato${a.partial?' · parcial':''}${a.planned?' · incluye previstos':''}</small>${m.k==='b1'?'<small>Tiamina alimentaria aparte: '+fmt(s.included.reduce((sum,r)=>sum+r.t.food.b1,0),2)+' mg · puede ser parcial</small>':''}${extra}</button>`;}).join('');
   $('week-micros').hidden=weekMicroView!=='cards';
   $('week-heatmap').hidden=weekMicroView!=='matrix';
   if(weekMicroView==='matrix'){const table='<table><caption>% diario y total de las 25 metas personales. Toca una celda. * Dato parcial. — Sin dato o sin meta. B1 = benfotiamina, no equivalencia de tiamina.</caption><thead><tr><th>Nutriente</th>'+s.rows.map((r,i)=>`<th>${DAYS[i].slice(0,1)} ${r.dt.slice(8)}</th>`).join('')+'<th>Total</th></tr></thead><tbody>'+visible.map(m=>{const a=aggregate(m.k,s);return '<tr><th>'+esc(m.k==='b1'?'B1 · benfo':m.name)+'</th>'+s.rows.map(r=>{const v=metricValue(r,m.k),g=targetOf(r.dt,m.k),pct=v.known&&g?v.value/g*100:null;return `<td><button class="heat-cell ${tone(pct,LIMIT.has(m.k)?'budget':'micro')} ${!r.eligible?'not-included':''}" data-heatday="${r.dt}" data-heatkey="${m.k}" aria-label="${m.name}, ${r.dt}: ${pct==null?'sin dato':fmt(pct)+' por ciento'}${v.partial?', parcial':''}">${pct==null?'—':fmt(pct)+'%'}${v.known&&v.partial?'*':''}</button></td>`;}).join('')+`<td><button class="heat-cell total-cell" data-weekdetail="${m.k}">${pctText(a)}${a.partial&&a.known?'*':''}</button></td></tr>`;}).join('')+'</tbody></table>';$('week-heatmap').innerHTML=table;}
@@ -1168,7 +1486,7 @@ function renderWeekRatios(s){
   const entries=s.included.flatMap(r=>r.entries),e=energyData(entries),fat=fatData(entries);
   $('week-composition').innerHTML=`<div class="week-composition"><h3>Reparto de energía de macros</h3><div class="composition-strip">${e.items.filter(x=>x.kcal>0).map(x=>`<button data-weekdetail="${x.key}" style="flex:${x.kcal};background:${x.color}" aria-label="${x.name}: ${e.total?fmt(x.kcal/e.total*100):0} por ciento de la energía de macros"></button>`).join('')}</div><p>${e.items.map(x=>x.name+' '+(e.total?fmt(x.kcal/e.total*100)+'%':'—')).join(' · ')}</p><small>Denominador = kcal calculadas 4/4/9. Puede diferir de las fichas y glicina aparte.</small><h3 style="margin-top:15px">Tipos de grasa registrados / estimados</h3><div class="composition-strip">${[['satFat','Saturadas','#fde68a'],['monoFat','Monoinsaturadas','#70d4fc'],['pufa','Poliinsaturadas','#c4b5fd'],['unknown','Otras / sin clasificar','#91a4bc']].map(([key,n,col])=>{const v=key==='unknown'?fat.unknown:fat.values[key];return v>0?`<button data-weekfat="${key}" style="flex:${v};background:${col}" aria-label="${n}: ${fat.total?fmt(v/fat.total*100):0} por ciento"></button>`:'';}).join('')}</div><p>${[['satFat','Saturadas'],['monoFat','Mono'],['pufa','PUFA'],['unknown','Sin clasificar']].map(([key,n])=>n+' '+(fat.total?fmt((key==='unknown'?fat.unknown:fat.values[key])/fat.total*100)+'%':'—')).join(' · ')}</p><small>${fmt(fat.coverage)}% de la grasa clasificada. ${fmt(fat.estimated,2)} g de perfiles genéricos estimados. No se inventa una meta porcentual de Peat.</small></div>`;
 }
-function renderWeekTable(s){$('week-table').innerHTML='<table><caption>Totales diarios. * Composición parcial. % semanales en las tarjetas, no medias de porcentajes.</caption><thead><tr><th>Día</th><th>Estado</th>'+MACROS.map(x=>'<th>'+x[1]+'</th>').join('')+'<th>PUFA g</th><th>Ca:P</th></tr></thead><tbody>'+s.rows.map((r,i)=>'<tr><th><button data-week-day="'+r.dt+'">'+DAYS[i].slice(0,3)+' '+r.dt.slice(5)+'</button></th><td>'+(!r.has?'Sin registro':r.d.complete?'Completo':'Parcial')+'</td>'+MACROS.map(([k])=>'<td>'+(metricValue(r,k).known?fmt(metricValue(r,k).value,k==='kcal'?0:1):'—')+'</td>').join('')+'<td>'+(r.has&&r.t.known.pufa?fmt(r.t.all.pufa,2)+(r.t.missing.pufa?'*':''):'—')+'</td><td>'+(r.has&&r.t.known.ca&&r.t.all.phos>0?fmt(r.t.all.ca/r.t.all.phos,2)+(r.t.missing.ca||r.t.missing.phos?'*':''):'—')+'</td></tr>').join('')+'</tbody></table>';}
+function renderWeekTable(s){$('week-table').innerHTML='<details><summary style="margin: 16px 0; cursor: pointer; color: #a9bbd2; font-size: 14px; font-weight: bold;">Ver tabla detallada de los 25 nutrientes por día</summary><table style="width:100%;text-align:left;font-size:12px;"><caption>Totales diarios. * Composición parcial. % semanales en las tarjetas, no medias de porcentajes.</caption><thead><tr><th>Día</th><th>Estado</th>'+MACROS.map(x=>'<th>'+x[1]+'</th>').join('')+'<th>PUFA g</th><th>Ca:P</th></tr></thead><tbody>'+s.rows.map((r,i)=>'<tr><th><button data-week-day="'+r.dt+'" style="background:none;border:none;color:#60c9f4;cursor:pointer;">'+DAYS[i].slice(0,3)+' '+r.dt.slice(5)+'</button></th><td>'+(!r.has?'Sin registro':r.d.complete?'Completo':'Parcial')+'</td>'+MACROS.map(([k])=>'<td>'+(metricValue(r,k).known?fmt(metricValue(r,k).value,k==='kcal'?0:1):'—')+'</td>').join('')+'<td>'+(r.has&&r.t.known.pufa?fmt(r.t.all.pufa,2)+(r.t.missing.pufa?'*':''):'—')+'</td><td>'+(r.has&&r.t.known.ca&&r.t.all.phos>0?fmt(r.t.all.ca/r.t.all.phos,2)+(r.t.missing.ca||r.t.missing.phos?'*':''):'—')+'</td></tr>').join('')+'</tbody></table></details>';}
 function weeklyDetail(key,oneDate=null){
   const s=weekSummary(),rows=oneDate?[dayRow(oneDate)]:s.included,a=aggregate(key,oneDate?{included:rows.filter(r=>r.has),denominator:rows}:s),m=MICRO.find(m=>m.k===key),unit=key==='b1'?'mg de benfotiamina':m?.unit||MACROS.find(x=>x[0]===key)?.[2]||'g',name=key==='b1'?'B1 / benfotiamina':m?.name||MACROS.find(x=>x[0]===key)?.[1]||'PUFA';
   let value=a.value,goal=a.goal,pct=a.pct;
@@ -1192,7 +1510,7 @@ function dayAssessment(dt){
   let microMet=0,microKnown=0,microCount=0;
   for(const m of MICRO){const g=targetOf(dt,m.k);if(!g)continue;microCount++;if(DEPOSIT.has(m.k)){const rr=rollingMicro(m.k,dt,weekSource);if(rr.known&&!rr.missing&&!rr.unlogged){microKnown++;if(LIMIT.has(m.k)?rr.value<=g:rr.value>=g)microMet++;}continue;}const v=metricValue(r,m.k);if(v.known&&!v.partial){microKnown++;if(LIMIT.has(m.k)?v.value<=g:v.value>=g)microMet++;}}
   const capKnown=r.t.known.ca&&r.t.known.phos&&!r.t.missing.ca&&!r.t.missing.phos&&r.t.all.phos>0,puKnown=r.t.known.pufa&&!r.t.missing.pufa;
-  let ratioKnown=Number(!!capKnown)+Number(!!puKnown),ratioMet=Number(!!capKnown&&r.t.all.ca/r.t.all.phos>=goalsFor(dt).ratio.cap)+Number(!!puKnown&&r.t.all.pufa<=goalsFor(dt).ratio.pufa);
+  let ratioKnown=Number(!!capKnown)+Number(!!puKnown),ratioMet=Number(!!capKnown&&r.t.all.ca/r.t.all.phos>=goalsFor(dt).cap)+Number(!!puKnown&&r.t.all.pufa<=goalsFor(dt).pufa);
   let status,label;
   if(!r.d.complete){status='partial';label='Registro parcial';}else if(macroMet<4){status='review';label='Revisar metas de macros';}else if(microKnown<microCount||ratioKnown<2){status='unknown';label='Faltan datos para comparar';}else if(microMet===microCount&&ratioMet===2){status='met';label='Metas comparadas alcanzadas';}else{status='review';label='Revisar metas personales';}
   return {r,status,label,macroMet,microMet,microKnown,ratioMet,ratioKnown,macroKnown,macroPcts,microCount};
@@ -1249,6 +1567,29 @@ $('calendar-prev').onclick=()=>shiftMonth(-1);
 $('calendar-next').onclick=()=>shiftMonth(1);
 $('calendar-today').onclick=()=>{calendarMonth=localDate().slice(0,7);calendarSelected=localDate();renderCalendar();};
 $('calendar-jump').onchange=()=>{const dt=$('calendar-jump').value;if(validDate(dt)){calendarMonth=dt.slice(0,7);calendarSelected=dt;renderCalendar();}};
+$('btn-prometabolic').onclick=()=>{
+  attempt(()=>{
+    change(()=>{
+      state.targetMode='split';
+      if(!state.macroGoals)state.macroGoals={all:{p:null,f:null},split:{workout:{p:null,f:null},rest:{p:null,f:null}}};
+      state.macroGoals.split.workout={p:130,f:65};
+      state.macroGoals.split.rest={p:115,f:60};
+      state.profile.cap=1.20;
+      state.profile.pufa=4.0;
+      if(!state.ratioGoals17)state.ratioGoals17={};
+      state.ratioGoals17.cp=3.0;
+      for(const [dt,d] of Object.entries(state.days)){
+        delete d.target;
+        delete d.microTargets17;
+        delete d.ratioGoals17;
+      }
+      state.compare17={};
+    },'Perfil Prometabólico Peat/Dinkov activado: 130P/65F entreno, 115P/60F descanso, Ca:P 1.20, PUFA <= 4g');
+    render();
+    renderSettings();
+    toast('Perfil Prometabólico Peat/Dinkov activado: 130P/65F entreno, 115P/60F descanso, Ca:P 1.20, PUFA <= 4g', true);
+  });
+};
 $('compare-form').onsubmit=e=>{e.preventDefault();attempt(()=>{const cmp=cleanCompare({macroLow:$('compare-low').value,macroHigh:$('compare-high').value});change(()=>state.compare17=cmp,'Rango de comparación actualizado');});};
 onClick(e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.weekdetail)weeklyDetail(b.dataset.weekdetail);if(b.dataset.weekratio)weekRatioDetail(b.dataset.weekratio);if(b.dataset.weekfat){const s=weekSummary(),d=fatData(s.included.flatMap(r=>r.entries)),key=b.dataset.weekfat,names={satFat:'Saturadas',monoFat:'Monoinsaturadas',pufa:'Poliinsaturadas',unknown:'Sin clasificar'},v=key==='unknown'?d.unknown:d.values[key];modal(names[key]+' · semana',`<div class="detail-progress"><strong>${d.total?fmt(v/d.total*100,1)+'%':'Sin datos'}</strong><span>${fmt(v,2)} g / ${fmt(d.total,2)} g de grasa registrada</span></div><p class="section-note">${fmt(d.estimated,2)} g del perfil total se estiman con fichas genéricas. El resto desconocido no se convierte en monoinsaturadas. No se establece una proporción ideal universal.</p>`);}
 if(b.dataset.weekmicroview){weekMicroView=b.dataset.weekmicroview;renderWeekMicros(weekSummary());}if(b.dataset.weekmicrofilter){weekMicroFilter=b.dataset.weekmicrofilter;renderWeekMicros(weekSummary());}if(b.dataset.heatday)weeklyDetail(b.dataset.heatkey,b.dataset.heatday);if(b.dataset.calday){calendarSelected=b.dataset.calday;renderCalendar();}if(b.dataset.editday)openDay(b.dataset.editday);if(b.dataset.openDay)openDay(b.dataset.openDay);if(b.dataset.daymetric)weeklyDetail(b.dataset.daymetric,b.dataset.daymetricdate);if(b.dataset.completeDay)change(()=>state.days[b.dataset.completeDay].complete=!state.days[b.dataset.completeDay].complete,'Estado del día actualizado');if(b.dataset.calweek){const dt=b.dataset.calweek,base=shift(date,-weekday(date)),target=shift(dt,-weekday(dt));weekOffset=Math.round((new Date(target+'T12:00:00')-new Date(base+'T12:00:00'))/(7*864e5));renderWeekly();$('weekly').scrollIntoView({behavior:'smooth'});}if(b.dataset.calendarfocus){calendarSelected=b.dataset.calendarfocus;calendarMonth=calendarSelected.slice(0,7);renderCalendar();$('calendar').scrollIntoView({behavior:'smooth'});}});
@@ -1289,7 +1630,7 @@ function ringSVG(pct,color,marker){const p=Math.min(100,Math.max(0,pct||0)),o=Ma
 function renderWeekVisual(d){
   const expected=d.phase==='current'?d.elapsed.length/7*100:null;
   $('week-rings').innerHTML=d.macros.map(a=>`<button class="wk-ring" type="button" data-weekdetail="${a.key}" aria-label="${a.name}: ${pctText(a)} de la meta semanal"><div class="rw">${ringSVG(a.pct,a.color,expected)}<b>${pctText(a)}</b></div><span>${a.name}</span><small>${a.known?fmt(a.value,a.key==='kcal'?0:0):'—'} / ${a.goal?fmt(a.goal):'—'} ${a.unit}</small></button>`).join('');
-  const withData=d.micros.filter(x=>x.a.known>0&&x.a.goal),met=withData.filter(x=>LIMIT.has(x.m.k)?x.a.pct<=100:x.a.pct>=100),cap=ratioAggregate(d.s,'ca','phos'),capRef=d.s.rows.reduce((s,r)=>s+goalsFor(r.dt).ratio.cap,0)/7,pu=aggregate('pufa',d.s),ratioOk=Number(cap.value!=null&&cap.value>=capRef)+Number(pu.pct!=null&&pu.pct<=100);
+  const withData=d.micros.filter(x=>x.a.known>0&&x.a.goal),met=withData.filter(x=>LIMIT.has(x.m.k)?x.a.pct<=100:x.a.pct>=100),cap=ratioAggregate(d.s,'ca','phos'),capRef=d.s.rows.reduce((s,r)=>s+goalsFor(r.dt).cap,0)/7,pu=aggregate('pufa',d.s),ratioOk=Number(cap.value!=null&&cap.value>=capRef)+Number(pu.pct!=null&&pu.pct<=100);
   $('week-tiles').innerHTML=`<button class="wk-tile ${withData.length&&met.length===withData.length?'met':''}" type="button" data-briefscroll="week-micros-section"><b>${met.length}/${withData.length}</b><span>Micros en meta esta semana<br>${withData.length<MICRO.length?(MICRO.length-withData.length)+' sin datos':'los 25 con datos'}</span></button><button class="wk-tile ${ratioOk===2?'met':''}" type="button" data-briefscroll="week-ratios-section"><b>${ratioOk}/2</b><span>Ca:P ${cap.value==null?'—':fmt(cap.value,2)} · PUFA ${pu.known?fmt(pu.value/Math.max(1,pu.known),1)+' g/día':'—'}</span></button>`;
   const today=localDate();
   $('week-strip').innerHTML=d.s.rows.map((r,i)=>{const a=dayAssessment(r.dt),k=r.has?metricValue(r,'kcal'):null,g=targetOf(r.dt,'kcal'),p=k&&k.known&&g?k.value/g*100:null;return `<button class="wk-day ${a.status} ${r.dt===weekSelected?'sel':''} ${r.dt===today?'today':''}" type="button" data-weekstrip="${r.dt}" aria-label="${DAYS[i]} ${r.dt}: ${a.label}"><b>${['L','M','X','J','V','S','D'][i]} ${Number(r.dt.slice(8))}</b><strong>${p==null?'—':fmt(p)+'%'}</strong><small>${r.has?a.macroMet+'/4':r.dt>today?'':'sin datos'}</small></button>`;}).join('');
@@ -1500,7 +1841,7 @@ function gpSessionMetrics(e,sets){
   m.bestReps=withReps.length?Math.max(...withReps.map(x=>x.reps)):null;
   m.totalReps=withReps.reduce((a,x)=>a+x.reps,0)||null;
   m.volume=e.type==='weighted'||e.type==='added'?withReps.reduce((a,x)=>a+w(x)*x.reps,0)||null:null;
-  m.e1rm=e.type==='weighted'?Math.max(0,...withReps.filter(x=>w(x)>0&&x.reps<=12).map(x=>w(x)*(1+x.reps/30)))||null:null;
+  m.e1rm=e.type==='weighted'?Math.max(0,...withReps.filter(x=>w(x)>0).map(x=>w(x)*(1+x.reps/30)))||null:null;
   m.assist=e.type==='assisted'&&withReps.length?Math.min(...withReps.map(w)):null;
   m.repsAtAssist=m.assist!=null?Math.max(...withReps.filter(x=>w(x)===m.assist).map(x=>x.reps)):null;
   const durs=ok.map(x=>x.duration).filter(d=>d>0);m.maxDur=durs.length?Math.max(...durs):null;m.totalDur=durs.reduce((a,b)=>a+b,0)||null;
@@ -1538,11 +1879,17 @@ function gpPRs(model){
   return out.sort((a,b)=>String(b.h.s.start).localeCompare(String(a.h.s.start)));
 }
 function gpStatus(e){
-  const h=e.hist;if(h.length<3)return {c:'new',t:'Pocos datos'};
+  const h=e.hist;if(h.length<2)return {c:'new',t:'Pocos datos'};
   const k=e.type==='weighted'?'e1rm':e.type==='assisted'?'assist':e.type==='time'?'maxDur':e.type==='bodyweight'?'bestReps':'top';
   const vals=h.map(x=>k==='top'?(x.top||0)*100+(x.repsAtTop||0):x[k]).filter(v=>v!=null);
-  if(vals.length<3)return {c:'new',t:'Pocos datos'};
+  if(vals.length<2)return {c:'new',t:'Pocos datos'};
   const low=k==='assist',best=low?Math.min(...vals):Math.max(...vals);
+
+  if(k==='e1rm'&&vals.length>=2){
+    const curr=vals[vals.length-1],prev=vals[vals.length-2];
+    if(curr>prev)return {c:'up',t:'Progresión (+1RM)'};
+  }
+
   let since=0;for(let i=vals.length-1;i>=0;i--){if(vals[i]===best)break;since++;}
   const avg=a=>a.reduce((s,v)=>s+v,0)/a.length,recent=vals.slice(-3),older=vals.slice(-6,-3);
   if(since===0)return {c:'up',t:'En récord'};
@@ -1718,6 +2065,18 @@ function upgradeTo19(s,o){
   s.appRevision=19;
 }
 // v27: azúcar con micros a 0, fichas USDA para las vacías, sin campos de día que no se usan.
+function upgradeTo21(s,o){
+  if(s.appRevision>=21)return;
+  s.targetMode = 'split';
+  if(!s.macroGoals) s.macroGoals = {all:{p:null,f:null},split:{workout:{p:null,f:null},rest:{p:null,f:null}}};
+  s.macroGoals.split.workout = {p: 130, f: 65};
+  s.macroGoals.split.rest = {p: 115, f: 60};
+  s.profile.cap = 1.20;
+  s.profile.pufa = 4.0;
+  if(!s.ratioGoals17) s.ratioGoals17 = {};
+  s.ratioGoals17.cp = 3.0;
+  s.appRevision=21;
+}
 function upgradeTo20(s,o){
   const a=s.foods.azucar_blanco;if(a&&!own(a.nutrients,'ca'))a.nutrients={...AZUCAR_N,...a.nutrients,...ZERO_MICRO};
   for(const id of Object.keys(USDA_N)){const f=s.foods[id];if(f&&!['kcal','p','c','f'].some(k=>own(f.nutrients,k))){f.nutrients=cleanNutrients(USDA_N[id]);f.source=FOODS[id].source;}}
@@ -1782,9 +2141,11 @@ $('bp-backup-later').onclick=()=>{prefs.set(SNOOZE_KEY,Date.now()+2*864e5);drawB
 compactView=prefs.get('biopeat_density19')==='compact';
 function applyDensity(){
   document.body.classList.toggle('bp-compact',compactView);
-  $('bp-density').setAttribute('aria-pressed',String(compactView));
-  $('bp-density').textContent=compactView?'Ver explicaciones':'Modo resumen';
-  $('bp-density').title=compactView?'Muestra de nuevo notas y explicaciones':'Oculta explicaciones: solo números, gráficos y botones';
+  document.querySelectorAll('#bp-density, #bp-density-today').forEach(btn => {
+    btn.setAttribute('aria-pressed',String(compactView));
+    btn.textContent=compactView?'🧠 Vista con Explicaciones Peat':'⚡ Vista Resumen';
+    btn.title=compactView?'Muestra de nuevo notas y explicaciones':'Oculta explicaciones: solo números, gráficos y botones';
+  });
 }
 $('bp-density').onclick=()=>{compactView=!compactView;applyDensity();prefs.set('biopeat_density19',compactView?'compact':'comfortable');toast(compactView?'Modo resumen: solo datos y gráficos.':'Explicaciones visibles de nuevo.');};
 $('bp-undo').onclick=undo;
@@ -1906,6 +2267,24 @@ function pasteMessage(text,ok){
 }
 $('bp-paste-add').onclick=()=>{try{const entries=parseBIO(extractBiopeat($('bp-paste').value),$('bp-paste-meal').value);if(!entries.length)throw Error('No hay platos.');addEntries(entries,'Gemini: '+entries.length+' plato(s) añadidos',date,{remember:true});$('bp-paste').value='';pasteMessage('Añadido a '+date+': '+entries.map(e=>e.name+' ('+e.meal+')').join(', ')+'. Puedes editar o deshacer.',true);}catch(e){pasteMessage('No se ha añadido nada: '+(e instanceof SyntaxError?'el JSON no es válido.':e.message),false);}};
 $('bp-clip').onclick=async()=>{try{const t=await navigator.clipboard.readText();if(!t)throw Error();$('bp-paste').value=t;pasteMessage('Pegado. Revisa y pulsa Añadir.',true);}catch(e){$('bp-paste').focus();pasteMessage('El navegador no deja leer el portapapeles: mantén pulsado el recuadro y elige Pegar.',false);}};
+function upgradeTo22(s,o){
+  if(s.appRevision>=22)return;
+  s.targetMode='split';
+  if(!s.macroGoals)s.macroGoals={all:{p:null,f:null},split:{workout:{p:null,f:null},rest:{p:null,f:null}}};
+  s.macroGoals.split.workout={p:130,f:65};
+  s.macroGoals.split.rest={p:115,f:60};
+  s.profile.cap=1.20;
+  s.profile.pufa=4.0;
+  if(!s.ratioGoals17)s.ratioGoals17={};
+  s.ratioGoals17.cp=3.0;
+  for(const [dt,d] of Object.entries(s.days)){
+    delete d.target;
+    delete d.microTargets17;
+    delete d.ratioGoals17;
+  }
+  s.compare17={};
+  s.appRevision=22;
+}
 function migrate(o){
   const s=migrateBase(o);
   upgradeTo11(s,o);
@@ -1915,6 +2294,8 @@ function migrate(o){
   upgradeTo18(s,o);
   upgradeTo19(s,o);
   upgradeTo20(s,o);
+  upgradeTo21(s,o);
+  upgradeTo22(s,o);
   s.favorites22=Array.isArray(o&&o.favorites22)?o.favorites22.slice(0,40):[];
   s.aiNotes=String(o&&o.aiNotes||'').slice(0,2000);
   return s;

@@ -53,10 +53,10 @@ Documento maestro del proyecto. Lo leen **Gemini** (para pensar y redactar tarea
 - Intra-entreno/partido: ositos Haribo con azúcar a demanda (por 100 g: 343 kcal, 77 g hidratos, 6,9 g proteína, 0 PUFA).
 
 ## 5. Reglas nutricionales Peat / Dinkov en la app
-- **PUFA:** límite personal 4,5 g/día (editable). Es un **máximo**, no una meta.
+- **PUFA:** límite personal <= 4,0 g/día. Es un **máximo**, no una meta.
 - **Calcio : fósforo:** referencia ≥ 1,10 : 1 (editable). Calcio objetivo **2.000 mg** (Peat/Dinkov hablan de 2.000–3.000 mg, sobre todo de leche y queso).
 - **Hidratos : proteína:** se muestra como «g de hidratos por cada g de proteína» frente al reparto del plan del día (±20 % verde).
-- **Hierro:** es un **límite** (mejor por debajo).
+- **Hierro:** es un **límite** (mejor por debajo, <= 14 mg).
 - Prioridades de alimentos para sugerencias: leche, queso, zumo de naranja, fruta madura, miel/azúcar, patata, arroz, huevos, marisco, gelatina, carne con caldo; evitar aceites vegetales y PUFA.
 - **Micros «depósito» (se valoran con 7 días):** A, D, E, B12, folato (B9), selenio, yodo, cobre y hierro. El depósito se llena con lo que se toma y cada día sale el más antiguo; los días sin registro cuentan 0. El resto (calcio, fósforo, magnesio, potasio, sodio, zinc, manganeso, C, B1–B7, colina, K) son diarios.
 - Donde no hay cifra documentada de Peat, se mantiene la meta personal de Diego. **No inventes cifras atribuidas a Peat.**

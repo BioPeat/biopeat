@@ -42,7 +42,7 @@ async function run() {
             version: 10,
             days: {},
             appRevision: 29,
-            profile: { weight: 70, height: 175, age: 30, pufa: 4.5, cap: 1.1 }
+            profile: { weight: 70, height: 175, age: 30, pufa: 4.0, cap: 1.1 }
           });
         }
         return null;
@@ -63,7 +63,7 @@ async function run() {
       dispatchEvent: () => true,
       value: '',
       style: {},
-      classList: { add: ()=>{}, remove: ()=>{}, toggle: ()=>{}, contains: () => false },
+      classList: { add: ()=>{}, remove: ()=>{}, toggle: ()=>{}, contains: () => false }, contains: () => false, children: [],
       innerHTML: '',
       dataset: {},
       focus: () => {},
@@ -138,17 +138,38 @@ async function run() {
       FormData: class FormData { append() {} get() { return null; } }
     };
 
-    vm.createContext(sandbox);
+    sandbox.matchMedia = sandbox.window.matchMedia; sandbox.performance = { now: () => Date.now() }; sandbox.requestAnimationFrame = sandbox.window.requestAnimationFrame; vm.createContext(sandbox);
 
     // We execute the script in the sandbox
     vm.runInContext(scriptContent, sandbox);
 
-    // Run init and migrate
+    // We override toast to throw so we catch errors in views
+    sandbox.toast = (msg) => { throw new Error('Toast error: ' + msg); };
+    // Override attempt to throw if it catches an error
+    sandbox.attempt = (fn) => {
+        try {
+            const p = fn();
+            if (p && typeof p.catch === 'function') p.catch(e => { throw e; });
+        } catch(e) {
+            throw e;
+        }
+    };
+
     if (typeof sandbox.init === 'function') {
       const initResult = sandbox.init();
       if (initResult instanceof Promise) {
         await initResult;
       }
+    }
+
+    const testViews = [
+        'renderToday', 'renderCoach', 'renderRatios', 'renderSupps', 'renderMicros',
+        'renderMicrosForDay', 'renderWeekly', 'renderCalendar', 'renderGym', 'renderSettings'
+    ];
+    for (const view of testViews) {
+        if (typeof sandbox[view] === 'function') {
+            sandbox[view]();
+        }
     }
 
     if (typeof sandbox.migrate === 'function') {
@@ -157,7 +178,7 @@ async function run() {
         version: 10,
         days: {},
         appRevision: 29,
-        profile: { weight: 70, height: 175, age: 30, pufa: 4.5, cap: 1.1 }
+        profile: { weight: 70, height: 175, age: 30, pufa: 4.0, cap: 1.1 }
       });
     }
 
