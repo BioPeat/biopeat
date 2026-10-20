@@ -1,9 +1,16 @@
 import sys
-
-def get_lines(filename, start, end):
+def get_lines(filename, search_term, lines_before, lines_after):
     with open(filename, 'r') as f:
         lines = f.readlines()
-        print(''.join(lines[start-1:end]))
+    for i, line in enumerate(lines):
+        if search_term in line:
+            start = max(0, i - lines_before)
+            end = min(len(lines), i + lines_after + 1)
+            print(f"Match found at line {i+1}:")
+            for j in range(start, end):
+                prefix = "*" if j == i else " "
+                print(f"{prefix} {j+1}: {lines[j]}", end="")
+            print("-" * 40)
+            return
 
-if __name__ == "__main__":
-    get_lines(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]))
+get_lines("index.html", "ratioAggregate", 2, 40)
