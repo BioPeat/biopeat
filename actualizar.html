@@ -15,56 +15,57 @@ ul{padding-left:20px;margin:6px 0}li{margin:4px 0}
 pre{white-space:pre-wrap;word-break:break-word;background:#1f3047;padding:10px;border-radius:10px;font-size:12px;max-height:300px;overflow:auto}
 </style></head><body>
 <h1>Actualizar BioPeat</h1>
-<p class="muted">Esta página aplica los cambios de Gemini y los comprueba antes de que lleguen a tu app. Tus datos nunca se modifican aquí.</p>
+<p class="muted">Esta página aplica los cambios de tu IA (Gemini o Claude) y los comprueba antes de que lleguen a tu app. Tus datos nunca se modifican aquí.</p>
 
 <details class="card" id="guia"><summary><b>📘 Guía paso a paso (léela la primera vez)</b></summary>
 <h2 style="margin-top:12px">Qué es esta página</h2>
-<p class="muted">Es tu «control de calidad». Gemini escribe los cambios, esta página los aplica a una copia de la app, la arranca, pulsa por todas las secciones con tus datos reales (en una copia aislada) y solo te deja descargar la versión nueva si todo funciona. Tu app y tus datos no se tocan nunca desde aquí.</p>
+<p class="muted">Es tu «control de calidad». Tu IA escribe los cambios, esta página los aplica a una copia de la app, la arranca, pulsa por todas las secciones con tus datos reales (en una copia aislada) y solo te deja descargar la versión nueva si todo funciona. Tu app y tus datos no se tocan nunca desde aquí.</p>
 <h2>Preparación (solo la primera vez)</h2>
 <ol>
 <li>Sube a GitHub <b>index.html</b> y <b>actualizar.html</b> (Add file → Upload files → Commit changes).</li>
-<li>En Gemini: Gems → Nuevo Gem → nombre «BioPeat Dev» → pega en Instrucciones todo <b>GEM_BIOPEAT_DEV.txt</b> → Guardar.</li>
+<li>En Gemini: Gems → Nuevo Gem → «BioPeat Dev» → pega <b>GEM_BIOPEAT_DEV.txt</b>. En Claude: Proyectos → «BioPeat Dev» → pega <b>CLAUDE_INSTRUCCIONES.txt</b> y sube CONTEXTO_BIOPEAT.md.</li>
 <li>Guarda esta página en marcadores. Es la dirección de tu app con <b>/actualizar.html</b> al final (ejemplo: <i>tu-usuario.github.io/biopeat/actualizar.html</i>).</li>
 </ol>
 <h2>Cada cambio (unos 5 minutos)</h2>
 <ol>
-<li><b>Paso 1:</b> pulsa «Descargar archivo para Gemini».</li>
-<li>Abre el Gem «BioPeat Dev», <b>empieza un chat nuevo</b>, adjunta ese archivo y escribe lo que quieres, como si se lo dijeras a una persona. Puedes pedir varias cosas a la vez.</li>
+<li><b>Paso 1:</b> Gemini → «Descargar archivo completo». Claude → «Descargar archivo ligero» (sin estilos, gasta menos límite).</li>
+<li>Abre «BioPeat Dev» (Gem o proyecto de Claude), <b>empieza un chat nuevo</b>, adjunta ese archivo y escribe lo que quieres, como si se lo dijeras a una persona. Puedes pedir varias cosas a la vez.</li>
 <li>Cuando responda, pulsa «Copiar» en su respuesta (copia TODA) y pégala en el <b>Paso 2</b>. Pulsa «Aplicar y comprobar».</li>
-<li><b>Si sale ✗ rojo:</b> «Copiar mensaje del error para Gemini» → pégalo en el mismo chat → copia su nueva respuesta → bórrala del Paso 2, pega la nueva y vuelve a comprobar.</li>
-<li><b>Si sale ✓ verde:</b> «Copiar texto para la REVISIÓN» → pégalo en el mismo chat. Si Gemini contesta «❌ HAY QUE CORREGIR», trata su respuesta como una nueva (vuelve al punto 3).</li>
+<li><b>Si sale ✗ rojo:</b> «Copiar mensaje del error» → pégalo en el mismo chat → copia su nueva respuesta → bórrala del Paso 2, pega la nueva y vuelve a comprobar.</li>
+<li><b>Si sale ✓ verde:</b> «Copiar texto para la REVISIÓN» → pégalo en el mismo chat. Si la IA contesta «❌ HAY QUE CORREGIR», trata su respuesta como una nueva (vuelve al punto 3).</li>
 <li>Con <b>✅ APROBADO</b>: pulsa «Descargar index.html nuevo» y «Guardar también la versión anterior».</li>
 <li>En GitHub: Add file → Upload files → arrastra el <b>index.html</b> nuevo → Commit changes. Espera 1-2 minutos.</li>
-<li>Abre la app, recarga, mira que en Más → Ajustes → Estado de la app sale la versión nueva y haz la prueba que te dijo Gemini.</li>
+<li>Abre la app, recarga, mira que en Más → Ajustes → Estado de la app sale la versión nueva y haz la prueba que te dijo la IA.</li>
 </ol>
 <h2>Si algo no te gusta después de subirlo</h2>
 <p class="muted">Sube el archivo «index_anterior_vNN.html» renombrado a index.html y vuelves a la versión de antes en 2 minutos. Tus datos no se pierden: viven en el móvil, no en el archivo.</p>
 <h2>Consejos</h2>
 <ul class="muted">
 <li>Hazlo desde el ordenador: copiar, pegar y subir archivos es mucho más cómodo.</li>
-<li>Un chat nuevo de Gemini para cada cambio, siempre con el archivo del Paso 1 (así nunca trabaja sobre una versión vieja).</li>
-<li>Si falla algo en la app: cuéntaselo a Gemini como una petición (qué pulsaste, qué esperabas, qué pasó, captura).</li>
+<li>Un chat nuevo para cada cambio, siempre con el archivo del Paso 1 (así nunca trabaja sobre una versión vieja).</li>
+<li>Si falla algo en la app: cuéntaselo a la IA como una petición (qué pulsaste, qué esperabas, qué pasó, captura).</li>
 </ul>
 </details>
-<div class="card"><h2>Paso 1 · Archivo para Gemini</h2>
+<div class="card"><h2>Paso 1 · Archivo para tu IA</h2>
 <p id="cur" class="muted">Cargando la versión actual…</p>
-<button class="btn slate" id="dl-gemini">⬇ Descargar archivo para Gemini</button>
+<button class="btn slate" id="dl-gemini">⬇ Descargar archivo completo (Gemini)</button>
+<button class="btn slate" id="dl-light">⬇ Descargar archivo ligero (Claude)</button>
 <label class="muted">¿No carga sola? Elige index.html a mano: <input type="file" id="pick" accept=".html,.txt"></label>
 </div>
 
-<div class="card"><h2>Paso 2 · Pega la respuesta COMPLETA de Gemini</h2><p class="muted">Antes: adjunta el archivo del Paso 1 en un chat nuevo del Gem «BioPeat Dev» y escribe lo que quieres.</p>
-<textarea id="patch" placeholder="Pega aquí toda la respuesta de Gemini (con los bloques @@@)"></textarea>
+<div class="card"><h2>Paso 2 · Pega la respuesta COMPLETA de tu IA</h2><p class="muted">Antes: adjunta el archivo del Paso 1 en un chat nuevo de «BioPeat Dev» y escribe lo que quieres.</p>
+<textarea id="patch" placeholder="Pega aquí toda la respuesta de la IA (con los bloques @@@)"></textarea>
 <label class="muted"><input type="checkbox" id="usedata" checked> Probar también con una copia de mis datos (recomendado)</label>
 <button class="btn amber" id="run">Aplicar y comprobar</button>
 </div>
 
 <div class="card" id="res" hidden><div class="big" id="verdict"></div><ul id="checks"></ul>
-<div id="okbox" hidden><p class="muted">1) Copia el texto de revisión y pégalo en Gemini. 2) Solo con «✅ APROBADO», descarga y sube a GitHub (Add file → Upload files → Commit changes).</p>
+<div id="okbox" hidden><p class="muted">1) Copia el texto de revisión y pégalo en el mismo chat de la IA. 2) Solo con «✅ APROBADO», descarga y sube a GitHub (Add file → Upload files → Commit changes).</p>
 <button class="btn green" id="dl-new">⬇ Descargar index.html nuevo</button>
-<button class="btn slate" id="copy-review">Copiar texto para la REVISIÓN en Gemini</button>
+<button class="btn slate" id="copy-review">Copiar texto para la REVISIÓN</button>
 <button class="btn slate" id="dl-old">⬇ Guardar también la versión anterior (por si acaso)</button>
 </div>
-<div id="badbox" hidden><p class="muted">Copia el error, pégalo en el mismo chat de Gemini y pega aquí su nueva respuesta completa.</p><button class="btn amber" id="copy-err">Copiar mensaje del error para Gemini</button></div>
+<div id="badbox" hidden><p class="muted">Copia el error, pégalo en el mismo chat de la IA y pega aquí su nueva respuesta completa.</p><button class="btn amber" id="copy-err">Copiar mensaje del error</button></div>
 <details><summary class="muted">Ver detalle técnico</summary><pre id="log"></pre></details>
 </div>
 
@@ -79,6 +80,9 @@ fetch('index.html?'+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;ret
 $('pick').onchange=async e=>{const f=e.target.files[0];if(f)setCurrent(await f.text(),'elegida a mano');};
 function download(name,text,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:type+';charset=utf-8'}));a.download=name;document.body.append(a);a.click();a.remove();}
 $('dl-gemini').onclick=()=>{if(!current)return alert('Primero carga index.html');download('BioPeat_actual_'+((current.match(/APP_VERSION='(v\d+)'/)||[])[1]||'')+'.txt',current);};
+// Versión ligera para Claude: sin el CSS (la mayor parte del peso). Todo lo demás es literal, así que los BUSCAR siguen valiendo.
+function lightVersion(t){const a=t.indexOf('<style id="app-style">');if(a<0)return t;const s=a+'<style id="app-style">'.length,e=t.indexOf('</style>',s);return t.slice(0,s)+'\n/* [CSS OMITIDO para ahorrar espacio: '+Math.round((e-s)/1024)+' KB. No lo busques. Para estilos nuevos usa BUSCAR «</style><meta content="#26374d"» y pon tu CSS delante.] */\n'+t.slice(e);}
+$('dl-light').onclick=()=>{if(!current)return alert('Primero carga index.html');download('BioPeat_ligero_'+((current.match(/APP_VERSION='(v\d+)'/)||[])[1]||'')+'.txt',lightVersion(current));};
 
 // Formato de Gemini:  @@@ BUSCAR n  ...  @@@ CAMBIAR POR  ...  @@@ FIN
 function parse(txt){
@@ -132,7 +136,7 @@ $('run').onclick=async()=>{
   try{
     if(!current)throw Error('No hay index.html cargado (paso 1).');
     const blocks=parse($('patch').value);
-    if(!blocks.length)throw Error('No encuentro bloques «@@@ BUSCAR … @@@ CAMBIAR POR … @@@ FIN». Pega la respuesta entera de Gemini.');
+    if(!blocks.length)throw Error('No encuentro bloques «@@@ BUSCAR … @@@ CAMBIAR POR … @@@ FIN». Pega la respuesta entera de la IA.');
     let t=current;
     blocks.forEach((b,i)=>{const c=count(t,b.find);
       if(c===1){t=t.replace(b.find,()=>b.repl);log.push('Bloque '+(i+1)+': aplicado');}
@@ -176,7 +180,7 @@ $('run').onclick=async()=>{
 };
 $('dl-new').onclick=()=>download('index.html',result,'text/html');
 $('dl-old').onclick=()=>download('index_anterior_v'+ver(current)+'.html',current,'text/html');
-const copy=t=>navigator.clipboard.writeText(t).then(()=>alert('Copiado. Pégalo en Gemini.')).catch(()=>{$('log').textContent=t;$('log').parentElement.open=true;alert('Cópialo a mano del «detalle técnico».');});
+const copy=t=>navigator.clipboard.writeText(t).then(()=>alert('Copiado. Pégalo en el mismo chat de la IA.')).catch(()=>{$('log').textContent=t;$('log').parentElement.open=true;alert('Cópialo a mano del «detalle técnico».');});
 $('copy-review').onclick=()=>copy(reviewText);
 $('copy-err').onclick=()=>copy(errText);
 </script></body></html>

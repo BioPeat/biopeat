@@ -1,8 +1,8 @@
 # CONTEXTO · BioPeat Diego
 
-**Versión actual: v34** (revisión de datos 23)
+**Versión actual: v37** (revisión de datos 23)
 
-Documento maestro. Lo leen Gemini (para planificar) y Jules (para programar). **Se actualiza sustituyendo el texto de cada apartado, nunca añadiendo apartados nuevos al final.** Si algo de aquí contradice al código, manda el código; avisa de la diferencia en el Pull Request.
+Documento maestro. Lo lee la IA que programa BioPeat (Gemini «BioPeat Dev» o Claude). Los cambios se entregan en bloques `@@@` y los aplica y prueba `actualizar.html`. **Se actualiza sustituyendo el texto de cada apartado, nunca añadiendo apartados nuevos al final.** Si algo de aquí contradice al código, manda el código; avisa de la diferencia.
 
 ## 1. Diego y cómo quiere la app
 - 23 años, hombre, 185 cm, ~77,5 kg (editable). Madrid. Escribe rápido y con faltas: entiéndelo por el sentido.
@@ -63,9 +63,10 @@ La B1 se muestra aparte: mg de benfotiamina frente a su pauta; la tiamina de los
 - Alimentos preferidos para sugerir: leche, queso, zumo de naranja, fruta madura, miel/azúcar, patata, arroz, huevos, marisco, gelatina, carne con caldo. Evitar aceites vegetales.
 - **No inventes cifras atribuidas a Peat.** Donde no hay cifra suya, se usa la meta personal.
 
-## 6. Qué hace la app (v34)
+## 6. Qué hace la app (v37)
 Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más** (no cambiar el orden) y botón redondo de **Gimnasio**.
 - **Hoy:** energía, anillos de macros (% sin tope, «Te faltan X g»), recomendación del día + «Pedir sugerencia a la IA», **Equilibrio del día** (5 tarjetas: Ca:P, PUFA, hidratos:proteína, A:D, Zn:Cu; cada una con semáforo ✓/!, barra con zona verde y «Tú», y una frase sencilla; al tocarla: «¿Por qué importa?» (explicación Peat) y «Cómo llegar hoy» con alimentos y cantidades exactas que se añaden con un toque), comidas del día con «Igual que ayer», «Marcar día completo», «Vista Resumen».
+- Al añadir la primera comida de un día, el día anterior se marca solo como completo (v35).
 - **Añadir:** texto libre de varias comidas en un mensaje (sin IA si reconoce los alimentos), foto con IA, «Foto en Gemini» (copiar prompt + pegar respuesta `BIOPEAT:`), manual, rápidos/favoritos, desayuno, batido, suplemento extra, Mi despensa (lo que analiza la IA se guarda y se reutiliza).
 - **Registro:** buscador, grupos por comida, − / + / ✎ / ×, deshacer, probar una ración, reparto de energía y tipos de grasa.
 - **Tus nutrientes:** tres bloques (Escudo Peat: PUFA y hierro · Diarios · Tanques de 7 días), tarjetas o mapa, filtros.
@@ -76,14 +77,16 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 
 ## 7. Conexión con IA (no tocar sin pedirlo)
 - Clave de Gemini API del propio Diego, guardada solo en el móvil si marca «Recordar». **Nunca pongas claves en el código.**
-- POST `https://generativelanguage.googleapis.com/v1beta/interactions`. Modelo por defecto `gemini-3.8-flash`; con error 429 pasa solo a `gemini-3.1-flash-lite`.
+- POST `https://generativelanguage.googleapis.com/v1beta/models/{modelo}:generateContent` (API estable) con `thinkingConfig.thinkingLevel: 'low'` para responder rápido. Funciones: `callGemini()` y `requestAI()`.
+- Modelo por defecto `gemini-3.8-flash`. Si tarda más de 30 s (foto) o 20 s (texto), o da 429/404/5xx, `requestAI()` reintenta solo con `gemini-3.1-flash-lite` (`AI_FALLBACK`). Tiempo máximo total de una foto: 65 s. «Probar conexión» elige automáticamente el modelo que responde.
+- Foto: se reduce a 1.600 px (JPG 0,88) y se analiza componente a componente con `photoPrompt()` (usa los 40 alimentos más habituales de Mi despensa).
 - Formato de importación: `BIOPEAT:{...}` o `BIOPEAT:[{...}]` con meal, name, grams, kcal, p, c, f, pufa y los 25 micros. Lo desconocido se omite o va como null, nunca 0.
 - Claves de los 25 micros: vitA, vitD, vitE, vitK, vitC, b1, b2, b3, b5, b6, b7, b9, b12, colina, ca, phos, mg, k, na, fe, zn, cu, se, i, mn.
 
 ## 8. Datos y publicación
 - Los datos viven en el navegador del móvil (`localStorage`, clave `biopeat_pro_v10`). **Nunca se suben a GitHub.**
 - Claves guardadas que **no se renombran:** `biopeat_pro_v10`, compare17, workouts18, favorites22, microTargets17, goalOrigin17, ratioGoals17, macroGoals, targetMode.
-- Publicada con **GitHub Pages** (rama main) e instalada como app (manifest.json + sw.js). Al aceptar un Pull Request la app se actualiza sola en 1-2 minutos sin perder datos.
+- Publicada con **GitHub Pages** (rama main) e instalada como app (manifest.json + sw.js). Al subir un index.html nuevo la app se actualiza sola en 1-2 minutos sin perder datos.
 
 ## 9. Cómo está hecho el código (resumen técnico)
 - Todo en `index.html`: CSS, HTML y un único `<script id="app">`. Sin librerías.
@@ -95,7 +98,10 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - Migraciones: `migrate()` → `migrateBase` + `upgradeToNN`. Cada `upgradeToNN` se ejecuta una sola vez comprobando `o.appRevision`.
 
 ## 10. Historial (una línea por versión, máximo 8)
-- **v34 · Copilot:** equilibrio del día fácil de entender (semáforo, frase, porqué Peat y alimentos exactos para corregirlo); «Tu pauta» simplificada (se suma sola, tocar = no tomada) con «Lo que te aporta tu pauta»; Semana en 4 preguntas; calendario con métrica elegible, media, tendencia y ficha rápida del día. Flujo Gemini → Jules autónomo.
+- **v37 · Copilot:** IA rápida y fiable: API estable, razonamiento bajo, respaldo automático a gemini-3.1-flash-lite si tarda, «Probar conexión» elige el modelo que funciona. Flujo nuevo: la IA entrega bloques `@@@` y `actualizar.html` los prueba (sin Jules).
+- **v36 · Gemini:** el botón del plan Peat por defecto indica si ya lo usas.
+- **v35 · Copilot:** el día anterior se marca completo al añadir comida; foto por ingredientes con despensa, contador y errores claros.
+- **v34 · Copilot:** equilibrio del día fácil de entender (semáforo, frase, porqué Peat y alimentos exactos para corregirlo); «Tu pauta» simplificada (se suma sola, tocar = no tomada) con «Lo que te aporta tu pauta»; Semana en 4 preguntas; calendario con métrica elegible, media, tendencia y ficha rápida del día.
 - **v33 · Copilot:** reparación de v30-v32. Arreglado: no se leían los macros y casi nada se guardaba (las metas se borraban en cada arranque); las metas personales se perdían al recargar; la pauta salía toda en «Otros»; el formulario de objetivos ignoraba los macros; tarjetas de nutrientes que abrían dos ventanas; A:D y Zn:Cu abrían la ventana equivocada; «Atrás» podía sacar de la app; textos como «2 platanos» o «y 100 g» no se reconocían. Plan por defecto 145/75 y 130/65. Repositorio limpio, prueba automática y reglas nuevas para agentes.
 - **v30-v32 · Jules:** perfil Peat/Dinkov, simulador Ca:P y C:P, tanques de 7 días, vista resumen, 1RM Epley.
 - **v25-v29 · Copilot/Jules:** gimnasio HEVY, recomendación del día, depósitos, despensa automática, foto con IA.
