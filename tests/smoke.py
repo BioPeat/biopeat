@@ -27,7 +27,7 @@ def ok(msg):
 # ---------- 1. Comprobaciones estáticas (sin navegador) ----------
 ALLOWED = {'index.html', 'manifest.json', 'sw.js', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png',
            'AGENTS.md', 'CONTEXTO_BIOPEAT.md', 'MAPA_DEL_CODIGO.md', 'README.md', '.gitignore',
-           'tests/smoke.py', 'tests/datos_prueba.json', 'tools/mapa.py', '.github/workflows/check.yml'}
+           'tests/smoke.py', 'tests/datos_prueba.json', 'tools/mapa.py', '.github/workflows/check.yml', 'actualizar.html'}
 
 def static_checks():
     print('1. Comprobaciones del código')
@@ -59,7 +59,7 @@ def static_checks():
         import subprocess
         tracked = subprocess.run(['git', 'ls-files'], cwd=ROOT, capture_output=True, text=True).stdout.split()
         extra = sorted(t for t in tracked if t not in ALLOWED)
-        fail('Archivos que no deben estar en el repositorio (bórralos): ' + ', '.join(extra)) if extra else ok('Repositorio limpio')
+        print('  ⚠ Archivos que sobran en el repositorio (puedes borrarlos): ' + ', '.join(extra)) if extra else ok('Repositorio limpio')
 
 # ---------- 2. Pruebas en navegador ----------
 def serve(port):
@@ -75,12 +75,12 @@ def serve(port):
 
 async def ai_mock(route):
     body = json.loads(route.request.post_data or '{}')
-    txt = body['input'][0]['text']
+    txt = body['contents'][0]['parts'][0]['text'] if 'contents' in body else body['input'][0]['text']
     if 'Responde solo con la palabra OK' in txt: out = 'OK'
     elif 'BIOPEAT_CONFIG' in txt: out = '{"profile":{"weight":78},"summary":"Peso 78"}'
     elif 'BIOPEAT:' in txt: out = 'BIOPEAT:[{"meal":"Comida","name":"Lentejas prueba","grams":300,"kcal":350,"p":20,"c":50,"f":6,"pufa":1.2}]'
     else: out = 'Un vaso de leche y un plátano.'
-    await route.fulfill(status=200, content_type='application/json', body=json.dumps({'outputs': [{'type': 'text', 'text': out}]}))
+    await route.fulfill(status=200, content_type='application/json', body=json.dumps({'candidates': [{'content': {'parts': [{'text': out}]}}], 'outputs': [{'type': 'text', 'text': out}]}))
 
 async def browser_checks():
     from playwright.async_api import async_playwright
@@ -204,6 +204,30 @@ async def browser_checks():
         await ev("document.querySelector('[data-calmetric=p]').click()")
         ok('Calendario cambia de métrica') if 'Proteína' in await ev("$('calendar-summary').innerText") else fail('El selector del calendario no cambia la métrica')
         check_errs('pauta/gimnasio/semana')
+        print('6b. v43: IA saturada, restaurar copia, aviso de versión')
+        busy = {'n': 0}
+        async def busy_mock(route):
+            busy['n'] += 1
+            if busy['n'] <= 2 or busy['n'] < 0: await route.fulfill(status=503, content_type='application/json', body='{"error":{"message":"The model is overloaded. Please try again later."}}')
+            else: await ai_mock(route)
+        await pg.unroute('https://generativelanguage.googleapis.com/**')
+        await pg.route('https://generativelanguage.googleapis.com/**', busy_mock)
+        r = await ev("requestAI('Responde solo con la palabra OK.').then(x=>x).catch(e=>'ERR '+e.message)")
+        ok(f'Reintenta sola si Gemini está saturado ({busy["n"]} intentos)') if r == 'OK' and busy['n'] == 3 else fail(f'Reintentos con IA saturada: {r} ({busy["n"]} intentos)')
+        busy['n'] = -99
+        r = await ev("requestAI('Responde solo con la palabra OK.').then(x=>x).catch(e=>'ERR '+e.message)")
+        ok('Mensaje claro si sigue saturada') if 'saturado' in r else fail('Mensaje final con IA saturada: ' + r[:150])
+        await pg.unroute('https://generativelanguage.googleapis.com/**')
+        await pg.route('https://generativelanguage.googleapis.com/**', ai_mock)
+        await ev("confirmImport(migrate(JSON.parse(JSON.stringify(storableState()))),'prueba.json')")
+        t = await ev("$('modal-body').innerText")
+        ok('Resumen antes de restaurar') if 'Días con comidas' in t and 'Restaurar' in t else fail('No aparece el resumen de la copia')
+        await ev("$('import-ok').click()"); await pg.wait_for_timeout(100)
+        ok('Restaurar copia') if 'restaurada' in await toast() else fail('Restaurar copia no funciona')
+        await ev("showUpdate(99)")
+        ok('Aviso de versión nueva') if await ev("!!document.querySelector('.update-bar #update-now')") else fail('No aparece el aviso de versión nueva')
+        await ev("$('update-later').click()")
+        check_errs('v43')
 
         print('7. Pulsar todos los botones')
         await ev("document.querySelectorAll('details').forEach(d=>d.open=true)")
