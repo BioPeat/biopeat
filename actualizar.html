@@ -46,6 +46,32 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 <li>Si falla algo en la app: cuéntaselo a la IA como una petición (qué pulsaste, qué esperabas, qué pasó, captura).</li>
 </ul>
 </details>
+<details class="card"><summary><b>💻 Subir versiones con GitHub Desktop (recomendado)</b></summary>
+<p class="muted">Evita subidas a medias: copias los archivos en una carpeta y pulsas dos botones.</p>
+<h2 style="margin-top:12px">Instalar (solo la primera vez)</h2>
+<ol>
+<li>Descarga e instala <b>GitHub Desktop</b> desde desktop.github.com.</li>
+<li>Ábrelo y pulsa <b>Sign in to GitHub.com</b> con tu cuenta.</li>
+<li>Pulsa <b>File → Clone repository</b>, elige <b>BioPeat/biopeat</b> y pulsa <b>Clone</b>. Se crea la carpeta <b>Documentos\GitHub\biopeat</b> en tu ordenador.</li>
+</ol>
+<h2>Cada vez que haya una versión nueva</h2>
+<ol>
+<li>Descomprime el ZIP (o coge el index.html que descargues aquí).</li>
+<li>Copia los archivos dentro de <b>Documentos\GitHub\biopeat</b> y elige <b>Reemplazar</b>.</li>
+<li>En GitHub Desktop verás la lista de cambios. Abajo a la izquierda escribe un resumen (por ejemplo «v43») y pulsa <b>Commit to main</b>.</li>
+<li>Arriba pulsa <b>Push origin</b>. Listo: en 1-2 minutos está publicada.</li>
+</ol>
+<p class="muted">Si Push origin no aparece, pulsa antes <b>Fetch origin</b>.</p>
+</details>
+<details class="card"><summary><b>🤖 Qué subir al Gem de Gemini y al proyecto de Claude tras cada versión</b></summary>
+<ul>
+<li><b>Siempre:</b> CONTEXTO_BIOPEAT.md y MAPA_DEL_CODIGO.md (borra los viejos y sube los nuevos).</li>
+<li><b>Solo si cambia:</b> AGENTS.md (lo dirá el mensaje de la versión).</li>
+<li><b>Nunca:</b> index.html. Se lo das en cada chat con el Paso 1 de esta página, así siempre trabaja sobre la versión real.</li>
+<li>Las instrucciones del Gem y del proyecto no se tocan.</li>
+</ul>
+<p class="muted">Comprobación: chat nuevo → «¿Qué versión es la actual?». Debe contestar la versión que ves en la app.</p>
+</details>
 <div class="card"><h2>Paso 1 · Archivo para tu IA</h2>
 <p id="cur" class="muted">Cargando la versión actual…</p>
 <button class="btn slate" id="dl-gemini">⬇ Descargar archivo completo (Gemini)</button>
@@ -81,7 +107,7 @@ $('pick').onchange=async e=>{const f=e.target.files[0];if(f)setCurrent(await f.t
 function download(name,text,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:type+';charset=utf-8'}));a.download=name;document.body.append(a);a.click();a.remove();}
 $('dl-gemini').onclick=()=>{if(!current)return alert('Primero carga index.html');download('BioPeat_actual_'+((current.match(/APP_VERSION='(v\d+)'/)||[])[1]||'')+'.txt',current);};
 // Versión ligera para Claude: sin el CSS (la mayor parte del peso). Todo lo demás es literal, así que los BUSCAR siguen valiendo.
-function lightVersion(t){const a=t.indexOf('<style id="app-style">');if(a<0)return t;const s=a+'<style id="app-style">'.length,e=t.indexOf('</style>',s);return t.slice(0,s)+'\n/* [CSS OMITIDO para ahorrar espacio: '+Math.round((e-s)/1024)+' KB. No lo busques. Para estilos nuevos usa BUSCAR «</style><meta content="#26374d"» y pon tu CSS delante.] */\n'+t.slice(e);}
+function lightVersion(t){const a=t.indexOf('<style id="app-style">');if(a<0)return t;const s=a+'<style id="app-style">'.length,e=t.indexOf('</style>',s);return t.slice(0,s)+'\n/* [CSS OMITIDO para ahorrar espacio: '+Math.round((e-s)/1024)+' KB. No lo busques. Para estilos nuevos usa BUSCAR «</style><meta content="#16243a"» y pon tu CSS delante.] */\n'+t.slice(e);}
 $('dl-light').onclick=()=>{if(!current)return alert('Primero carga index.html');download('BioPeat_ligero_'+((current.match(/APP_VERSION='(v\d+)'/)||[])[1]||'')+'.txt',lightVersion(current));};
 
 // Formato de Gemini:  @@@ BUSCAR n  ...  @@@ CAMBIAR POR  ...  @@@ FIN

@@ -1,6 +1,6 @@
 # CONTEXTO · BioPeat Diego
 
-**Versión actual: v42** (revisión de datos 23)
+**Versión actual: v43** (revisión de datos 23)
 
 Documento maestro. Lo lee la IA que programa BioPeat (Gemini «BioPeat Dev» o Claude). Los cambios se entregan en bloques `@@@` y los aplica y prueba `actualizar.html`. **Se actualiza sustituyendo el texto de cada apartado, nunca añadiendo apartados nuevos al final.** Si algo de aquí contradice al código, manda el código; avisa de la diferencia.
 
@@ -73,12 +73,13 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **Tu pauta:** las tomas de hoy por momento del día (se suman solas; tocar = no tomada hoy), «+ Toma extra», «Lo que te aporta tu pauta» (qué parte de cada meta cubren los suplementos frente a la comida) y el editor de la pauta habitual plegado.
 - **Semana:** 4 preguntas numeradas: 1 ¿Cómo voy? (media diaria de los días con comidas frente a la meta, 4 anillos y una frase), 2 Día a día (7 barras de energía; tocar = ficha del día), 3 ¿Qué me falta? (micros por debajo del 90 %, micros por encima de su máximo y 3 equilibrios; los 25 plegados), 4 ¿Voy mejorando? (8 semanas). Debajo, el **calendario**: selector Energía/Proteína/Hidratos/Grasa, media del mes, tendencia (últimos 7 días frente a los 7 anteriores), gráfico de línea del mes y cuadrícula con color por día (verde en rango, ámbar por debajo, violeta por encima, gris sin datos) y 3 barritas de macros; tocar un día = ficha rápida. Opciones de cálculo y tablas, plegadas al final.
 - **Gimnasio:** importación CSV de HEVY, progresión por peso y repeticiones, 1RM (Epley), récords, volumen, reparto muscular, constancia, nutrición en días de entreno, análisis con IA.
-- **Más → Ajustes:** perfil, metas, conexión IA, notas para la IA (+ «Aplicar instrucciones con IA»), estado de la app, copias JSON/HTML.
+- **Más → Ajustes:** perfil, metas, conexión IA, notas para la IA (+ «Aplicar instrucciones con IA»), estado de la app, copias JSON/HTML (en el móvil se comparten; al restaurar se ve un resumen antes).
+- **Avisos:** «Hay una versión nueva» al volver a la app si GitHub tiene una más reciente; aviso sin conexión.
 
 ## 7. Conexión con IA (no tocar sin pedirlo)
 - Clave de Gemini API del propio Diego, guardada solo en el móvil si marca «Recordar». **Nunca pongas claves en el código.**
 - POST `https://generativelanguage.googleapis.com/v1beta/models/{modelo}:generateContent` (API estable) con `thinkingConfig.thinkingLevel: 'low'` para responder rápido. Funciones: `callGemini()` y `requestAI()`.
-- Modelo por defecto `gemini-3.8-flash`. Si tarda más de 30 s (foto) o 20 s (texto), o da 429/404/5xx, `requestAI()` reintenta solo con `gemini-3.1-flash-lite` (`AI_FALLBACK`). Tiempo máximo total de una foto: 65 s. «Probar conexión» elige automáticamente el modelo que responde.
+- Modelo por defecto gemini-3.8-flash. requestAI() prueba en orden: modelo elegido ×2 y gemini-3.1-flash-lite (AI_FALLBACK) ×2, esperando entre intentos. Si un intento tarda más de 30 s (foto) o 20 s (texto) salta directo al modelo rápido. Saturación (429/503, AI_BUSY) → reintento con espera y, al final, mensaje claro. Tiempo máximo total de una foto: 65 s. «Probar conexión» elige el modelo que responde.
 - Foto: se reduce a 1.600 px (JPG 0,88) y se analiza componente a componente con `photoPrompt()` (usa los 40 alimentos más habituales de Mi despensa).
 - Formato de importación: `BIOPEAT:{...}` o `BIOPEAT:[{...}]` con meal, name, grams, kcal, p, c, f, pufa y los 25 micros. Lo desconocido se omite o va como null, nunca 0.
 - Claves de los 25 micros: vitA, vitD, vitE, vitK, vitC, b1, b2, b3, b5, b6, b7, b9, b12, colina, ca, phos, mg, k, na, fe, zn, cu, se, i, mn.
@@ -99,6 +100,7 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - Migraciones: `migrate()` → `migrateBase` + `upgradeToNN`. Cada `upgradeToNN` se ejecuta una sola vez comprobando `o.appRevision`.
 
 ## 10. Historial (una línea por versión, máximo 8)
+- **v43 · Copilot:** la IA reintenta sola si Gemini está saturado (2 intentos con el modelo elegido y 2 con el rápido, con espera) y da un mensaje claro; aviso «Hay una versión nueva»; restaurar copia muestra antes un resumen; en el móvil la copia se comparte (WhatsApp, Drive…); aviso sin conexión; prueba automática en GitHub (.github/workflows/check.yml).
 - **v42 · Copilot:** logo nuevo (B dorada en línea con una P dorada maciza dentro y punto dorado, fondo azul noche), iconos PNG reales para el móvil (normal y maskable) y tema de la app en azul noche y dorado.
 - **v38-v41 · Claude/Gemini:** primeros logos B+P y botón para descargar los iconos.
 - **v37 · Copilot:** IA rápida y fiable: API estable, razonamiento bajo, respaldo automático a gemini-3.1-flash-lite si tarda, «Probar conexión» elige el modelo que funciona. Flujo nuevo: la IA entrega bloques `@@@` y `actualizar.html` los prueba (sin Jules).
@@ -106,7 +108,6 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **v35 · Copilot:** el día anterior se marca completo al añadir comida; foto por ingredientes con despensa, contador y errores claros.
 - **v34 · Copilot:** equilibrio del día fácil de entender (semáforo, frase, porqué Peat y alimentos exactos para corregirlo); «Tu pauta» simplificada (se suma sola, tocar = no tomada) con «Lo que te aporta tu pauta»; Semana en 4 preguntas; calendario con métrica elegible, media, tendencia y ficha rápida del día.
 - **v33 · Copilot:** reparación de v30-v32. Arreglado: no se leían los macros y casi nada se guardaba (las metas se borraban en cada arranque); las metas personales se perdían al recargar; la pauta salía toda en «Otros»; el formulario de objetivos ignoraba los macros; tarjetas de nutrientes que abrían dos ventanas; A:D y Zn:Cu abrían la ventana equivocada; «Atrás» podía sacar de la app; textos como «2 platanos» o «y 100 g» no se reconocían. Plan por defecto 145/75 y 130/65. Repositorio limpio, prueba automática y reglas nuevas para agentes.
-- **v30-v32 · Jules:** perfil Peat/Dinkov, simulador Ca:P y C:P, tanques de 7 días, vista resumen, 1RM Epley.
 
 ## 11. Pendiente / ideas
 - Unificar las capas de CSS sin cambiar el aspecto (hay reglas repetidas de varias versiones).
