@@ -9,3 +9,4 @@ App personal de nutrición (enfoque Ray Peat / Georgi Dinkov) en un solo archivo
 - **Prueba completa:** `python tests/smoke.py` (opcional, en ordenador)
 
 Los datos de Diego viven solo en su móvil. Nunca se suben aquí.
+ 
