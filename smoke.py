@@ -25,7 +25,7 @@ def ok(msg):
     print('  ✓', msg)
 
 # ---------- 1. Comprobaciones estáticas (sin navegador) ----------
-ALLOWED = {'index.html', 'actualizar.html', 'manifest.json', 'sw.js', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png',
+ALLOWED = {'index.html', 'manifest.json', 'sw.js', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png',
            'AGENTS.md', 'CONTEXTO_BIOPEAT.md', 'MAPA_DEL_CODIGO.md', 'README.md', '.gitignore',
            'tests/smoke.py', 'tests/datos_prueba.json', 'tools/mapa.py', '.github/workflows/check.yml'}
 
@@ -75,12 +75,12 @@ def serve(port):
 
 async def ai_mock(route):
     body = json.loads(route.request.post_data or '{}')
-    txt = body['contents'][0]['parts'][0]['text']
+    txt = body['contents'][0]['parts'][0]['text'] if 'contents' in body else body['input'][0]['text']
     if 'Responde solo con la palabra OK' in txt: out = 'OK'
     elif 'BIOPEAT_CONFIG' in txt: out = '{"profile":{"weight":78},"summary":"Peso 78"}'
     elif 'BIOPEAT:' in txt: out = 'BIOPEAT:[{"meal":"Comida","name":"Lentejas prueba","grams":300,"kcal":350,"p":20,"c":50,"f":6,"pufa":1.2}]'
     else: out = 'Un vaso de leche y un plátano.'
-    await route.fulfill(status=200, content_type='application/json', body=json.dumps({'candidates': [{'content': {'parts': [{'text': out}]}}]}))
+    await route.fulfill(status=200, content_type='application/json', body=json.dumps({'candidates': [{'content': {'parts': [{'text': out}]}}], 'outputs': [{'type': 'text', 'text': out}]}))
 
 async def browser_checks():
     from playwright.async_api import async_playwright

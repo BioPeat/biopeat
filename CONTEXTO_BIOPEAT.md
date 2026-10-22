@@ -1,6 +1,6 @@
 # CONTEXTO · BioPeat Diego
 
-**Versión actual: v37** (revisión de datos 23)
+**Versión actual: v42** (revisión de datos 23)
 
 Documento maestro. Lo lee la IA que programa BioPeat (Gemini «BioPeat Dev» o Claude). Los cambios se entregan en bloques `@@@` y los aplica y prueba `actualizar.html`. **Se actualiza sustituyendo el texto de cada apartado, nunca añadiendo apartados nuevos al final.** Si algo de aquí contradice al código, manda el código; avisa de la diferencia.
 
@@ -95,16 +95,18 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - Un solo listener de clic: cada sección registra el suyo con `onClick(fn)`.
 - Piezas reutilizables (v34): `ratioInfo(clave)` + `ratioFixes()` (equilibrios), `dayCard(fecha)` (ficha rápida de un día), `monthStats()` + `sparkline()` (tendencias), `macroTone(%)` (colores ok/low/high/none).
 - Metas: `targetFor(fecha)` / `dayGoal()` / `goalsFor(fecha)`. No se guardan metas calculadas en los días; solo el ajuste manual `days[fecha].macroGoals`.
+- Logo: SVG dentro de `.brand-icon` (ids bp-bg, bp-rim, bp-mark). Iconos del móvil: icon-192.png, icon-512.png e icon-maskable-512.png (Ajustes → «Descargar iconos» los regenera desde el SVG). Colores: azul noche (#16243a) y dorado (#e9bf5c, variables --gold y --gold-soft); verde, ámbar y violeta siguen siendo los colores de estado.
 - Migraciones: `migrate()` → `migrateBase` + `upgradeToNN`. Cada `upgradeToNN` se ejecuta una sola vez comprobando `o.appRevision`.
 
 ## 10. Historial (una línea por versión, máximo 8)
+- **v42 · Copilot:** logo nuevo (B dorada en línea con una P dorada maciza dentro y punto dorado, fondo azul noche), iconos PNG reales para el móvil (normal y maskable) y tema de la app en azul noche y dorado.
+- **v38-v41 · Claude/Gemini:** primeros logos B+P y botón para descargar los iconos.
 - **v37 · Copilot:** IA rápida y fiable: API estable, razonamiento bajo, respaldo automático a gemini-3.1-flash-lite si tarda, «Probar conexión» elige el modelo que funciona. Flujo nuevo: la IA entrega bloques `@@@` y `actualizar.html` los prueba (sin Jules).
 - **v36 · Gemini:** el botón del plan Peat por defecto indica si ya lo usas.
 - **v35 · Copilot:** el día anterior se marca completo al añadir comida; foto por ingredientes con despensa, contador y errores claros.
 - **v34 · Copilot:** equilibrio del día fácil de entender (semáforo, frase, porqué Peat y alimentos exactos para corregirlo); «Tu pauta» simplificada (se suma sola, tocar = no tomada) con «Lo que te aporta tu pauta»; Semana en 4 preguntas; calendario con métrica elegible, media, tendencia y ficha rápida del día.
 - **v33 · Copilot:** reparación de v30-v32. Arreglado: no se leían los macros y casi nada se guardaba (las metas se borraban en cada arranque); las metas personales se perdían al recargar; la pauta salía toda en «Otros»; el formulario de objetivos ignoraba los macros; tarjetas de nutrientes que abrían dos ventanas; A:D y Zn:Cu abrían la ventana equivocada; «Atrás» podía sacar de la app; textos como «2 platanos» o «y 100 g» no se reconocían. Plan por defecto 145/75 y 130/65. Repositorio limpio, prueba automática y reglas nuevas para agentes.
 - **v30-v32 · Jules:** perfil Peat/Dinkov, simulador Ca:P y C:P, tanques de 7 días, vista resumen, 1RM Epley.
-- **v25-v29 · Copilot/Jules:** gimnasio HEVY, recomendación del día, depósitos, despensa automática, foto con IA.
 
 ## 11. Pendiente / ideas
 - Unificar las capas de CSS sin cambiar el aspecto (hay reglas repetidas de varias versiones).
