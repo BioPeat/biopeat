@@ -1,17 +1,27 @@
-# Prueba automática de BioPeat en cada subida. Resultado en la pestaña Actions:
-# ✓ verde = la app arranca y todo funciona · ✗ rojo = algo se ha roto (abre la tarea para ver qué).
-# No afecta a la publicación ni a tus datos.
+# En cada subida: 1) pone en CONTEXTO_BIOPEAT.md la versión de index.html (solo),
+# 2) prueba la app entera. ✓ verde = todo bien · ✗ rojo = algo se ha roto.
 name: Prueba BioPeat
 on:
   push:
     branches: [main]
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   prueba:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - name: Poner la versión en CONTEXTO automáticamente
+        run: |
+          python3 tools/sincronizar_version.py
+          if ! git diff --quiet; then
+            git config user.name "BioPeat bot"
+            git config user.email "bot@users.noreply.github.com"
+            git commit -am "Versión de CONTEXTO actualizada sola"
+            git push
+          fi
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
