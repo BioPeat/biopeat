@@ -26,7 +26,7 @@ def ok(msg):
 
 # ---------- 1. Comprobaciones estáticas (sin navegador) ----------
 ALLOWED = {'index.html', 'manifest.json', 'sw.js', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png',
-           'AGENTS.md', 'CONTEXTO_BIOPEAT.md', 'MAPA_DEL_CODIGO.md', 'README.md', '.gitignore',
+           'AGENTS.md', 'CONTEXTO_BIOPEAT.md', 'MAPA_DEL_CODIGO.md', 'README.md', 'tools/sincronizar_version.py',
            'tests/smoke.py', 'tests/datos_prueba.json', 'tools/mapa.py', '.github/workflows/check.yml', 'actualizar.html'}
 
 def static_checks():
@@ -228,6 +228,23 @@ async def browser_checks():
         ok('Aviso de versión nueva') if await ev("!!document.querySelector('.update-bar #update-now')") else fail('No aparece el aviso de versión nueva')
         await ev("$('update-later').click()")
         check_errs('v43')
+        print('6c. v49: grasa saturada, ¿Qué me falta?, depósitos')
+        await ev("goDate('" + DAY + "')")
+        r = await ev("(()=>{const t=totals();return {f:t.all.f,sat:t.all.satFat,fc:t.all.fc,w:SAT_W,ring:$('macro-progress-grid').innerText}})()")
+        ok('La grasa saturada cuenta menos: %.1f g en total → %.1f g para la meta' % (r['f'], r['fc'])) if r['sat'] > 0 and abs(r['fc'] - (r['f'] - (1 - r['w']) * r['sat'])) < 0.01 and r['fc'] < r['f'] else fail('Grasa que cuenta incorrecta: ' + str(r))
+        ok('El anillo de grasa avisa del total') if 'en total' in r['ring'] else fail('El anillo de grasa no explica el total: ' + r['ring'][:120])
+        r = await ev("(()=>{renderWeekly();const b=$('week-gaps');return {cards:b.querySelectorAll('.gap-card').length,good:!!b.querySelector('.wk-good'),txt:b.innerText.slice(0,200)}})()")
+        ok('¿Qué me falta? se dibuja') if r['cards'] > 0 or r['good'] else fail('¿Qué me falta? vacío: ' + r['txt'])
+        n0 = await ev("day().entries.length")
+        clicked = await ev("(()=>{const b=document.querySelector('#week-gaps .gap-fix');if(!b)return false;b.click();return true;})()")
+        if clicked:
+            await pg.wait_for_timeout(150)
+            ok('Un alimento de ¿Qué me falta? se añade con un toque') if await ev("day().entries.length") == n0 + 1 else fail('El alimento sugerido no se añadió')
+        else: ok('¿Qué me falta? sin sugerencias para estos datos (nada que añadir)')
+        r = await ev("(()=>{const d=localDate(),a=rollingMicro('vitD',d);return {open:a.open,band:MICRO_BANDS.i,closed:!!state.days[d]?.complete}})()")
+        ok('Hoy sin cerrar no cuenta en el depósito de 7 días') if (r['open'] and not r['closed']) or (not r['open'] and r['closed']) else fail('Depósito de 7 días: día abierto mal detectado: ' + str(r))
+        ok('Yodo con banda óptima 100-225') if r['band'] == [100, 225] else fail('Banda de yodo incorrecta')
+        check_errs('v49')
 
         print('7. Pulsar todos los botones')
         await ev("document.querySelectorAll('details').forEach(d=>d.open=true)")

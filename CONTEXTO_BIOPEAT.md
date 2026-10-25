@@ -1,6 +1,6 @@
 # CONTEXTO · BioPeat Diego
 
-**Versión actual: v48** (revisión de datos 23)
+**Versión actual: v49** (revisión de datos 23)
 
 Documento maestro. Lo lee la IA que programa BioPeat (Gemini «BioPeat Dev» o Claude). Los cambios se entregan en bloques `@@@` y los aplica y prueba `actualizar.html`. **Se actualiza sustituyendo el texto de cada apartado, nunca añadiendo apartados nuevos al final.** Si algo de aquí contradice al código, manda el código; avisa de la diferencia.
 
@@ -59,7 +59,8 @@ La B1 se muestra aparte: mg de benfotiamina frente a su pauta; la tiamina de los
 ## 5. Reglas Peat / Dinkov de la app
 - **PUFA ≤ 4 g/día** (es un máximo, no una meta). **Ca:P ≥ 1,20**. Calcio 2.000 mg. **Hierro ≤ 14 mg** (límite).
 - Selenio óptimo 100-200 µg; vitamina A ≤ 3.800 µg; yodo ≤ 225 µg; A:D 2-4 : 1; Zn:Cu ~10 : 1.
-- **Depósitos (media de 7 días):** A, D, E, B12, folato, selenio, yodo, cobre y hierro. Los días sin registro cuentan 0. El resto son diarios.
+- **Depósitos (media de 7 días):** A, D, E, B12, folato, selenio, yodo, cobre y hierro. Los días sin registro cuentan 0; el día de hoy no cuenta hasta marcarlo completo (se mide con los 7 días cerrados hasta ayer). Bandas óptimas: selenio 100-200 µg, yodo 100-225 µg; máximos: vitamina A 3.800 µg y hierro 14 mg (personales). El resto son diarios.
+- **Grasa saturada:** para la meta de grasa cuenta ×0,5 (`SAT_W`), por ser la grasa que mejor encaja con Peat (coco, mantequilla, lácteos); el PUFA es lo que se vigila. La energía (kcal) cuenta todo.
 - Alimentos preferidos para sugerir: leche, queso, zumo de naranja, fruta madura, miel/azúcar, patata, arroz, huevos, marisco, gelatina, carne con caldo. Evitar aceites vegetales.
 - **No inventes cifras atribuidas a Peat.** Donde no hay cifra suya, se usa la meta personal.
 
@@ -71,7 +72,7 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **Registro:** buscador, grupos por comida, − / + / ✎ / ×, deshacer, probar una ración, reparto de energía y tipos de grasa.
 - **Tus nutrientes:** tres bloques (Escudo Peat: PUFA y hierro · Diarios · Tanques de 7 días), tarjetas o mapa, filtros.
 - **Tu pauta:** las tomas de hoy por momento del día (se suman solas; tocar = no tomada hoy), «+ Toma extra», «Lo que te aporta tu pauta» (qué parte de cada meta cubren los suplementos frente a la comida) y el editor de la pauta habitual plegado.
-- **Semana:** 4 preguntas numeradas: 1 ¿Cómo voy? (media diaria de los días con comidas frente a la meta, 4 anillos y una frase), 2 Día a día (7 barras de energía; tocar = ficha del día), 3 ¿Qué me falta? (micros por debajo del 90 %, micros por encima de su máximo y 3 equilibrios; los 25 plegados), 4 ¿Voy mejorando? (8 semanas). Debajo, el **calendario**: selector Energía/Proteína/Hidratos/Grasa, media del mes, tendencia (últimos 7 días frente a los 7 anteriores), gráfico de línea del mes y cuadrícula con color por día (verde en rango, ámbar por debajo, violeta por encima, gris sin datos) y 3 barritas de macros; tocar un día = ficha rápida. Opciones de cálculo y tablas, plegadas al final.
+- **Semana:** 4 preguntas numeradas: 1 ¿Cómo voy? (media diaria de los días con comidas frente a la meta, 4 anillos y una frase), 2 Día a día (7 barras de energía; tocar = ficha del día), 3 ¿Qué me falta? (los 3 micros con más hueco, con alimentos de tu despensa que se añaden con un toque y el % que cubren; «Ver más»; solo avisa de equilibrios fuera de rango o máximos superados; los 25 plegados), 4 ¿Voy mejorando? (8 semanas). Debajo, el **calendario**: selector Energía/Proteína/Hidratos/Grasa, media del mes, tendencia (últimos 7 días frente a los 7 anteriores), gráfico de línea del mes y cuadrícula con color por día (verde en rango, ámbar por debajo, violeta por encima, gris sin datos) y 3 barritas de macros; tocar un día = ficha rápida. Opciones de cálculo y tablas, plegadas al final.
 - **Gimnasio:** importación CSV de HEVY, progresión por peso y repeticiones, 1RM (Epley), récords, volumen, reparto muscular, constancia, nutrición en días de entreno, análisis con IA.
 - **Más → Ajustes:** perfil, metas, conexión IA, notas para la IA (+ «Aplicar instrucciones con IA»), estado de la app, copias JSON/HTML (en el móvil se comparten; al restaurar se ve un resumen antes).
 - **Avisos:** «Hay una versión nueva» al volver a la app si GitHub tiene una más reciente; aviso sin conexión.
@@ -100,6 +101,7 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - Migraciones: `migrate()` → `migrateBase` + `upgradeToNN`. Cada `upgradeToNN` se ejecuta una sola vez comprobando `o.appRevision`.
 
 ## 10. Historial (una línea por versión, máximo 8)
+- **v49 · Copilot:** la grasa saturada cuenta ×0,5 para la meta de grasa (constante `SAT_W`; la meta no cambia y los kcal cuentan todo); «¿Qué me falta?» de Semana rehecho (3 micros que más faltan con alimentos que se añaden con un toque, equilibrios solo si están fuera de rango); depósitos de 7 días: hoy no cuenta hasta cerrar el día, yodo con banda óptima 100-225 µg y notas Peat/Dinkov revisadas; `actualizar.html` localiza bloques con espacios o comillas distintos, indica bloque/línea/columna de los errores de escritura y admite correcciones parciales; GitHub regenera solo la versión de CONTEXTO y el MAPA.
 - **v43 · Copilot:** la IA reintenta sola si Gemini está saturado (2 intentos con el modelo elegido y 2 con el rápido, con espera) y da un mensaje claro; aviso «Hay una versión nueva»; restaurar copia muestra antes un resumen; en el móvil la copia se comparte (WhatsApp, Drive…); aviso sin conexión; prueba automática en GitHub (.github/workflows/check.yml).
 - **v42 · Copilot:** logo nuevo (B dorada en línea con una P dorada maciza dentro y punto dorado, fondo azul noche), iconos PNG reales para el móvil (normal y maskable) y tema de la app en azul noche y dorado.
 - **v38-v41 · Claude/Gemini:** primeros logos B+P y botón para descargar los iconos.
@@ -107,7 +109,6 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **v36 · Gemini:** el botón del plan Peat por defecto indica si ya lo usas.
 - **v35 · Copilot:** el día anterior se marca completo al añadir comida; foto por ingredientes con despensa, contador y errores claros.
 - **v34 · Copilot:** equilibrio del día fácil de entender (semáforo, frase, porqué Peat y alimentos exactos para corregirlo); «Tu pauta» simplificada (se suma sola, tocar = no tomada) con «Lo que te aporta tu pauta»; Semana en 4 preguntas; calendario con métrica elegible, media, tendencia y ficha rápida del día.
-- **v33 · Copilot:** reparación de v30-v32. Arreglado: no se leían los macros y casi nada se guardaba (las metas se borraban en cada arranque); las metas personales se perdían al recargar; la pauta salía toda en «Otros»; el formulario de objetivos ignoraba los macros; tarjetas de nutrientes que abrían dos ventanas; A:D y Zn:Cu abrían la ventana equivocada; «Atrás» podía sacar de la app; textos como «2 platanos» o «y 100 g» no se reconocían. Plan por defecto 145/75 y 130/65. Repositorio limpio, prueba automática y reglas nuevas para agentes.
 
 ## 11. Pendiente / ideas
 - Unificar las capas de CSS sin cambiar el aspecto (hay reglas repetidas de varias versiones).

@@ -1,5 +1,6 @@
-# En cada subida: 1) pone en CONTEXTO_BIOPEAT.md la versión de index.html (solo),
-# 2) prueba la app entera. ✓ verde = todo bien · ✗ rojo = algo se ha roto.
+# En cada subida: 1) pone en CONTEXTO_BIOPEAT.md la versión de index.html y regenera
+# MAPA_DEL_CODIGO.md (solo si cambian), 2) prueba la app entera.
+# ✓ verde = todo bien · ✗ rojo = algo se ha roto (abre la tarea para ver qué).
 name: Prueba BioPeat
 on:
   push:
@@ -13,13 +14,14 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Poner la versión en CONTEXTO automáticamente
+      - name: Actualizar versión de CONTEXTO y MAPA automáticamente
         run: |
           python3 tools/sincronizar_version.py
+          python3 tools/mapa.py
           if ! git diff --quiet; then
             git config user.name "BioPeat bot"
             git config user.email "bot@users.noreply.github.com"
-            git commit -am "Versión de CONTEXTO actualizada sola"
+            git commit -am "CONTEXTO y MAPA actualizados solos"
             git push
           fi
       - uses: actions/setup-python@v5

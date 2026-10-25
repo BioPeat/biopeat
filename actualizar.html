@@ -31,8 +31,8 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 <li><b>Paso 1:</b> Gemini → «Descargar archivo completo». Claude → «Descargar archivo ligero» (sin estilos, gasta menos límite).</li>
 <li>Abre «BioPeat Dev» (Gem o proyecto de Claude), <b>empieza un chat nuevo</b>, adjunta ese archivo y escribe lo que quieres, como si se lo dijeras a una persona. Puedes pedir varias cosas a la vez.</li>
 <li>Cuando responda, pulsa «Copiar» en su respuesta (copia TODA) y pégala en el <b>Paso 2</b>. Pulsa «Aplicar y comprobar».</li>
-<li><b>Si sale ✗ rojo:</b> «Copiar mensaje del error» → pégalo en el mismo chat → copia su nueva respuesta → bórrala del Paso 2, pega la nueva y vuelve a comprobar.</li>
-<li><b>Si sale ✓ verde:</b> «Copiar texto para la REVISIÓN» → pégalo en el mismo chat. Si la IA contesta «❌ HAY QUE CORREGIR», trata su respuesta como una nueva (vuelve al punto 3).</li>
+<li><b>Si sale ✗ rojo:</b> «Copiar mensaje del error» (incluye el bloque, la línea y el trozo de código que falla) → pégalo en el mismo chat → copia su nueva respuesta → bórrala del Paso 2, pega la nueva y vuelve a comprobar. Si solo trae los bloques corregidos, la página los combina con los anteriores.</li>
+<li><b>Si sale ✓ verde:</b> para cambios pequeños puedes subirlo directamente. Para cambios grandes: «Copiar texto para la REVISIÓN» → pégalo en el mismo chat. Si la IA contesta «❌ HAY QUE CORREGIR», trata su respuesta como una nueva (vuelve al punto 3).</li>
 <li>Con <b>✅ APROBADO</b>: pulsa «Descargar index.html nuevo» y «Guardar también la versión anterior».</li>
 <li>En GitHub: Add file → Upload files → arrastra el <b>index.html</b> nuevo → Commit changes. Espera 1-2 minutos.</li>
 <li>Abre la app, recarga, mira que en Más → Ajustes → Estado de la app sale la versión nueva y haz la prueba que te dijo la IA.</li>
@@ -79,7 +79,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 <label class="muted">¿No carga sola? Elige index.html a mano: <input type="file" id="pick" accept=".html,.txt"></label>
 </div>
 
-<div class="card"><h2>Paso 2 · Pega la respuesta COMPLETA de tu IA</h2><p class="muted">Antes: adjunta el archivo del Paso 1 en un chat nuevo de «BioPeat Dev» y escribe lo que quieres.</p>
+<div class="card"><h2>Paso 2 · Pega la respuesta de tu IA</h2><p class="muted">Antes: adjunta el archivo del Paso 1 en un chat nuevo de «BioPeat Dev» y escribe lo que quieres. Vale copiar el bloque de código con su botón «Copiar» o toda la respuesta. Si la IA te manda solo los bloques corregidos («@@@ SOLO CORREGIDOS»), pégalos tal cual: se combinan con los anteriores.</p>
 <textarea id="patch" placeholder="Pega aquí toda la respuesta de la IA (con los bloques @@@)"></textarea>
 <label class="muted"><input type="checkbox" id="usedata" checked> Probar también con una copia de mis datos (recomendado)</label>
 <button class="btn amber" id="run">Aplicar y comprobar</button>
@@ -99,7 +99,8 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 "use strict";
 const $=id=>document.getElementById(id);
 const PROTECTED=["STORE='biopeat_pro_v10'","compare17","workouts18","favorites22","microTargets17","goalOrigin17","ratioGoals17","function migrate(","function render(","function storableState("];
-let current='',result=null,errText='',reviewText='';
+let current='',result=null,errText='',errExtra='',reviewText='';
+let prevBlocks=[];try{prevBlocks=JSON.parse(sessionStorage.getItem('bp_blocks')||'[]');}catch(e){}
 
 function setCurrent(t,src){current=t;const v=(t.match(/APP_VERSION='(v\d+)'/)||[])[1]||'¿?';$('cur').innerHTML='Versión actual: <b>'+v+'</b> · '+src+' · '+Math.round(t.length/1024)+' KB';}
 fetch('index.html?'+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.text();}).then(t=>setCurrent(t,'cargada de tu web')).catch(()=>{$('cur').innerHTML='<span class="warn">No se pudo cargar sola. Elige index.html abajo.</span>';$('guia').open=true;});
@@ -107,16 +108,28 @@ $('pick').onchange=async e=>{const f=e.target.files[0];if(f)setCurrent(await f.t
 function download(name,text,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:type+';charset=utf-8'}));a.download=name;document.body.append(a);a.click();a.remove();}
 $('dl-gemini').onclick=()=>{if(!current)return alert('Primero carga index.html');download('BioPeat_actual_'+((current.match(/APP_VERSION='(v\d+)'/)||[])[1]||'')+'.txt',current);};
 // Versión ligera para Claude: sin el CSS (la mayor parte del peso). Todo lo demás es literal, así que los BUSCAR siguen valiendo.
-function lightVersion(t){const a=t.indexOf('<style id="app-style">');if(a<0)return t;const s=a+'<style id="app-style">'.length,e=t.indexOf('</style>',s);return t.slice(0,s)+'\n/* [CSS OMITIDO para ahorrar espacio: '+Math.round((e-s)/1024)+' KB. No lo busques. Para estilos nuevos usa BUSCAR «</style><meta content="#16243a"» y pon tu CSS delante.] */\n'+t.slice(e);}
+function lightVersion(t){const a=t.indexOf('<style id="app-style">');if(a<0)return t;const s=a+'<style id="app-style">'.length,e=t.indexOf('</style>',s);return t.slice(0,s)+'\n/* [CSS OMITIDO para ahorrar espacio: '+Math.round((e-s)/1024)+' KB. No lo busques. Para estilos nuevos usa BUSCAR «</style><!--FIN-CSS-->» y pon tu CSS delante.] */\n'+t.slice(e);}
 $('dl-light').onclick=()=>{if(!current)return alert('Primero carga index.html');download('BioPeat_ligero_'+((current.match(/APP_VERSION='(v\d+)'/)||[])[1]||'')+'.txt',lightVersion(current));};
 
-// Formato de Gemini:  @@@ BUSCAR n  ...  @@@ CAMBIAR POR  ...  @@@ FIN
+// Formato de Gemini:  @@@ BUSCAR n  ...  @@@ CAMBIAR POR  ...  @@@ FIN   (admite ``` alrededor y «@@@ SOLO CORREGIDOS»)
+function unfence(s){return s.replace(/^\s*```[a-zA-Z]*[ \t]*\n/,'').replace(/\n[ \t]*```\s*$/,'');}
 function parse(txt){
   txt=txt.replace(/\r\n/g,'\n');
-  const re=/@@@ BUSCAR[^\n]*\n([\s\S]*?)\n@@@ CAMBIAR POR[^\n]*\n([\s\S]*?)\n?@@@ FIN/g,out=[];let m;
-  while((m=re.exec(txt)))out.push({find:m[1],repl:m[2]});
+  const re=/@@@ BUSCAR[ \t]*(\d*)[^\n]*\n([\s\S]*?)\n@@@ CAMBIAR POR[^\n]*\n([\s\S]*?)\n?@@@ FIN/g,out=[];let m,i=0;
+  while((m=re.exec(txt))){i++;out.push({n:m[1]?Number(m[1]):i,find:unfence(m[2]),repl:unfence(m[3])});}
+  out.partial=/^[ \t]*@@@ SOLO CORREGIDOS/mi.test(txt);
   return out;
 }
+// Si el texto a buscar no es idéntico (espacios, sangrías, comillas «curvas»), lo localiza igualmente cuando solo hay una coincidencia.
+function flexMatches(hay,needle){
+  const n=needle.trim();if(n.length<6)return [];
+  const esc=c=>c.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  const parts=n.split(/\s+/).map(p=>Array.from(p).map(c=>/['\u2018\u2019]/.test(c)?"['\u2018\u2019]":/["\u201C\u201D]/.test(c)?'["\u201C\u201D]':esc(c)).join(''));
+  let re;try{re=new RegExp(parts.join('\\s+'),'g');}catch(e){return [];}
+  const out=[];let m;while((m=re.exec(hay))&&out.length<5)out.push([m.index,m.index+m[0].length]);return out;
+}
+const lineNo=(t,i)=>t.slice(0,i).split('\n').length;
+function occurrences(t,n){const out=[];let i=0;while(out.length<4&&(i=t.indexOf(n,i))>=0){out.push(lineNo(t,i));i+=n.length;}return out;}
 const count=(h,n)=>{let c=0,i=0;if(!n)return 0;while((i=h.indexOf(n,i))>=0){c++;i+=n.length;}return c;};
 const ver=t=>Number((t.match(/APP_VERSION='v(\d+)'/)||[])[1]||0);
 const rev=t=>Number((t.match(/APP_REVISION=(\d+)/)||[])[1]||0);
@@ -156,17 +169,72 @@ function runInSandbox(html,seed){
   });
 }
 
+
+// Diagnóstico de un error de escritura: qué bloque lo provoca, en qué línea y columna, y una pista.
+function syntaxHint(m){
+  if(/missing \) after argument list/i.test(m))return 'Falta cerrar un paréntesis ) de una llamada, o hay una comilla o un backtick sin cerrar justo antes del punto indicado. Revisa también un «+» o una coma que falten entre dos textos.';
+  if(/unexpected end of input/i.test(m))return 'Falta cerrar una llave } o un paréntesis ) en algún bloque.';
+  if(/invalid or unexpected token/i.test(m))return 'Hay una comilla, un backtick o un carácter raro sin cerrar (¿un salto de línea dentro de comillas simples o dobles?).';
+  if(/unexpected identifier/i.test(m))return 'Falta una coma, un punto y coma o un «+» antes del punto indicado.';
+  if(/unexpected token/i.test(m))return 'Sobra o falta un símbolo justo en el punto indicado (llave, paréntesis, coma o dos puntos).';
+  return 'Revisa el punto indicado: paréntesis, llaves, comillas y backticks.';
+}
+function syntaxAt(js){
+  return new Promise(res=>{
+    const u=URL.createObjectURL(new Blob(['function __bp_check__(){'+js+'\n}'],{type:'text/javascript'})),s=document.createElement('script');let done=false;
+    const fin=v=>{if(done)return;done=true;removeEventListener('error',h,true);s.remove();URL.revokeObjectURL(u);res(v);};
+    const h=e=>{if(e&&e.filename===u)fin({line:e.lineno,col:e.colno});};
+    addEventListener('error',h,true);s.onload=()=>fin(null);s.onerror=()=>fin(null);s.src=u;document.head.append(s);setTimeout(()=>fin(null),3000);
+  });
+}
+async function explainSyntax(err,original,snaps,blocks){
+  let culprit=-1;
+  try{new Function(appScript(original));for(let k=0;k<snaps.length;k++){try{new Function(appScript(snaps[k]));}catch(x){culprit=k;break;}}}catch(x){}
+  const b=culprit>=0?blocks[culprit]:null,js=appScript(culprit>=0?snaps[culprit]:snaps[snaps.length-1]||original),pos=await syntaxAt(js);
+  let where='',ex='';
+  if(pos&&pos.line){
+    const L=js.split('\n'),a=Math.max(0,pos.line-3);
+    where=' (línea '+pos.line+' del script, columna '+pos.col+')';
+    ex=L.slice(a,pos.line+1).map((x,i)=>{const n=a+i+1;if(n!==pos.line)return '   '+n+': '+x.slice(0,200);const c=Math.max(0,pos.col-140);return '>> '+n+': '+(c?'…':'')+x.slice(c,pos.col+100)+(x.length>pos.col+100?'…':'');}).join('\n');
+  }
+  const short=(b?' · lo provoca el BLOQUE '+b.n:'')+where;
+  const long='DETALLE DEL ERROR DE ESCRITURA: «'+err.message+'»'+(b?'\nAparece al aplicar el BLOQUE '+b.n+' (con los bloques anteriores todo estaba bien).':'')+(where?'\nUbicación'+where+'. Código justo en ese punto (>> marca la línea):\n'+ex:'')+(b?'\nTexto que pusiste en CAMBIAR POR del bloque '+b.n+':\n'+b.repl.slice(0,1500):'')+'\nPISTA: '+syntaxHint(err.message);
+  return {short,long};
+}
 $('run').onclick=async()=>{
   const btn=$('run');btn.disabled=true;btn.textContent='Comprobando… (unos 10 s)';
-  const checks=[],log=[];let fail=false;const add=(ok,txt)=>{checks.push([ok,txt]);if(ok===false)fail=true;};
+  const checks=[],log=[];let fail=false;errExtra='';const add=(ok,txt)=>{checks.push([ok,txt]);if(ok===false)fail=true;};
   try{
     if(!current)throw Error('No hay index.html cargado (paso 1).');
-    const blocks=parse($('patch').value);
+    let blocks=parse($('patch').value);
     if(!blocks.length)throw Error('No encuentro bloques «@@@ BUSCAR … @@@ CAMBIAR POR … @@@ FIN». Pega la respuesta entera de la IA.');
-    let t=current;
-    blocks.forEach((b,i)=>{const c=count(t,b.find);
-      if(c===1){t=t.replace(b.find,()=>b.repl);log.push('Bloque '+(i+1)+': aplicado');}
-      else{add(false,'Bloque '+(i+1)+(c===0?': el texto a buscar NO existe en el archivo':': el texto a buscar aparece '+c+' veces (debe ser único)'));log.push('Bloque '+(i+1)+' BUSCAR:\n'+b.find.slice(0,400));}});
+    if(blocks.partial){
+      if(!prevBlocks.length)throw Error('Has pegado «@@@ SOLO CORREGIDOS» pero no tengo los bloques anteriores (¿has recargado la página?). Pide a la IA la respuesta COMPLETA.');
+      const mp=new Map(prevBlocks.map(b=>[b.n,b]));blocks.forEach(b=>mp.set(b.n,b));
+      add(null,'Corrección parcial: sustituidos los bloques '+blocks.map(b=>b.n).join(', ')+'; el resto se mantiene.');
+      blocks=[...mp.values()].sort((a,b)=>a.n-b.n);
+    }
+    const seen=new Set(),dup=blocks.filter(b=>seen.size===seen.add(b.n).size).map(b=>b.n);
+    if(dup.length)throw Error('Hay bloques con el mismo número ('+dup.join(', ')+'). Cada bloque debe llevar un número distinto.');
+    try{sessionStorage.setItem('bp_blocks',JSON.stringify(blocks));prevBlocks=blocks;}catch(e){}
+    let t=current;const snaps=[];
+    blocks.forEach(b=>{
+      const label='Bloque '+b.n,c=count(t,b.find);
+      if(c===1){t=t.replace(b.find,()=>b.repl);snaps.push(t);log.push(label+': aplicado');return;}
+      if(c===0){
+        const fm=flexMatches(t,b.find);
+        if(fm.length===1){
+          const [s,e]=fm[0];let r=b.repl;if(/^\s/.test(b.find))r=r.replace(/^\s+/,'');if(/\s$/.test(b.find))r=r.replace(/\s+$/,'');
+          t=t.slice(0,s)+r+t.slice(e);snaps.push(t);log.push(label+': aplicado ajustando espacios o comillas');
+          add(null,label+': el texto a buscar no era idéntico (espacios o comillas), pero lo he localizado igualmente.');return;
+        }
+        const miss=b.find.split('\n').map(x=>x.trim()).filter(x=>x.length>12).find(x=>!t.includes(x));
+        add(false,label+': el texto a buscar NO existe en el archivo'+(fm.length>1?' tal cual y se parece a '+fm.length+' sitios':'')+(miss?'. La primera línea que no encuentro es: «'+miss.slice(0,160)+'»':'')+'. Cópialo literalmente del archivo, sin resumir ni cambiar nada.');
+      }else{
+        add(false,label+': el texto a buscar aparece '+c+' veces (líneas '+occurrences(t,b.find).join(', ')+'). Debe ser único: añade más líneas alrededor.');
+      }
+      log.push(label+' BUSCAR:\n'+b.find.slice(0,400));
+    });
     if(!fail)add(true,blocks.length+' cambios aplicados exactamente donde tocaba');
     else throw Error('stop');
     // Reglas fijas
@@ -178,7 +246,8 @@ $('run').onclick=async()=>{
     if(r1<r0)add(false,'APP_REVISION ha bajado ('+r0+'→'+r1+')');
     else if(r1>r0)add(new RegExp('function upgradeTo'+r1+'\\(').test(t)&&new RegExp('upgradeTo'+r1+'\\(s,o\\);').test(t),'Migración de datos upgradeTo'+r1+' creada y llamada en migrate()');
     const js=appScript(t);
-    try{new Function(js);add(true,'Código sin errores de escritura');}catch(e){add(false,'Error de escritura en el código: '+e.message);}
+    try{new Function(js);add(true,'Código sin errores de escritura');}
+    catch(e){const d=await explainSyntax(e,current,snaps,blocks);add(false,'Error de escritura en el código: '+e.message+d.short);errExtra=d.long;log.push(d.long);}
     if(fail)throw Error('stop');
     // Prueba real en un entorno aislado (no puede leer ni escribir tus datos reales)
     let seed=null;if($('usedata').checked){try{seed=localStorage.getItem('biopeat_pro_v10');}catch(e){}}
@@ -199,7 +268,7 @@ $('run').onclick=async()=>{
   $('checks').innerHTML=checks.map(([ok,t])=>`<li class="${ok===true?'ok':ok===false?'bad':'warn'}">${ok===true?'✓':ok===false?'✗':'•'} ${t.replace(/</g,'&lt;')}</li>`).join('');
   $('verdict').innerHTML=fail?'<span class="bad">✗ NO subir. Hay que corregir.</span>':'<span class="ok">✓ Todo correcto</span>';
   $('okbox').hidden=fail;$('badbox').hidden=!fail;
-  errText='CORREGIR. La herramienta ha rechazado tus cambios:\n'+checks.filter(c=>c[0]===false).map(c=>'- '+c[1]).join('\n')+'\nVuelve a entregar TODOS los bloques @@@ corregidos (la respuesta completa), copiando el texto de BUSCAR literalmente del archivo.';
+  errText='CORREGIR. La herramienta ha rechazado tus cambios:\n'+checks.filter(c=>c[0]===false).map(c=>'- '+c[1]).join('\n')+(errExtra?'\n\n'+errExtra:'')+'\n\nCómo entregar la corrección: vuelve a leer el archivo y arregla la causa. Puedes entregar SOLO los bloques que cambian, con su MISMO número, dentro de un único bloque de código y empezando por una línea «@@@ SOLO CORREGIDOS»; los demás se mantienen. Copia el texto de BUSCAR literalmente del archivo. Antes de entregar, cuenta en cada CAMBIAR POR que los paréntesis, llaves, corchetes, comillas y backticks están cerrados.';
   $('log').textContent=log.join('\n\n');
   btn.disabled=false;btn.textContent='Aplicar y comprobar';
   $('res').scrollIntoView({behavior:'smooth'});
