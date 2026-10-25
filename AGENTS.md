@@ -31,6 +31,7 @@ Lo usan el Gem de Gemini «BioPeat Dev» y el proyecto de Claude «BioPeat Dev»
 - **Reutiliza las piezas que ya existen:** `ratioInfo()`/`ratioFixes()` (equilibrios con porqué y cómo), `dayCard(fecha)` (ficha de un día), `monthStats()`/`sparkline()` (tendencias), `macroTone(%)` (colores), `aggregate()`/`weekSummary()` (semana).
 - **IA:** no cambies la conexión, el modelo ni el formato `BIOPEAT:` sin que la tarea lo pida. Nunca pongas claves en el código.
 - **Contenido Peat:** no inventes cifras atribuidas a Peat; nada de tono médico ni juzgón.
+- **Zonas ideales de micronutrientes:** solo existen en la tabla `OPT` (`kind`, `lo`, `hi`, `src`, `ref`) y se leen con `optInfo()`/`optState()`/`optLine()`. No crees listas de bandas, límites o notas en otro sitio, ni compares a mano con `LIMIT`. Cada cifra nueva lleva su fuente (`src`) y su texto `ref`; si no hay fuente, `kind:'min'` con la meta del usuario.
 
 ## 4. Estilo de la interfaz (para que todo se entienda igual)
 - **Cada bloque responde a una pregunta** en lenguaje normal («¿Cómo voy?», «¿Qué me falta?») con una línea gris debajo que explica qué se ve.
