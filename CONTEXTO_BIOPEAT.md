@@ -1,6 +1,6 @@
 # CONTEXTO · BioPeat Diego
 
-**Versión actual: v53** (revisión de datos 23)
+**Versión actual: v52** (revisión de datos 23)
 
 Documento maestro. Lo lee la IA que programa BioPeat (Gemini «BioPeat Dev» o Claude). Los cambios se entregan en bloques `@@@` y los aplica y prueba `actualizar.html`. **Se actualiza sustituyendo el texto de cada apartado, nunca añadiendo apartados nuevos al final.** Si algo de aquí contradice al código, manda el código; avisa de la diferencia.
 
