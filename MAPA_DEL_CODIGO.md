@@ -2,7 +2,7 @@
 
 Generado con `python tools/mapa.py`. No lo edites a mano. Las líneas son orientativas: busca siempre por nombre.
 
-`index.html` (607 KB): CSS (`<style>`) y HTML de las secciones en las líneas 1-5788; todo el JavaScript en `<script id="app">` (desde la línea 5789).
+`index.html` (604 KB): CSS (`<style>`) y HTML de las secciones en las líneas 1-5788; todo el JavaScript en `<script id="app">` (desde la línea 5789).
 
 ## Secciones de la página (id)
 
@@ -429,37 +429,26 @@ Generado con `python tools/mapa.py`. No lo edites a mano. Las líneas son orient
 
 ### 1. REFERENCIAS RAY PEAT DIFERENCIADAS HOMBRE / MUJER
 
-- L8933 constante `PEAT_SEX_TARGETS` — Basado en Ray Peat: "Nutrition for Women" (1979/1993), "From PMS to Menopause: Female Hormones in Context" (1997) y boletines bioenergéticos.
-- L8966 constante `GOAL_TYPES`
-- L8973 `getSex(st=state)`
-- L8976 `isFemale(st=state)`
-- L8979 `sexLabel(st=state)`
-- L8984 `defaultV54ForDiego()` — Configuración extendida v54 de un perfil
-- L9009 `ensureV54State(s=state,profId)`
-- L9045 `applySexReferences(sex,resetTargets=false,s=state)` — Aplica las referencias de Ray Peat de Hombre o Mujer a OPT y opcionalmente a las metas de micros/ratios
+- L8932 constante `PEAT_SEX_TARGETS`
+- L8965 constante `GOAL_TYPES`
+- L8972 `getSex(st=state)`
+- L8973 `isFemale(st=state)`
+- L8974 `sexLabel(st=state)`
+- L8976 `defaultV54ForDiego()`
+- L8989 `ensureV54State(s=state,profId)`
+- L9024 `applySexReferences(sex,resetTargets=false,s=state)`
+- L9112 `presetItemsDesc(cfg,isShake=false)`
+- L9224 `ensureWomenPeatCard()`
+- L9241 `injectProfileSexControls()`
 
-### 2. SOBRESCRITURA DE FUNCIONES NÚCLEO PARA SOPORTE HOMBRE/MUJER Y HÁBITOS REALES
+### 5. ASISTENTE INTERACTIVO EN 5 PASOS (ACTUALIZACIÓN IN-PLACE SIN ROMPER HISTORIAL)
 
-- L9150 `presetItemsDesc(cfg,isShake=false)` — Texto descriptivo de los ingredientes del desayuno o batido del usuario
-- L9266 `ensureWomenPeatCard()` — Biblioteca de Ray Peat en Ajustes: añade tarjeta específica de "Nutrition for Women" & "From PMS to Menopause"
-
-### 3. INYECCIÓN DE SELECTOR HOMBRE / MUJER EN FORMULARIOS Y AJUSTES
-
-- L9284 `injectProfileSexControls()`
-
-### 4. PERSISTENCIA EN COPIAS, CAMBIO DE PERFIL Y MIGRACIÓN
-
-
-### 5. ASISTENTE INTERACTIVO EN 5 PASOS (ONBOARDING Y CONFIGURADOR DE PERFIL)
-
-- L9395 constante `WIZ_SUPPS_CATALOG`
-- L9415 `buildWizardDraft(opts={})`
-- L9460 `calcItemsSummary(items,extraWhey=0)`
-- L9474 `foodOptionsHTML()`
-- L9480 `renderWizardStep()`
-- L9642 `syncWizardInputs()`
-- L9660 `commitWizard()`
-
-### 6. ARRANQUE DE V54: CONFIGURAR PERFIL DE DIEGO COMO HOMBRE Y LANZAR WIZARD SI INICIA DE CERO
-
-- L9983 `bootV54()`
+- L9347 constante `WIZ_SUPPS_CATALOG`
+- L9367 `buildWizardDraft(opts={})`
+- L9412 `calcItemsSummary(items,extraWhey=0)`
+- L9426 `foodOptionsHTML()`
+- L9433 `showOrUpdateWizardModal(title,html)` — Actualiza el contenido del modal sin acumular entradas en history.pushState cuando ya está abierto
+- L9445 `renderWizardStep()`
+- L9608 `syncWizardInputs()`
+- L9626 `commitWizard()`
+- L9943 `bootV54()`
