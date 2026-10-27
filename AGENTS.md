@@ -3,7 +3,7 @@
 Lo usan el Gem de Gemini «BioPeat Dev» y el proyecto de Claude «BioPeat Dev». Escribe siempre en **español de España**, claro y corto. Diego no programa: nunca le pidas que edite código a mano; él solo copia y pega.
 
 ## 0. Cómo funciona el flujo
-1. Diego descarga el archivo actual desde `actualizar.html` (Paso 1) y te lo adjunta con su petición.
+1. Diego descarga desde `actualizar.html` (Paso 1) un **archivo enfocado**: solo los trozos del script que tienen que ver con su petición, todo el HTML y nada de CSS. Si te falta una función, **no la inventes**: dile su nombre y que descargue otro archivo enfocado que la incluya.
 2. Tú respondes con bloques `@@@` (ver apartado 2).
 3. Diego los pega en `actualizar.html`, que los aplica a una copia, arranca la app, la recorre entera y comprueba que sus datos se leen igual.
 4. Si sale rojo, Diego te pega un mensaje que empieza por **CORREGIR**. Trae el bloque que falla y, si es un error de escritura, la línea, la columna y el trozo de código exacto. Arregla la causa y entrega **solo los bloques que cambian**, con su **mismo número**, dentro de un único bloque de código y empezando por la línea `@@@ SOLO CORREGIDOS` (la página los combina con los anteriores). Si dudas, entrega todos.
@@ -30,7 +30,9 @@ Lo usan el Gem de Gemini «BioPeat Dev» y el proyecto de Claude «BioPeat Dev»
 - **Ventanas:** usa `modal(título, html)`. No toques `history` por tu cuenta.
 - **Estilos:** reutiliza las variables de `:root`. Para estilos nuevos, añade un bloque al final del `<style>` con un comentario `/* vNN: qué es */` usando BUSCAR `</style><!--FIN-CSS-->` y poniendo tu CSS delante (esa línea existe también en el archivo ligero).
 - **Reutiliza las piezas que ya existen:** `ratioInfo()`/`ratioFixes()` (equilibrios con porqué y cómo), `dayCard(fecha)` (ficha de un día), `monthStats()`/`sparkline()` (tendencias), `macroTone(%)` (colores), `aggregate()`/`weekSummary()` (semana).
-- **IA:** no cambies la conexión, el modelo ni el formato `BIOPEAT:` sin que la tarea lo pida. Nunca pongas claves en el código.
+- **IA:** llama siempre a `requestAI()` (vale para Gemini, ChatGPT, Claude, OpenRouter y compatibles). No cambies `callGemini()`, `callChat()`, `AI_PROVIDERS`, el modelo ni el formato `BIOPEAT:` sin que la tarea lo pida. Nunca pongas claves en el código ni textos que digan que solo vale Gemini.
+- **Gimnasio:** las columnas que se reconocen están en `MAP` (alias por orden de prioridad) y las apps en `GYM_APPS`. Para soportar otra app, añade sus cabeceras ahí; no escribas otro importador.
+- **Sugerencias:** se envían al formulario de Google con `sendFeedback()` (`FORM_URL`, `FORM_FIELDS`). No cambies esos códigos.
 - **Contenido Peat:** no inventes cifras atribuidas a Peat; nada de tono médico ni juzgón.
 - **Zonas ideales de micronutrientes:** solo existen en la tabla `OPT` (`kind`, `lo`, `hi`, `src`, `ref`) y se leen con `optInfo()`/`optState()`/`optLine()`. No crees listas de bandas, límites o notas en otro sitio, ni compares a mano con `LIMIT`. Cada cifra nueva lleva su fuente (`src`) y su texto `ref`; si no hay fuente, `kind:'min'` con la meta del usuario.
 
@@ -47,3 +49,17 @@ Lo usan el Gem de Gemini «BioPeat Dev» y el proyecto de Claude «BioPeat Dev»
 2. **Registro de cambios del script:** en el comentario inicial de `<script id="app">`, añade arriba una línea `   vNN · Gemini · resumen` (o `Claude`), con 3 espacios delante.
 3. **Datos:** nunca cambies `STORE`, `migrate()`, `render()`, `storableState()` ni las claves guardadas. Si cambias la forma de los datos: `upgradeToNN(s,o)` + llamada en `migrate()` + sube `APP_REVISION`.
 4. **Respuesta:** «Qué voy a cambiar» (2-5 viñetas) → bloques `@@@` → «Cómo probarlo en el móvil» (1-3 pasos) → «Copia el bloque de código y pégalo en actualizar.html (Paso 2).» Los bloques `@@@` van dentro de **un único bloque de código** para que al copiar no se estropee nada.
+
+## 6. Tamaño de cada respuesta (Gemini corta las respuestas largas)
+- Como máximo **10 bloques y unas 200 líneas** por respuesta. En BUSCAR, fragmentos cortos (80-120 caracteres).
+- Si el cambio es más grande, **divídelo en partes**. Termina cada una con «PARTE 1 de N. Aplícala, pulsa "Aplicar la siguiente parte encima" y escríbeme SIGUIENTE». Solo la parte 1 sube `APP_VERSION` y añade la línea del Registro (que describe el cambio entero). Las demás no tocan la versión.
+- Nada de explicaciones largas: 2-5 viñetas, los bloques y cómo probarlo.
+
+## 7. App pública (desde v56)
+- La usa cualquiera. **Nunca pongas datos de Diego por defecto** (pauta, desayuno, plan de macros, nombre, contexto). `defaults()` es un usuario genérico: sin pauta, sin desayuno ni batido fijos, metas genéricas; el asistente lo configura. Lo de Diego vive solo en sus datos guardados (`useDiegoPlan`, su pauta).
+- Sugerencias de suplementos: solo en `SUPP_CATALOG` (genéricas, enfoque Peat, editables, con su «por qué»). No son recomendaciones médicas.
+- Textos para cualquier persona: tú/usted genérico, sin «tu pauta de K2» ni cifras de Diego.
+- Una mano: las ventanas son hojas inferiores en el móvil; los accesos nuevos van al centro **Más** (`HUB`) y no a la parte de arriba de la pantalla. Botones de al menos 44 px.
+- Iconos: usa `ico(nombre)` (tabla `ICON`, iconos de línea). No uses emojis como iconos principales.
+- La guía de uso es `TOUR` (`showTour(i)`). Si añades una función importante, añade una línea a la guía.
+

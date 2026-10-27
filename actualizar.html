@@ -12,6 +12,7 @@ textarea{width:100%;box-sizing:border-box;min-height:160px;background:#1c2c43;co
 .muted{color:#c5d2e3;font-size:13px}.ok{color:#6ee7b7}.bad{color:#fda4af}.warn{color:#fcd34d}
 ul{padding-left:20px;margin:6px 0}li{margin:4px 0}
 .big{font-size:20px;font-weight:900;margin:6px 0}
+summary{cursor:pointer;min-height:40px}.fb-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #8196b044}.fb-item input{width:22px;height:22px;flex:none;margin-top:2px}.fb-item b{display:block}.fb-item small,.fb-item em{display:block;font-size:12px;color:#c5d2e3;font-style:normal;margin-top:3px}
 pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;border-radius:10px;font-size:12px;max-height:300px;overflow:auto}
 </style></head><body>
 <h1>Actualizar BioPeat</h1>
@@ -23,15 +24,16 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 <h2>Preparación (solo la primera vez)</h2>
 <ol>
 <li>Sube a GitHub <b>index.html</b> y <b>actualizar.html</b> (Add file → Upload files → Commit changes).</li>
-<li>En Gemini: Gems → Nuevo Gem → «BioPeat Dev» → pega <b>GEM_BIOPEAT_DEV.txt</b>. En Claude: Proyectos → «BioPeat Dev» → pega <b>CLAUDE_INSTRUCCIONES.txt</b> y sube CONTEXTO_BIOPEAT.md.</li>
+<li>En Gemini: Gems → «BioPeat Dev» → pega las instrucciones <b>INSTRUCCIONES_GEM_BIOPEAT_DEV_v5.txt</b>. En Claude: Proyectos → «BioPeat Dev» → pega <b>INSTRUCCIONES_CLAUDE_BIOPEAT_DEV_v5.txt</b>. En los dos, sube AGENTS.md, CONTEXTO_BIOPEAT.md y MAPA_DEL_CODIGO.md.</li>
 <li>Guarda esta página en marcadores. Es la dirección de tu app con <b>/actualizar.html</b> al final (ejemplo: <i>tu-usuario.github.io/biopeat/actualizar.html</i>).</li>
 </ol>
 <h2>Cada cambio (unos 5 minutos)</h2>
 <ol>
-<li><b>Paso 1:</b> Gemini → «Descargar archivo completo». Claude → «Descargar archivo ligero» (sin estilos, gasta menos límite).</li>
+<li><b>Paso 1:</b> escribe 1-3 palabras de lo que quieres cambiar y pulsa «Descargar archivo enfocado» (vale para Gemini y para Claude). Si la IA te pide una función que no está en el archivo, añade su nombre a las palabras y descárgalo otra vez.</li>
 <li>Abre «BioPeat Dev» (Gem o proyecto de Claude), <b>empieza un chat nuevo</b>, adjunta ese archivo y escribe lo que quieres, como si se lo dijeras a una persona. Puedes pedir varias cosas a la vez.</li>
 <li>Cuando responda, pulsa «Copiar» en su respuesta (copia TODA) y pégala en el <b>Paso 2</b>. Pulsa «Aplicar y comprobar».</li>
 <li><b>Si sale ✗ rojo:</b> «Copiar mensaje del error» (incluye el bloque, la línea y el trozo de código que falla) → pégalo en el mismo chat → copia su nueva respuesta → bórrala del Paso 2, pega la nueva y vuelve a comprobar. Si solo trae los bloques corregidos, la página los combina con los anteriores.</li>
+<li><b>Si la IA lo ha dividido en partes</b> («PARTE 1 de 3»): cuando la parte 1 salga verde, pulsa «Aplicar la siguiente parte encima», escribe SIGUIENTE en el chat y pega la parte 2. Al final descarga el index.html nuevo una sola vez.</li>
 <li><b>Si sale ✓ verde:</b> para cambios pequeños puedes subirlo directamente. Para cambios grandes: «Copiar texto para la REVISIÓN» → pégalo en el mismo chat. Si la IA contesta «❌ HAY QUE CORREGIR», trata su respuesta como una nueva (vuelve al punto 3).</li>
 <li>Con <b>✅ APROBADO</b>: pulsa «Descargar index.html nuevo» y «Guardar también la versión anterior».</li>
 <li>En GitHub: Add file → Upload files → arrastra el <b>index.html</b> nuevo → Commit changes. Espera 1-2 minutos.</li>
@@ -72,10 +74,25 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 </ul>
 <p class="muted">Comprobación: chat nuevo → «¿Qué versión es la actual?». Debe contestar la versión que ves en la app.</p>
 </details>
+<details class="card" id="buzon"><summary><b>💡 Buzón de sugerencias de los usuarios</b></summary>
+<p class="muted">Lo que la gente envía desde la app (Más → Sugerir una mejora) llega solo a tu hoja de Google. Pulsa «Cargar», marca las que quieras aplicar y copia la petición para tu IA. Cuando las publiques, pulsa «Hecha» y dejan de salir. Google tarda hasta 5 minutos en mostrar las nuevas.</p>
+<button class="btn slate" id="fb-load">Cargar sugerencias</button>
+<label class="muted"><input type="checkbox" id="fb-showdone"> Mostrar también las ya hechas o descartadas</label>
+<div id="fb-list"></div>
+<label class="muted">También puedes pegar sugerencias que te lleguen por correo o WhatsApp (separadas por una línea en blanco):</label>
+<textarea id="fb-paste" style="min-height:90px" placeholder="Una sugerencia por párrafo"></textarea>
+<button class="btn amber" id="fb-copy">Copiar petición para la IA con las marcadas</button>
+</details>
 <div class="card"><h2>Paso 1 · Archivo para tu IA</h2>
 <p id="cur" class="muted">Cargando la versión actual…</p>
-<button class="btn slate" id="dl-gemini">⬇ Descargar archivo completo (Gemini)</button>
-<button class="btn slate" id="dl-light">⬇ Descargar archivo ligero (Claude)</button>
+<p class="muted"><b>Recomendado:</b> escribe de qué va el cambio y descarga un archivo <b>enfocado</b> con solo el código que hace falta. Pesa 4-6 veces menos, así Gemini no se corta y gasta menos límite.</p>
+<input type="text" id="kw" placeholder="Ej.: asistente, perfil, desayuno" style="width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid #8196b066;background:#1c2c43;color:#f4f7fc;font-size:16px">
+<button class="btn amber" id="dl-focus">⬇ Descargar archivo enfocado (recomendado)</button>
+<p class="muted" id="focus-info"></p>
+<details><summary class="muted">Otras opciones</summary>
+<button class="btn slate" id="dl-light">⬇ Archivo sin estilos (todo el código)</button>
+<button class="btn slate" id="dl-gemini">⬇ Archivo completo (solo si el cambio es de colores o estilos)</button>
+</details>
 <label class="muted">¿No carga sola? Elige index.html a mano: <input type="file" id="pick" accept=".html,.txt"></label>
 </div>
 
@@ -90,6 +107,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 <button class="btn green" id="dl-new">⬇ Descargar index.html nuevo</button>
 <button class="btn slate" id="copy-review">Copiar texto para la REVISIÓN</button>
 <button class="btn slate" id="dl-old">⬇ Guardar también la versión anterior (por si acaso)</button>
+<button class="btn slate" id="chain">➕ La IA lo ha dividido en partes: aplicar la siguiente parte encima de esta</button>
 </div>
 <div id="badbox" hidden><p class="muted">Copia el error, pégalo en el mismo chat de la IA y pega aquí su nueva respuesta completa.</p><button class="btn amber" id="copy-err">Copiar mensaje del error</button></div>
 <details><summary class="muted">Ver detalle técnico</summary><pre id="log"></pre></details>
@@ -98,11 +116,11 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
-const PROTECTED=["STORE='biopeat_pro_v10'","compare17","workouts18","favorites22","microTargets17","goalOrigin17","ratioGoals17","function migrate(","function render(","function storableState("];
-let current='',result=null,errText='',errExtra='',reviewText='';
+const PROTECTED=["STORE='biopeat_pro_v10'","biopeat_profiles_v1","compare17","workouts18","favorites22","microTargets17","goalOrigin17","ratioGoals17","function migrate(","function render(","function storableState("];
+let pubText='',current='',result=null,errText='',errExtra='',reviewText='',parts=1;
 let prevBlocks=[];try{prevBlocks=JSON.parse(sessionStorage.getItem('bp_blocks')||'[]');}catch(e){}
 
-function setCurrent(t,src){current=t;const v=(t.match(/APP_VERSION='(v\d+)'/)||[])[1]||'¿?';$('cur').innerHTML='Versión actual: <b>'+v+'</b> · '+src+' · '+Math.round(t.length/1024)+' KB';}
+function setCurrent(t,src){pubText=t;current=t;parts=1;const v=(t.match(/APP_VERSION='(v\d+)'/)||[])[1]||'¿?';$('cur').innerHTML='Versión actual: <b>'+v+'</b> · '+src+' · '+Math.round(t.length/1024)+' KB';}
 fetch('index.html?'+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.text();}).then(t=>setCurrent(t,'cargada de tu web')).catch(()=>{$('cur').innerHTML='<span class="warn">No se pudo cargar sola. Elige index.html abajo.</span>';$('guia').open=true;});
 $('pick').onchange=async e=>{const f=e.target.files[0];if(f)setCurrent(await f.text(),'elegida a mano');};
 function download(name,text,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:type+';charset=utf-8'}));a.download=name;document.body.append(a);a.click();a.remove();}
@@ -238,11 +256,11 @@ $('run').onclick=async()=>{
     if(!fail)add(true,blocks.length+' cambios aplicados exactamente donde tocaba');
     else throw Error('stop');
     // Reglas fijas
-    const v0=ver(current),v1=ver(t);
+    const v0=ver(pubText),v1=ver(t);
     add(v1===v0+1,'Versión: v'+v0+' → v'+v1+(v1===v0+1?'':' (debe subir exactamente 1)'));
     add(new RegExp("\\n\\s*v"+v1+" · ").test(t),'Línea v'+v1+' en el «Registro de cambios»');
     const missing=PROTECTED.filter(p=>!t.includes(p));add(!missing.length,missing.length?'Falta algo protegido: '+missing.join(', '):'Claves de tus datos intactas');
-    const r0=rev(current),r1=rev(t);
+    const r0=rev(pubText),r1=rev(t);
     if(r1<r0)add(false,'APP_REVISION ha bajado ('+r0+'→'+r1+')');
     else if(r1>r0)add(new RegExp('function upgradeTo'+r1+'\\(').test(t)&&new RegExp('upgradeTo'+r1+'\\(s,o\\);').test(t),'Migración de datos upgradeTo'+r1+' creada y llamada en migrate()');
     const js=appScript(t);
@@ -279,8 +297,60 @@ $('run').onclick=async()=>{
   $('res').scrollIntoView({behavior:'smooth'});
 };
 $('dl-new').onclick=()=>download('index.html',result,'text/html');
-$('dl-old').onclick=()=>download('index_anterior_v'+ver(current)+'.html',current,'text/html');
+$('dl-old').onclick=()=>download('index_anterior_v'+ver(pubText)+'.html',pubText,'text/html');
 const copy=t=>navigator.clipboard.writeText(t).then(()=>alert('Copiado. Pégalo en el mismo chat de la IA.')).catch(()=>{$('log').textContent=t;$('log').parentElement.open=true;alert('Cópialo a mano del «detalle técnico».');});
 $('copy-review').onclick=()=>copy(reviewText);
 $('copy-err').onclick=()=>copy(errText);
+// ===== Archivo enfocado: solo los trozos del script que tienen que ver con el cambio (+ HTML, sin CSS) =====
+const nrm=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+function chunksOf(js){
+  const L=js.split('\n'),out=[],isC=l=>/^\/\//.test(l),start=l=>/^(?:async\s+function|function|const|let|onClick\(|document\.|\$\(|for\(|addEventListener|bind|init\(|\/\/)/.test(l);
+  let cur=[];
+  for(const l of L){if(start(l)&&cur.length&&!(cur.every(isC)&&!isC(l))&&!(cur.every(isC)&&isC(l))){out.push(cur.join('\n'));cur=[];}cur.push(l);}
+  if(cur.length)out.push(cur.join('\n'));
+  return out;
+}
+function focusedVersion(t,words){
+  const a=t.indexOf('<script id="app">');if(a<0)return null;
+  const s=a+'<script id="app">'.length,e=t.indexOf('</'+'script>',s),js=t.slice(s,e),ch=chunksOf(js);
+  const kw=nrm(words).split(/[,;\s]+/).filter(w=>w.length>=3);
+  let kept=0,skip=0;const out=[];
+  ch.forEach((c,i)=>{const n=nrm(c),need=i===0||/APP_VERSION=|\/\/ ===== Arranque|^function render\(|^function migrate\(/m.test(c)||kw.some(k=>n.includes(k));if(need){if(skip)out.push('/* … '+skip+' trozos omitidos … */');skip=0;out.push(c);kept++;}else skip++;});
+  if(skip)out.push('/* … '+skip+' trozos omitidos … */');
+  const note='/* [ARCHIVO ENFOCADO para «'+words+'»: contiene '+kept+' de '+ch.length+' trozos del script, todo el HTML y nada de CSS. Solo puedes BUSCAR texto que veas aquí. Si necesitas una función que no está, dile a Diego su nombre para que descargue otro archivo enfocado que la incluya. Para estilos nuevos usa BUSCAR «</style><!--FIN-CSS-->».] */';
+  const pre=lightVersion(t.slice(0,s));
+  return {text:pre+'\n'+note+'\n'+out.join('\n')+'\n'+t.slice(e),kept,total:ch.length};
+}
+$('dl-focus').onclick=()=>{if(!current)return alert('Primero carga index.html');const w=$('kw').value.trim();if(w.length<3)return alert('Escribe 1-3 palabras de lo que quieres cambiar (por ejemplo: asistente, desayuno, semana).');const f=focusedVersion(current,w);if(!f)return alert('No encuentro el script de la app.');$('focus-info').innerHTML='Archivo enfocado: <b>'+Math.round(f.text.length/1024)+' KB</b> (el completo pesa '+Math.round(current.length/1024)+' KB) · '+f.kept+' de '+f.total+' trozos de código.';download('BioPeat_enfocado_v'+ver(current)+'.txt',f.text);};
+// ===== Cambios por partes: la siguiente parte se aplica encima del resultado anterior =====
+$('chain').onclick=()=>{if(!result)return;current=result;parts++;prevBlocks=[];try{sessionStorage.removeItem('bp_blocks');}catch(e){}$('patch').value='';$('res').hidden=true;$('cur').innerHTML='Versión publicada: <b>v'+ver(pubText)+'</b> · ahora vas por la <b>parte '+parts+'</b>, encima de las anteriores. Pega la siguiente parte de la IA en el Paso 2.';$('patch').scrollIntoView({behavior:'smooth',block:'center'});};
+// ===== Buzón de sugerencias: hoja de Google publicada como CSV (formulario de la app) =====
+const FB_CSV='https://docs.google.com/spreadsheets/d/e/2PACX-1vTMz1t8Pr2gicr7-gKpGmp1CSbxTutV-AX-_KiG1zGIcBJRrsJyypEook7qJBoIOSb5O78BcxzehPNY/pub?output=csv';
+const escH=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function csvRows(t){const rows=[];let row=[],cell='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(c==='"'){if(q&&t[i+1]==='"'){cell+='"';i++;}else q=!q;}else if(c===','&&!q){row.push(cell);cell='';}else if((c==='\n'||c==='\r')&&!q){if(c==='\r'&&t[i+1]==='\n')i++;row.push(cell);rows.push(row);row=[];cell='';}else cell+=c;}if(cell||row.length){row.push(cell);rows.push(row);}return rows.filter(r=>r.some(x=>x.trim()));}
+let fbItems=[],fbAll=[];
+const fbDone=()=>{try{return JSON.parse(localStorage.getItem('bp_fb_done')||'[]');}catch(e){return [];}};
+const fbKey=i=>i.when+'|'+i.title;
+function drawFb(){
+  const done=new Set(fbDone()),show=$('fb-showdone').checked;
+  fbItems=fbAll.filter(i=>show||!done.has(fbKey(i)));
+  $('fb-list').innerHTML=fbItems.length?fbItems.map((i,k)=>'<label class="fb-item"><input type="checkbox" data-fb="'+k+'"><span><b>'+escH(i.title)+'</b><small>'+escH(i.cat)+' · '+escH(i.when)+(done.has(fbKey(i))?' · ya hecha':'')+'</small><em>'+escH(i.text.slice(0,500))+'</em><button type="button" class="btn slate" style="min-height:36px;margin:6px 0 0;font-size:13px" data-fbdone="'+k+'">'+(done.has(fbKey(i))?'Volver a pendientes':'✓ Hecha o descartada')+'</button></span></label>').join(''):'<p class="muted">No hay sugerencias pendientes.</p>';
+}
+$('fb-load').onclick=async()=>{
+  $('fb-list').innerHTML='<p class="muted">Cargando…</p>';
+  try{const r=await fetch(FB_CSV+'&t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('Google respondió '+r.status);
+    const rows=csvRows(await r.text());rows.shift();
+    fbAll=rows.map(c=>({when:c[0]||'',cat:c[1]||'',title:c[2]||'(sin título)',text:c[3]||'',version:c[4]||''})).reverse();
+    drawFb();
+  }catch(e){$('fb-list').innerHTML='<p class="bad">No se pudieron cargar ('+escH(e.message)+'). Abre tu hoja de Google y copia las sugerencias en el recuadro de abajo.</p>';}
+};
+$('fb-showdone').onchange=drawFb;
+document.addEventListener('click',e=>{const b=e.target.closest('[data-fbdone]');if(!b)return;e.preventDefault();const it=fbItems[Number(b.dataset.fbdone)];if(!it)return;const d=new Set(fbDone()),k=fbKey(it);if(d.has(k))d.delete(k);else d.add(k);localStorage.setItem('bp_fb_done',JSON.stringify([...d]));drawFb();});
+$('fb-copy').onclick=()=>{
+  const sel=[...document.querySelectorAll('[data-fb]:checked')].map(c=>fbItems[c.dataset.fb]),pasted=$('fb-paste').value.split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean);
+  if(!sel.length&&!pasted.length)return alert('Marca alguna sugerencia o pega alguna.');
+  const items=[...sel.map(i=>'['+i.cat+'] '+i.title+'\n'+i.text.trim()),...pasted];
+  copy('SUGERENCIAS DE USUARIOS PARA APLICAR\nAplica estas '+items.length+' sugerencias siguiendo tus reglas. Si alguna contradice el enfoque Peat o la idea de la app, o es arriesgada, no la apliques y dime por qué en una línea. Si el conjunto es grande, divídelo en partes.\nAntes de empezar dime qué palabras clave pongo para descargar el archivo enfocado.\n\n'+items.map((x,k)=>(k+1)+'. '+x).join('\n\n'));
+};
+
 </script></body></html>

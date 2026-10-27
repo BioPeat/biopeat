@@ -1,5 +1,5 @@
 {
-  "name": "BioPeat Diego",
+  "name": "BioPeat",
   "short_name": "BioPeat",
   "start_url": "./",
   "scope": "./",
@@ -26,6 +26,37 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "id": "./",
+  "description": "Registra lo que comes y ve tus calorías, macros, 25 vitaminas y minerales y los equilibrios de Ray Peat, con ideas de qué comer. Tus datos se quedan en tu móvil.",
+  "categories": [
+    "health",
+    "food",
+    "lifestyle"
+  ],
+  "shortcuts": [
+    {
+      "name": "Añadir comida",
+      "short_name": "Añadir",
+      "url": "./?a=add",
+      "icons": [
+        {
+          "src": "icon-192.png?v=42",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Mi semana",
+      "short_name": "Semana",
+      "url": "./?a=week",
+      "icons": [
+        {
+          "src": "icon-192.png?v=42",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

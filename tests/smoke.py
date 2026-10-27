@@ -105,11 +105,36 @@ async def browser_checks():
         pg.on('pageerror', lambda e: errs.append(str(e)))
         pg.on('dialog', lambda d: asyncio.ensure_future(d.accept()))
         await pg.route('https://generativelanguage.googleapis.com/**', ai_mock)
+        form_posts = []
+        async def form_mock(route):
+            form_posts.append(route.request.post_data or '')
+            await route.fulfill(status=200, body='ok')
+        await pg.route('https://docs.google.com/**', form_mock)
+        async def chat_mock(route):
+            if route.request.method == 'GET':
+                await route.fulfill(status=200, content_type='application/json', body=json.dumps({'data': [{'id': 'text-embedding-x'}, {'id': 'modelo-mini'}]})); return
+            body = json.loads(route.request.post_data or '{}')
+            content = body['messages'][0]['content']
+            txt = content if isinstance(content, str) else ' '.join(c.get('text', '') for c in content)
+            out = 'OK' if 'Responde solo con la palabra OK' in txt else 'Un vaso de leche.'
+            payload = {'content': [{'type': 'text', 'text': out}]} if 'anthropic' in route.request.url else {'choices': [{'message': {'content': out}}]}
+            await route.fulfill(status=200, content_type='application/json', body=json.dumps(payload))
+        await pg.route('https://api.openai.com/**', chat_mock)
+        await pg.route('https://api.anthropic.com/**', chat_mock)
         ev = pg.evaluate
+        async def go_url():
+            # Cerrar una ventana hace «Atrás» en el historial; si coincide con una recarga, se reintenta.
+            await pg.wait_for_timeout(250)
+            for k in range(3):
+                try:
+                    await pg.goto(url); return
+                except Exception as ex:
+                    if 'ERR_ABORTED' not in str(ex) or k == 2: raise
+                    await pg.wait_for_timeout(500)
         toast = lambda: ev("document.getElementById('toast').hidden?'':document.getElementById('toast-text').textContent")
 
         async def load(seed):
-            await pg.goto(url)
+            await go_url()
             await ev("r=>{localStorage.clear(); if(r) localStorage.setItem('biopeat_pro_v10', r)}", seed)
             await pg.reload()
             try:
@@ -269,8 +294,70 @@ async def browser_checks():
         ok('Los días sin registro del depósito se cuentan aparte (no «parcial»)') if r['days'] + r['unlogged'] == 7 else fail('Depósito: días registrados + sin registro no suman 7: ' + str(r))
         check_errs('v50')
 
+        print('6f. v57: sugerencias por formulario, IA de cualquier proveedor, gimnasio de cualquier app')
+        await ev("$('nav-more').click()"); await ev("document.querySelector('[data-hub=\"@feedback\"]').click()")
+        await ev("$('fb-title').value='Recetas';$('fb-text').value='Poder guardar recetas con varios ingredientes';$('fb-send').click()"); await pg.wait_for_timeout(500)
+        ok_form = bool(form_posts) and 'entry.2101093182=Recetas' in form_posts[-1] and 'entry.950920296=' in form_posts[-1] and 'entry.276234508=v' in form_posts[-1]
+        ok('Sugerencia enviada al formulario de Google') if ok_form and await ev("!!$('fb-again')") else fail('La sugerencia no llega al formulario: ' + str(form_posts[-1:])[:200])
+        await ev("$('modal').close()")
+        await ev("$('ai-mode').value='openai';$('ai-mode').dispatchEvent(new Event('change'));$('gemini-key').value='sk-prueba';$('gemini-model').value='';syncAI()")
+        await ev("$('ai-test').click()"); await pg.wait_for_timeout(800)
+        r = await ev("({m:$('gemini-model').value,st:$('ai-test-status').textContent,lab:$('ai-key-label').textContent})")
+        ok('ChatGPT: elige un modelo de la cuenta y conecta') if r['m'] == 'modelo-mini' and 'correcta' in r['st'] and 'OpenAI' in r['lab'] else fail('Conexión con OpenAI: ' + str(r))
+        r = await ev("requestAI('Dime algo').then(x=>x).catch(e=>'ERR '+e.message)")
+        ok('ChatGPT responde a través de requestAI') if r == 'Un vaso de leche.' else fail('requestAI con OpenAI: ' + str(r))
+        await ev("$('ai-mode').value='anthropic';$('ai-mode').dispatchEvent(new Event('change'));$('gemini-model').value='claude-prueba'")
+        r = await ev("requestAI('Responde solo con la palabra OK.').then(x=>x).catch(e=>'ERR '+e.message)")
+        ok('Claude responde a través de requestAI') if r == 'OK' else fail('requestAI con Anthropic: ' + str(r))
+        await ev("$('ai-mode').value='direct';$('ai-mode').dispatchEvent(new Event('change'));$('gemini-key').value='CLAVE_DE_PRUEBA';syncAI()")
+        ok('Gemini sigue siendo la opción por defecto') if await ev("$('gemini-model').value") == 'gemini-3.8-flash' else fail('Al volver a Gemini el modelo no se restaura')
+        n0 = await ev("state.workouts18.length")
+        strong = 'Date,Workout Name,Duration,Exercise Name,Set Order,Weight,Reps,Distance,Seconds,Notes,Workout Notes,RPE\n2026-10-16 18:00:00,Pierna,1h 5m,Squat (Barbell),1,100,5,0,0,,,8\n2026-10-16 18:00:00,Pierna,1h 5m,Squat (Barbell),2,100,5,0,0,,,8.5\n'
+        await pg.set_input_files('#hevy-file', files=[{'name': 'strong.csv', 'mimeType': 'text/csv', 'buffer': strong.encode()}]); await pg.wait_for_timeout(300)
+        st = await ev("$('hevy-status').textContent")
+        await ev("$('hevy-commit').click()"); await pg.wait_for_timeout(150)
+        ok('CSV de Strong reconocido e importado solo') if 'Strong' in st and await ev("state.workouts18.length") == n0 + 1 else fail('Strong: ' + st + ' · ' + str(await ev("$('hevy-previewtext').textContent")))
+        fitbod = 'Date,Exercise,Reps,Weight(kg),Duration(s),Distance(m),Incline,Resistance,isWarmup,Note,multiplier\n2026-10-17 10:00:00 +0000,Dumbbell Bench Press,10,30,0,0,0,0,false,,1\n2026-10-17 10:00:00 +0000,Dumbbell Bench Press,8,32.5,0,0,0,0,false,,1\n2026-10-17 10:00:00 +0000,Running,0,0,600,1500,0,0,false,,1\n'
+        await pg.set_input_files('#hevy-file', files=[{'name': 'fitbod.csv', 'mimeType': 'text/csv', 'buffer': fitbod.encode()}]); await pg.wait_for_timeout(300)
+        st = await ev("$('hevy-status').textContent")
+        await ev("$('hevy-commit').click()"); await pg.wait_for_timeout(150)
+        w = await ev("(()=>{const s=state.workouts18.find(x=>x.date==='2026-10-17');return s?{n:s.sets.length,km:s.sets.find(x=>x.exercise==='Running')?.distance}:null})()")
+        ok('CSV de Fitbod reconocido (metros pasados a km)') if 'Fitbod' in st and w and w['n'] == 3 and abs(w['km'] - 1.5) < 1e-6 else fail('Fitbod: ' + st + ' · ' + str(w))
+        generic = 'fecha;ejercicio;peso;repeticiones;series\n18/10/2026;Press militar;40;8;3\n'
+        await pg.set_input_files('#hevy-file', files=[{'name': 'mio.csv', 'mimeType': 'text/csv', 'buffer': generic.encode()}]); await pg.wait_for_timeout(300)
+        await ev("$('hevy-commit').click()"); await pg.wait_for_timeout(150)
+        w = await ev("(()=>{const s=state.workouts18.find(x=>x.date==='2026-10-18');return s?s.sets.length:0})()")
+        ok('CSV genérico en español (DD/MM, series) importado') if w == 3 else fail('CSV genérico: ' + str(await ev("$('hevy-status').textContent")) + ' · ' + str(w))
+        check_errs('v57')
+        print('6e. v56: app pública, guía, Más, sugerencias')
+        await go_url(); await ev("localStorage.clear()"); await pg.reload(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(250)
+        r = await ev("({plan:state.plan.length,ctx:state.context,nes:!!state.foods.nesquik,bk:profV().breakfast.enabled,help:!!document.querySelector('#bp-wiz .bp-wiz-help'),welcome:!!document.querySelector('#bp-wiz .bp-welcome'),name:activeProfileName()})")
+        ok('Usuario nuevo sin datos de Diego (sin pauta, sin contexto, sin Nesquik, sin desayuno fijo)') if r['plan'] == 0 and r['ctx'] == '' and not r['nes'] and not r['bk'] and r['name'] != 'Diego' else fail('El usuario nuevo arranca con datos de Diego: ' + str(r))
+        ok('El asistente da la bienvenida y explica cada paso') if r['help'] and r['welcome'] else fail('Falta la bienvenida o la ayuda del asistente')
+        await ev("document.querySelector('[data-wiz-goto=\"4\"]').click()")
+        nc = await ev("document.querySelectorAll('#bp-wiz [data-wiz-cat]').length")
+        ok(f'Sugerencias de suplementos genéricas ({nc})') if nc >= 8 else fail('Faltan sugerencias de suplementos en el asistente')
+        await ev("document.querySelector('#bp-wiz [data-wiz-cat=\"s_d3\"]').click()")
+        await ev("document.querySelector('[data-wiz-goto=\"5\"]').click()"); await ev("document.querySelector('[data-wiz-save]').click()"); await pg.wait_for_timeout(600)
+        r = await ev("({tour:!!$('bp-tour'),plan:state.plan.map(p=>p.name),vitD:totals().supp.vitD})")
+        ok('Al terminar el asistente sale la guía de uso') if r['tour'] else fail('No sale la guía de uso al terminar')
+        ok('La sugerencia elegida se suma sola') if r['plan'] == ['Vitamina D3'] and r['vitD'] > 0 else fail('La sugerencia de suplemento no se guarda: ' + str(r))
+        for _ in range(8):
+            await ev("(()=>{const b=document.querySelector('#bp-tour [data-tour]:last-child');if(b)b.click();})()")
+        ok('La guía se recorre hasta el final y se cierra') if not await ev("$('modal').open") else fail('La guía no se cierra al terminar')
+        await ev("$('nav-more').click()")
+        nt = await ev("document.querySelectorAll('#modal [data-hub]').length")
+        ok(f'«Más» muestra {nt} accesos grandes') if nt >= 10 else fail('El centro «Más» no muestra los accesos')
+        await ev("document.querySelector('[data-hub=\"@feedback\"]').click()")
+        f = await ev("(()=>{$('fb-title').value='Recetas';$('fb-text').value='Poder guardar recetas con varios ingredientes';const x=feedbackText();return x.title+'|'+x.body.slice(0,40)})()")
+        ok('El formulario de sugerencias prepara el texto') if f.startswith('[BioPeat]') and 'Recetas' in f else fail('Sugerencias: ' + f)
+        await ev("$('modal').close()")
+        await ev("document.querySelector('#bp-acc-feedback') && 1")
+        ok('Sugerencias también en el menú lateral') if await ev("!!$('bp-fb-open')") else fail('Falta «Sugerir una mejora» en el menú lateral')
+        ok('B1 normal (tiamina) en usuarios sin benfotiamina') if await ev("metric(MICRO.find(m=>m.k==='b1')).name") == 'B1 · Tiamina' else fail('B1 sigue tratándose como benfotiamina')
+        check_errs('v56')
         print('6d. Perfiles y asistente')
-        await pg.goto(url); await ev("localStorage.clear()"); await pg.reload(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(250)
+        await go_url(); await ev("localStorage.clear()"); await pg.reload(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(250)
         ok('Primera vez: se abre el asistente') if await ev("$('modal').open&&!!$('bp-wiz')") else fail('Al empezar de cero no sale el asistente')
         await ev("$('wiz-name').value='Ana';document.querySelector('[data-wiz-sex=female]').click();document.querySelector('[data-wiz-goto=\"5\"]').click()")
         await ev("document.querySelector('[data-wiz-save]').click()"); await pg.wait_for_timeout(200)
@@ -298,8 +385,8 @@ async def browser_checks():
         ok('Nuevo perfil copiando despensa y pauta') if r['n'] == 'Laura' and r['sex'] == 'female' and r['f'] == n_foods and r['pl'] == n_plan and r['d'] <= 1 else fail('Nuevo perfil con copia: ' + str(r))
         await ev("$('weight').value='61';$('profile-form').requestSubmit()"); await pg.wait_for_timeout(120)
         ok('Guardar «Mi perfil» no cambia el sexo') if await ev("state.profile.sex") == 'female' else fail('Guardar «Mi perfil» pone el perfil en hombre')
-        await ev("switchProfile('diego')")
-        ok('Al volver a Diego vuelve a hombre') if await ev("state.profile.sex==='male'&&OPT.fe.src==='tuya'") else fail('El cambio de perfil no restaura las referencias de hombre')
+        await ev("switchProfile(ensureProfilesStore().order[0])")
+        ok('Al volver al primer perfil vuelve a hombre') if await ev("state.profile.sex==='male'&&OPT.fe.src==='tuya'") else fail('El cambio de perfil no restaura las referencias de hombre')
         r = await ev("(()=>{const o=JSON.parse(JSON.stringify(storableState()));o.appRevision=24;const m=o.plan.find(p=>p.key==='mg'&&p.unit==='g');if(!m)return 'sin';m.value=2;return migrate(o).plan.find(p=>p.id===m.id).value;})()")
         ok('Repara el magnesio estropeado por v54') if r == 'sin' or r > 100 else fail('No repara el magnesio de la pauta: ' + str(r))
         check_errs('perfiles')
@@ -308,7 +395,7 @@ async def browser_checks():
         print('7. Pulsar todos los botones')
         await ev("document.querySelectorAll('details').forEach(d=>d.open=true)")
         n = await ev("""()=>{let i=0;document.querySelectorAll('button').forEach(b=>{if(b.closest('dialog')||b.offsetParent===null)return;b.dataset.t=i++;});return i;}""")
-        skip = re.compile(r'export|backup|forget|import|clear-foods|bp-clip|menu-backup')
+        skip = re.compile(r'export|backup|forget|import|clear-foods|bp-clip|menu-backup|fb-send|fb-share')
         bad = 0
         for i in range(n):
             info = await ev(f"(()=>{{const b=document.querySelector('[data-t=\"{i}\"]');return b?(b.id||'')+' '+b.textContent.trim().slice(0,30):null}})()")
@@ -323,7 +410,7 @@ async def browser_checks():
             except Exception as ex:
                 bad += 1; fail(f'Botón «{info}»: {str(ex)[:120]}')
             if not await ev("typeof $==='function'"):
-                bad += 1; fail(f'Botón «{info}» saca de la app (historial): {pg.url}'); await pg.goto(url); await pg.wait_for_function("document.body.dataset.ready==='true'"); await ev("document.querySelectorAll('details').forEach(d=>d.open=true)"); n2=await ev("""()=>{let i=0;document.querySelectorAll('button').forEach(b=>{if(b.closest('dialog')||b.offsetParent===null)return;b.dataset.t=i++;});return i;}""")
+                bad += 1; fail(f'Botón «{info}» saca de la app (historial): {pg.url}'); await go_url(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await ev("document.querySelectorAll('details').forEach(d=>d.open=true)"); n2=await ev("""()=>{let i=0;document.querySelectorAll('button').forEach(b=>{if(b.closest('dialog')||b.offsetParent===null)return;b.dataset.t=i++;});return i;}""")
             if errs:
                 bad += 1; fail(f'Botón «{info}» provoca error: {errs[0][:200]}'); errs.clear()
         ok(f'{n} botones pulsados sin errores') if not bad else None
