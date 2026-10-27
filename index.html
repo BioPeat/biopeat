@@ -5894,7 +5894,7 @@ function optLine(k,goal,unit){
 function optRefHTML(k,goal,unit){const z=optInfo(k,goal);return '<p class="progress-note"><b>'+esc(optLine(k,goal,unit))+'.</b> '+esc(z.ref)+'</p>';}
 const microKind=k=>LIMIT.has(k)?'limit':DEPOSIT.has(k)?'deposit':'daily';
 const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'], ACTIVITIES=['Full body pesado','Descanso / pista','Full body potencia','Descanso / pista','Descanso / pista','Full body activación','Partido de baloncesto'];
-const FAF=[1.725,1.5,1.725,1.5,1.5,1.65,1.75], STORE='biopeat_pro_v10', APP_VERSION='v53', APP_REVISION=23;
+const FAF=[1.725,1.5,1.725,1.5,1.5,1.65,1.75], STORE='biopeat_pro_v10', APP_VERSION='v54', APP_REVISION=24;
 const $=id=>document.getElementById(id), own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k), clone=x=>JSON.parse(JSON.stringify(x));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=(n,d=0)=>Number(n).toLocaleString('es-ES',{maximumFractionDigits:d});
@@ -8869,4 +8869,1152 @@ function renderGaps(sum,s){
 onClick(e=>{const t=e.target.closest('[data-gap-tab],[data-gap-toggle],[data-gap-more]');if(!t)return;if(t.dataset.gapTab){gapTab=t.dataset.gapTab;gapOpen=null;gapAll=false;}else if(t.dataset.gapMore)gapAll=!gapAll;else gapOpen=gapOpen===t.dataset.gapToggle?'':t.dataset.gapToggle;if(lastGap)renderGaps(lastGap.sum,lastGap.s);});
 // ===== Arranque =====
 init().catch(e=>{storageMode='memory';ensureDay();ready=true;render();document.body.dataset.ready='true';toast('Inicio sin guardado: '+e.message);});
-</script><script>if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});</script></body></html>
+</script><script>if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
+<!-- === INICIO BIOPEAT V54: SEXO (HOMBRE/MUJER RAY PEAT) + ASISTENTE DE PERFIL === -->
+<style id="bp-v54-style">
+.bp-sex-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0}
+.bp-sex-btn{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px 14px;border-radius:14px;border:1.5px solid #4a628388;background:#1c2c43;color:#e2e8f0;text-align:left;cursor:pointer;transition:all .18s ease}
+.bp-sex-btn b{font-size:15px;display:flex;align-items:center;gap:6px;color:#f4f7fc}
+.bp-sex-btn small{font-size:11px;line-height:1.35;color:#b8c7dc}
+.bp-sex-btn.active{border-color:#e9bf5c;background:linear-gradient(135deg,#2a3f5f,#1f314a);box-shadow:0 0 0 1px #e9bf5c66,0 6px 18px #08112066}
+.bp-sex-btn.active b{color:#f6dc9a}
+.bp-sex-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;border:1px solid #e9bf5c66;background:#e9bf5c1f;color:#f6dc9a;vertical-align:middle}
+.bp-sex-badge.female{border-color:#f472b688;background:#f472b61f;color:#fbcfe8}
+.bp-wiz-steps{display:flex;gap:6px;margin:0 0 14px;overflow-x:auto;padding-bottom:4px}
+.bp-wiz-step{flex:1;min-width:52px;padding:7px 6px;border-radius:10px;background:#18263b;border:1px solid #4a628355;color:#94a3b8;font-size:11px;font-weight:800;text-align:center;cursor:pointer}
+.bp-wiz-step.active{background:#e9bf5c;color:#14213a;border-color:#e9bf5c}
+.bp-wiz-step.done{border-color:#34d39988;color:#6ee7b7;background:#163839}
+.bp-wiz-box{background:#18273d;border:1px solid #4a628366;border-radius:14px;padding:13px;margin:10px 0}
+.bp-wiz-box h3{font-size:14px;margin:0 0 6px;color:#f6dc9a}
+.bp-wiz-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+@media (max-width:560px){.bp-wiz-grid{grid-template-columns:1fr}}
+.bp-goal-card{display:flex;flex-direction:column;gap:4px;padding:11px 12px;border-radius:12px;border:1.5px solid #4a628377;background:#1c2c43;color:#f4f7fc;text-align:left;cursor:pointer}
+.bp-goal-card b{font-size:13.5px;color:#f4f7fc}
+.bp-goal-card small{font-size:11px;color:#c5d2e3;line-height:1.35}
+.bp-goal-card.active{border-color:#e9bf5c;background:#263c59;box-shadow:inset 0 0 0 1px #e9bf5c55}
+.bp-goal-card.active b{color:#f6dc9a}
+.bp-day-sched{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin:8px 0}
+.bp-day-col{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 4px;border-radius:11px;background:#1c2c43;border:1px solid #4a628366;cursor:pointer;text-align:center}
+.bp-day-col b{font-size:11px;color:#f4f7fc}
+.bp-day-col span{font-size:9.5px;padding:2px 5px;border-radius:6px;font-weight:800;width:100%}
+.bp-day-col[data-mode="gym"]{border-color:#e9bf5c99;background:#283c58}
+.bp-day-col[data-mode="gym"] span{background:#e9bf5c28;color:#f6dc9a}
+.bp-day-col[data-mode="sport"]{border-color:#38bdf899;background:#1d3952}
+.bp-day-col[data-mode="sport"] span{background:#38bdf828;color:#bae6fd}
+.bp-day-col[data-mode="rest"] span{background:#4a628333;color:#cbd5e1}
+.bp-ing-list{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;padding-right:2px;margin:8px 0}
+.bp-ing-row{display:grid;grid-template-columns:minmax(0,1fr) 82px 38px;gap:6px;align-items:center;padding:7px 10px;border-radius:10px;background:#21344e;border:1px solid #4a628366}
+.bp-ing-row b{font-size:12.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bp-ing-row small{font-size:10.5px;color:#c5d2e3}
+.bp-ing-row input{padding:6px;text-align:center;font-size:13px;min-height:36px}
+.bp-supp-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;max-height:290px;overflow-y:auto;padding:2px;margin:8px 0}
+@media (max-width:560px){.bp-supp-grid{grid-template-columns:1fr}}
+.bp-supp-card{display:flex;flex-direction:column;gap:5px;padding:10px;border-radius:12px;border:1.5px solid #4a628366;background:#1c2c43;text-align:left}
+.bp-supp-card.on{border-color:#34d399aa;background:#19383b}
+.bp-supp-top{display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer}
+.bp-supp-top b{font-size:12.5px;color:#f4f7fc}
+.bp-supp-card.on .bp-supp-top b{color:#6ee7b7}
+.bp-supp-cfg{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding-top:6px;border-top:1px solid #ffffff1a}
+.bp-supp-cfg input,.bp-supp-cfg select{padding:5px 7px;font-size:12px;min-height:34px}
+.bp-wiz-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid #4a628355}
+.bp-peat-callout{padding:11px 13px;border-radius:12px;background:linear-gradient(135deg,#253b59,#1b2c44);border:1px solid #e9bf5c66;font-size:12px;line-height:1.5;color:#e2e8f0;margin:8px 0}
+.bp-peat-callout b{color:#f6dc9a}
+</style>
+
+<script id="bp-v54-script">
+(function(){
+  "use strict";
+  if(window.__BIOPEAT_V54__)return;
+  window.__BIOPEAT_V54__=true;
+  try{APP_VERSION='v54';}catch(e){}
+
+  // ===== 1. REFERENCIAS RAY PEAT DIFERENCIADAS HOMBRE / MUJER =====
+  // Basado en Ray Peat: "Nutrition for Women" (1979/1993), "From PMS to Menopause: Female Hormones in Context" (1997) y boletines bioenergéticos.
+  const PEAT_SEX_TARGETS={
+    male:{
+      pufa:4.0, cap:1.20, cp:3.0,
+      micro:{vitA:3000,vitD:100,vitE:134,vitK:1000,vitC:200,b1:250,b2:2.2,b3:22,b5:7,b6:2.2,b7:45,b9:400,b12:4,colina:550,ca:2000,phos:1200,mg:650,k:4500,na:3000,fe:14,zn:15,cu:1.5,se:150,i:150,mn:2.3},
+      opt:{
+        vitA:{kind:'band',lo:'goal',hi:3800,src:'peat',ref:'Peat (Hombre): unas 10.000 UI al día (≈3.000 µg RAE) si la tiroides es activa; sostiene la síntesis de pregnenolona y andrógenos gonadales. En exceso compite con la T3. Cuenta la media de 7 días.'},
+        vitE:{kind:'min',src:'foro',ref:'Peat (Hombre): frena la peroxidación de los PUFA, protege la respiración mitocondrial y antagoniza los efectos del estrés y del hierro libre. Tu referencia es 134 mg (200 UI). Cuenta la media de 7 días.'},
+        mg:{kind:'min',src:'din',ref:'Peat y Dinkov (Hombre): clave para estabilizar el ATP intracelular, la recuperación neuromuscular y la sensibilidad tiroidea. Meta personal: 650 mg (comida + bisglicinato).'},
+        b6:{kind:'min',src:'tuya',ref:'Cofactor de transaminasas hepáticas y síntesis de neurotransmisores (dopamina/GABA). Meta: 2,2 mg.'},
+        b2:{kind:'min',src:'peat',ref:'Peat: la riboflavina es indispensable para la cadena respiratoria mitocondrial y el uso celular del oxígeno. Meta: 2,2 mg.'},
+        b9:{kind:'min',src:'of',ref:'Folato: 400 µg al día desde zumo de naranja, frutas, hígado y huevos. Cuenta la media de 7 días.'},
+        fe:{kind:'max',hi:'goal',src:'peat',ref:'Peat y Dinkov (Hombre): los hombres no tienen vía fisiológica regular de descarga de hierro y tienden a acumularlo con la edad, oxidando tejidos y destruyendo vitamina E. Límite máximo: ≤ 14 mg/día (media 7 d).'},
+        ca:{kind:'min',src:'din',ref:'Peat y Dinkov: 2.000–3.000 mg al día con Ca:P ≥ 1,20 : 1 para mantener baja la PTH, alta la temperatura y proteger hueso y metabolismo.'},
+        zn:{kind:'min',src:'foro',ref:'Peat: el zinc sostiene la producción de testosterona, frena la aromatasa (conversión a estrógeno) y equilibra al cobre. Meta: 15 mg.'}
+      }
+    },
+    female:{
+      pufa:3.5, cap:1.25, cp:3.2,
+      micro:{vitA:2500,vitD:100,vitE:150,vitK:1000,vitC:220,b1:250,b2:2.5,b3:20,b5:7.5,b6:3.5,b7:45,b9:450,b12:4,colina:500,ca:2000,phos:1200,mg:700,k:4500,na:3000,fe:16,zn:16,cu:1.5,se:150,i:150,mn:2.2},
+      opt:{
+        vitA:{kind:'band',lo:'goal',hi:3400,src:'peat',ref:'Peat («From PMS to Menopause»): la vitamina A es imprescindible junto con el colesterol y la T3 para fabricar progesterona y proteger el tejido mamario y epitelial frente al estrógeno. Zona ideal femenina: 2.400–3.400 µg RAE ajustada a tu tiroides (media de 7 días).'},
+        vitE:{kind:'min',src:'peat',ref:'Peat («Nutrition for Women»): «El estrógeno aumenta la necesidad corporal de vitamina E». Actúa como anti-estrogénico directo, mejora la oxigenación celular («como una respiración profunda»), reduce la prolactina y protege frente al hierro. Meta femenina: 150 mg (~225 UI, media 7 d).'},
+        mg:{kind:'min',src:'peat',ref:'Peat («Nutrition for Women»): el estrógeno y el exceso de calcio sin magnesio causan espasmos vasculares, calambres menstruales, migrañas e insomnio. La leche mejora el Ca:P pero aporta poco magnesio: meta femenina reforzada de 700 mg/día.'},
+        b6:{kind:'min',src:'peat',ref:'Peat («Nutrition for Women»): «El ácido fólico, la vitamina B6 y el zinc se agotan cuando sube el estrógeno». La B6 ayuda al hígado a excretar estrógeno, reduce la retención de líquidos premenstrual y sostiene la dopamina. Meta femenina: 3,5 mg.'},
+        b2:{kind:'min',src:'peat',ref:'Peat («Nutrition for Women»): la deficiencia de vitamina B2 impide que el hígado inactive y excrete el estrógeno, favoreciendo la dominancia estrogénica y la fatiga mitocondrial. Meta femenina: 2,5 mg.'},
+        b9:{kind:'min',src:'peat',ref:'Peat («Nutrition for Women»): el estrógeno elevado depleta el folato; cubrir 450 µg/día (zumo de naranja exprimido, fruta, hígado, huevos) protege la metilación y la salud celular femenina (media 7 d).'},
+        fe:{kind:'max',hi:'goal',src:'peat',ref:'Peat («Nutrition for Women»): aunque la menstruación descarga hierro, Peat advierte que el exceso de hierro destruye la vitamina E en el intestino y sinergiza con el estrógeno oxidando tejidos. Prioriza alimentos reales (hígado ocasional, marisco, huevos) sin superar ≤ 16 mg/día (media 7 d).'},
+        ca:{kind:'min',src:'peat',ref:'Peat («From PMS to Menopause»): la leche y el calcio (2.000 mg/día con Ca:P ≥ 1,25 : 1) previenen la pérdida ósea y alivian el síndrome premenstrual al suprimir la PTH y la prolactina, sin los riesgos del estrógeno.'},
+        zn:{kind:'min',src:'peat',ref:'Peat («Nutrition for Women»): el estrógeno agota el zinc y eleva la retención de cobre (que puede bajar el azúcar en sangre). Mantener 16 mg/día de zinc y un ratio Zn:Cu de 8–12 : 1 es clave en la mujer.'}
+      }
+    }
+  };
+
+  const GOAL_TYPES={
+    prometabolic:{id:'prometabolic',name:'🔥 Salud pro-metabólica y hormonal',kcalMult:1.00,pTrainMale:1.87,pRestMale:1.68,pTrainFemale:1.75,pRestFemale:1.60,fTrainMale:0.97,fRestMale:0.84,fTrainFemale:0.95,fRestFemale:0.82,desc:'Energía estable, apoyo tiroideo (T3), digestión ligera y equilibrio hormonal según Ray Peat.'},
+    muscle:{id:'muscle',name:'💪 Musculación e hipertrofia limpia',kcalMult:1.08,pTrainMale:2.05,pRestMale:1.85,pTrainFemale:1.95,pRestFemale:1.75,fTrainMale:1.00,fRestMale:0.88,fTrainFemale:0.98,fRestFemale:0.85,desc:'Superávit controlado (+8 %), proteína elevada y glucógeno alto para construir masa muscular sin acumular PUFA.'},
+    performance:{id:'performance',name:'⚡ Rendimiento deportivo y explosividad',kcalMult:1.06,pTrainMale:1.90,pRestMale:1.72,pTrainFemale:1.80,pRestFemale:1.65,fTrainMale:0.92,fRestMale:0.82,fTrainFemale:0.90,fRestFemale:0.80,desc:'Máxima disponibilidad de hidratos fáciles de oxidar para fuerza, pista o deporte intenso.'},
+    recomp:{id:'recomp',name:'🎯 Recomposición sin estrés metabólico',kcalMult:0.93,pTrainMale:2.00,pRestMale:1.82,pTrainFemale:1.90,pRestFemale:1.75,fTrainMale:0.85,fRestMale:0.75,fTrainFemale:0.82,fRestFemale:0.72,desc:'Ajuste suave (-7 % kcal) manteniendo alta la proteína y el azúcar protector para no elevar cortisol ni frenar la tiroides.'}
+  };
+
+  function getSex(st=state){
+    return st?.profile?.sex==='female'?'female':'male';
+  }
+  function isFemale(st=state){
+    return getSex(st)==='female';
+  }
+  function sexLabel(st=state){
+    return isFemale(st)?'Mujer ♀':'Hombre ♂';
+  }
+
+  // Configuración extendida v54 de un perfil
+  function defaultV54ForDiego(){
+    return {
+      sex:'male',
+      goalType:'performance',
+      onboardingDone:true,
+      dayTypes:['gym','rest','gym','rest','rest','gym','sport'], // L, M, X, J, V, S, D
+      dayNames:['Full body pesado','Descanso / pista','Full body potencia','Descanso / pista','Descanso / pista','Full body activación','Partido de baloncesto'],
+      faf:[1.725,1.5,1.725,1.5,1.5,1.65,1.75],
+      breakfast:{
+        enabled:true,
+        title:'Tu desayuno habitual',
+        meal:'Desayuno',
+        items:[{id:'leche_entera',amount:220},{id:'nesquik',amount:21},{id:'platano',amount:120},{id:'zumo_naranja',amount:250}]
+      },
+      shake:{
+        enabled:true,
+        title:'Tu batido',
+        meal:'Merienda',
+        useWhey:true,
+        defaultWhey:10,
+        items:[{id:'leche_entera',amount:200},{id:'zumo_naranja',amount:150},{id:'azucar_blanco',amount:35},{id:'platano',amount:120}]
+      }
+    };
+  }
+
+  function ensureV54State(s=state,profId){
+    if(!s||typeof s!=='object')return;
+    if(!s.profile)s.profile={weight:77.5,height:185,age:23,pufa:4,cap:1.2,sex:'male'};
+    const st=ensureProfilesStore();
+    const pid=profId||st?.activeId||'diego';
+    const pName=normalize(st?.items?.[pid]?.name||'diego');
+    const isDiegoProf=(pid==='diego'||pName.includes('diego'));
+    if(!s.v54||typeof s.v54!=='object'){
+      if(isDiegoProf){
+        s.v54=clone(defaultV54ForDiego());
+      }else{
+        const sx=s.profile.sex==='female'?'female':'male';
+        s.v54={
+          sex:sx,
+          goalType:'prometabolic',
+          onboardingDone:!!s.profile.onboardingDone,
+          dayTypes:['gym','rest','gym','rest','gym','rest','rest'],
+          dayNames:['Entreno de fuerza','Descanso activo','Entreno de fuerza','Descanso activo','Entreno de fuerza','Actividad suave','Descanso'],
+          faf:sx==='female'?[1.65,1.45,1.65,1.45,1.65,1.50,1.45]:[1.70,1.50,1.70,1.50,1.70,1.55,1.50],
+          breakfast:{enabled:true,title:'Tu desayuno habitual',meal:'Desayuno',items:[{id:'leche_entera',amount:250},{id:'zumo_naranja',amount:250},{id:'platano',amount:120}]},
+          shake:{enabled:false,title:'Tu batido',meal:'Merienda',useWhey:true,defaultWhey:20,items:[{id:'leche_entera',amount:200},{id:'zumo_naranja',amount:150},{id:'platano',amount:120}]}
+        };
+      }
+    }
+    if(isDiegoProf&&!s.profile.sex){
+      s.profile.sex='male';
+      s.v54.sex='male';
+      s.v54.onboardingDone=true;
+    }
+    s.profile.sex=s.profile.sex==='female'||s.v54.sex==='female'?'female':'male';
+    s.v54.sex=s.profile.sex;
+    s.profile.onboardingDone=!!(s.v54.onboardingDone||isDiegoProf);
+    return s.v54;
+  }
+
+  // Aplica las referencias de Ray Peat de Hombre o Mujer a OPT y opcionalmente a las metas de micros/ratios
+  function applySexReferences(sex,resetTargets=false,s=state){
+    const cfg=PEAT_SEX_TARGETS[sex==='female'?'female':'male'];
+    for(const [k,o] of Object.entries(cfg.opt)){
+      OPT[k]={...(OPT[k]||{}),...o};
+    }
+    if(resetTargets&&s){
+      s.profile.pufa=cfg.pufa;
+      s.profile.cap=cfg.cap;
+      s.ratioGoals17={...(s.ratioGoals17||{}),cp:cfg.cp,cap:cfg.cap,pufa:cfg.pufa};
+      for(const [k,val] of Object.entries(cfg.micro)){
+        s.targets[k]=val;
+        const mObj=MICRO.find(m=>m.k===k);
+        if(mObj)mObj.target=val;
+      }
+    }
+  }
+
+  // ===== 2. SOBRESCRITURA DE FUNCIONES NÚCLEO PARA SOPORTE HOMBRE/MUJER Y HÁBITOS REALES =====
+  // TMB (Mifflin-St Jeor + contexto bioenergético Ray Peat)
+  bmr=function(){
+    ensureV54State(state);
+    const p=state.profile;
+    const base=10*p.weight+6.25*p.height-5*p.age+(isFemale(state)?-161:5);
+    return base;
+  };
+
+  // Cálculo de objetivos diarios (macros y micros) adaptados a Hombre/Mujer, objetivo y horario real
+  targetFor=function(d){
+    ensureV54State(state);
+    const v54=state.v54,sx=getSex(state),fem=sx==='female';
+    const i=weekday(d),t={kcal:0,p:0,c:0,f:0,activity:i,cap:fem?1.25:1.2,pufa:fem?3.5:4,cp:fem?3.2:3};
+    for(const m of MICRO)t[m.k]=state?.targets?.[m.k]??PEAT_SEX_TARGETS[sx].micro[m.k]??m.target;
+    if(!state||!state.profile)return t;
+
+    const st=ensureProfilesStore(),isDiego=(st.activeId==='diego'&&sx==='male'&&v54.goalType==='performance');
+    const mg=state.macroGoals||{},mode=state.targetMode==='split'?'split':'all';
+    const dType=v54.dayTypes?.[i]||'rest';
+    const isTrainDay=(dType==='gym'||dType==='sport');
+    const dayG=state.days?.[d]?.macroGoals,modeG=mode==='split'?(isTrainDay?mg.split?.workout:mg.split?.rest):mg.all;
+    const use=g=>g&&g.p!=null&&g.f!=null;
+    const g=use(dayG)?dayG:use(modeG)?modeG:null;
+
+    const gt=GOAL_TYPES[v54.goalType]||GOAL_TYPES.prometabolic;
+    const weight=state.profile.weight||(fem?60:77.5);
+    let p,f;
+    if(g){
+      p=Number(g.p);
+      f=Number(g.f);
+    }else if(isDiego){
+      const wRatio=weight/77.5;
+      p=DEF_P[i]*wRatio;
+      f=DEF_F[i]*wRatio;
+    }else{
+      const pFactor=fem?(isTrainDay?gt.pTrainFemale:gt.pRestFemale):(isTrainDay?gt.pTrainMale:gt.pRestMale);
+      const fFactor=fem?(isTrainDay?gt.fTrainFemale:gt.fRestFemale):(isTrainDay?gt.fTrainMale:gt.fRestMale);
+      // En mujer, Ray Peat establece un mínimo hepático de 85-90 g de proteína para destoxificar estrógenos
+      p=Math.round(Math.max(fem?(isTrainDay?92:85):100,weight*pFactor));
+      f=Math.round(Math.max(fem?45:55,weight*fFactor));
+    }
+
+    const cp=state.ratioGoals17?.cp??(fem?3.2:3.0);
+    const fafVal=v54.faf?.[i]??FAF[i]??1.55;
+    let rawKcal=bmr()*fafVal*(isDiego?1:gt.kcalMult);
+    // Suelo bioenergético femenino de Ray Peat: evita dietas hipocalóricas que deprimen la T3 hepática
+    if(fem&&!isDiego){
+      const minFemKcal=weight*(isTrainDay?34.5:31.5)*gt.kcalMult;
+      rawKcal=Math.max(rawKcal,minFemKcal);
+    }
+    let kcal=g&&g.kcal?Number(g.kcal):Math.round(rawKcal/5)*5;
+    let c=(kcal-p*4-f*9)/4;
+    if(!(g&&g.kcal)&&c<p*cp){
+      c=p*cp;
+      kcal=Math.round((c*4+p*4+f*9)/5)*5;
+      c=(kcal-p*4-f*9)/4;
+    }
+    Object.assign(t,{
+      kcal,
+      p,
+      c:Math.max(0,c),
+      f,
+      cap:state.profile.cap??(fem?1.25:1.2),
+      pufa:state.profile.pufa??(fem?3.5:4),
+      cp,
+      manual:use(dayG)
+    });
+    return t;
+  };
+
+  // Recetas dinámicas de desayuno y batido según el perfil activo
+  recipe=function(kind){
+    ensureV54State(state);
+    const cfg=kind==='breakfast'?state.v54.breakfast:state.v54.shake;
+    if(!cfg||!cfg.enabled||!Array.isArray(cfg.items)||!cfg.items.length){
+      throw Error(kind==='breakfast'?'No tienes desayuno fijo configurado.':'No tienes batido configurado.');
+    }
+    const mealName=cfg.meal||(kind==='breakfast'?'Desayuno':'Merienda');
+    const rows=cfg.items.filter(it=>it&&it.id&&state.foods[it.id]&&it.amount>0).map(it=>[it.id,Number(it.amount)]);
+    if(kind==='shake'&&cfg.useWhey!==false){
+      const whey=Number($('whey')?.value||0);
+      if(whey>0&&state.foods.whey)rows.push(['whey',whey]);
+    }
+    return rows.map(([id,g])=>fromFood(id,g,mealName));
+  };
+
+  // Texto descriptivo de los ingredientes del desayuno o batido del usuario
+  function presetItemsDesc(cfg,isShake=false){
+    if(!cfg||!Array.isArray(cfg.items)||!cfg.items.length)return 'Sin ingredientes configurados.';
+    const parts=cfg.items.map(it=>{
+      const f=state.foods[it.id];
+      if(!f)return null;
+      const shortName=f.name.replace(/\s*\((g|ml)\)$/i,'');
+      return `${fmt(it.amount,1)} ${f.unit} ${shortName}`;
+    }).filter(Boolean);
+    return parts.join(' · ')+(isShake&&cfg.useWhey!==false?' + Whey ajustable.':'.');
+  }
+
+  renderPresetInfo=function(){
+    ensureV54State(state);
+    const bCfg=state.v54.breakfast,sCfg=state.v54.shake;
+    const bArea=$('breakfast-area'),sArea=$('shake-area');
+    if(bArea){
+      bArea.hidden=!bCfg?.enabled;
+      if(bCfg?.enabled){
+        const h3=bArea.querySelector('h3');
+        if(h3)h3.textContent=bCfg.title||'Tu desayuno habitual';
+        const sub=bArea.querySelector('.subtext.tiny');
+        if(sub)sub.textContent=presetItemsDesc(bCfg,false);
+        try{$('breakfast-info').textContent=summary(recipe('breakfast'));}
+        catch(e){$('breakfast-info').textContent='Configura los ingredientes de tu desayuno.';}
+      }
+    }
+    if(sArea){
+      sArea.hidden=!sCfg?.enabled;
+      if(sCfg?.enabled){
+        const h3=sArea.querySelector('h3');
+        if(h3)h3.textContent=sCfg.title||'Tu batido';
+        const sub=sArea.querySelector('.subtext.tiny');
+        if(sub)sub.textContent=presetItemsDesc(sCfg,true);
+        const wheyBox=sArea.querySelector('.whey');
+        if(wheyBox)wheyBox.hidden=sCfg.useWhey===false;
+        try{$('shake-info').textContent=summary(recipe('shake'));}
+        catch(e){$('shake-info').textContent='Configura los ingredientes de tu batido.';}
+      }
+    }
+    if($('whey-label')&&$('whey'))$('whey-label').textContent=$('whey').value+' g';
+  };
+
+  // Cabecera con indicador Hombre/Mujer y actividades personalizadas del perfil
+  const origRenderHeader=renderHeader;
+  renderHeader=function(){
+    ensureV54State(state);
+    applySexReferences(getSex(state),false,state);
+    if(Array.isArray(state.v54.dayNames)&&state.v54.dayNames.length===7){
+      for(let k=0;k<7;k++)ACTIVITIES[k]=state.v54.dayNames[k];
+    }
+    origRenderHeader();
+    const fem=isFemale(state);
+    const dtTypes=state.v54.dayTypes||['gym','rest','gym','rest','rest','gym','sport'];
+    const i=weekday(date),start=shift(date,-i);
+    if($('week-days')){
+      $('week-days').innerHTML=DAYS.map((d,j)=>{
+        const dt=shift(start,j),tp=dtTypes[j]||'rest';
+        const tag=tp==='sport'?'Deporte':tp==='gym'?'Gym':'Descanso';
+        return `<button class="day-btn ${dt===date?'active':''}" data-date="${dt}" aria-label="${d} ${dt}" aria-pressed="${dt===date}"><span class="d-name">${['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'][j]}</span><span class="d-sub">${dt.slice(8)} · ${tag}</span></button>`;
+      }).join('');
+    }
+    if($('header-profile')){
+      $('header-profile').innerHTML=`<span class="bp-sex-badge ${fem?'female':''}">${sexLabel(state)}</span> · ${fmt(state.profile.weight,1)} kg · ${fmt(state.profile.height)} cm · TMB ${fmt(bmr())} kcal`;
+    }
+  };
+
+  // Equilibrios del día con explicaciones específicas para Mujer ("Nutrition for Women" / "From PMS to Menopause") o Hombre
+  const origRatioInfo=ratioInfo;
+  ratioInfo=function(key,t=totals()){
+    ensureV54State(state);
+    const info=origRatioInfo(key,t);
+    if(!isFemale(state))return info;
+    if(key==='ca'){
+      info.why='En «From PMS to Menopause», Ray Peat explica que mantener más calcio que fósforo (≥ 1,25 : 1) frena la hormona paratiroidea (PTH) y la prolactina, protegiendo la densidad ósea femenina, el estado de ánimo premenstrual y la tasa metabólica mucho mejor que la terapia de estrógenos.';
+    }else if(key==='pufa'){
+      info.why='En «From PMS to Menopause» y «Nutrition for Women», Peat demuestra que las grasas poliinsaturadas (PUFA) potencian directamente la acción celular del estrógeno, bloquean la unión de la progesterona y deprimen la tiroides femenina. Mantenerlas ≤ 3,5 g/día es prioritario.';
+    }else if(key==='c'){
+      info.why='En «Nutrition for Women», Peat subraya que la mujer necesita hidratos fáciles de digerir (fruta madura, zumo, miel, leche; ratio ≥ 3,2 : 1) para mantener el glucógeno hepático: sin glucógeno el hígado no convierte T4 en T3 ni puede inactivar los estrógenos, disparando adrenalina y tensión premenstrual.';
+    }else if(key==='ad'){
+      info.why='En «From PMS to Menopause», Peat destaca que la vitamina A es indispensable (junto con colesterol y T3) para que los ovarios y suprarrenales fabriquen progesterona y para proteger el tejido mamario frente al estrógeno, siempre en equilibrio (2 a 4 : 1) con la vitamina D.';
+    }else if(key==='zncu'){
+      info.why='En «Nutrition for Women», Peat advierte que el exceso de estrógeno agota el zinc y hace retener cobre; un exceso de cobre frente al zinc puede bajar el azúcar en sangre y causar fatiga o migrañas menstruales. Mantén entre 8 y 12 de zinc por cada 1 de cobre.';
+    }
+    return info;
+  };
+
+  // Recomendador del día y prompt de IA adaptados al sexo y objetivos del perfil
+  const origRenderCoach=renderCoach;
+  renderCoach=function(){
+    ensureV54State(state);
+    origRenderCoach();
+    if(isFemale(state)){
+      const box=$('day-coach'),t=totals(),g=dayGoal();
+      if(box&&t.all.p<85&&t.all.kcal>0){
+        const tip=document.createElement('p');
+        tip.className='coach-tip';
+        tip.textContent='Nota Peat (Mujer): llegar al menos a 85–100 g de proteína hoy (leche, queso, huevos, gelatina, marisco) permite a tu hígado inactivar y eliminar estrógenos.';
+        box.appendChild(tip);
+      }
+    }
+  };
+
+  coachPrompt=function(){
+    ensureV54State(state);
+    const fem=isFemale(state),pName=activeProfileName(),gt=GOAL_TYPES[state.v54.goalType]||GOAL_TYPES.prometabolic;
+    const t=totals(),d=day(),g=dayGoal(),meal=$('meal-select').value,ref={cap:d.ratioGoals17?.cap??state.profile.cap??(fem?1.25:1.2),pufa:d.ratioGoals17?.pufa??state.profile.pufa??(fem?3.5:4)};
+    const lows=MICRO.filter(m=>!DEPOSIT.has(m.k)&&m.k!=='b1'&&state.targets[m.k]&&t.known[m.k]&&t.all[m.k]/state.targets[m.k]<.6).map(m=>m.name+' '+fmt(t.all[m.k]/state.targets[m.k]*100)+'%').slice(0,6);
+    const deps=MICRO.filter(m=>DEPOSIT.has(m.k)&&!LIMIT.has(m.k)&&state.targets[m.k]).map(m=>({m,r:rollingMicro(m.k)})).filter(x=>x.r.known&&x.r.value/state.targets[x.m.k]<.7).map(x=>x.m.name+' (depósito '+fmt(x.r.value/state.targets[x.m.k]*100)+'%)').slice(0,4);
+    const habits=[...usageStats(45).values()].sort((a,b)=>b.count-a.count).slice(0,15).map(x=>x.entry.name+' ~'+fmt(x.usual,1)+' '+x.entry.unit+' ('+x.count+'×)');
+    const sexCtx=fem
+      ?'Mujer ('+state.profile.age+' años, '+fmt(state.profile.weight,1)+' kg). Enfoque Ray Peat basado en «Nutrition for Women» y «From PMS to Menopause»: priorizar proteína de alta calidad (≥85-110 g) y vitaminas B/magnesio/vitamina E para la destoxificación hepática de estrógenos, glucógeno constante con fruta/zumo/leche para sostener T3 y progesterona, Ca:P ≥ 1,25 y PUFA ≤ 3,5 g.'
+      :'Hombre ('+state.profile.age+' años, '+fmt(state.profile.weight,1)+' kg). Enfoque bioenergético Ray Peat / Georgi Dinkov: priorizar lácteos, zumo de naranja, fruta madura, miel, huevos, patata, arroz, carne rumiante y gelatina; mantener bajo el PUFA y el hierro libre.';
+    return 'Eres el asistente de nutrición de '+pName+'. '+sexCtx+' Objetivo actual: '+gt.name+'. Próximo momento: '+meal+'.\nHoy lleva: '+fmt(t.all.kcal)+'/'+fmt(g.kcal)+' kcal, '+fmt(t.all.p)+'/'+fmt(g.p)+' g proteína, '+fmt(t.all.c)+'/'+fmt(g.c)+' g hidratos, '+fmt(t.all.f)+'/'+fmt(g.f)+' g grasa. Ca:P '+(t.all.phos>0?fmt(t.all.ca/t.all.phos,2):'—')+' (meta ≥ '+fmt(ref.cap,2)+'). PUFA '+fmt(t.all.pufa,1)+' g (máx '+fmt(ref.pufa,1)+' g).\n'+(lows.length?'Micros diarios bajos hoy: '+lows.join(', ')+'.\n':'')+(deps.length?'Depósitos semanales bajos: '+deps.join(', ')+'.\n':'')+'Alimentos habituales del perfil: '+(habits.join('; ')||'usar alimentos de su despensa')+'.\n'+(state.aiNotes?'Notas del perfil: '+state.aiNotes.slice(0,800)+'\n':'')+'Propón UNA comida concreta y sencilla para '+meal.toLowerCase()+', con gramos o ml exactos. Después, en una línea, cómo quedarían sus macros. Máximo 4 líneas, texto plano.';
+  };
+
+  // Biblioteca de Ray Peat en Ajustes: añade tarjeta específica de "Nutrition for Women" & "From PMS to Menopause"
+  function ensureWomenPeatCard(){
+    const links=$('peat-links');
+    if(!links)return;
+    let card=$('peat-women-card');
+    if(!card){
+      card=document.createElement('div');
+      card.id='peat-women-card';
+      card.className='research-note peat26';
+      links.prepend(card);
+    }
+    const fem=isFemale(state);
+    card.innerHTML=`<b>${fem?'♀ Activo en tu perfil · ':''}Ray Peat: «Nutrition for Women» y «From PMS to Menopause»</b>
+      <p class="safe-info"><b>Proteína hepática y estrógenos:</b> Peat explica que el hígado femenino necesita al menos 80–100 g diarios de proteína digestible (leche, queso, huevos, gelatina, marisco) y vitaminas del grupo B (especialmente B2, B6 y folato) para conjugar y excretar el estrógeno por la bilis. Con entrenamiento de fuerza la meta sube a 1,75–1,95 g/kg.</p>
+      <p class="safe-info"><b>Glucógeno, T3 y progesterona:</b> La síntesis de progesterona depende de la T3, la vitamina A y el colesterol, y cae bruscamente si baja el azúcar en sangre. Por eso en el perfil de mujer el ratio Hidratos : Proteína sube a ≥ 3,2 : 1 y se evita el déficit calórico agresivo.</p>
+      <p class="safe-info"><b>Vitamina E, magnesio, calcio y hierro:</b> En «Nutrition for Women», Peat señala que el estrógeno aumenta la necesidad de vitamina E (150 mg / ~225 UI), agota el magnesio (meta 700 mg para estabilizar el ATP y evitar calambres y migrañas) y el zinc (16 mg), mientras que un ratio Ca:P ≥ 1,25 frena la PTH y la prolactina. El hierro se mantiene vigilado (≤ 16 mg) porque su exceso destruye la vitamina E.</p>`;
+  }
+
+  // ===== 3. INYECCIÓN DE SELECTOR HOMBRE / MUJER EN FORMULARIOS Y AJUSTES =====
+  function injectProfileSexControls(){
+    // 1) En el formulario de Ajustes (#profile-form)
+    const pf=$('profile-form');
+    if(pf&&!$('profile-sex-wrap')){
+      const wrap=document.createElement('div');
+      wrap.id='profile-sex-wrap';
+      wrap.className='wide';
+      wrap.innerHTML=`<span class="subtext" style="display:block;margin-bottom:4px">Sexo fisiológico (adapta TMB, macros, ratios y micros según Ray Peat)</span>
+        <div class="bp-sex-switch" id="profile-sex-switch">
+          <button type="button" class="bp-sex-btn" data-set-sex="male"><b>♂ Hombre</b><small>Base Peat/Dinkov masculina · PUFA ≤ 4 g · Ca:P ≥ 1,20 · Fe ≤ 14 mg</small></button>
+          <button type="button" class="bp-sex-btn" data-set-sex="female"><b>♀ Mujer</b><small>Base «Nutrition for Women» · soporte progesterona/hígado · Mg/Vit E/B6 reforzados</small></button>
+        </div>
+        <button type="button" class="btn btn-sky full" id="open-wizard-settings" style="margin-top:8px">✨ Abrir asistente completo (desayuno, batido, suplementos y objetivos)</button>`;
+      pf.prepend(wrap);
+    }
+    // 2) En el formulario rápido de Nuevo Perfil del menú lateral (#bp-prof-form)
+    const dpf=$('bp-prof-form');
+    if(dpf&&!$('drawer-sex-wrap')){
+      const wrap=document.createElement('div');
+      wrap.id='drawer-sex-wrap';
+      wrap.innerHTML=`<span class="subtext" style="display:block;margin-bottom:4px">Sexo del nuevo perfil</span>
+        <input type="hidden" id="bp-prof-sex" value="male">
+        <div class="bp-sex-switch" id="drawer-sex-switch">
+          <button type="button" class="bp-sex-btn active" data-drawer-sex="male"><b>♂ Hombre</b><small>Metas Peat hombre</small></button>
+          <button type="button" class="bp-sex-btn" data-drawer-sex="female"><b>♀ Mujer</b><small>Metas «Nutrition for Women»</small></button>
+        </div>`;
+      const firstLabel=dpf.querySelector('label');
+      if(firstLabel)firstLabel.after(wrap);else dpf.prepend(wrap);
+      const submitBtn=dpf.querySelector('button[type="submit"]');
+      if(submitBtn)submitBtn.textContent='Continuar al asistente de configuración →';
+    }
+  }
+
+  const origRenderSettings=renderSettings;
+  renderSettings=function(){
+    ensureV54State(state);
+    injectProfileSexControls();
+    origRenderSettings();
+    ensureWomenPeatCard();
+    const sx=getSex(state);
+    document.querySelectorAll('#profile-sex-switch [data-set-sex]').forEach(b=>{
+      b.classList.toggle('active',b.dataset.setSex===sx);
+    });
+  };
+
+  // Lista de perfiles en el menú lateral con insignia Hombre/Mujer y botón para abrir el asistente
+  const origRenderProfilesList=renderProfilesList;
+  renderProfilesList=function(){
+    ensureV54State(state);
+    origRenderProfilesList();
+    const st=ensureProfilesStore();
+    document.querySelectorAll('#bp-prof-list .bp-prof-card').forEach(card=>{
+      const swBtn=card.querySelector('[data-prof-switch]');
+      if(!swBtn)return;
+      const id=swBtn.dataset.profSwitch,item=st.items[id];
+      if(!item)return;
+      const dObj=id===st.activeId?state:(item.data||{});
+      const sx=(dObj?.profile?.sex||dObj?.v54?.sex)==='female'?'female':'male';
+      const infoSmall=card.querySelector('.bp-prof-info small');
+      if(infoSmall&&!infoSmall.dataset.sexTagged){
+        infoSmall.dataset.sexTagged='1';
+        infoSmall.innerHTML=`<span class="bp-sex-badge ${sx==='female'?'female':''}">${sx==='female'?'♀ Mujer':'♂ Hombre'}</span> · `+infoSmall.innerHTML;
+      }
+      const acts=card.querySelector('.bp-prof-acts');
+      if(acts&&!acts.querySelector('[data-prof-wiz]')){
+        const wizBtn=document.createElement('button');
+        wizBtn.type='button';
+        wizBtn.className='btn ghost small';
+        wizBtn.dataset.profWiz=id;
+        wizBtn.title='Configurar hábitos, comidas, suplementos y objetivos';
+        wizBtn.setAttribute('aria-label','Configurar perfil '+item.name);
+        wizBtn.textContent='⚙';
+        acts.prepend(wizBtn);
+      }
+    });
+  };
+
+  // Informe IA y Chat IA con contexto completo Hombre/Mujer y objetivos v54
+  const origBuildAIExportText=buildAIExportText;
+  buildAIExportText=function(rangeOverride){
+    ensureV54State(state);
+    const baseTxt=origBuildAIExportText(rangeOverride);
+    const fem=isFemale(state),gt=GOAL_TYPES[state.v54.goalType]||GOAL_TYPES.prometabolic;
+    const headerAdd=`- Sexo fisiológico: ${fem?'MUJER (referencias Ray Peat «Nutrition for Women» y «From PMS to Menopause»)':'HOMBRE (referencias bioenergéticas Ray Peat / Georgi Dinkov)'}\n- Objetivo configurado en el perfil: ${gt.name} (${gt.desc})\n- Desayuno habitual configurado: ${state.v54.breakfast?.enabled?presetItemsDesc(state.v54.breakfast,false):'No toma desayuno fijo'}\n- Batido habitual configurado: ${state.v54.shake?.enabled?presetItemsDesc(state.v54.shake,true):'No toma batido'}`;
+    return baseTxt.replace('## 1. CONTEXTO DEL USUARIO, PERFIL FÍSICO Y METAS','## 1. CONTEXTO DEL USUARIO, PERFIL FÍSICO Y METAS\n'+headerAdd);
+  };
+
+  // ===== 4. PERSISTENCIA EN COPIAS, CAMBIO DE PERFIL Y MIGRACIÓN =====
+  const origStorableState=typeof storableState==='function'?storableState:()=>clone(state);
+  window.storableState=storableState=function(){
+    ensureV54State(state);
+    const out=origStorableState();
+    out.v54=clone(state.v54);
+    out.profile={...(out.profile||{}),sex:state.profile.sex,goalType:state.v54.goalType,onboardingDone:state.profile.onboardingDone};
+    return out;
+  };
+
+  const origMigrate=typeof migrate==='function'?migrate:migrateBase;
+  window.migrate=migrate=function(o){
+    const next=origMigrate(o);
+    if(o&&typeof o==='object'){
+      if(o.v54&&typeof o.v54==='object')next.v54=clone(o.v54);
+      if(o.profile?.sex)next.profile.sex=o.profile.sex==='female'?'female':'male';
+      if(o.profile?.onboardingDone!==undefined)next.profile.onboardingDone=!!o.profile.onboardingDone;
+    }
+    ensureV54State(next);
+    applySexReferences(getSex(next),false,next);
+    return next;
+  };
+
+  // ===== 5. ASISTENTE INTERACTIVO EN 5 PASOS (ONBOARDING Y CONFIGURADOR DE PERFIL) =====
+  const WIZ_SUPPS_CATALOG=[
+    {id:'d3',name:'Vitamina D3',dose:4000,unit:'UI',slot:'Desayuno',key:'vitD',value:100,kind:'supp',days:[0,1,2,3,4,5,6],desc:'Soporte tiroideo, inmune y calcio (4.000 UI = 100 µg).'},
+    {id:'retinol',name:'Vitamina A · Retinol',dose:10000,unit:'UI',slot:'Desayuno',key:'vitA',value:3000,kind:'supp',days:[0,1,2,3,4,5,6],desc:'Síntesis de progesterona/pregnenolona y protección epitelial.'},
+    {id:'k2am',name:'Vitamina K2 MK-4 (mañana)',dose:0.5,unit:'mg',slot:'Desayuno',key:'vitK',value:500,kind:'supp',days:[0,1,2,3,4,5,6],desc:'Dirige el calcio al hueso y protege vasos y mitocondrias.'},
+    {id:'k2pm',name:'Vitamina K2 MK-4 (tarde)',dose:0.5,unit:'mg',slot:'Merienda / Post-entreno',key:'vitK',value:500,kind:'supp',days:[0,1,2,3,4,5,6],desc:'Segunda toma de K2 MK-4.'},
+    {id:'vite',name:'Vitamina E natural',dose:200,unit:'UI',slot:'Comida',key:'vitE',value:134,kind:'supp',days:[0,1,2,3,4,5,6],desc:'Anti-estrogénico directo, antagonista del PUFA y del hierro libre.'},
+    {id:'mgam',name:'Magnesio Bisglicinato / Carbonato (comida)',dose:200,unit:'mg',slot:'Comida',key:'mg',value:200,kind:'supp',days:[0,1,2,3,4,5,6],desc:'Estabiliza el ATP, relaja el sistema nervioso y previene calambres.'},
+    {id:'mgpm',name:'Magnesio Bisglicinato / Carbonato (noche)',dose:200,unit:'mg',slot:'Antes de dormir',key:'mg',value:200,kind:'supp',days:[0,1,2,3,4,5,6],desc:'Toma nocturna para descanso profundo y control de cortisol.'},
+    {id:'b1',name:'Benfotiamina / Tiamina B1',dose:250,unit:'mg',slot:'Comida',key:'',value:null,kind:'supp',days:[0,1,2,3,4,5,6],desc:'Activa la piruvato deshidrogenasa (oxidación limpia de glucosa y despeje mental).'},
+    {id:'b6_p5p',name:'Vitamina B6 (P5P)',dose:10,unit:'mg',slot:'Comida',key:'b6',value:10,kind:'supp',days:[0,1,2,3,4,5,6],desc:'Clave en «Nutrition for Women» para inactivar estrógeno en el hígado y bajar prolactina.'},
+    {id:'glicina_comida',name:'Glicina (comida)',dose:5,unit:'g',slot:'Comida',key:'',value:null,kind:'glycine',days:[0,1,2,3,4,5,6],desc:'Equilibra el exceso de metionina/triptófano de la carne y es antiinflamatoria.'},
+    {id:'glicina',name:'Glicina (antes de dormir)',dose:5,unit:'g',slot:'Antes de dormir',key:'',value:null,kind:'glycine',days:[0,1,2,3,4,5,6],desc:'Baja la temperatura central nocturna y mejora la calidad del sueño.'},
+    {id:'creatina',name:'Creatina monohidrato',dose:5,unit:'g',slot:'Merienda / Post-entreno',key:'',value:null,kind:'creatine',days:[0,1,2,3,4,5,6],desc:'Reserva de fosfocreatina y ATP muscular y cerebral.'},
+    {id:'selenio',name:'Selenio (2 días/semana)',dose:200,unit:'µg',slot:'Comida',key:'se',value:200,kind:'supp',days:[3,6],desc:'Imprescindible en el hígado para convertir T4 en hormona activa T3.'},
+    {id:'aspirin_training',name:'Aspirina',dose:325,unit:'mg',slot:'Merienda / Post-entreno',key:'',value:null,kind:'medicine',days:[0,2,5,6],desc:'Inhibe la lipólisis de PUFA y las prostaglandinas inflamatorias (combinar con K2).'},
+    {id:'eggshell_ca',name:'Calcio (cáscara de huevo / carbonato)',dose:500,unit:'mg',slot:'Cena',key:'ca',value:500,kind:'supp',days:[0,1,2,3,4,5,6],desc:'Útil si algún día tomas pocos lácteos para mantener el ratio Ca:P ≥ 1,25.'}
+  ];
+
+  let wizDraft=null;
+
+  function buildWizardDraft(opts={}){
+    ensureV54State(state);
+    const isNew=!!opts.isNew;
+    const sex=opts.sex||(isNew?'female':getSex(state));
+    const cfg=PEAT_SEX_TARGETS[sex];
+    const curV54=state.v54||defaultV54ForDiego();
+    const curPlan=state.plan||[];
+    const suppsMap={};
+    for(const item of WIZ_SUPPS_CATALOG){
+      const found=curPlan.find(p=>p.id===item.id);
+      suppsMap[item.id]={
+        enabled:isNew?false:!!(found&&found.enabled),
+        dose:found&&found.dose!=null?found.dose:item.dose,
+        unit:found?found.unit:item.unit,
+        slot:found?found.slot:item.slot,
+        days:found&&Array.isArray(found.days)?[...found.days]:[...item.days]
+      };
+    }
+    return {
+      step:1,
+      isNew,
+      profId:opts.profId||ensureProfilesStore().activeId,
+      name:opts.name||(isNew?'':activeProfileName()),
+      sex,
+      weight:opts.weight||(isNew?(sex==='female'?60:75):state.profile.weight),
+      height:opts.height||(isNew?(sex==='female'?165:178):state.profile.height),
+      age:opts.age||(isNew?25:state.profile.age),
+      goalType:isNew?'prometabolic':(curV54.goalType||'prometabolic'),
+      pufa:isNew?cfg.pufa:(state.profile.pufa??cfg.pufa),
+      cap:isNew?cfg.cap:(state.profile.cap??cfg.cap),
+      cp:isNew?cfg.cp:(state.ratioGoals17?.cp??cfg.cp),
+      dayTypes:isNew?['gym','rest','gym','rest','gym','rest','rest']:[...(curV54.dayTypes||['gym','rest','gym','rest','rest','gym','sport'])],
+      breakfast:isNew
+        ?{enabled:true,title:'Mi desayuno habitual',meal:'Desayuno',items:[{id:'leche_entera',amount:250},{id:'zumo_naranja',amount:250},{id:'platano',amount:120}]}
+        :clone(curV54.breakfast),
+      shake:isNew
+        ?{enabled:false,title:'Mi batido',meal:'Merienda',useWhey:true,defaultWhey:20,items:[{id:'leche_entera',amount:200},{id:'zumo_naranja',amount:150},{id:'platano',amount:120}]}
+        :clone(curV54.shake),
+      suppsMode:isNew?'none':(curPlan.some(p=>p.enabled)?'custom':'none'),
+      supps:suppsMap,
+      customSupps:isNew?[]:curPlan.filter(p=>p.enabled&&!WIZ_SUPPS_CATALOG.some(c=>c.id===p.id)).map(clone),
+      aiNotes:isNew?'':(state.aiNotes||'')
+    };
+  }
+
+  function calcItemsSummary(items,extraWhey=0){
+    const entries=[];
+    for(const it of (items||[])){
+      const f=state.foods[it.id];
+      if(f&&!f.legacy&&it.amount>0&&['kcal','p','c','f'].every(k=>own(f.nutrients,k))){
+        try{entries.push(fromFood(it.id,it.amount,'Desayuno'));}catch(e){}
+      }
+    }
+    if(extraWhey>0&&state.foods.whey){
+      try{entries.push(fromFood('whey',extraWhey,'Merienda'));}catch(e){}
+    }
+    return entries.length?summary(entries):'0 kcal · Añade algún alimento abajo';
+  }
+
+  function foodOptionsHTML(){
+    return Object.values(state.foods).filter(f=>!f.legacy&&['kcal','p','c','f'].every(k=>own(f.nutrients,k)))
+      .sort((a,b)=>a.name.localeCompare(b.name,'es'))
+      .map(f=>`<option value="${esc(f.id)}">${esc(f.name)} (por 100 ${esc(f.unit)}: ${fmt(f.nutrients.kcal)} kcal)</option>`).join('');
+  }
+
+  function renderWizardStep(){
+    if(!wizDraft)return;
+    const w=wizDraft,fem=w.sex==='female',step=w.step;
+    const stepsBar=['1. Quién eres','2. Objetivos y entreno','3. Desayuno','4. Batido','5. Suplementos'].map((lbl,idx)=>{
+      const n=idx+1;
+      return `<button type="button" class="bp-wiz-step ${n===step?'active':n<step?'done':''}" data-wiz-goto="${n}">${lbl}</button>`;
+    }).join('');
+
+    let body='';
+    if(step===1){
+      body=`<div class="bp-wiz-box">
+        <h3>Datos básicos y fisiología</h3>
+        <p class="subtext">Toda la app (calorías, proteína hepática, ratio Ca:P, límite de PUFA, los 25 micronutrientes y los consejos de Ray Peat) se adapta a si eres mujer u hombre.</p>
+        <label class="subtext" style="display:block;margin:10px 0">Nombre del perfil
+          <input type="text" id="wiz-name" maxlength="40" value="${esc(w.name)}" placeholder="Ej.: Laura, Diego, María…" required>
+        </label>
+        <span class="subtext" style="display:block;margin-bottom:4px">Sexo fisiológico</span>
+        <div class="bp-sex-switch">
+          <button type="button" class="bp-sex-btn ${!fem?'active':''}" data-wiz-sex="male">
+            <b>♂ Hombre</b>
+            <small>Fórmula y metas bioenergéticas masculinas · foco en fuerza, soporte androgénico/tiroideo, control de hierro (≤ 14 mg) y PUFA (≤ 4,0 g).</small>
+          </button>
+          <button type="button" class="bp-sex-btn ${fem?'active':''}" data-wiz-sex="female">
+            <b>♀ Mujer</b>
+            <small>Basado en «Nutrition for Women» y «From PMS to Menopause» de Ray Peat: soporte de progesterona y tiroides, proteína hepática anti-estrogénica, C:P ≥ 3,2, PUFA ≤ 3,5 g y refuerzo de Vit E, Mg, B6, B2, Ca y Zn.</small>
+          </button>
+        </div>
+        <div class="bp-peat-callout">
+          ${fem
+            ?`<b>Enfoque Ray Peat para Mujer activado:</b> Prioriza estabilidad glucémica (ratio Hidratos:Proteína ≥ 3,2 : 1) para sostener la conversión de T4 a T3 y la progesterona, asegura un mínimo de 85–110 g de proteína para que el hígado inactive estrógenos, refuerza Vitamina E (150 mg), Magnesio (700 mg), B6 (3,5 mg), Folato (450 µg) y Calcio:Fósforo (≥ 1,25), y limita el PUFA a ≤ 3,5 g.`
+            :`<b>Enfoque Ray Peat para Hombre activado:</b> Prioriza alta disponibilidad energética de hidratos (C:P ≥ 3,0 : 1) para proteger la testosterona y la T3 frente al cortisol, proteína de fácil digestión (1,7–2,0 g/kg), Calcio:Fósforo ≥ 1,20 : 1, PUFA ≤ 4,0 g y límite de hierro acumulado ≤ 14 mg.`}
+        </div>
+        <div class="inline-form" style="margin-top:10px">
+          <label>Peso actual (kg)<input type="number" id="wiz-weight" min="25" max="300" step="any" value="${w.weight}" required></label>
+          <label>Altura (cm)<input type="number" id="wiz-height" min="100" max="240" step="any" value="${w.height}" required></label>
+          <label>Edad (años)<input type="number" id="wiz-age" min="14" max="100" step="1" value="${w.age}" required></label>
+        </div>
+      </div>`;
+    }else if(step===2){
+      body=`<div class="bp-wiz-box">
+        <h3>¿Qué objetivo de salud, nutrición o musculación tienes?</h3>
+        <div class="bp-wiz-grid">
+          ${Object.values(GOAL_TYPES).map(g=>`<button type="button" class="bp-goal-card ${w.goalType===g.id?'active':''}" data-wiz-goal="${g.id}"><b>${esc(g.name)}</b><small>${esc(g.desc)}</small></button>`).join('')}
+        </div>
+        <h3 style="margin-top:14px">¿Qué días entrenas? (toca cada día para cambiarlo)</h3>
+        <p class="subtext">Cada toque alterna entre: <b>Pesas/Fuerza</b>, <b>Deporte/Partido</b> y <b>Descanso</b>. Las calorías y los macros de cada día de la semana se ajustan solos.</p>
+        <div class="bp-day-sched">
+          ${['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'].map((dName,idx)=>{
+            const tp=w.dayTypes[idx]||'rest';
+            const lbl=tp==='gym'?'Pesas':tp==='sport'?'Deporte':'Descanso';
+            return `<button type="button" class="bp-day-col" data-wiz-day="${idx}" data-mode="${tp}"><b>${dName}</b><span>${lbl}</span></button>`;
+          }).join('')}
+        </div>
+        <div class="inline-form" style="margin-top:12px">
+          <label>Límite diario PUFA (g)<input type="number" id="wiz-pufa" min="1" max="30" step="0.1" value="${w.pufa}"></label>
+          <label>Meta Calcio : Fósforo<input type="number" id="wiz-cap" min="0.8" max="3" step="0.05" value="${w.cap}"></label>
+          <label class="wide">Meta Hidratos : Proteína (g por cada 1 g de proteína)<input type="number" id="wiz-cp" min="1.5" max="6" step="0.1" value="${w.cp}"></label>
+        </div>
+      </div>`;
+    }else if(step===3){
+      const b=w.breakfast;
+      body=`<div class="bp-wiz-box">
+        <h3>Tu desayuno habitual</h3>
+        <p class="subtext">Configura lo que desayunas realmente para poder añadirlo con un solo botón cada mañana (o desactívalo si cada día desayunas algo distinto).</p>
+        <div class="bp-sex-switch">
+          <button type="button" class="bp-sex-btn ${b.enabled?'active':''}" data-wiz-bfast-on="1"><b>✓ Sí, tengo un desayuno habitual</b><small>Aparecerá listo para añadir con 1 toque</small></button>
+          <button type="button" class="bp-sex-btn ${!b.enabled?'active':''}" data-wiz-bfast-on="0"><b>✕ No tengo desayuno fijo</b><small>Ocultar botón rápido de desayuno</small></button>
+        </div>
+        ${b.enabled?`
+          <div class="row" style="margin:10px 0">
+            <span class="tiny muted">Plantillas rápidas:</span>
+            <button type="button" class="btn ghost small" data-wiz-bfast-tpl="peat_dairy">Leche + Zumo + Plátano</button>
+            <button type="button" class="btn ghost small" data-wiz-bfast-tpl="peat_eggs">Huevos + Zumo + Queso + Miel</button>
+            <button type="button" class="btn ghost small" data-wiz-bfast-tpl="diego">Desayuno de Diego</button>
+          </div>
+          <div class="bp-ing-list">
+            ${b.items.map((it,idx)=>{
+              const f=state.foods[it.id];
+              if(!f)return '';
+              return `<div class="bp-ing-row"><div><b>${esc(f.name)}</b><small>${esc(f.unit)}</small></div><input type="number" min="1" max="5000" step="any" value="${it.amount}" data-wiz-b-amt="${idx}"><button type="button" class="btn danger small" data-wiz-b-del="${idx}">×</button></div>`;
+            }).join('')||'<p class="empty">Añade al menos un ingrediente abajo.</p>'}
+          </div>
+          <div class="inline-form" style="margin-top:8px">
+            <label>Añadir ingrediente<select id="wiz-b-add-id">${foodOptionsHTML()}</select></label>
+            <label>Cantidad (g o ml)<div class="row" style="flex-wrap:nowrap"><input type="number" id="wiz-b-add-amt" value="150" min="1" max="5000" step="any"><button type="button" class="btn btn-emerald small" id="wiz-b-add-btn">+ Añadir</button></div></label>
+          </div>
+          <p class="bp-peat-callout" style="margin-top:10px"><b>Resumen de tu desayuno:</b> ${esc(calcItemsSummary(b.items,0))}</p>
+        `:''}
+      </div>`;
+    }else if(step===4){
+      const s=w.shake;
+      body=`<div class="bp-wiz-box">
+        <h3>Tu batido habitual</h3>
+        <p class="subtext">¿Tomas un batido habitual (post-entreno, merienda, etc.)? Si no tomas batido, lo ocultamos para que la app solo tenga cosas reales tuyas.</p>
+        <div class="bp-sex-switch">
+          <button type="button" class="bp-sex-btn ${s.enabled?'active':''}" data-wiz-shake-on="1"><b>🥤 Sí, tomo un batido</b><small>Configurar ingredientes y proteína Whey</small></button>
+          <button type="button" class="bp-sex-btn ${!s.enabled?'active':''}" data-wiz-shake-on="0"><b>✕ No tomo batido</b><small>Ocultar la tarjeta de batido en la app</small></button>
+        </div>
+        ${s.enabled?`
+          <div class="inline-form" style="margin:10px 0">
+            <label>Momento habitual<select id="wiz-s-meal">${['Desayuno','Media mañana','Comida','Merienda','Cena','Intra / Partido'].map(m=>`<option ${s.meal===m?'selected':''}>${m}</option>`).join('')}</select></label>
+            <label>Whey por defecto en el deslizador (g)<input type="number" id="wiz-s-whey" min="0" max="60" step="1" value="${s.useWhey===false?0:(s.defaultWhey??15)}"></label>
+          </div>
+          <div class="bp-ing-list">
+            ${s.items.map((it,idx)=>{
+              const f=state.foods[it.id];
+              if(!f)return '';
+              return `<div class="bp-ing-row"><div><b>${esc(f.name)}</b><small>${esc(f.unit)}</small></div><input type="number" min="1" max="5000" step="any" value="${it.amount}" data-wiz-s-amt="${idx}"><button type="button" class="btn danger small" data-wiz-s-del="${idx}">×</button></div>`;
+            }).join('')||'<p class="empty">Añade los ingredientes base de tu batido.</p>'}
+          </div>
+          <div class="inline-form" style="margin-top:8px">
+            <label>Añadir ingrediente al batido<select id="wiz-s-add-id">${foodOptionsHTML()}</select></label>
+            <label>Cantidad (g o ml)<div class="row" style="flex-wrap:nowrap"><input type="number" id="wiz-s-add-amt" value="150" min="1" max="5000" step="any"><button type="button" class="btn btn-emerald small" id="wiz-s-add-btn">+ Añadir</button></div></label>
+          </div>
+          <p class="bp-peat-callout" style="margin-top:10px"><b>Resumen de tu batido (con ${s.defaultWhey||0} g Whey):</b> ${esc(calcItemsSummary(s.items,s.defaultWhey||0))}</p>
+        `:''}
+      </div>`;
+    }else if(step===5){
+      body=`<div class="bp-wiz-box">
+        <h3>Tu pauta real de suplementos y notas</h3>
+        <p class="subtext">Marca únicamente los suplementos que tomas de verdad (o elige «No tomo suplementos»). Se sumarán solos cada día según las dosis que indiques.</p>
+        <div class="row" style="margin:8px 0">
+          <button type="button" class="btn ${w.suppsMode==='none'?'btn-amber':'btn-slate'} small" data-wiz-suppmode="none">No tomo suplementos</button>
+          <button type="button" class="btn ${w.suppsMode==='custom'?'btn-amber':'btn-slate'} small" data-wiz-suppmode="custom">Elegir los que tomo</button>
+          <button type="button" class="btn ghost small" data-wiz-suppmode="peat_base">Marcar básicos Peat (${fem?'Mujer':'Hombre'})</button>
+        </div>
+        ${w.suppsMode!=='none'?`
+          <div class="bp-supp-grid">
+            ${WIZ_SUPPS_CATALOG.map(cat=>{
+              const st=w.supps[cat.id]||{enabled:false,dose:cat.dose,unit:cat.unit,slot:cat.slot};
+              return `<div class="bp-supp-card ${st.enabled?'on':''}">
+                <div class="bp-supp-top" data-wiz-supp-toggle="${cat.id}">
+                  <b>${st.enabled?'✓ ':'+ '}${esc(cat.name)}</b>
+                  <span class="badge ${st.enabled?'badge-green':'badge-amber'}">${st.enabled?'Activo':'No'}</span>
+                </div>
+                <small style="color:#c5d2e3;font-size:10.5px">${esc(cat.desc)}</small>
+                ${st.enabled?`
+                  <div class="bp-supp-cfg">
+                    <label class="tiny">Dosis (${esc(st.unit)})<input type="number" min="0.01" max="100000" step="any" value="${st.dose}" data-wiz-supp-dose="${cat.id}"></label>
+                    <label class="tiny">Momento<select data-wiz-supp-slot="${cat.id}">${['Desayuno','Comida','Merienda / Post-entreno','Cena','Antes de dormir'].map(sl=>`<option ${st.slot===sl?'selected':''}>${sl}</option>`).join('')}</select></label>
+                  </div>
+                `:''}
+              </div>`;
+            }).join('')}
+          </div>
+        `:'<p class="bp-peat-callout">Perfecto: tu perfil empezará con <b>0 suplementos automáticos</b> y todos los cálculos se harán exclusivamente con tus comidas reales.</p>'}
+        <label class="subtext" style="display:block;margin-top:10px">Tus hábitos de cocina, intolerancias o notas personales (para la IA y el recomendador)
+          <textarea id="wiz-notes" rows="2" placeholder="Ej.: Cocino con mantequilla o aceite de coco, tomo leche semidesnatada o entera, busco mejorar energía y digestión…">${esc(w.aiNotes)}</textarea>
+        </label>
+      </div>`;
+    }
+
+    const foot=`<div class="bp-wiz-foot">
+      ${step>1?`<button type="button" class="btn btn-slate" id="wiz-prev">‹ Anterior</button>`:`<span></span>`}
+      ${step<5
+        ?`<button type="button" class="btn btn-amber" id="wiz-next">Siguiente paso ›</button>`
+        :`<button type="button" class="btn btn-emerald" id="wiz-finish">✓ Guardar y adaptar toda la app</button>`}
+    </div>`;
+
+    modal(w.isNew?'Configurar nuevo perfil':'Personalizar perfil: '+(w.name||'Mi perfil'),stepsBar+body+foot);
+  }
+
+  function syncWizardInputs(){
+    if(!wizDraft)return;
+    if($('wiz-name'))wizDraft.name=$('wiz-name').value.trim();
+    if($('wiz-weight')){try{wizDraft.weight=number($('wiz-weight').value,25,300);}catch(e){}}
+    if($('wiz-height')){try{wizDraft.height=number($('wiz-height').value,100,240);}catch(e){}}
+    if($('wiz-age')){try{wizDraft.age=number($('wiz-age').value,14,100);}catch(e){}}
+    if($('wiz-pufa')){try{wizDraft.pufa=number($('wiz-pufa').value,0.5,50);}catch(e){}}
+    if($('wiz-cap')){try{wizDraft.cap=number($('wiz-cap').value,0.5,5);}catch(e){}}
+    if($('wiz-cp')){try{wizDraft.cp=number($('wiz-cp').value,1,8);}catch(e){}}
+    if($('wiz-s-meal'))wizDraft.shake.meal=$('wiz-s-meal').value;
+    if($('wiz-s-whey')){
+      const wh=Math.max(0,Math.min(60,Number($('wiz-s-whey').value)||0));
+      wizDraft.shake.defaultWhey=wh;
+      wizDraft.shake.useWhey=true;
+    }
+    if($('wiz-notes'))wizDraft.aiNotes=$('wiz-notes').value.trim();
+  }
+
+  function commitWizard(){
+    syncWizardInputs();
+    const w=wizDraft;
+    if(!w.name)throw Error('Escribe un nombre para el perfil en el Paso 1.');
+    const fem=w.sex==='female';
+    const dNames=w.dayTypes.map(tp=>tp==='gym'?'Entreno de fuerza':tp==='sport'?'Deporte / partido':'Descanso / actividad ligera');
+    const fafArr=w.dayTypes.map(tp=>tp==='sport'?(fem?1.70:1.75):tp==='gym'?(fem?1.65:1.725):(fem?1.45:1.50));
+
+    // Construir la pauta real elegida en el Paso 5
+    const newPlan=[];
+    for(const cat of WIZ_SUPPS_CATALOG){
+      const cfg=w.supps[cat.id];
+      const enabled=w.suppsMode!=='none'&&!!cfg?.enabled;
+      const dose=cfg?.dose??cat.dose;
+      let val=cat.value;
+      if(val!=null&&cat.dose>0)val=Number((cat.value*(dose/cat.dose)).toFixed(3));
+      newPlan.push(cleanPlan({
+        id:cat.id,
+        name:cat.name,
+        dose,
+        unit:cfg?.unit||cat.unit,
+        slot:cfg?.slot||cat.slot,
+        key:cat.key,
+        value:val,
+        days:cfg?.days||cat.days,
+        kind:cat.kind,
+        enabled,
+        note:cat.desc
+      }));
+    }
+    for(const cp of (w.customSupps||[]))newPlan.push(cleanPlan(cp));
+
+    const v54Obj={
+      sex:w.sex,
+      goalType:w.goalType,
+      onboardingDone:true,
+      dayTypes:w.dayTypes,
+      dayNames:dNames,
+      faf:fafArr,
+      breakfast:clone(w.breakfast),
+      shake:clone(w.shake)
+    };
+
+    const gt=GOAL_TYPES[w.goalType]||GOAL_TYPES.prometabolic;
+    const contextStr=`${w.name} · ${fem?'Mujer (enfoque Ray Peat «Nutrition for Women» y «From PMS to Menopause»)':'Hombre (enfoque bioenergético Ray Peat / Georgi Dinkov)'} · ${fmt(w.weight,1)} kg · ${fmt(w.height)} cm · ${w.age} años. Objetivo: ${gt.name}. PUFA ≤ ${fmt(w.pufa,1)} g, Ca:P ≥ ${fmt(w.cap,2)}, C:P ≥ ${fmt(w.cp,1)}.`;
+
+    syncCurrentProfileToStore();
+    const st=ensureProfilesStore();
+
+    if(w.isNew){
+      const id='prof_'+uid();
+      const base=defaults();
+      base.profile={weight:w.weight,height:w.height,age:w.age,pufa:w.pufa,cap:w.cap,sex:w.sex,onboardingDone:true};
+      base.v54=v54Obj;
+      base.plan=newPlan;
+      base.aiNotes=w.aiNotes;
+      base.context=contextStr;
+      base.ratioGoals17={cp:w.cp,cap:w.cap,pufa:w.pufa};
+      applySexReferences(w.sex,true,base);
+      base.updated=Date.now();
+      st.items[id]={id,name:w.name,updated:Date.now(),data:base};
+      st.order.push(id);
+      st.activeId=id;
+      saveProfilesStore(st);
+      state=migrate(clone(base));
+    }else{
+      const pid=w.profId||st.activeId;
+      if(st.items[pid])st.items[pid].name=w.name;
+      state.profile={...state.profile,weight:w.weight,height:w.height,age:w.age,pufa:w.pufa,cap:w.cap,sex:w.sex,onboardingDone:true};
+      state.v54=v54Obj;
+      state.plan=newPlan;
+      state.aiNotes=w.aiNotes;
+      state.context=contextStr;
+      state.ratioGoals17={...(state.ratioGoals17||{}),cp:w.cp,cap:w.cap,pufa:w.pufa};
+      applySexReferences(w.sex,true,state);
+      // Actualizar las tomas automáticas de hoy según su nueva pauta real
+      const todayD=state.days[date];
+      if(todayD){
+        todayD.entries=todayD.entries.filter(e=>!e.auto||e.confirmed);
+        const wd=weekday(date);
+        const autoEntries=state.plan.filter(p=>p.enabled&&p.days.includes(wd)&&p.dose!=null).map(planEntry);
+        todayD.entries.push(...autoEntries);
+      }
+      saveProfilesStore(st);
+    }
+
+    if($('whey')&&state.v54.shake?.defaultWhey!=null){
+      $('whey').value=state.v54.shake.defaultWhey;
+    }
+    undoStack=[];
+    rollCache.clear();
+    date=localDate();
+    ensureDay(date);
+    save();
+    render();
+    refreshDrawerSummary();
+    $('modal').close();
+    toggleLeftDrawer(false);
+    toast(`Perfil «${w.name}» (${sexLabel(state)}) configurado y aplicado en toda la app`);
+  }
+
+  window.openProfileWizard=function(opts={}){
+    wizDraft=buildWizardDraft(opts);
+    renderWizardStep();
+  };
+
+  // Al crear un perfil desde el menú lateral, abrir el asistente pre-rellenado con esos datos
+  createNewProfile=function(name,weight,height,age,mode){
+    const sx=$('bp-prof-sex')?.value==='female'?'female':'male';
+    const newDet=$('bp-prof-new');
+    if(newDet)newDet.open=false;
+    toggleLeftDrawer(false);
+    openProfileWizard({
+      isNew:true,
+      name:String(name||'').trim(),
+      sex:sx,
+      weight:Number(weight)||70,
+      height:Number(height)||170,
+      age:Number(age)||25
+    });
+  };
+
+  // Manejadores de eventos del asistente y de los selectores de sexo
+  onClick(e=>{
+    // Selector de sexo en Ajustes
+    const setSx=e.target.closest('[data-set-sex]');
+    if(setSx){
+      const newSex=setSx.dataset.setSex==='female'?'female':'male';
+      change(()=>{
+        ensureV54State(state);
+        state.profile.sex=newSex;
+        state.v54.sex=newSex;
+        applySexReferences(newSex,true,state);
+        if(day().ratioGoals17){
+          day().ratioGoals17.pufa=state.profile.pufa;
+          day().ratioGoals17.cap=state.profile.cap;
+        }
+      },`Perfil cambiado a ${newSex==='female'?'Mujer ♀ (referencias «Nutrition for Women» activadas)':'Hombre ♂ (referencias Peat masculinas activadas)'}`);
+      return;
+    }
+    // Selector de sexo en el cajón de Nuevo Perfil
+    const drSx=e.target.closest('[data-drawer-sex]');
+    if(drSx){
+      const sx=drSx.dataset.drawerSex;
+      if($('bp-prof-sex'))$('bp-prof-sex').value=sx;
+      document.querySelectorAll('#drawer-sex-switch [data-drawer-sex]').forEach(b=>b.classList.toggle('active',b.dataset.drawerSex===sx));
+      if(sx==='female'&&$('bp-prof-weight')?.value==='75'){$('bp-prof-weight').value='60';$('bp-prof-height').value='165';}
+      if(sx==='male'&&$('bp-prof-weight')?.value==='60'){$('bp-prof-weight').value='75';$('bp-prof-height').value='178';}
+      return;
+    }
+    // Abrir asistente desde Ajustes o desde la tarjeta del perfil
+    if(e.target.closest('#open-wizard-settings')){
+      openProfileWizard({isNew:false});
+      return;
+    }
+    const profWiz=e.target.closest('[data-prof-wiz]');
+    if(profWiz){
+      const id=profWiz.dataset.profWiz,st=ensureProfilesStore();
+      if(id!==st.activeId)switchProfile(id);
+      toggleLeftDrawer(false);
+      openProfileWizard({isNew:false,profId:id});
+      return;
+    }
+
+    // Controles dentro del Asistente (Wizard)
+    if(!wizDraft)return;
+    const gotoBtn=e.target.closest('[data-wiz-goto]');
+    if(gotoBtn){
+      syncWizardInputs();
+      wizDraft.step=Number(gotoBtn.dataset.wizGoto);
+      renderWizardStep();
+      return;
+    }
+    if(e.target.closest('#wiz-prev')){
+      syncWizardInputs();
+      wizDraft.step=Math.max(1,wizDraft.step-1);
+      renderWizardStep();
+      return;
+    }
+    if(e.target.closest('#wiz-next')){
+      syncWizardInputs();
+      if(wizDraft.step===1&&!wizDraft.name){toast('Escribe tu nombre antes de continuar.');$('wiz-name')?.focus();return;}
+      wizDraft.step=Math.min(5,wizDraft.step+1);
+      renderWizardStep();
+      return;
+    }
+    if(e.target.closest('#wiz-finish')){
+      attempt(commitWizard);
+      return;
+    }
+    const wSex=e.target.closest('[data-wiz-sex]');
+    if(wSex){
+      syncWizardInputs();
+      const sx=wSex.dataset.wizSex==='female'?'female':'male';
+      wizDraft.sex=sx;
+      const cfg=PEAT_SEX_TARGETS[sx];
+      wizDraft.pufa=cfg.pufa;
+      wizDraft.cap=cfg.cap;
+      wizDraft.cp=cfg.cp;
+      renderWizardStep();
+      return;
+    }
+    const wGoal=e.target.closest('[data-wiz-goal]');
+    if(wGoal){
+      syncWizardInputs();
+      wizDraft.goalType=wGoal.dataset.wizGoal;
+      renderWizardStep();
+      return;
+    }
+    const wDay=e.target.closest('[data-wiz-day]');
+    if(wDay){
+      syncWizardInputs();
+      const idx=Number(wDay.dataset.wizDay);
+      const order=['gym','sport','rest'];
+      const cur=wizDraft.dayTypes[idx]||'rest';
+      wizDraft.dayTypes[idx]=order[(order.indexOf(cur)+1)%order.length];
+      renderWizardStep();
+      return;
+    }
+    const bOn=e.target.closest('[data-wiz-bfast-on]');
+    if(bOn){
+      syncWizardInputs();
+      wizDraft.breakfast.enabled=bOn.dataset.wizBfastOn==='1';
+      renderWizardStep();
+      return;
+    }
+    const bTpl=e.target.closest('[data-wiz-bfast-tpl]');
+    if(bTpl){
+      syncWizardInputs();
+      const tpl=bTpl.dataset.wizBfastTpl;
+      if(tpl==='peat_dairy')wizDraft.breakfast.items=[{id:'leche_entera',amount:250},{id:'zumo_naranja',amount:250},{id:'platano',amount:120}];
+      else if(tpl==='peat_eggs')wizDraft.breakfast.items=[{id:'huevos',amount:110},{id:'zumo_naranja',amount:250},{id:'parmigiano',amount:30},{id:'miel',amount:15}];
+      else if(tpl==='diego')wizDraft.breakfast.items=[{id:'leche_entera',amount:220},{id:'nesquik',amount:21},{id:'platano',amount:120},{id:'zumo_naranja',amount:250}];
+      renderWizardStep();
+      return;
+    }
+    const bDel=e.target.closest('[data-wiz-b-del]');
+    if(bDel){
+      syncWizardInputs();
+      wizDraft.breakfast.items.splice(Number(bDel.dataset.wizBDel),1);
+      renderWizardStep();
+      return;
+    }
+    if(e.target.closest('#wiz-b-add-btn')){
+      syncWizardInputs();
+      const id=$('wiz-b-add-id')?.value,amt=Number($('wiz-b-add-amt')?.value)||100;
+      if(id&&amt>0)wizDraft.breakfast.items.push({id,amount:amt});
+      renderWizardStep();
+      return;
+    }
+    const sOn=e.target.closest('[data-wiz-shake-on]');
+    if(sOn){
+      syncWizardInputs();
+      wizDraft.shake.enabled=sOn.dataset.wizShakeOn==='1';
+      renderWizardStep();
+      return;
+    }
+    const sDel=e.target.closest('[data-wiz-s-del]');
+    if(sDel){
+      syncWizardInputs();
+      wizDraft.shake.items.splice(Number(sDel.dataset.wizSDel),1);
+      renderWizardStep();
+      return;
+    }
+    if(e.target.closest('#wiz-s-add-btn')){
+      syncWizardInputs();
+      const id=$('wiz-s-add-id')?.value,amt=Number($('wiz-s-add-amt')?.value)||100;
+      if(id&&amt>0)wizDraft.shake.items.push({id,amount:amt});
+      renderWizardStep();
+      return;
+    }
+    const sMode=e.target.closest('[data-wiz-suppmode]');
+    if(sMode){
+      syncWizardInputs();
+      const m=sMode.dataset.wizSuppmode;
+      if(m==='none'){
+        wizDraft.suppsMode='none';
+        for(const k of Object.keys(wizDraft.supps))wizDraft.supps[k].enabled=false;
+      }else if(m==='peat_base'){
+        wizDraft.suppsMode='custom';
+        const baseIds=wizDraft.sex==='female'?['d3','k2am','vite','mgpm','b6_p5p','glicina']:['d3','k2am','vite','mgpm','creatina','glicina'];
+        for(const k of Object.keys(wizDraft.supps))wizDraft.supps[k].enabled=baseIds.includes(k);
+      }else{
+        wizDraft.suppsMode='custom';
+      }
+      renderWizardStep();
+      return;
+    }
+    const sTog=e.target.closest('[data-wiz-supp-toggle]');
+    if(sTog){
+      syncWizardInputs();
+      const id=sTog.dataset.wizSuppToggle;
+      if(wizDraft.supps[id])wizDraft.supps[id].enabled=!wizDraft.supps[id].enabled;
+      renderWizardStep();
+      return;
+    }
+  });
+
+  document.addEventListener('change',e=>{
+    if(!wizDraft)return;
+    const bAmt=e.target.dataset.wizBAmt;
+    if(bAmt!==undefined){
+      const v=Math.max(1,Number(e.target.value)||100);
+      if(wizDraft.breakfast.items[Number(bAmt)])wizDraft.breakfast.items[Number(bAmt)].amount=v;
+      renderWizardStep();
+    }
+    const sAmt=e.target.dataset.wizSAmt;
+    if(sAmt!==undefined){
+      const v=Math.max(1,Number(e.target.value)||100);
+      if(wizDraft.shake.items[Number(sAmt)])wizDraft.shake.items[Number(sAmt)].amount=v;
+      renderWizardStep();
+    }
+    const sDose=e.target.dataset.wizSuppDose;
+    if(sDose&&wizDraft.supps[sDose]){
+      wizDraft.supps[sDose].dose=Math.max(0.01,Number(e.target.value)||1);
+    }
+    const sSlot=e.target.dataset.wizSuppSlot;
+    if(sSlot&&wizDraft.supps[sSlot]){
+      wizDraft.supps[sSlot].slot=e.target.value;
+    }
+  });
+
+  // ===== 6. ARRANQUE DE V54: CONFIGURAR PERFIL DE DIEGO COMO HOMBRE Y LANZAR WIZARD SI INICIA DE CERO =====
+  function bootV54(){
+    if(!ready){setTimeout(bootV54,60);return;}
+    const hadStoredProfiles=!!localStorage.getItem(PROFILES_KEY);
+    const hadStoredMain=!!localStorage.getItem(STORE)||!!$('biopeat-seed');
+    ensureV54State(state);
+    // Asegurar que el perfil de Diego tiene asignado Hombre (male) y queda guardado
+    const st=ensureProfilesStore();
+    if(st.items.diego){
+      if(!st.items.diego.data)st.items.diego.data=storableState();
+      if(!st.items.diego.data.profile)st.items.diego.data.profile={weight:77.5,height:185,age:23,pufa:4,cap:1.2};
+      st.items.diego.data.profile.sex='male';
+      st.items.diego.data.profile.onboardingDone=true;
+      saveProfilesStore(st);
+    }
+    if(st.activeId==='diego'){
+      state.profile.sex='male';
+      state.v54.sex='male';
+      state.profile.onboardingDone=true;
+      state.v54.onboardingDone=true;
+    }
+    applySexReferences(getSex(state),false,state);
+    injectProfileSexControls();
+    save();
+    render();
+    refreshDrawerSummary();
+    document.title='BioPeat '+activeProfileName()+' | v54';
+
+    // Si la app se inicia completamente desde 0 (sin datos ni semilla), abrir el asistente automáticamente
+    const hasAnyFood=Object.values(state.days||{}).some(d=>Array.isArray(d?.entries)&&d.entries.some(e=>e.kind==='food'));
+    if(!hadStoredProfiles&&!hadStoredMain&&!hasAnyFood){
+      setTimeout(()=>openProfileWizard({isNew:false}),250);
+    }
+  }
+  bootV54();
+})();
+</script>
+<!-- === FIN BIOPEAT V54 === -->
+</body></html>
