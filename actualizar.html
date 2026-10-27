@@ -246,6 +246,11 @@ $('run').onclick=async()=>{
     if(r1<r0)add(false,'APP_REVISION ha bajado ('+r0+'→'+r1+')');
     else if(r1>r0)add(new RegExp('function upgradeTo'+r1+'\\(').test(t)&&new RegExp('upgradeTo'+r1+'\\(s,o\\);').test(t),'Migración de datos upgradeTo'+r1+' creada y llamada en migrate()');
     const js=appScript(t);
+    // Todo el código va dentro de <script id="app">: ni scripts nuevos al final ni funciones «envueltas».
+    const extraScripts=(t.match(/<script(?![^>]*id="(?:app|biopeat-seed)")[^>]*>[\s\S]*?<\/script>/g)||[]).filter(x=>x.length>500).length;
+    add(!extraScripts,extraScripts?'Hay un <script> nuevo fuera de <script id="app">: mete ese código dentro del script principal, en su sitio':'Un solo script de la app');
+    if(js){const names=[...js.matchAll(/\bfunction\s+([A-Za-z_$][\w$]*)\s*\(/g)].map(m=>m[1]),reas=[...new Set(names)].filter(n=>new RegExp('(?<![\\w$.])(?:window\\.)?'+n.replace(/\$/g,'\\$')+'\\s*=\\s*(?:async\\s+)?(?:function\\b|\\([^)]*\\)\\s*=>)').test(js));
+      add(!reas.length,reas.length?'Funciones reasignadas (parches): '+reas.join(', ')+'. Cambia la función original en su sitio en vez de envolverla':'Ninguna función reasignada');}
     try{new Function(js);add(true,'Código sin errores de escritura');}
     catch(e){const d=await explainSyntax(e,current,snaps,blocks);add(false,'Error de escritura en el código: '+e.message+d.short);errExtra=d.long;log.push(d.long);}
     if(fail)throw Error('stop');

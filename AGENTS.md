@@ -17,14 +17,15 @@ Lo usan el Gem de Gemini «BioPeat Dev» y el proyecto de Claude «BioPeat Dev»
 ## 2. Cómo editar
 - Entrega los cambios como bloques `@@@ BUSCAR n` / `@@@ CAMBIAR POR` / `@@@ FIN`. El texto de BUSCAR se copia **literalmente** del archivo y debe aparecer **exactamente una vez**. `actualizar.html` rechaza cualquier bloque que no cumpla esto.
 - Cambios centrados en la tarea. No reescribas ni «limpies» partes que no te han pedido.
-- Cada función se define **una sola vez**. Si cambias una función, sustitúyela; no la dupliques ni la «envuelvas».
+- Cada función se define **una sola vez**. Si cambias una función, sustitúyela **en su sitio**; no la dupliques ni la «envuelvas» (`x=function…`, `window.x=…`, `const origX=x`). **Nunca añadas otro `<script>` ni otro `<style>` al final del archivo**: todo va dentro del `<script id="app">` y del `<style>` principal. La v54 lo hizo así y el perfil de mujer volvía a hombre al recargar; `smoke.py` ahora lo rechaza.
 - **Para que no falle la comprobación:** prefiere añadir código en funciones nuevas y enganchar con el cambio más pequeño posible; líneas cortas (<150 caracteres); **sin plantillas con backticks anidadas** dentro de `${}` (construye cada trozo en una variable y únelos con `+`); en BUSCAR usa un fragmento corto y único (≤120 caracteres) aunque la línea sea larguísima; antes de entregar cuenta que ( ) { } [ ] comillas y backticks están cerrados.
 
 ## 3. Reglas del código (su incumplimiento rompió v30-v32)
 - **Metas del día:** usa siempre `targetFor(fecha)`, `dayGoal()` o `goalsFor(fecha)`. **Nunca** guardes metas calculadas dentro de `state.days[fecha]`. El único ajuste por día permitido es `state.days[fecha].macroGoals = {p, f, kcal?}`.
 - **Cambiar datos:** solo dentro de `change(() => { ... }, 'mensaje')`. No llames a `save()` ni a `render()` tras un `change`.
 - **Migraciones de datos guardados:** crea `upgradeToNN(s, o)` que empiece con `if((Number(o.appRevision)||0) >= NN) return;`, llámala en `migrate()` y sube `APP_REVISION` a NN. Nunca hagas cambios de datos que se repitan en cada arranque.
-- **Claves guardadas que no se renombran:** `biopeat_pro_v10`, compare17, workouts18, favorites22, microTargets17, goalOrigin17, ratioGoals17, macroGoals, targetMode.
+- **Claves guardadas que no se renombran:** `biopeat_pro_v10`, `biopeat_profiles_v1`, compare17, workouts18, favorites22, microTargets17, goalOrigin17, ratioGoals17, macroGoals, targetMode, `v54`, `profile.sex`.
+- **Perfiles:** el sexo está en `state.profile.sex` (`getSex()`, `isFemale()`); objetivo, semana, desayuno y batido en `state.v54` (`profV()`, limpiado por `cleanV54()` en `migrate()`). Lo de mujer va en `OPT_FEMALE`, `NEW_PROFILE_MICRO` y `femaleWhy()`, siempre con fuente. El asistente es `wizOpen({mode})` + `wizHTML()` + `wizCommit()`; repinta con `wizPaint()` sin mover la ventana. Para guardar el perfil usa `state.profile={...state.profile,...cambios}` (nunca sustituyas el objeto entero: se perdería el sexo).
 - **Clics:** registra manejadores con `onClick(fn)` y atributos `data-*`; nada de `onclick="..."` en el HTML ni `alert()` (usa `toast()`).
 - **Ventanas:** usa `modal(título, html)`. No toques `history` por tu cuenta.
 - **Estilos:** reutiliza las variables de `:root`. Para estilos nuevos, añade un bloque al final del `<style>` con un comentario `/* vNN: qué es */` usando BUSCAR `</style><!--FIN-CSS-->` y poniendo tu CSS delante (esa línea existe también en el archivo ligero).
