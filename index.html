@@ -5887,6 +5887,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Robot
 .bp-hub-menu .bp-ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#e9bf5c1a;border:1px solid #e9bf5c40;color:#f6dc9a;flex:none}
 .bp-hub-menu .bp-ico svg{width:21px;height:21px}.bp-hub-menu i{margin-left:auto;font-style:normal;font-size:22px;color:#f6dc9a}
 .bp-cat.warn{border-color:#fbbf2455}.bp-cat.warn small{color:#fde68a}
+/* v59: selector de idioma */
+.bp-lang{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bp-lang-btn{min-height:52px;border-radius:14px;border:1.5px solid #4a628388;background:#1c2c43;color:#f4f7fc;font-weight:800;font-size:15px;cursor:pointer}
+.bp-lang-btn.active{border-color:#e9bf5c;background:#263c59;color:#f6dc9a;box-shadow:0 0 0 1px #e9bf5c66}
+html[lang=en] .bp-clamp::after{content:' see more'}
+/* v59: el modo resumen también compacta la cabecera, la fecha y los avisos */
+body.bp-compact .header-bar{padding:8px 12px!important}
+body.bp-compact #header-profile,body.bp-compact .week-details,body.bp-compact #backup-reminder span,body.bp-compact .day-context{display:none!important}
+body.bp-compact .datebar{margin:4px 0 0!important}
+body.bp-compact section.card:has(#date){padding:10px 12px!important}
+body.bp-compact section.card:has(#date) h2{display:none}
+body.bp-compact .bp-tools{margin:6px 0 10px!important}
+body.bp-compact .bp-tools .btn{min-height:40px!important;padding:6px 10px!important}
+body.bp-compact #backup-reminder{padding:8px 10px!important;margin-bottom:8px!important}
+#move-url{margin-top:4px}
 </style><!--FIN-CSS--><meta content="#16243a" name="theme-color"/><link href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22 aria-hidden=%22true%22%3E%3Cdefs%3E%3ClinearGradient id=%22bpBg%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22#1b2d47%22/%3E%3Cstop offset=%22.55%22 stop-color=%22#111f33%22/%3E%3Cstop offset=%221%22 stop-color=%22#0a1322%22/%3E%3C/linearGradient%3E%3CradialGradient id=%22bpGlow%22 cx=%22.3%22 cy=%22.22%22 r=%22.8%22%3E%3Cstop offset=%220%22 stop-color=%22#f3cf7a%22 stop-opacity=%22.16%22/%3E%3Cstop offset=%221%22 stop-color=%22#f3cf7a%22 stop-opacity=%220%22/%3E%3C/radialGradient%3E%3ClinearGradient id=%22bpGold%22 gradientUnits=%22userSpaceOnUse%22 x1=%22150%22 y1=%2284%22 x2=%22380%22 y2=%22436%22%3E%3Cstop offset=%220%22 stop-color=%22#fbe7a6%22/%3E%3Cstop offset=%22.42%22 stop-color=%22#e9bf5c%22/%3E%3Cstop offset=%221%22 stop-color=%22#b9842a%22/%3E%3C/linearGradient%3E%3ClinearGradient id=%22bpRim%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22#f3cf7a%22 stop-opacity=%22.55%22/%3E%3Cstop offset=%22.5%22 stop-color=%22#f3cf7a%22 stop-opacity=%22.08%22/%3E%3Cstop offset=%221%22 stop-color=%22#f3cf7a%22 stop-opacity=%22.35%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect id=%22bp-bg%22 width=%22512%22 height=%22512%22 rx=%22116%22 fill=%22url(#bpBg)%22/%3E%3Crect id=%22bp-glow%22 width=%22512%22 height=%22512%22 rx=%22116%22 fill=%22url(#bpGlow)%22/%3E%3Crect id=%22bp-rim%22 x=%226%22 y=%226%22 width=%22500%22 height=%22500%22 rx=%22110%22 fill=%22none%22 stroke=%22url(#bpRim)%22 stroke-width=%223%22/%3E%3Cg id=%22bp-mark%22 transform=%22translate(256 256) scale(1) translate(-256 -256) translate(-6 0)%22%3E%3Cpath d=%22M138 90H280A70 70 0 0 1 306 225A100 100 0 0 1 278 422H138Z%22 fill=%22none%22 stroke=%22url(#bpGold)%22 stroke-width=%2222%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M204 372V160H262A46 46 0 0 1 262 252H204%22 fill=%22none%22 stroke=%22url(#bpGold)%22 stroke-width=%2242%22 stroke-linejoin=%22round%22/%3E%3Ccircle cx=%22282%22 cy=%22342%22 r=%2215%22 fill=%22url(#bpGold)%22/%3E%3C/g%3E%3C/svg%3E" rel="icon"/><link href="icon-maskable-512.png?v=42" rel="apple-touch-icon"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="yes" name="mobile-web-app-capable"/><meta content="BioPeat" name="apple-mobile-web-app-title"/><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/><link href="manifest.json" rel="manifest"/></head><body>
 <button class="date-pill" hidden id="date-pill" type="button"></button><div class="container">
 <header class="card header-bar"><div class="brand"><button aria-controls="bp-drawer" aria-expanded="false" aria-label="Abrir menú de BioPeat" class="brand-icon bp-logo-btn" data-drawer-toggle="1" id="bp-menu-btn" title="Menú de BioPeat" type="button"><svg viewBox="0 0 512 512" aria-hidden="true"><defs><linearGradient id="bpBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1b2d47"/><stop offset=".55" stop-color="#111f33"/><stop offset="1" stop-color="#0a1322"/></linearGradient><radialGradient id="bpGlow" cx=".3" cy=".22" r=".8"><stop offset="0" stop-color="#f3cf7a" stop-opacity=".16"/><stop offset="1" stop-color="#f3cf7a" stop-opacity="0"/></radialGradient><linearGradient id="bpGold" gradientUnits="userSpaceOnUse" x1="150" y1="84" x2="380" y2="436"><stop offset="0" stop-color="#fbe7a6"/><stop offset=".42" stop-color="#e9bf5c"/><stop offset="1" stop-color="#b9842a"/></linearGradient><linearGradient id="bpRim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3cf7a" stop-opacity=".55"/><stop offset=".5" stop-color="#f3cf7a" stop-opacity=".08"/><stop offset="1" stop-color="#f3cf7a" stop-opacity=".35"/></linearGradient></defs><rect id="bp-bg" width="512" height="512" rx="116" fill="url(#bpBg)"/><rect id="bp-glow" width="512" height="512" rx="116" fill="url(#bpGlow)"/><rect id="bp-rim" x="6" y="6" width="500" height="500" rx="110" fill="none" stroke="url(#bpRim)" stroke-width="3"/><g id="bp-mark" transform="translate(256 256) scale(1) translate(-256 -256) translate(-6 0)"><path d="M138 90H280A70 70 0 0 1 306 225A100 100 0 0 1 278 422H138Z" fill="none" stroke="url(#bpGold)" stroke-width="22" stroke-linejoin="round"/><path d="M204 372V160H262A46 46 0 0 1 262 252H204" fill="none" stroke="url(#bpGold)" stroke-width="42" stroke-linejoin="round"/><circle cx="282" cy="342" r="15" fill="url(#bpGold)"/></g></svg></button><div><span class="badge badge-amber">BioPeat</span><h1><span id="header-user-name">Mi perfil</span> <span class="subtext">/ tu día, sencillo</span></h1><div class="subtext" id="header-profile">Nutrición con contexto</div></div></div><div class="header-actions"><span class="pill" id="storage-status">Guardado</span></div></header>
@@ -5923,7 +5938,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Robot
 <div class="card wk-block"><h2 class="wk-q"><span>4</span>¿Voy mejorando?</h2><div class="trend-controls"><h3 id="trend-title">Ocho semanas</h3><select aria-label="Métrica de tendencia" id="trend-metric"><option value="kcal">Energía</option><option value="p">Proteína</option><option value="c">Hidratos</option><option value="f">Grasas</option><option value="pufa">PUFA</option></select></div><div class="trend-chart" id="trend-chart"></div><p class="wk-explain">Cada columna es una semana; la línea dorada es el 100 % de tu meta. Borde discontinuo = semana incompleta. Toca una para abrirla.</p><p class="trend-summary" id="trend-summary"></p><p class="trend-summary" id="trend-cumulative"></p></div>
 <div class="card calendar" id="calendar"><div class="calendar-head"><h2>Tu calendario</h2><button class="btn ghost small" id="calendar-today" type="button">Hoy</button></div><div class="calendar-controls"><button aria-label="Mes anterior" class="btn ghost small" id="calendar-prev" type="button">‹</button><input aria-label="Mes y año" id="calendar-month" max="2100-12" min="2000-01" type="month"/><button aria-label="Mes siguiente" class="btn ghost small" id="calendar-next" type="button">›</button></div><div aria-label="Qué mostrar en el calendario" class="segmented cal-metric"><button aria-pressed="true" data-calmetric="kcal" type="button">Energía</button><button aria-pressed="false" data-calmetric="p" type="button">Proteína</button><button aria-pressed="false" data-calmetric="c" type="button">Hidratos</button><button aria-pressed="false" data-calmetric="f" type="button">Grasa</button></div><div id="calendar-summary"></div><div aria-hidden="true" class="calendar-weekdays"><span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span></div><div aria-label="Calendario" class="calendar-grid" id="calendar-grid" role="group"></div><p class="cs-legend"><i class="lg ok"></i>En tu rango <i class="lg low"></i>Por debajo <i class="lg high"></i>Por encima <i class="lg none"></i>Sin datos · Barritas: hidratos, proteína y grasa · Borde discontinuo: día sin marcar completo</p><div aria-live="polite" id="calendar-detail"></div></div>
 <details class="card"><summary>Opciones de cálculo y tablas</summary><div class="week-controls"><label>Contar<select id="week-source"><option selected="" value="all">Alimentos + pauta</option><option value="food">Solo alimentos</option></select></label><label>Días que entran en las medias<select id="week-scope"><option value="logged">Todos los días con comidas</option><option value="complete">Solo días marcados completos</option></select></label></div><p class="section-note" id="week-quality"></p><form class="compare-form" id="compare-form"><label>Rango «bien» desde (%)<input id="compare-low" max="100" min="50" required="" type="number" value="90"/></label><label>hasta (%)<input id="compare-high" max="200" min="100" required="" type="number" value="110"/></label><button class="btn btn-slate" type="submit">Guardar rango</button></form><h3 style="margin-top:14px">Equilibrios y tipos de grasa de la semana</h3><div class="week-ratios" id="week-ratios"></div><div id="week-composition"></div><div class="week-table" id="week-table"></div></details>
-</section><section class="exercise" id="exercise"><div class="section-heading"><span class="section-number">GYM</span><div><h1>Gimnasio y nutrición.</h1><p>Tu entrenamiento real, en sus fechas. Importa el CSV de tu app (Hevy, Strong, Fitbod, FitNotes…) y míralo junto a tus comidas.</p></div></div><div class="card"><h2 style="margin-top:0">Traer tus entrenamientos</h2><p class="section-note">Exporta tus entrenos en CSV desde tu app y elígelo aquí. La app reconoce sola las columnas; si no, eliges una vez cuál es la fecha y cuál el ejercicio y se recuerda.</p><label class="btn btn-sky full" for="hevy-file">+ Importar entrenos (CSV)</label><input accept=".csv,.txt,text/csv,text/plain" hidden="" id="hevy-file" type="file"/><p class="section-note" id="hevy-status" role="status"></p><div hidden="" id="hevy-map-panel"><h3>Revisa el formato</h3><div class="hevy-map" id="hevy-map"></div><div class="hevy-units"><label>Carga del archivo<select id="hevy-weightunit"><option value="kg">Kilogramos (kg)</option><option value="lb">Libras (lb), convertir a kg</option></select></label><label>Orden de las fechas<select id="hevy-dateformat"><option value="auto">Año-mes-día o automático</option><option value="dmy">DD/MM/AAAA</option><option value="mdy">MM/DD/AAAA</option></select></label><label>Unidad de distancia<select id="hevy-distanceunit"><option value="km">km</option><option value="m">metros</option><option value="mi">millas</option></select></label></div><p class="section-note">Fechas sin zona horaria: hora local del navegador. Con zona explícita: se conserva el instante y se asigna al día local. No se adivinan columnas o unidades ausentes.</p><button class="btn btn-slate full" id="hevy-validate">Comprobar archivo y ver resumen</button></div><div class="hevy-preview" hidden="" id="hevy-preview"><p id="hevy-previewtext"></p><button class="btn btn-emerald full" id="hevy-commit">Importar sesiones nuevas</button></div><details><summary>Cómo exportar desde tu app</summary><ul class="section-note gym-howto"><li><b>Hevy:</b> Perfil → Ajustes → Export &amp; Import Data → Export Workouts.</li><li><b>Strong:</b> Ajustes → Exportar datos.</li><li><b>Fitbod:</b> Log → icono de compartir → Exportar entrenos.</li><li><b>FitNotes:</b> Ajustes → Copia de seguridad → Exportar CSV.</li><li><b>Otra app:</b> busca «Exportar» o «CSV» en sus ajustes. Si solo guarda pasos o pulsaciones (Apple Salud, Google Fit), no sirve: hacen falta los ejercicios con series.</li></ul><p class="section-note">Todo se queda en tu móvil: no se conecta ninguna cuenta. Una sesión ya importada se omite si vuelves a importar el mismo archivo. Las libras y los metros se pasan solos a kg y km.</p></details></div><div id="gp-root"><div class="card gp-card" hidden="" id="gp-none"><p class="gp-empty">Importa el CSV de tu app de entrenamiento arriba para ver tu progresión, récords y gráficos.</p></div><div id="gp-main"><div class="card gp-card"><div class="gp-kpis" id="gp-kpis"></div></div><div class="card gp-card"><h2 class="gp-h">Progresión por ejercicio</h2><div class="gp-search"><input aria-label="Buscar ejercicio" autocomplete="off" id="gp-q" placeholder="Busca un ejercicio o grupo: «remo», «pecho», «hack»…" type="search"/></div><div class="gp-exlist" id="gp-exlist"></div><div id="gp-exdetail"></div></div><div class="card gp-card"><h2 class="gp-h">Volumen semanal</h2><div id="gp-weekly"></div></div><div class="two"><div class="card gp-card"><h2 class="gp-h">Reparto muscular</h2><div id="gp-muscles"></div></div><div class="card gp-card"><h2 class="gp-h">Récords recientes</h2><div id="gp-prs"></div></div></div><div class="card gp-card"><h2 class="gp-h">Constancia · 6 meses</h2><div id="gp-heat"></div></div><div class="card gp-card"><h2 class="gp-h">Entreno y nutrición</h2><div id="gp-nut"></div></div><div class="card gp-card"><h2 class="gp-h">Tus sesiones</h2><div class="gp-seslist" id="gp-sessions"></div></div></div></div><div class="card"><h3>Analizar entrenamiento y nutrición con IA</h3><p class="section-note">Al pulsar se envían al proveedor configurado las últimas 20 sesiones (fechas, ejercicios, series, carga, repeticiones y RPE) y los macros alimentarios registrados en esas fechas. No se envían notas privadas ni el resto del historial. No se calculan calorías gastadas ni se cambian metas automáticamente. Puede tener coste de API.</p><div class="row"><button class="btn btn-sky" disabled="" id="gym-ai">Enviar resumen y analizar con IA</button><button class="btn danger" hidden="" id="gym-cancel">Cancelar</button></div><div class="gym-ai-output" id="gym-ai-output" role="status">Sin análisis todavía. Necesita entrenamientos importados y la IA conectada.</div></div></section><section aria-label="Ajustes y copias" class="view settings-section" id="view-settings"><details class="card" id="settings-details"><summary>Ajustes y datos</summary><div class="card"><h2>Guardar y llevar tus datos</h2><div class="stack"><button class="btn btn-amber full" id="backup-html">Guardar HTML con mis datos</button><button class="btn btn-slate full" id="export-json">Exportar JSON</button><label class="btn btn-slate full file-btn">Importar copia JSON<input accept=".json,application/json" id="import-json" type="file"/></label><button class="btn btn-sky full" id="download-icons" type="button">Descargar iconos de la app (PNG para GitHub)</button></div><p class="section-note">El JSON es la copia de seguridad recomendada: guárdalo y podrás restaurarlo en cualquier versión. El HTML incluye la app y tus datos en un solo archivo. Ninguno incluye la clave de IA ni fotos. Importar sustituye los datos actuales; puedes deshacer.</p><div hidden="" id="legacy-import"></div></div><div class="card"><h2>Mi perfil</h2><div class="bp-sex-row"><div class="bp-sex-switch" id="profile-sex-switch"><button type="button" class="bp-sex-btn" data-set-sex="male"><b>♂ Hombre</b></button><button type="button" class="bp-sex-btn" data-set-sex="female"><b>♀ Mujer</b></button></div><button type="button" class="btn btn-sky full" id="open-wizard-settings">⚙ Objetivo, semana, comidas y suplementos</button></div><form class="inline-form" id="profile-form"><label>Peso (kg)<input id="weight" max="350" min="20" required="" step="any" type="number"/></label><label>Altura (cm)<input id="height" max="250" min="80" required="" step="any" type="number"/></label><label>Edad<input id="age" max="100" min="18" required="" type="number"/></label><label>Límite diario de PUFA (g)<input id="pufa-goal" max="100" min="0.1" required="" step="any" type="number"/></label><label>Referencia calcio : fósforo<input id="cap-goal" max="5" min="0.1" required="" step="0.05" type="number"/></label><button class="btn btn-amber wide" type="submit">Guardar perfil</button></form><p class="section-note">El peso, la altura y la edad calculan tus calorías. El límite de PUFA y la referencia Ca:P se usan en «Equilibrio del día» y se aplican también al día seleccionado.</p></div><details class="card"><summary>Editar objetivos de macros del día</summary><form class="inline-form" id="macro-target-form"><label>Calorías<input id="target-kcal" max="10000" min="500" required="" step="any" type="number"/></label><label>Proteína (g)<input id="target-p" max="600" min="0" required="" step="any" type="number"/></label><label>Grasa (g)<input id="target-f" max="500" min="0" required="" step="any" type="number"/></label><label>Carbohidratos calculados (g)<input id="target-c" readonly=""/></label><button class="btn btn-amber wide" type="submit">Guardar solo para este día</button><button class="btn ghost wide" id="target-reset" type="button">Quitar el ajuste de este día</button></form><p class="section-note">Carbohidratos = energía restante con 4/4/9. Es una planificación personal, no una medición del gasto ni un óptimo demostrado de Peat.</p><button id="btn-prometabolic" class="btn wide" style="margin-top:12px;width:100%">Volver al plan Peat por defecto</button><p class="section-note">Vuelve a las metas que calcula tu perfil (objetivo, sexo, peso y días de entreno), con PUFA ≤ 4 g y Ca:P ≥ 1,20. Hidratos = el resto, mínimo 3 g por g de proteína.</p></details><div class="card"><h2>Notas para la IA</h2><form id="ai-notes-form"><p class="section-note">Opcional. Hábitos que la IA tendrá en cuenta al analizar fotos y textos, por ejemplo: «Uso leche entera, cocino con mantequilla, el arroz lo peso en crudo».</p><textarea id="ai-notes" maxlength="2000" rows="4" placeholder="Escribe tus hábitos de cocina, marcas habituales, raciones…"></textarea><button class="btn btn-slate full" style="margin-top:8px" type="submit">Guardar notas</button><button id="btn-ai-apply" type="button" class="btn btn-amber full" style="margin-top:8px">Aplicar instrucciones en toda la app con IA</button></form></div><div class="card"><h2>Estado de la app</h2><div class="app-info" id="app-info"></div></div><details class="card"><summary>Fuentes de Peat y límites de interpretación</summary><p class="safe-info">Los artículos revisados no justifican una tabla universal de 25 dosis que maximicen el metabolismo. Se conservan tus objetivos editables sin atribuirle cifras no verificadas. Los gráficos muestran ingestas, no función tiroidea ni glucógeno medido.</p><div class="research-note peat26"><b>Peat y Dinkov en las metas de la app</b><p class="safe-info">Proteína: Peat situaba el mínimo en unos 80–100 g al día y más con ejercicio intenso; por eso la app pone al menos 80 g en mujer y 100 g en hombre.</p><p class="safe-info">Reparto: más energía de hidratos que de grasa (al menos 3 g de hidratos por g de proteína), con poca grasa poliinsaturada (PUFA).</p><p class="safe-info">Calcio: los resúmenes de Peat y Dinkov hablan de 2.000–3.000 mg al día, con al menos tanto calcio como fósforo.</p><p class="safe-info">Hierro: Peat lo trataba como algo que conviene no acumular, así que es un tope.</p><p class="safe-info">Zumo de naranja, leche y queso, sal al gusto y fruta madura son la base de las ideas del día. Donde no hay cifra de Peat se usa una referencia oficial o tu meta.</p><a class="tiny" href="https://wikipeatia.org/wiki/Protein" rel="noopener" target="_blank">Proteína ↗</a> · <a class="tiny" href="https://www.darkpeating.com/calcium" rel="noopener" target="_blank">Calcio ↗</a> · <a class="tiny" href="https://raypeat.com/articles/articles/iron-dangers.shtml" rel="noopener" target="_blank">Hierro ↗</a> · <a class="tiny" href="https://raypeat.wiki/wiki/orange-juice" rel="noopener" target="_blank">Zumo ↗</a></div><div class="research-note peat26"><b>Revisión v50 · de dónde sale cada zona ideal</b><p class="safe-info">Cada nutriente enseña su zona y su fuente (Peat, Peat/Dinkov, foros, oficial o tu meta). Tus metas ya coincidían con las cifras que se encuentran para vitamina A (10.000 UI), vitamina D (4.000 UI), yodo (150 µg) y calcio (2.000-3.000 mg), así que no se han cambiado. Los resúmenes y los foros son interpretaciones de seguidores, no textos de Peat; donde no hay cifra se usa tu meta personal. El fósforo no tiene meta: lo que importa es calcio : fósforo.</p><a class="tiny" href="https://www.lowtoxinforum.com/threads/how-much-vitamin-a-does-ray-peat-suggest.26331/" rel="noopener" target="_blank">Vitamina A ↗</a> · <a class="tiny" href="https://www.darkpeating.com/vitamin-d" rel="noopener" target="_blank">Vitamina D ↗</a> · <a class="tiny" href="https://www.darkpeating.com/vitamin-k" rel="noopener" target="_blank">Vitamina K ↗</a> · <a class="tiny" href="https://www.darkpeating.com/calcium" rel="noopener" target="_blank">Calcio ↗</a> · <a class="tiny" href="https://www.darkpeating.com/magnesium" rel="noopener" target="_blank">Magnesio ↗</a> · <a class="tiny" href="https://wikipeatia.org/wiki/Selenium" rel="noopener" target="_blank">Selenio ↗</a> · <a class="tiny" href="https://www.lowtoxinforum.com/threads/ray-peat-on-iodine.7884/" rel="noopener" target="_blank">Yodo ↗</a> · <a class="tiny" href="https://www.darkpeating.com/iron" rel="noopener" target="_blank">Hierro ↗</a> · <a class="tiny" href="https://wikipeatia.org/wiki/Copper" rel="noopener" target="_blank">Cobre ↗</a></div><div class="stack" id="peat-links"><div class="research-note"><b>Ray Peat (1936–2022)</b><p class="safe-info">Biografía, obra completa y artículos originales sobre bioenergética y su enfoque metabólico. Esta app es una herramienta inspirada en sus ideas, no una prescripción médica.</p><a class="tiny" href="https://raypeat.com/about.shtml" rel="noopener" target="_blank">Biografía y filosofía ↗</a></div><div class="research-note"><b>Calcio, fósforo y contexto</b><p class="safe-info">Peat da importancia a considerar calcio y fosfato conjuntamente, pero en su artículo sobre fosfato señala que el óptimo dietético y su balance no están determinados. Por eso no se inventa un nuevo ratio ideal para ti.</p><a class="tiny" href="https://raypeat.com/articles/articles/phosphate-activation-aging.shtml" rel="noopener" target="_blank">Artículo original ↗</a></div><div class="research-note"><b>Proteína y carbohidratos</b><p class="safe-info">Su discusión del contexto de la glucemia no permite deducir un reparto universal de gramos para tu entrenamiento. Se mantiene tu planificación editable, sin aumentar azúcar o reducir grasa automáticamente.</p><a class="tiny" href="https://raypeat.com/articles/articles/glycemia.shtml" rel="noopener" target="_blank">Artículo original ↗</a></div><div class="research-note"><b>Lácteos, fruta y tolerancia</b><p class="safe-info">El marco de su artículo sobre leche presta atención al contexto alimentario y a la combinación con fruta. La app muestra fuentes de nutrientes, no promete un cambio hormonal por completar una barra.</p><a class="tiny" href="https://raypeat.com/articles/articles/milk.shtml" rel="noopener" target="_blank">Artículo original ↗</a></div><div class="research-note"><b>Gelatina no equivale a glicina libre</b><p class="safe-info">Se conserva la distinción entre proteína alimentaria, gelatina y glicina suplementaria. No se infiere el balance de aminoácidos de una foto ni de gramos de proteína sin composición.</p><a class="tiny" href="https://raypeat.com/articles/articles/gelatin.shtml" rel="noopener" target="_blank">Artículo original ↗</a></div><div class="research-note"><b>Azúcar y calidad de la alimentación</b><p class="safe-info">No se convierte su defensa del azúcar en una meta ilimitada de azúcar aislado. En su texto también distingue el azúcar refinado de alimentos con otros nutrientes.</p><a class="tiny" href="https://raypeat.com/articles/articles/sugar-issues.shtml" rel="noopener" target="_blank">Artículo original ↗</a></div><div class="research-note"><b>Qué no se puede afirmar</b><p class="safe-info">Esta revisión no cubre toda su obra y no ha identificado una tabla verificable de 25 dosis universales para maximizar tu metabolismo. Las cifras de los gráficos son tus objetivos del contexto, no una prescripción ni un indicador clínico.</p><a class="tiny" href="https://raypeat.com/articles/articles/fats-functions-malfunctions.shtml" rel="noopener" target="_blank">Artículo original ↗</a></div></div></details></details></section></main></div>
+</section><section class="exercise" id="exercise"><div class="section-heading"><span class="section-number">GYM</span><div><h1>Gimnasio y nutrición.</h1><p>Tu entrenamiento real, en sus fechas. Importa el CSV de tu app (Hevy, Strong, Fitbod, FitNotes…) y míralo junto a tus comidas.</p></div></div><div class="card"><h2 style="margin-top:0">Traer tus entrenamientos</h2><p class="section-note">Exporta tus entrenos en CSV desde tu app y elígelo aquí. La app reconoce sola las columnas; si no, eliges una vez cuál es la fecha y cuál el ejercicio y se recuerda.</p><label class="btn btn-sky full" for="hevy-file">+ Importar entrenos (CSV)</label><input accept=".csv,.txt,text/csv,text/plain" hidden="" id="hevy-file" type="file"/><p class="section-note" id="hevy-status" role="status"></p><div hidden="" id="hevy-map-panel"><h3>Revisa el formato</h3><div class="hevy-map" id="hevy-map"></div><div class="hevy-units"><label>Carga del archivo<select id="hevy-weightunit"><option value="kg">Kilogramos (kg)</option><option value="lb">Libras (lb), convertir a kg</option></select></label><label>Orden de las fechas<select id="hevy-dateformat"><option value="auto">Año-mes-día o automático</option><option value="dmy">DD/MM/AAAA</option><option value="mdy">MM/DD/AAAA</option></select></label><label>Unidad de distancia<select id="hevy-distanceunit"><option value="km">km</option><option value="m">metros</option><option value="mi">millas</option></select></label></div><p class="section-note">Fechas sin zona horaria: hora local del navegador. Con zona explícita: se conserva el instante y se asigna al día local. No se adivinan columnas o unidades ausentes.</p><button class="btn btn-slate full" id="hevy-validate">Comprobar archivo y ver resumen</button></div><div class="hevy-preview" hidden="" id="hevy-preview"><p id="hevy-previewtext"></p><button class="btn btn-emerald full" id="hevy-commit">Importar sesiones nuevas</button></div><details><summary>Cómo exportar desde tu app</summary><ul class="section-note gym-howto"><li><b>Hevy:</b> Perfil → Ajustes → Export &amp; Import Data → Export Workouts.</li><li><b>Strong:</b> Ajustes → Exportar datos.</li><li><b>Fitbod:</b> Log → icono de compartir → Exportar entrenos.</li><li><b>FitNotes:</b> Ajustes → Copia de seguridad → Exportar CSV.</li><li><b>Otra app:</b> busca «Exportar» o «CSV» en sus ajustes. Si solo guarda pasos o pulsaciones (Apple Salud, Google Fit), no sirve: hacen falta los ejercicios con series.</li></ul><p class="section-note">Todo se queda en tu móvil: no se conecta ninguna cuenta. Una sesión ya importada se omite si vuelves a importar el mismo archivo. Las libras y los metros se pasan solos a kg y km.</p></details></div><div id="gp-root"><div class="card gp-card" hidden="" id="gp-none"><p class="gp-empty">Importa el CSV de tu app de entrenamiento arriba para ver tu progresión, récords y gráficos.</p></div><div id="gp-main"><div class="card gp-card"><div class="gp-kpis" id="gp-kpis"></div></div><div class="card gp-card"><h2 class="gp-h">Progresión por ejercicio</h2><div class="gp-search"><input aria-label="Buscar ejercicio" autocomplete="off" id="gp-q" placeholder="Busca un ejercicio o grupo: «remo», «pecho», «hack»…" type="search"/></div><div class="gp-exlist" id="gp-exlist"></div><div id="gp-exdetail"></div></div><div class="card gp-card"><h2 class="gp-h">Volumen semanal</h2><div id="gp-weekly"></div></div><div class="two"><div class="card gp-card"><h2 class="gp-h">Reparto muscular</h2><div id="gp-muscles"></div></div><div class="card gp-card"><h2 class="gp-h">Récords recientes</h2><div id="gp-prs"></div></div></div><div class="card gp-card"><h2 class="gp-h">Constancia · 6 meses</h2><div id="gp-heat"></div></div><div class="card gp-card"><h2 class="gp-h">Entreno y nutrición</h2><div id="gp-nut"></div></div><div class="card gp-card"><h2 class="gp-h">Tus sesiones</h2><div class="gp-seslist" id="gp-sessions"></div></div></div></div><div class="card"><h3>Analizar entrenamiento y nutrición con IA</h3><p class="section-note">Al pulsar se envían al proveedor configurado las últimas 20 sesiones (fechas, ejercicios, series, carga, repeticiones y RPE) y los macros alimentarios registrados en esas fechas. No se envían notas privadas ni el resto del historial. No se calculan calorías gastadas ni se cambian metas automáticamente. Puede tener coste de API.</p><div class="row"><button class="btn btn-sky" disabled="" id="gym-ai">Enviar resumen y analizar con IA</button><button class="btn danger" hidden="" id="gym-cancel">Cancelar</button></div><div class="gym-ai-output" id="gym-ai-output" role="status">Sin análisis todavía. Necesita entrenamientos importados y la IA conectada.</div></div></section><section aria-label="Ajustes y copias" class="view settings-section" id="view-settings"><details class="card" id="settings-details"><summary>Ajustes y datos</summary><div class="card"><h2>Guardar y llevar tus datos</h2><div class="stack"><button class="btn btn-amber full" id="backup-html">Guardar HTML con mis datos</button><button class="btn btn-slate full" id="export-json">Exportar JSON</button><label class="btn btn-slate full file-btn">Importar copia JSON<input accept=".json,application/json" id="import-json" type="file"/></label><button class="btn btn-sky full" id="download-icons" type="button">Descargar iconos de la app (PNG para GitHub)</button></div><p class="section-note">El JSON es la copia de seguridad recomendada: guárdalo y podrás restaurarlo en cualquier versión. El HTML incluye la app y tus datos en un solo archivo. Ninguno incluye la clave de IA ni fotos. Importar sustituye los datos actuales; puedes deshacer.</p><div hidden="" id="legacy-import"></div></div><div class="card"><h2>Mi perfil</h2><div class="bp-sex-row"><div class="bp-sex-switch" id="profile-sex-switch"><button type="button" class="bp-sex-btn" data-set-sex="male"><b>♂ Hombre</b></button><button type="button" class="bp-sex-btn" data-set-sex="female"><b>♀ Mujer</b></button></div><button type="button" class="btn btn-sky full" id="open-wizard-settings">⚙ Objetivo, semana, comidas y suplementos</button></div><form class="inline-form" id="profile-form"><label>Peso (kg)<input id="weight" max="350" min="20" required="" step="any" type="number"/></label><label>Altura (cm)<input id="height" max="250" min="80" required="" step="any" type="number"/></label><label>Edad<input id="age" max="100" min="18" required="" type="number"/></label><label>Límite diario de PUFA (g)<input id="pufa-goal" max="100" min="0.1" required="" step="any" type="number"/></label><label>Referencia calcio : fósforo<input id="cap-goal" max="5" min="0.1" required="" step="0.05" type="number"/></label><button class="btn btn-amber wide" type="submit">Guardar perfil</button></form><p class="section-note">El peso, la altura y la edad calculan tus calorías. El límite de PUFA y la referencia Ca:P se usan en «Equilibrio del día» y se aplican también al día seleccionado.</p></div><details class="card"><summary>Editar objetivos de macros del día</summary><form class="inline-form" id="macro-target-form"><label>Calorías<input id="target-kcal" max="10000" min="500" required="" step="any" type="number"/></label><label>Proteína (g)<input id="target-p" max="600" min="0" required="" step="any" type="number"/></label><label>Grasa (g)<input id="target-f" max="500" min="0" required="" step="any" type="number"/></label><label>Carbohidratos calculados (g)<input id="target-c" readonly=""/></label><button class="btn btn-amber wide" type="submit">Guardar solo para este día</button><button class="btn ghost wide" id="target-reset" type="button">Quitar el ajuste de este día</button></form><p class="section-note">Carbohidratos = energía restante con 4/4/9. Es una planificación personal, no una medición del gasto ni un óptimo demostrado de Peat.</p><button id="btn-prometabolic" class="btn wide" style="margin-top:12px;width:100%">Volver al plan Peat por defecto</button><p class="section-note">Vuelve a las metas que calcula tu perfil (objetivo, sexo, peso y días de entreno), con PUFA ≤ 4 g y Ca:P ≥ 1,20. Hidratos = el resto, mínimo 3 g por g de proteína.</p></details><div class="card"><h2>Notas para la IA</h2><form id="ai-notes-form"><p class="section-note">Opcional. Hábitos que la IA tendrá en cuenta al analizar fotos y textos, por ejemplo: «Uso leche entera, cocino con mantequilla, el arroz lo peso en crudo».</p><textarea id="ai-notes" maxlength="2000" rows="4" placeholder="Escribe tus hábitos de cocina, marcas habituales, raciones…"></textarea><button class="btn btn-slate full" style="margin-top:8px" type="submit">Guardar notas</button><button id="btn-ai-apply" type="button" class="btn btn-amber full" style="margin-top:8px">Aplicar instrucciones en toda la app con IA</button></form></div><div class="card"><h2>Idioma · Language</h2><label class="subtext">Idioma de la app<select id="lang-select" data-no-tr="1"><option value="es">Español</option><option value="en">English</option></select></label></div>
+<div class="card"><h2>Mudar mis datos a otra dirección</h2><p class="section-note">Tus datos viven en este navegador y van ligados a esta dirección web. Si la app se muda (por ejemplo, a un dominio propio), escribe aquí la dirección nueva: se abrirá con tus datos dentro y solo tendrás que confirmar. Aquí no se borra nada.</p><input type="url" id="move-url" placeholder="https://nueva-direccion.app/" autocomplete="off"><button type="button" class="btn btn-slate full" id="move-go" style="margin-top:8px">Abrir la dirección nueva con mis datos</button></div>
+<div class="card"><h2>Privacidad y aviso legal</h2><p class="section-note">BioPeat es gratuita y no es consejo médico. Proyecto independiente, sin relación con Ray Peat ni con raypeat.com. Tus datos se quedan en tu móvil; solo se cuentan visitas anónimas sin cookies.</p><div class="row"><a class="btn btn-slate small" href="inicio.html#privacidad" target="_blank" rel="noopener">Privacidad</a><a class="btn btn-slate small" href="inicio.html#aviso-legal" target="_blank" rel="noopener">Aviso legal</a><a class="btn btn-slate small" href="inicio.html" target="_blank" rel="noopener">Web de BioPeat</a></div></div>
+<div class="card"><h2>Estado de la app</h2><div class="app-info" id="app-info"></div></div><details class="card"><summary>Fuentes de Peat y límites de interpretación</summary><p class="safe-info">Los artículos revisados no justifican una tabla universal de 25 dosis que maximicen el metabolismo. Se conservan tus objetivos editables sin atribuirle cifras no verificadas. Los gráficos muestran ingestas, no función tiroidea ni glucógeno medido.</p><div class="research-note peat26"><b>Peat y Dinkov en las metas de la app</b><p class="safe-info">Proteína: Peat situaba el mínimo en unos 80–100 g al día y más con ejercicio intenso; por eso la app pone al menos 80 g en mujer y 100 g en hombre.</p><p class="safe-info">Reparto: más energía de hidratos que de grasa (al menos 3 g de hidratos por g de proteína), con poca grasa poliinsaturada (PUFA).</p><p class="safe-info">Calcio: los resúmenes de Peat y Dinkov hablan de 2.000–3.000 mg al día, con al menos tanto calcio como fósforo.</p><p class="safe-info">Hierro: Peat lo trataba como algo que conviene no acumular, así que es un tope.</p><p class="safe-info">Zumo de naranja, leche y queso, sal al gusto y fruta madura son la base de las ideas del día. Donde no hay cifra de Peat se usa una referencia oficial o tu meta.</p><a class="tiny" href="https://wikipeatia.org/wiki/Protein" rel="noopener" target="_blank">Proteína ↗</a> · <a class="tiny" href="https://www.darkpeating.com/calcium" rel="noopener" target="_blank">Calcio ↗</a> · <a class="tiny" href="https://raypeat.com/articles/articles/iron-dangers.shtml" rel="noopener" target="_blank">Hierro ↗</a> · <a class="tiny" href="https://raypeat.wiki/wiki/orange-juice" rel="noopener" target="_blank">Zumo ↗</a></div><div class="research-note peat26"><b>Revisión v50 · de dónde sale cada zona ideal</b><p class="safe-info">Cada nutriente enseña su zona y su fuente (Peat, Peat/Dinkov, foros, oficial o tu meta). Tus metas ya coincidían con las cifras que se encuentran para vitamina A (10.000 UI), vitamina D (4.000 UI), yodo (150 µg) y calcio (2.000-3.000 mg), así que no se han cambiado. Los resúmenes y los foros son interpretaciones de seguidores, no textos de Peat; donde no hay cifra se usa tu meta personal. El fósforo no tiene meta: lo que importa es calcio : fósforo.</p><a class="tiny" href="https://www.lowtoxinforum.com/threads/how-much-vitamin-a-does-ray-peat-suggest.26331/" rel="noopener" target="_blank">Vitamina A ↗</a> · <a class="tiny" href="https://www.darkpeating.com/vitamin-d" rel="noopener" target="_blank">Vitamina D ↗</a> · <a class="tiny" href="https://www.darkpeating.com/vitamin-k" rel="noopener" target="_blank">Vitamina K ↗</a> · <a class="tiny" href="https://www.darkpeating.com/calcium" rel="noopener" target="_blank">Calcio ↗</a> · <a class="tiny" href="https://www.darkpeating.com/magnesium" rel="noopener" target="_blank">Magnesio ↗</a> · <a class="tiny" href="https://wikipeatia.org/wiki/Selenium" rel="noopener" target="_blank">Selenio ↗</a> · <a class="tiny" href="https://www.lowtoxinforum.com/threads/ray-peat-on-iodine.7884/" rel="noopener" target="_blank">Yodo ↗</a> · <a class="tiny" href="https://www.darkpeating.com/iron" rel="noopener" target="_blank">Hierro ↗</a> · <a class="tiny" href="https://wikipeatia.org/wiki/Copper" rel="noopener" target="_blank">Cobre ↗</a></div><div class="stack" id="peat-links"><div class="research-note"><b>Ray Peat (1936–2022)</b><p class="safe-info">Biografía, obra completa y artículos originales sobre bioenergética y su enfoque metabólico. Esta app es una herramienta inspirada en sus ideas, no una prescripción médica.</p><a class="tiny" href="https://raypeat.com/about.shtml" rel="noopener" target="_blank">Biografía y filosofía ↗</a></div><div class="research-note"><b>Calcio, fósforo y contexto</b><p class="safe-info">Peat da importancia a considerar calcio y fosfato conjuntamente, pero en su artículo sobre fosfato señala que el óptimo dietético y su balance no están determinados. Por eso no se inventa un nuevo ratio ideal para ti.</p><a class="tiny" href="https://raypeat.com/articles/articles/phosphate-activation-aging.shtml" rel="noopener" target="_blank">Artículo original ↗</a></div><div class="research-note"><b>Proteína y carbohidratos</b><p class="safe-info">Su discusión del contexto de la glucemia no permite deducir un reparto universal de gramos para tu entrenamiento. Se mantiene tu planificación editable, sin aumentar azúcar o reducir grasa automáticamente.</p><a class="tiny" href="https://raypeat.com/articles/articles/glycemia.shtml" rel="noopener" target="_blank">Artículo original ↗</a></div><div class="research-note"><b>Lácteos, fruta y tolerancia</b><p class="safe-info">El marco de su artículo sobre leche presta atención al contexto alimentario y a la combinación con fruta. La app muestra fuentes de nutrientes, no promete un cambio hormonal por completar una barra.</p><a class="tiny" href="https://raypeat.com/articles/articles/milk.shtml" rel="noopener" target="_blank">Artículo original ↗</a></div><div class="research-note"><b>Gelatina no equivale a glicina libre</b><p class="safe-info">Se conserva la distinción entre proteína alimentaria, gelatina y glicina suplementaria. No se infiere el balance de aminoácidos de una foto ni de gramos de proteína sin composición.</p><a class="tiny" href="https://raypeat.com/articles/articles/gelatin.shtml" rel="noopener" target="_blank">Artículo original ↗</a></div><div class="research-note"><b>Azúcar y calidad de la alimentación</b><p class="safe-info">No se convierte su defensa del azúcar en una meta ilimitada de azúcar aislado. En su texto también distingue el azúcar refinado de alimentos con otros nutrientes.</p><a class="tiny" href="https://raypeat.com/articles/articles/sugar-issues.shtml" rel="noopener" target="_blank">Artículo original ↗</a></div><div class="research-note"><b>Qué no se puede afirmar</b><p class="safe-info">Esta revisión no cubre toda su obra y no ha identificado una tabla verificable de 25 dosis universales para maximizar tu metabolismo. Las cifras de los gráficos son tus objetivos del contexto, no una prescripción ni un indicador clínico.</p><a class="tiny" href="https://raypeat.com/articles/articles/fats-functions-malfunctions.shtml" rel="noopener" target="_blank">Artículo original ↗</a></div></div></details></details></section></main></div>
 <nav aria-label="Accesos a secciones de esta misma página" class="bottom-nav"><button aria-controls="view-today" class="nav-item active" data-view="today"><span class="nav-icon">◉</span><span>Hoy</span></button><button aria-controls="view-log" class="nav-item" data-view="log"><span class="nav-icon">☷</span><span>Registro</span></button><button aria-controls="view-add" class="nav-item" data-view="add"><span class="nav-icon">+</span><span>Añadir</span></button><button aria-controls="weekly" class="nav-item" data-view="week"><span class="nav-icon">▦</span><span>Semana</span></button><button aria-haspopup="dialog" class="nav-item" data-view="more" id="nav-more" type="button"><span class="nav-icon">•••</span><span>Más</span></button></nav>
 <dialog id="modal"><div class="modal-head"><button aria-label="Volver a la ventana anterior" class="btn ghost small modal-back" hidden="" id="modal-back" type="button">‹ Atrás</button><h2 id="modal-title"></h2><button aria-label="Cerrar" class="btn ghost small" id="modal-close">×</button></div><div class="modal-body" id="modal-body"></div></dialog>
 <div class="toast" hidden="" id="toast" role="status"><span id="toast-text"></span><button id="toast-undo">Deshacer</button><button aria-label="Cerrar aviso" id="toast-close">×</button></div>
@@ -5944,6 +5962,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Robot
  Metas del día: SIEMPRE con targetFor(fecha) / dayGoal(). Nunca guardar metas calculadas dentro de cada día.
  Migraciones: upgradeToNN(s,o) se ejecuta UNA vez: comprobar (Number(o.appRevision)||0)<NN y subir APP_REVISION.
  Registro de cambios (una línea por versión, la más nueva arriba; detalle en CONTEXTO_BIOPEAT.md):
+   v59 · Copilot · App en español o inglés (se elige al empezar y en Ajustes), estadísticas sin cookies, mudanza de datos a otra dirección, privacidad y aviso legal enlazados, «¿Cómo nos has conocido?» en las sugerencias y la IA responde en tu idioma.
    v58 · Copilot · Sin datos de Diego en el código (su plan pasa a sus metas guardadas), «Lo básico de Peat» al crear perfil, plantillas Peat de desayuno y batido, más suplementos (Peat y habituales) y añadir el tuyo, nutrientes comparables con la UE o EE. UU., chat de IA siempre visible en el menú y «Más» sin repetir el menú.
    v57 · Copilot · Sugerencias que llegan solas a una hoja de Google (sin cuentas), IA de cualquier proveedor (Gemini, ChatGPT, Claude, OpenRouter o compatible) y gimnasio con el CSV de cualquier app (Hevy, Strong, Fitbod, FitNotes…).
    v56 · Copilot · App lista para el público: sin datos de Diego por defecto, asistente con bienvenida y ayuda en cada paso, guía de uso, sugerencias de suplementos Peat editables, centro «Más» con todo a un toque, buzón de sugerencias, ventanas como hoja inferior para usar con una mano y aspecto más pulido.
@@ -6041,10 +6060,12 @@ function optLine(k,goal,unit){
 function optRefHTML(k,goal,unit){const z=optInfo(k,goal);return '<p class="progress-note"><b>'+esc(optLine(k,goal,unit))+'.</b> '+esc(z.ref)+'</p>';}
 const microKind=k=>LIMIT.has(k)?'limit':DEPOSIT.has(k)?'deposit':'daily';
 const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'], ACTIVITIES=['Entreno','Descanso','Entreno','Descanso','Entreno','Descanso','Descanso'];
-const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v58', APP_REVISION=26;
+const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v59', APP_REVISION=26;
+let LANG=(()=>{try{const l=localStorage.getItem('bp_lang');if(l==='es'||l==='en')return l;}catch(e){}return /^es\b/i.test(navigator.language||'es')?'es':'en';})();
+const LOC=()=>LANG==='en'?'en-GB':'es-ES';
 const $=id=>document.getElementById(id), own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k), clone=x=>JSON.parse(JSON.stringify(x));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const fmt=(n,d=0)=>Number(n).toLocaleString('es-ES',{maximumFractionDigits:d});
+const fmt=(n,d=0)=>Number(n).toLocaleString(LOC(),{maximumFractionDigits:d});
 function number(v,min=0,max=1e6){
   if(v===''||v===null||v===undefined||typeof v==='boolean')throw Error('Introduce una cantidad válida.');
   const n=typeof v==='number'?v:Number(String(v).replace(',','.'));
@@ -6279,7 +6300,7 @@ function renderHeader(){
   if(!mealTouched)$('meal-select').value=mealByHour();
   const i=weekday(date),start=shift(date,-i);
   $('date').value=date;
-  $('date-label').textContent=new Date(date+'T12:00:00').toLocaleDateString('es-ES',{month:'short',year:'numeric'});
+  $('date-label').textContent=new Date(date+'T12:00:00').toLocaleDateString(LOC(),{month:'short',year:'numeric'});
   if($('header-user-name'))$('header-user-name').textContent=activeProfileName();
   if($('bp-prof-pill'))$('bp-prof-pill').textContent=activeProfileName();
   $('header-profile').innerHTML=sexBadge(getSex())+` · ${fmt(state.profile.weight,1)} kg · ${fmt(state.profile.height)} cm · TMB ${fmt(bmr())} kcal`;
@@ -7267,8 +7288,9 @@ $('forget-key').onclick=()=>{$('gemini-key').value='';$('ai-remember').checked=f
 $('backup-html').onclick=portable;
 $('export-json').onclick=exportJSON;
 $('import-json').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>8e6)throw Error('Copia demasiado grande (máximo 8 MB).');const next=migrate(JSON.parse(await file.text()));confirmImport(next,file.name);}catch(err){toast('No se ha importado nada: '+err.message);}finally{e.target.value='';}};
-async function init(){
-  let raw=null,seed=null,recovery=false,firstRun=false;
+  async function init(){
+    const moveCode=takeMoveCode();
+    let raw=null,seed=null,recovery=false,firstRun=false;
   try{const el=$('biopeat-seed');if(el)seed=migrate(JSON.parse(el.textContent));}catch(e){recovery=true;}
   try{raw=localStorage.getItem(STORE);localStorage.setItem('bp_test','1');localStorage.removeItem('bp_test');storageMode='local';}catch(e){storageMode='memory';}
   if(storageMode!=='local'){try{db=await openDB();const alternate=await idbReadWrite('readonly');if(alternate)raw=alternate;await idbReadWrite('readwrite',raw||JSON.stringify(seed||state));storageMode='idb';}catch(e){try{const saved=sessionStorage.getItem(STORE);if(saved)raw=saved;sessionStorage.setItem('bp_test','1');sessionStorage.removeItem('bp_test');storageMode='session';}catch(e){storageMode='memory';}}}
@@ -7283,7 +7305,8 @@ async function init(){
   document.title='BioPeat '+activeProfileName()+' | '+APP_VERSION;
   $('whey').value=profV().shake.defaultWhey||$('whey').value;
   if(firstRun)state.v54.onboardingDone=false;
-  if(!profV().onboardingDone)setTimeout(()=>{if(!$('modal').open)wizOpen({mode:'first'});},80);
+    if(moveCode)setTimeout(()=>attempt(()=>checkMove(moveCode)),80);
+    else if(!profV().onboardingDone)setTimeout(()=>{if(!$('modal').open)wizOpen({mode:'first'});},80);
   else{const a=new URLSearchParams(location.search).get('a');if(a==='add'||a==='week')setTimeout(()=>go(a),300);}
   if(!recovery)save();else toast('No se pudo recuperar una copia anterior. Conserva el archivo original antes de modificar datos.');
 }
@@ -7308,7 +7331,7 @@ function go(v,focus){
   (focus==='shake'?$('shake-area'):$('view-'+v)).scrollIntoView({block:'start',behavior});
 }
 let scrollPending=false;
-function syncDatePill(){const pill=$('date-pill'),card=$('date').closest('section'),r=card.getBoundingClientRect(),today=date===localDate();pill.hidden=r.bottom>0;pill.textContent=(today?'Hoy · ':'Editando · ')+new Date(date+'T12:00:00').toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'});pill.classList.toggle('past',!today);$('bp-menu-btn')?.classList.toggle('scrolled',window.scrollY>24);}
+function syncDatePill(){const pill=$('date-pill'),card=$('date').closest('section'),r=card.getBoundingClientRect(),today=date===localDate();pill.hidden=r.bottom>0;pill.textContent=(today?'Hoy · ':'Editando · ')+new Date(date+'T12:00:00').toLocaleDateString(LOC(),{weekday:'short',day:'numeric',month:'short'});pill.classList.toggle('past',!today);$('bp-menu-btn')?.classList.toggle('scrolled',window.scrollY>24);}
 $('date-pill').onclick=()=>$('date').closest('section').scrollIntoView({block:'start',behavior:'smooth'});
 window.addEventListener('scroll',()=>{if(scrollPending)return;scrollPending=true;requestAnimationFrame(()=>{scrollPending=false;let current='today';for(const el of document.querySelectorAll('main>.view, main>#weekly, main>#exercise'))if(el.getBoundingClientRect().top<innerHeight*.32)current=el.id==='weekly'?'week':el.id==='exercise'?'exercise':el.id.slice(5);view=current;setNav(current);flushLazy();syncDatePill();});},{passive:true});
 const anim=new WeakMap();
@@ -7394,7 +7417,7 @@ function coachPrompt(){
   const lows=MICRO.filter(m=>!DEPOSIT.has(m.k)&&m.k!=='b1'&&state.targets[m.k]&&t.known[m.k]&&t.all[m.k]/state.targets[m.k]<.6).map(m=>m.name+' '+fmt(t.all[m.k]/state.targets[m.k]*100)+'%').slice(0,6);
   const deps=MICRO.filter(m=>DEPOSIT.has(m.k)&&!LIMIT.has(m.k)&&state.targets[m.k]).map(m=>({m,r:rollingMicro(m.k)})).filter(x=>x.r.known&&x.r.value/state.targets[x.m.k]<.7).map(x=>x.m.name+' (depósito '+fmt(x.r.value/state.targets[x.m.k]*100)+'%)').slice(0,4);
   const habits=[...usageStats(45).values()].sort((a,b)=>b.count-a.count).slice(0,15).map(x=>x.entry.name+' ~'+fmt(x.usual,1)+' '+x.entry.unit+' ('+x.count+'×, sobre todo en '+Object.entries(x.meals).sort((a,b)=>b[1]-a[1])[0][0]+')');
-  return 'Eres el asistente de nutrición de '+profileDescription()+'.'+(isFemale()?' Ten en cuenta lo que Peat escribió para mujeres («Nutrition for Women», «From PMS to Menopause»): al menos 80 g de proteína, comidas frecuentes con hidratos fáciles y sin restringir la sal.':'')+' Su enfoque se inspira en Ray Peat: prioriza leche, queso, zumo de naranja, fruta madura, miel o azúcar, patata, arroz, huevos, marisco, gelatina y carne con caldo; evita aceites vegetales y PUFA. Ahora son las '+new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})+' y el próximo momento es: '+meal+'.\nHoy lleva: '+fmt(t.all.kcal)+'/'+fmt(g.kcal)+' kcal, '+fmt(t.all.p)+'/'+fmt(g.p)+' g proteína, '+fmt(t.all.c)+'/'+fmt(g.c)+' g hidratos, '+fmt(t.all.f)+'/'+fmt(g.f)+' g grasa. Ca:P '+(t.all.phos>0?fmt(t.all.ca/t.all.phos,2):'—')+' (referencia ≥ '+fmt(ref.cap,2)+'). PUFA '+fmt(t.all.pufa,1)+' g de un máximo de '+fmt(ref.pufa,1)+' g.\n'+(lows.length?'Micros diarios bajos hoy: '+lows.join(', ')+'.\n':'')+(deps.length?'Depósitos semanales bajos: '+deps.join(', ')+'.\n':'')+'Lo que suele comer: '+(habits.join('; ')||'sin historial aún')+'.\n'+(state.aiNotes?'Sus notas: '+state.aiNotes.slice(0,800)+'\n':'')+'Propón UNA comida concreta y sencilla para '+meal.toLowerCase()+', con cantidades en g o ml, usando preferentemente lo que suele comer. Ajusta las cantidades a lo que le falta sin pasarse de energía. Después, en una línea, cómo quedarían sus macros. Máximo 4 líneas, texto plano, sin saludos ni avisos.';
+  return 'Eres el asistente de nutrición de '+profileDescription()+'.'+(isFemale()?' Ten en cuenta lo que Peat escribió para mujeres («Nutrition for Women», «From PMS to Menopause»): al menos 80 g de proteína, comidas frecuentes con hidratos fáciles y sin restringir la sal.':'')+' Su enfoque se inspira en Ray Peat: prioriza leche, queso, zumo de naranja, fruta madura, miel o azúcar, patata, arroz, huevos, marisco, gelatina y carne con caldo; evita aceites vegetales y PUFA. Ahora son las '+new Date().toLocaleTimeString(LOC(),{hour:'2-digit',minute:'2-digit'})+' y el próximo momento es: '+meal+'.\nHoy lleva: '+fmt(t.all.kcal)+'/'+fmt(g.kcal)+' kcal, '+fmt(t.all.p)+'/'+fmt(g.p)+' g proteína, '+fmt(t.all.c)+'/'+fmt(g.c)+' g hidratos, '+fmt(t.all.f)+'/'+fmt(g.f)+' g grasa. Ca:P '+(t.all.phos>0?fmt(t.all.ca/t.all.phos,2):'—')+' (referencia ≥ '+fmt(ref.cap,2)+'). PUFA '+fmt(t.all.pufa,1)+' g de un máximo de '+fmt(ref.pufa,1)+' g.\n'+(lows.length?'Micros diarios bajos hoy: '+lows.join(', ')+'.\n':'')+(deps.length?'Depósitos semanales bajos: '+deps.join(', ')+'.\n':'')+'Lo que suele comer: '+(habits.join('; ')||'sin historial aún')+'.\n'+(state.aiNotes?'Sus notas: '+state.aiNotes.slice(0,800)+'\n':'')+'Propón UNA comida concreta y sencilla para '+meal.toLowerCase()+', con cantidades en g o ml, usando preferentemente lo que suele comer. Ajusta las cantidades a lo que le falta sin pasarse de energía. Después, en una línea, cómo quedarían sus macros. Máximo 4 líneas, texto plano, sin saludos ni avisos.';
 }
 onClick(e=>{if(!e.target.closest('#coach-ai-btn'))return;attempt(async()=>{if(!aiConnected()){openAISetup();throw Error('Conecta la IA para pedir sugerencias.');}coachAI={...coachAI,busy:true};renderCoach();const c=new AbortController(),tm=setTimeout(()=>c.abort(),60000);try{const r=await requestAI(coachPrompt(),null,c.signal);coachAI={date,text:String(typeof r==='string'?r:JSON.stringify(r)).trim().slice(0,900),meal:$('meal-select').value,busy:false};}catch(err){coachAI={...coachAI,busy:false};throw err;}finally{clearTimeout(tm);renderCoach();}});});
 function nutrientDetailStandard(key){
@@ -7958,8 +7981,9 @@ async function requestAI(prompt,img,signal,modelOverride='',onStep=null){
     if(!res.ok)throw Error('Error del servidor (HTTP '+res.status+'): '+String(data.error?.message||data.error||data.message||'').slice(0,250));
     return data.text||data;
   }
-  const key=$('gemini-key').value.trim();
-  if(!key)throw Error('Falta conectar la IA. Abre «Conectar IA» o usa cantidades reconocidas sin IA.');
+    if(LANG==='en'&&!/^Responde solo con la palabra OK/.test(prompt))prompt+='\n\nIMPORTANT: answer in English (food and dish names in English too). Keep any JSON keys exactly as specified.';
+    const key=$('gemini-key').value.trim();
+    if(!key)throw Error('Falta conectar la IA. Abre «Conectar IA» o usa cantidades reconocidas sin IA.');
   const gem=mode==='direct',chain=!gem||model===AI_FALLBACK?[model,model,model]:[model,model,AI_FALLBACK,AI_FALLBACK],firstMs=img?30000:20000;
   let last;
   for(let i=0;i<chain.length;i++){
@@ -8221,7 +8245,7 @@ function weekDetail(dt,picked){
 }
 // Ficha rápida de un día: 4 barras de macros + ratios en palabras. Se usa en Semana y en Calendario.
 function dayCard(dt){
-  const r=dayRow(dt),title=new Date(dt+'T12:00:00').toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'short'});
+  const r=dayRow(dt),title=new Date(dt+'T12:00:00').toLocaleDateString(LOC(),{weekday:'long',day:'numeric',month:'short'});
   if(!r.has)return `<div class="dc"><div class="row between"><b class="dc-t">${title}</b></div><p class="muted">Sin comidas registradas${dt>localDate()?' (día futuro)':''}.</p><button class="btn btn-slate small" type="button" data-editday="${dt}">Abrir este día</button></div>`;
   const bars=MACRO4.map(([k,n,u,col])=>{const v=metricValue(r,k).value,g=targetOf(dt,k),p=g?v/g*100:null;return `<div class="dc-row"><span>${n}</span><div class="dc-bar"><i style="width:${Math.min(100,(p||0)/1.5)}%;background:${col}"></i><b style="left:${100/1.5}%"></b></div><em class="${macroTone(p)}">${p==null?'—':fmt(p)+'%'}</em><small>${fmt(v)} / ${g?fmt(g):'—'} ${u}</small></div>`;}).join('');
   const t=r.t,cap=t.all.phos>0?t.all.ca/t.all.phos:null,g=goalsFor(dt),cp=t.all.p>0?t.all.c/t.all.p:null;
@@ -8454,8 +8478,8 @@ function gpKey(name){
   const k=gpNorm(name).split(' ').map(w=>{const m=w.match(/^([a-z-]+)(\)?)$/);if(!m)return w;let b=m[1];if(b.length>4&&/[lrn]es$/.test(b))b=b.slice(0,-2);else if(b.length>3&&/s$/.test(b)&&!/ss$/.test(b))b=b.slice(0,-1);return b+m[2];}).join(' ');
   return GP_ALIAS[k]||k;
 }
-function gpF(n,d=0){if(n==null||!isFinite(n))return '—';return Number(n).toLocaleString('es-ES',{maximumFractionDigits:d});}
-function gpDate(d,opt){return new Date(d+'T12:00:00').toLocaleDateString('es-ES',opt||{day:'numeric',month:'short'});}
+function gpF(n,d=0){if(n==null||!isFinite(n))return '—';return Number(n).toLocaleString(LOC(),{maximumFractionDigits:d});}
+function gpDate(d,opt){return new Date(d+'T12:00:00').toLocaleDateString(LOC(),opt||{day:'numeric',month:'short'});}
 function gpMonday(d){return shift(d,-weekday(d));}
 const GP_GROUPS=[
   ['Cuello',/cuello/],
@@ -8754,7 +8778,7 @@ onClick(e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.briefsc
 for(const m of MICRO){if($('trend-metric').querySelector('option[value="'+m.k+'"]'))continue;const op=document.createElement('option');op.value=m.k;op.textContent=m.k==='b1'?'B1 / benfotiamina':m.name;$('trend-metric').append(op);}
 
 // ===== Herramientas de uso diario: menú Más, comidas de un vistazo, buscador, repetir comida, rápidos, copias =====
-const niceDate=d=>new Date(d+'T12:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'short'});
+const niceDate=d=>new Date(d+'T12:00:00').toLocaleDateString(LOC(),{day:'numeric',month:'short'});
 const foodEntries=d=>(state.days[d]?.entries||[]).filter(e=>e.kind==='food');
 let logSearch='',compactView=false;
 let modalReturnFocus=null;
@@ -9024,6 +9048,8 @@ let refMode='';
 function refTargets(mode){return REF_TABLE[mode]?.[getSex()]||null;}
 function syncMicroMode(){const m=$('micro-mode').value;refMode=REF_TABLE[m]?m:'';prefs.set('bp_micro_mode',m);}
 $('edit-targets').onclick=editTargets;
+$('lang-select').value=LANG;
+$('lang-select').onchange=()=>setLang($('lang-select').value);
 $('micro-mode').onchange=()=>{syncMicroMode();$('micro-mode-note').textContent=refMode?'Comparando con la referencia oficial de '+REF_NAMES[refMode]+' para adultos ('+(isFemale()?'mujer':'hombre')+'). Son mínimos de salud pública, no óptimos de Peat: tus metas no cambian.':'Porcentajes de tus metas, sin tope. «Parcial» = a algún alimento le falta el dato. Puedes comparar también con las referencias oficiales de la UE o de EE. UU.';renderMicros();};
 {const m=prefs.get('bp_micro_mode');if(m&&$('micro-mode').querySelector('option[value="'+m+'"]')){$('micro-mode').value=m;syncMicroMode();}}
 $('food-new').onclick=()=>editFood();
@@ -9309,9 +9335,9 @@ function wizHTML(){
   const steps='<div class="bp-wiz-steps" role="tablist">'+WIZ_STEPS.map((l,i)=>'<button type="button" role="tab" aria-selected="'+(i+1===s)+'" class="bp-wiz-step'+(i+1===s?' active':i+1<s?' done':'')+'" data-wiz-goto="'+(i+1)+'"><b>'+(i+1<s?'✓':i+1)+'</b><span>'+l+'</span></button>').join('')+'</div>';
   let body='';
   if(s===1){
-    const first=w.mode==='first'?'<div class="bp-welcome"><b>Bienvenido a BioPeat</b><p>Registra lo que comes y mira, de un vistazo, tus calorías, macros, 25 vitaminas y minerales y los equilibrios que Ray Peat consideraba clave, con ideas concretas de qué comer.</p><p>Configurarlo lleva unos 2 minutos y todo se puede cambiar después. Tus datos se guardan solo en este móvil.</p><div class="bp-welcome-row"><span>¿Ya la usabas en otro móvil?</span><label class="btn btn-slate small" for="import-json">Restaurar copia</label></div></div>':'';
+    const first=w.mode==='first'?'<div class="bp-welcome"><b>Bienvenido a BioPeat</b><p>Registra lo que comes y mira, de un vistazo, tus calorías, macros, 25 vitaminas y minerales y los equilibrios que Ray Peat consideraba clave, con ideas concretas de qué comer.</p><p>Configurarlo lleva unos 2 minutos y todo se puede cambiar después. Tus datos se guardan solo en este móvil.</p><p class="tiny">Gratis, sin cuenta y sin anuncios. No es consejo médico. <a href="inicio.html#privacidad" target="_blank" rel="noopener">Privacidad</a> · <a href="inicio.html#aviso-legal" target="_blank" rel="noopener">Aviso legal</a></p><div class="bp-welcome-row"><span>¿Ya la usabas en otro móvil?</span><label class="btn btn-slate small" for="import-json">Restaurar copia</label></div></div>':'';
           const start=w.mode!=='edit'?'<h3>Punto de partida</h3><div class="bp-sex-switch"><button type="button" class="bp-sex-btn'+(w.start==='clean'?' active':'')+'" data-wiz-start="clean"><b>Empezar de cero</b><small>Tú eliges cada cosa: sin comidas fijas ni suplementos.</small></button><button type="button" class="bp-sex-btn'+(w.start==='peat'?' active':'')+'" data-wiz-start="peat"><b>Lo básico de Peat</b><small>Desayuno y batido Peat (leche, zumo, fruta, gelatina, miel) y D3, K2, E, magnesio y glicina como sugerencia. Todo se puede cambiar.</small></button></div>':'';
-    body=first+'<div class="bp-wiz-box"><label class="subtext">Nombre<input type="text" id="wiz-name" maxlength="40" value="'+esc(w.name)+'" placeholder="Ej.: Laura" autocomplete="off"></label>'
+    body=(w.mode!=='edit'?'<div class="bp-wiz-box"><h3>Idioma · Language</h3>'+langPickerHTML()+'</div>':'')+first+'<div class="bp-wiz-box"><label class="subtext">Nombre<input type="text" id="wiz-name" maxlength="40" value="'+esc(w.name)+'" placeholder="Ej.: Laura" autocomplete="off"></label>'
       +'<h3>Sexo</h3><div class="bp-sex-switch"><button type="button" class="bp-sex-btn'+(!fem?' active':'')+'" data-wiz-sex="male"><b>♂ Hombre</b><small>Fórmula de calorías de hombre y referencias generales de Peat/Dinkov.</small></button><button type="button" class="bp-sex-btn'+(fem?' active':'')+'" data-wiz-sex="female"><b>♀ Mujer</b><small>Fórmula de mujer, al menos 80 g de proteína y notas de «Nutrition for Women» y «From PMS to Menopause».</small></button></div>'
       +'<div class="inline-form"><label>Peso (kg)<input type="number" inputmode="decimal" id="wiz-weight" min="25" max="300" step="any" value="'+w.weight+'"></label><label>Altura (cm)<input type="number" inputmode="decimal" id="wiz-height" min="100" max="240" step="any" value="'+w.height+'"></label><label>Edad<input type="number" inputmode="numeric" id="wiz-age" min="14" max="100" step="1" value="'+w.age+'"></label></div></div>'+(start?'<div class="bp-wiz-box">'+start+'</div>':'');
   }else if(s===2){
@@ -9520,13 +9546,14 @@ const FB_CATS=[['idea','✨ Nueva función'],['mejora','🛠 Cambio o mejora'],[
 let fbCat='idea',fbSending=false;
 function openFeedback(){
   const cats=FB_CATS.map(([k,n])=>'<button type="button" class="bp-chip'+(k===fbCat?' on':'')+'" data-fb-cat="'+k+'" aria-pressed="'+(k===fbCat)+'">'+n+'</button>').join('');
-  modal('Sugerir una mejora','<div id="bp-fb"><p class="section-note">Tu idea llega directamente al creador de BioPeat. Las mejoras se publican para todos.</p><div class="bp-fb-cats">'+cats+'</div><label class="subtext">Título corto<input type="text" id="fb-title" maxlength="90" placeholder="Ej.: Poder guardar recetas"></label><label class="subtext">Cuéntalo con detalle<textarea id="fb-text" rows="5" maxlength="3000" placeholder="Qué quieres, para qué y cómo te imaginas que funcione. Si algo falla: qué tocaste, qué esperabas y qué pasó."></textarea></label><label class="pill-toggle"><input type="checkbox" id="fb-tech" checked> Incluir la versión de la app y el tipo de móvil (sin datos personales)</label><button type="button" class="btn btn-amber full" id="fb-send">Enviar sugerencia</button><button type="button" class="btn ghost full" id="fb-share">Compartir o copiar el texto</button><p class="section-note">Sin cuentas: solo se envía lo que escribes aquí. Nunca tus comidas ni tus datos.</p></div>');
+  modal('Sugerir una mejora','<div id="bp-fb"><p class="section-note">Tu idea llega directamente al creador de BioPeat. Las mejoras se publican para todos.</p><div class="bp-fb-cats">'+cats+'</div><label class="subtext">Título corto<input type="text" id="fb-title" maxlength="90" placeholder="Ej.: Poder guardar recetas"></label><label class="subtext">Cuéntalo con detalle<textarea id="fb-text" rows="5" maxlength="3000" placeholder="Qué quieres, para qué y cómo te imaginas que funcione. Si algo falla: qué tocaste, qué esperabas y qué pasó."></textarea></label><label class="subtext">¿Cómo conociste BioPeat? (opcional)<select id="fb-origin"><option value="">Prefiero no decirlo</option><option>Reddit</option><option>Instagram</option><option>TikTok</option><option>Foro o grupo sobre Peat</option><option>Un amigo o familiar</option><option>Google</option><option>Otro</option></select></label><label class="pill-toggle"><input type="checkbox" id="fb-tech" checked> Incluir la versión de la app y el tipo de móvil (sin datos personales)</label><button type="button" class="btn btn-amber full" id="fb-send">Enviar sugerencia</button><button type="button" class="btn ghost full" id="fb-share">Compartir o copiar el texto</button><p class="section-note">Sin cuentas: solo se envía lo que escribes aquí. Nunca tus comidas ni tus datos.</p></div>');
 }
 function feedbackData(){
   const t=$('fb-title').value.trim(),d=$('fb-text').value.trim(),cat=(FB_CATS.find(c=>c[0]===fbCat)||FB_CATS[0])[1].replace(/^\S+\s/,'');
   if(t.length<3||d.length<10)throw Error('Escribe un título y una descripción un poco más larga.');
   const dev=matchMedia('(pointer:coarse)').matches?'móvil':'ordenador';
-  return {cat,title:t,text:d,version:$('fb-tech').checked?APP_VERSION+' · '+dev+' · '+navigator.userAgent.slice(0,140):APP_VERSION};
+  const orig=$('fb-origin')?.value||'';
+  return {cat,title:t,text:d+(orig?'\n\n[Origen: '+orig+']':''),version:$('fb-tech').checked?APP_VERSION+' · '+dev+' · '+navigator.userAgent.slice(0,140):APP_VERSION};
 }
 function feedbackText(){const f=feedbackData();return {title:'[BioPeat] '+f.cat+': '+f.title,body:'Tipo: '+f.cat+'\n\n'+f.text+'\n\n---\nVersión: '+f.version};}
 async function sendFeedback(){
@@ -9573,6 +9600,1491 @@ function bindDateSwipe(){
 }
 bindSheetSwipe();
 bindDateSwipe();
+// ===== v59: traducciones al inglés (una por línea; el texto en español con # en lugar de las cifras) =====
+const I18N_EN={
+"# % de la grasa tiene tipo identificado; # g proceden de estimaciones genéricas. El resto no se convierte automáticamente en monoinsaturadas.":"# % of fat has an identified type; # g come from generic estimates. The rest isn't automatically turned into monounsaturated.",
+"# % de tu meta":"# % of your goal",
+"# % energía":"# % energy",
+"# / # g al día":"# / # g per day",
+"# / # kcal al día":"# / # kcal per day",
+"# alimentos":"# foods",
+"# año":"# year",
+"# cápsulas":"# capsules",
+"# de #":"# of #",
+"# días":"# days",
+"# días con ambos datos":"# days with both values",
+"# días con datos":"# days with data",
+"# ejercicios":"# exercises",
+"# g al día":"# g per day",
+"# g carb.":"# g carbs",
+"# g de proteína ese día":"# g of protein that day",
+"# g en total":"# g in total",
+"# g grasa":"# g fat",
+"# g grasa /# g":"# g fat /# g",
+"# g grasa /# ml":"# g fat /# ml",
+"# g prot.":"# g protein",
+"# incluidos en las medias.":"# included in the averages.",
+"# kcal al día":"# kcal per day",
+"# meses":"# months",
+"# mg de B# alimentaria.":"# mg of dietary B#.",
+"# mg de benfotiamina / # mg de tu pauta":"# mg benfotiamine / # mg in your plan",
+"# mg de compuesto":"# mg of compound",
+"# mg están incluidos como previstos. Este porcentaje compara tu dosis con tu pauta, no con una equivalencia de tiamina.":"# mg are included as planned. This percentage compares your dose with your plan, not with a thiamine equivalent.",
+"# previstos. Superar el # % no significa mejorar el metabolismo.":"# planned. Going over # % doesn't mean a better metabolism.",
+"# sem.":"# wk.",
+"# series":"# sets",
+"# ses.":"# sess.",
+"# sesiones":"# sessions",
+"# sesiones desde oct #":"# sessions since Oct #",
+"# tomas cuentan hoy":"# doses count today",
+"# vitaminas y minerales":"# vitamins and minerals",
+"#% de la grasa clasificada. # g de perfiles genéricos estimados. No se inventa una meta porcentual de Peat.":"#% of fat classified. # g from estimated generic profiles. No Peat percentage goal is made up.",
+"#-#-#: sin datos":"#-#-#: no data",
+"#/# completos":"#/# complete",
+"#/# días con comidas":"#/# days with meals",
+"#/# días con comidas.":"#/# days with meals.",
+"#/# días con dato":"#/# days with data",
+"#/sem":"#/wk",
+"#RM estimado":"Estimated #RM",
+"#ª toma":"Dose #",
+"#–# g de polvo":"#–# g of powder",
+"% de la grasa total, no % de calorías. Toca un tipo para ver sus alimentos.":"% of total fat, not % of calories. Tap a type to see its foods.",
+"% de la referencia de EE. UU. (NIH)":"% of the US reference (NIH)",
+"% de la referencia de la UE (EFSA)":"% of the EU reference (EFSA)",
+"% de mis metas":"% of my goals",
+"% diario y total de las # metas personales. Toca una celda. * Dato parcial. — Sin dato o sin meta. B# = benfotiamina, no equivalencia de tiamina.":"Daily and total % of the # personal goals. Tap a cell. * Partial data. — No data or no goal. B# = benfotiamine, not a thiamine equivalent.",
+"(abajo): nutrientes, tu pauta, gimnasio, ajustes, copia de seguridad y esta guía.":"(bottom): nutrients, your plan, gym, settings, backup and this guide.",
+"(logo de arriba): pregunta a tu IA, perfiles, informe para IA y sugerir una mejora.":"(logo at the top): ask your AI, profiles, AI report and suggest an improvement.",
+"(orientativo, según tu última sesión)":"(approximate, based on your last session)",
+"+ # vasos (# ml) de leche entera":"+ # glasses (# ml) of whole milk",
+"+ Aspirina":"+ Aspirin",
+"+ Añadir a la pauta":"+ Add to plan",
+"+ Añadir a mi pauta":"+ Add to my plan",
+"+ Añadir al día":"+ Add to the day",
+"+ Añadir batido":"+ Add shake",
+"+ Añadir comida":"+ Add meal",
+"+ Añadir desayuno":"+ Add breakfast",
+"+ Añadir extra al día":"+ Add extra to the day",
+"+ Añadir micronutriente":"+ Add micronutrient",
+"+ Bisglicinato de magnesio HSN":"+ Magnesium bisglycinate HSN",
+"+ Calcio (cáscara de huevo)":"+ Calcium (eggshell)",
+"+ Comida":"+ Meal",
+"+ Crear perfil nuevo":"+ Create new profile",
+"+ Creatina":"+ Creatine",
+"+ Gelatina o colágeno":"+ Gelatin or collagen",
+"+ Glicina":"+ Glycine",
+"+ Hierro":"+ Iron",
+"+ Importar entrenos (CSV)":"+ Import workouts (CSV)",
+"+ Magnesio":"+ Magnesium",
+"+ Multivitamínico":"+ Multivitamin",
+"+ Niacinamida (B#)":"+ Niacinamide (B#)",
+"+ Nuevo alimento":"+ New food",
+"+ Omega-# (aceite de pescado)":"+ Omega-# (fish oil)",
+"+ Selenio":"+ Selenium",
+"+ Suplemento o micronutriente extra":"+ Extra supplement or micronutrient",
+"+ Tiamina (B#)":"+ Thiamine (B#)",
+"+ Toma extra o aspirina fuera de pauta":"+ Extra dose or aspirin outside the plan",
+"+ Vitamina A":"+ Vitamin A",
+"+ Vitamina A (retinol)":"+ Vitamin A (retinol)",
+"+ Vitamina B#":"+ Vitamin B#",
+"+ Vitamina C":"+ Vitamin C",
+"+ Vitamina D#":"+ Vitamin D#",
+"+ Vitamina E":"+ Vitamin E",
+"+ Vitamina K# (MK-#)":"+ Vitamin K# (MK-#)",
+"+# g carb.":"+# g carbs",
+"+# g grasa":"+# g fat",
+"+# g prot.":"+# g protein",
+"+# kcal frente a tu media del mes.":"+# kcal vs your monthly average.",
+". Ideas sencillas para comida:":". Simple ideas for lunch:",
+"/ tu día, sencillo":"/ your day, simple",
+": # cosas que Peat vigilaba (calcio : fósforo, PUFA, hidratos : proteína, A : D y zinc : cobre). Toca una para ver por qué importa y qué comer.":": # things Peat watched (calcium : phosphorus, PUFA, carbs : protein, A : D and zinc : copper). Tap one to see why it matters and what to eat.",
+": Gemini es gratis, y también valen ChatGPT, Claude u OpenRouter.":": Gemini is free, and ChatGPT, Claude or OpenRouter also work.",
+"A y D equilibradas":"A and D balanced",
+"Abajo tienes # botones al alcance del pulgar:":"At the bottom you have # buttons within thumb reach:",
+"Abrir guía rápida":"Open quick guide",
+"Abrir la dirección nueva con mis datos":"Open the new address with my data",
+"Abrir menú de BioPeat":"Open BioPeat menu",
+"Accesos a secciones de esta misma página":"Links to sections on this page",
+"Aceite de coco":"Coconut oil",
+"Acompaña a la vitamina D. Dinkov: más o menos # mg de K por cada aspirina.":"Goes along with vitamin D. Dinkov: roughly # mg of K per aspirin.",
+"Activo":"Active",
+"Actualizar":"Update",
+"Acumulado comparable: sin semanas completas suficientes. Los datos existentes no se borran.":"Comparable total: not enough complete weeks. Existing data is not deleted.",
+"Ahora / Extra":"Now / Extra",
+"Ahora no":"Not now",
+"Ahora → con este batido":"Now → with this shake",
+"Ajustes":"Settings",
+"Ajustes avanzados (PUFA y equilibrios)":"Advanced settings (PUFA and balances)",
+"Ajustes y copias":"Settings and backups",
+"Ajustes y datos":"Settings and data",
+"Ajustes → Copia de seguridad → Exportar CSV.":"Settings → Backup → Export CSV.",
+"Ajustes → Exportar datos.":"Settings → Export data.",
+"Al pulsar se envían al proveedor configurado las últimas # sesiones (fechas, ejercicios, series, carga, repeticiones y RPE) y los macros alimentarios registrados en esas fechas. No se envían notas privadas ni el resto del historial. No se calculan calorías gastadas ni se cambian metas automáticamente. Puede tener coste de API.":"When you tap, the last # sessions (dates, exercises, sets, load, reps and RPE) and the dietary macros logged on those dates are sent to the configured provider. No private notes or the rest of the history are sent. Calories burned aren't calculated and goals aren't changed automatically. It may have an API cost.",
+"Alimentos":"Foods",
+"Alimentos + pauta":"Food + plan",
+"Alimentos en despensa":"Foods in pantry",
+"Alimentos registrados hoy.":"Foods logged today.",
+"Altura (cm)":"Height (cm)",
+"Analizar entrenamiento y nutrición con IA":"Analyze training and nutrition with AI",
+"Analizar foto y añadir":"Analyze photo and add",
+"Analizar y repartir en el día":"Analyze and split across the day",
+"Antes de dormir":"Before bed",
+"Aplicar a":"Apply to",
+"Aplicar esta cantidad":"Apply this amount",
+"Aplicar instrucciones en toda la app con IA":"Apply instructions across the app with AI",
+"Aporte extra en la unidad indicada":"Extra amount in the unit shown",
+"Aporte no es estado nutricional":"Intake is not nutritional status",
+"Aporte nutricional por toma":"Nutritional contribution per dose",
+"Aporte y detalles":"Contribution and details",
+"Aportes registrados y pauta prevista, no una medida de tu estado nutricional. # alimentos sin este dato.":"Logged intake and planned doses, not a measure of your nutritional status. # foods without this value.",
+"Aquí aparecerán lo que comes a menudo y tus favoritos, para añadirlos con un toque.":"What you eat often and your favorites will show up here, to add them with one tap.",
+"Arroz blanco cocido":"Cooked white rice",
+"Arroz blanco cocido (g)":"Cooked white rice (g)",
+"Artículo original ↗":"Original article ↗",
+"Asistencia # kg × #":"Assistance # kg × #",
+"Aspirina":"Aspirin",
+"Así funciona BioPeat":"How BioPeat works",
+"Aviso legal":"Legal notice",
+"Ayuda":"Help",
+"Azúcar blanco":"White sugar",
+"Azúcar blanco / Miel (g)":"White sugar / Honey (g)",
+"Azúcar y calidad de la alimentación":"Sugar and diet quality",
+"Azúcares (g)":"Sugars (g)",
+"Azúcares libres (g)":"Free sugars (g)",
+"Añade comidas para ver qué te falta.":"Add meals to see what you're missing.",
+"Añade una comida para ver el reparto.":"Add a meal to see the split.",
+"Añadido":"Added",
+"Añadir":"Add",
+"Añadir comida.":"Add food.",
+"Año-mes-día o automático":"Year-month-day or automatic",
+"Aún no has guardado ninguna copia. Tus registros solo viven en este navegador.":"You haven't saved any backup yet. Your records only live in this browser.",
+"Aún no hay proteína registrada.":"No protein logged yet.",
+"Aún no hay suficientes días con comidas registradas para comparar (entreno: # descanso: #; mínimo # de cada).":"There aren't enough days with logged meals to compare yet (training: # rest: #; minimum # of each).",
+"B + C + colina":"B + C + choline",
+"B# / benfotiamina":"B# / benfotiamine",
+"B# · Niacina":"B# · Niacin",
+"B# · Pantoténico":"B# · Pantothenic",
+"B# · Riboflavina":"B# · Riboflavin",
+"B# · Tiamina":"B# · Thiamine",
+"B#: sin datos":"B#: no data",
+"B/C/colina":"B/C/choline",
+"Bacalao / Merluza / Gambas (g)":"Cod / Hake / Prawns (g)",
+"Barras: aporte de cada día (la mitad de la altura = tu meta diaria). Rayado = sin registro.":"Bars: each day's intake (half height = your daily goal). Striped = not logged.",
+"Barritas: hidratos, proteína y grasa":"Bars: carbs, protein and fat",
+"Base original aportada por el usuario; composición estimada sin etiqueta verificada.":"Original base provided by the user; estimated composition without a verified label.",
+"Batido añadido":"Shake added",
+"Bien: # g de hidratos por cada g de proteína.":"Good: # g of carbs per g of protein.",
+"Bien: comes más calcio que fósforo.":"Good: you eat more calcium than phosphorus.",
+"Bien: la A y la D están equilibradas.":"Good: A and D are balanced.",
+"Bien: te quedan # g hasta tu límite.":"Good: # g left until your limit.",
+"Bien: zinc y cobre equilibrados.":"Good: zinc and copper balanced.",
+"Bienvenido a BioPeat":"Welcome to BioPeat",
+"BioPeat es gratuita y no es consejo médico. Proyecto independiente, sin relación con Ray Peat ni con raypeat.com. Tus datos se quedan en tu móvil; solo se cuentan visitas anónimas sin cookies.":"BioPeat is free and is not medical advice. Independent project, not affiliated with Ray Peat or raypeat.com. Your data stays on your phone; only anonymous visits are counted, without cookies.",
+"Biografía y filosofía ↗":"Biography and philosophy ↗",
+"Biografía, obra completa y artículos originales sobre bioenergética y su enfoque metabólico. Esta app es una herramienta inspirada en sus ideas, no una prescripción médica.":"Biography, complete works and original articles on bioenergetics and his metabolic approach. This app is a tool inspired by his ideas, not a medical prescription.",
+"Biotina":"Biotin",
+"Biotina (µg)":"Biotin (µg)",
+"Biotina: sin datos":"Biotin: no data",
+"Bisglicinato de magnesio HSN":"Magnesium bisglycinate HSN",
+"Borde discontinuo: día sin marcar completo":"Dashed border: day not marked complete",
+"Borrar clave de este dispositivo":"Delete key from this device",
+"Busca un ejercicio o grupo: «remo», «pecho», «hack»…":"Search an exercise or group: \"row\", \"chest\", \"hack\"…",
+"Buscar alimento…":"Search food…",
+"Buscar ejercicio":"Search exercise",
+"Buscar en mis alimentos":"Search my foods",
+"Buscar por alimento o comida…":"Search by food or meal…",
+"Ca:P bajo (#)":"Low Ca:P (#)",
+"Ca:P bajo: leche o queso lo suben sin añadir mucho fósforo.":"Low Ca:P: milk or cheese raise it without adding much phosphorus.",
+"Cada columna es una semana; la línea dorada es el # % de tu meta. Borde discontinuo = semana incompleta. Toca una para abrirla.":"Each column is a week; the gold line is # % of your goal. Dashed border = incomplete week. Tap one to open it.",
+"Cada nutriente enseña su zona y su fuente (Peat, Peat/Dinkov, foros, oficial o tu meta). Tus metas ya coincidían con las cifras que se encuentran para vitamina A (# UI), vitamina D (# UI), yodo (# µg) y calcio (#-# mg), así que no se han cambiado. Los resúmenes y los foros son interpretaciones de seguidores, no textos de Peat; donde no hay cifra se usa tu meta personal. El fósforo no tiene meta: lo que importa es calcio : fósforo.":"Each nutrient shows its range and its source (Peat, Peat/Dinkov, forums, official or your goal). Your goals already matched the numbers found for vitamin A (# IU), vitamin D (# IU), iodine (# µg) and calcium (#-# mg), so they weren't changed. Summaries and forums are followers' interpretations, not Peat's texts; where there's no number your personal goal is used. Phosphorus has no goal: what matters is calcium : phosphorus.",
+"Cada perfil guarda sus propios días, medidas, despensa, suplementos y entrenos. Toca uno para usarlo; ⚙ cambia su objetivo, semana, comidas y suplementos.":"Each profile keeps its own days, measurements, pantry, supplements and workouts. Tap one to use it; ⚙ changes its goal, week, meals and supplements.",
+"Cada punto es un día. Franja verde = tu rango (#–# %)":"Each dot is a day. Green band = your range (#–# %)",
+"Calcio":"Calcium",
+"Calcio # mg":"Calcium # mg",
+"Calcio (cáscara de huevo)":"Calcium (eggshell)",
+"Calcio (mg)":"Calcium (mg)",
+"Calcio : fósforo":"Calcium : phosphorus",
+"Calcio : fósforo (mín.)":"Calcium : phosphorus (min.)",
+"Calcio : fósforo, sin falsas certezas":"Calcium : phosphorus, without false certainty",
+"Calcio : magnesio":"Calcium : magnesium",
+"Calcio suficiente":"Enough calcium",
+"Calcio ↗":"Calcium ↗",
+"Calcio, fósforo y contexto":"Calcium, phosphorus and context",
+"Calcio:":"Calcium:",
+"Calcio: los resúmenes de Peat y Dinkov hablan de #–# mg al día, con al menos tanto calcio como fósforo.":"Calcium: Peat and Dinkov summaries talk about #–# mg a day, with at least as much calcium as phosphorus.",
+"Calcio: sin datos":"Calcium: no data",
+"Calendario":"Calendar",
+"Calorías":"Calories",
+"Calorías de mantenimiento, comidas frecuentes y sin déficit.":"Maintenance calories, frequent meals and no deficit.",
+"Cambiar de usuario o crear uno nuevo":"Switch user or create a new one",
+"Cambiar ejercicio ▾":"Change exercise ▾",
+"Cambiar mi pauta habitual (dosis, horario, días)":"Change my usual plan (dose, time, days)",
+"Cambio deshecho":"Change undone",
+"Cancelar":"Cancel",
+"Cancelar análisis":"Cancel analysis",
+"Cantidad":"Amount",
+"Cantidad a añadir":"Amount to add",
+"Cantidad actualizada":"Amount updated",
+"Cantidad de":"Amount of",
+"Cantidad del nutriente":"Nutrient amount",
+"Cantidad extra":"Extra amount",
+"Carbohidratos":"Carbohydrates",
+"Carbohidratos (g)":"Carbohydrates (g)",
+"Carbohidratos = energía restante con #/#/# Es una planificación personal, no una medición del gasto ni un óptimo demostrado de Peat.":"Carbohydrates = remaining energy with #/#/# It's personal planning, not a measurement of expenditure or a proven Peat optimum.",
+"Carbohidratos calculados (g)":"Calculated carbohydrates (g)",
+"Carga del archivo":"File load unit",
+"Carne magra ternera":"Lean beef",
+"Carne magra ternera (g)":"Lean beef (g)",
+"Cena":"Dinner",
+"Cerrar":"Close",
+"Cerrar aviso":"Close notice",
+"Cerrar menú":"Close menu",
+"Clave de API":"API key",
+"Clave de Anthropic API":"Anthropic API key",
+"Clave de Gemini API":"Gemini API key",
+"Clave de OpenAI API":"OpenAI API key",
+"Clave de OpenRouter":"OpenRouter key",
+"Cobre":"Copper",
+"Cobre (mg)":"Copper (mg)",
+"Cobre ↗":"Copper ↗",
+"Cobre:":"Copper:",
+"Cobre: hígado (una ración pequeña a la semana), marisco o cacao.":"Copper: liver (a small portion a week), shellfish or cocoa.",
+"Cobre: sin datos":"Copper: no data",
+"Colina":"Choline",
+"Colina (mg)":"Choline (mg)",
+"Colina: sin datos":"Choline: no data",
+"Comida":"Lunch",
+"Comida #":"Food #",
+"Comida / Pre-entreno":"Lunch / Pre-workout",
+"Comida y pauta por separado. Cambia entre tarjetas y mapa visual.":"Food and plan shown separately. Switch between cards and visual map.",
+"Comidas":"Meals",
+"Comidas del día":"Today's meals",
+"Comparar":"Compare",
+"Compartir o copiar el texto":"Share or copy the text",
+"Completa las fichas de los ingredientes para calcular la previsión.":"Complete the ingredient entries to calculate the forecast.",
+"Completar huecos con perfiles genéricos disponibles":"Fill gaps with available generic profiles",
+"Completo":"Complete",
+"Comprobar archivo y ver resumen":"Check file and see summary",
+"Con cantidades y alimentos de tus fichas funciona sin IA. Para texto libre o fotos hace falta conexión. La IA estima, no mide; lo desconocido queda sin dato. Una pulsación analiza y guarda, con opción de deshacer.":"With amounts and foods from your entries it works without AI. Free text or photos need a connection. The AI estimates, it doesn't measure; unknown values stay empty. One tap analyzes and saves, with undo.",
+"Con este batido aún faltarían # g para tu meta diaria. No hace falta cubrirlos necesariamente con whey.":"With this shake you'd still be # g short of your daily goal. You don't necessarily have to cover it with whey.",
+"Con estos datos se calculan tus calorías y tus metas. Todo se guarda solo en este móvil.":"Your calories and goals are calculated from this data. Everything is saved only on this phone.",
+"Conectar IA":"Connect AI",
+"Conectar IA ahora":"Connect AI now",
+"Configurarlo lleva unos # minutos y todo se puede cambiar después. Tus datos se guardan solo en este móvil.":"Setting it up takes about # minutes and you can change everything later. Your data is saved only on this phone.",
+"Constancia":"Consistency",
+"Consulta cancelada.":"Query cancelled.",
+"Consultando tus datos de BioPeat…":"Checking your BioPeat data…",
+"Contar":"Count",
+"Contraste: la OMS recomienda limitar saturadas al # % de la energía total y preferir insaturadas.":"Contrast: the WHO recommends limiting saturated fat to # % of total energy and preferring unsaturated fats.",
+"Copia JSON descargada. Comprueba que se haya guardado.":"JSON backup downloaded. Check that it was saved.",
+"Copia de seguridad":"Backup",
+"Copiar":"Copy",
+"Copiar informe para IA":"Copy report for AI",
+"Copiar prompt completo":"Copy full prompt",
+"Crea tu clave en":"Create your key at",
+"Crear alimento":"Create food",
+"Creatina":"Creatine",
+"Creatina (g)":"Creatine (g)",
+"Creatina: # g. No cuentan como proteína.":"Creatine: # g. They don't count as protein.",
+"Cuando la comida no llega, Peat usaba calcio de cáscara de huevo en polvo.":"When food falls short, Peat used powdered eggshell calcium.",
+"Cuatro preguntas, de arriba abajo. Toca cualquier cosa para ver el detalle.":"Four questions, top to bottom. Tap anything to see the detail.",
+"Cuádriceps":"Quads",
+"Cuándo":"When",
+"Cuéntalo con detalle":"Tell us in detail",
+"Cómo cuenta tu grasa:":"How your fat counts:",
+"Cómo exportar desde tu app":"How to export from your app",
+"Cómo funciona todo":"How everything works",
+"Cómo llegar hoy":"How to get there today",
+"D #":"S #",
+"DD/MM/AAAA":"DD/MM/YYYY",
+"DOM":"SUN",
+"Datos traídos. Ya puedes usar BioPeat en esta dirección.":"Data brought over. You can now use BioPeat at this address.",
+"De dónde viene tu energía":"Where your energy comes from",
+"De pago por uso. ChatGPT Plus no incluye la API.":"Pay per use. ChatGPT Plus doesn't include the API.",
+"De pago por uso. Claude Pro no incluye la API.":"Pay per use. Claude Pro doesn't include the API.",
+"Debajo tienes ideas concretas para llegar a tus metas.":"Below you have concrete ideas to reach your goals.",
+"Denominador = kcal calculadas #/#/# Puede diferir de las fichas y glicina aparte.":"Denominator = kcal calculated #/#/# May differ from food entries; glycine shown separately.",
+"Dentro de tu límite":"Within your limit",
+"Dentro de tus grasas":"Inside your fats",
+"Deporte":"Sport",
+"Deporte / partido":"Sport / game",
+"Depósito de # días con zona ideal":"#-day store with ideal range",
+"Depósito de # días: #%":"#-day store: #%",
+"Depósito: media de # días":"Store: #-day average",
+"Desayuno":"Breakfast",
+"Desayuno añadido":"Breakfast added",
+"Desayuno y batido Peat (leche, zumo, fruta, gelatina, miel) y D# K# E, magnesio y glicina como sugerencia. Todo se puede cambiar.":"Peat breakfast and shake (milk, juice, fruit, gelatin, honey) and D# K# E, magnesium and glycine as suggestions. You can change everything.",
+"Descanso":"Rest",
+"Descargar archivo para IA (.txt)":"Download file for AI (.txt)",
+"Descargar iconos de la app (PNG para GitHub)":"Download app icons (PNG for GitHub)",
+"Desconocido":"Unknown",
+"Desde el inicio":"Since the start",
+"Deshacer":"Undo",
+"Detalles opcionales: ingredientes, gramos, aceite o marca":"Optional details: ingredients, grams, oil or brand",
+"Dinkov y Peat: lo bueno en sangre ronda # ng/ml; para un adulto son unas # UI (# µg) al día, y con comida sola casi no se llega. Tope prudente citado: # UI. Cuenta la media de # días.":"Dinkov and Peat: a good blood level is around # ng/ml; for an adult that's about # IU (# µg) a day, and food alone hardly gets there. Cautious maximum quoted: # IU. Uses the #-day average.",
+"Dinkov: unos # mg de vitamina K por cada aspirina de # mg. Peat citaba dosis mucho mayores (#-# mg) para casos concretos.":"Dinkov: about # mg of vitamin K per # mg aspirin. Peat quoted much higher doses (#-# mg) for specific cases.",
+"Dirección base de la API":"API base URL",
+"Dom #-#":"Sun #-#",
+"Domingo":"Sunday",
+"Domingo: Descanso":"Sunday: Rest",
+"Dosis por toma":"Dose per serving",
+"Día":"Day",
+"Día a día":"Day by day",
+"Día anterior":"Previous day",
+"Día completo ✓":"Day complete ✓",
+"Día de descanso":"Rest day",
+"Día de entreno":"Training day",
+"Día marcado como completo: cuenta en Semana y Calendario":"Day marked complete: it counts in Week and Calendar",
+"Día siguiente":"Next day",
+"Días con comidas":"Days with meals",
+"Días de descanso":"Rest days",
+"Días de entreno":"Training days",
+"Días de entreno y días de descanso (según tu semana)":"Training days and rest days (based on your week)",
+"Días de la semana":"Days of the week",
+"Días que entran en las medias":"Days included in averages",
+"EE. UU. (NIH).":"USA (NIH).",
+"ENERGÍA DEL DÍA":"TODAY'S ENERGY",
+"Edad":"Age",
+"Edita cantidades o deshaz el último cambio.":"Edit amounts or undo the last change.",
+"Editar":"Edit",
+"Editar objetivos":"Edit goals",
+"Editar objetivos de macros del día":"Edit the day's macro goals",
+"Ej.: # g de ternera, patata cocida, # g de mantequilla":"E.g.: # g of beef, boiled potato, # g of butter",
+"Ej.: Desayuné # ml de leche y # g de plátano; en la comida # g de ternera; merendé un yogur; cené patata con huevos.":"E.g.: For breakfast I had # ml of milk and # g of banana; for lunch # g of beef; a yogurt as a snack; potato with eggs for dinner.",
+"Ej.: Laura":"E.g.: Laura",
+"Ej.: Poder guardar recetas":"E.g.: Save recipes",
+"Ej.: Vitamina B#":"E.g.: Vitamin B#",
+"Ej.: cocino con mantequilla, no tomo pescado…":"E.g.: I cook with butter, I don't eat fish…",
+"El JSON es la copia de seguridad recomendada: guárdalo y podrás restaurarlo en cualquier versión. El HTML incluye la app y tus datos en un solo archivo. Ninguno incluye la clave de IA ni fotos. Importar sustituye los datos actuales; puedes deshacer.":"JSON is the recommended backup: save it and you can restore it in any version. HTML includes the app and your data in a single file. Neither includes the AI key or photos. Importing replaces current data; you can undo.",
+"El cuerpo los almacena: cuenta la media de los últimos # días cerrados. La franja verde de cada barra es tu zona ideal y debajo se ve de dónde sale la cifra.":"The body stores them: it uses the average of the last # closed days. The green band on each bar is your ideal range and below you see where the number comes from.",
+"El marco de su artículo sobre leche presta atención al contexto alimentario y a la combinación con fruta. La app muestra fuentes de nutrientes, no promete un cambio hormonal por completar una barra.":"His article on milk pays attention to the dietary context and combining it with fruit. The app shows nutrient sources; it doesn't promise a hormonal change for filling a bar.",
+"El peso, la altura y la edad calculan tus calorías. El límite de PUFA y la referencia Ca:P se usan en «Equilibrio del día» y se aplican también al día seleccionado.":"Weight, height and age calculate your calories. The PUFA limit and the Ca:P reference are used in \"Balance of the day\" and also applied to the selected day.",
+"El resto del día: evita aceites vegetales, frutos secos, mayonesa y fritos.":"For the rest of the day: avoid vegetable oils, nuts, mayonnaise and fried food.",
+"El servidor debe aceptar POST JSON {image:{mimeType,data},prompt,model} y devolver un objeto BIOPEAT o {text:\"BIOPEAT:…\"}.":"The server must accept POST JSON {image:{mimeType,data},prompt,model} and return a BIOPEAT object or {text:\"BIOPEAT:…\"}.",
+"Elegir foto":"Choose photo",
+"Elige la fecha arriba y asigna cada grupo. No se inventa una fecha.":"Pick the date above and assign each group. No date is made up.",
+"Elige leche, queso, fruta, zumo, patata, arroz o ternera magra.":"Choose milk, cheese, fruit, juice, potato, rice or lean beef.",
+"Elige qué buscas y marca qué días entrenas: esos días llevan más energía e hidratos. Si no entrenas, deja todos en «Descanso».":"Pick your goal and mark the days you train: those days get more energy and carbs. If you don't train, leave all on \"Rest\".",
+"Empezar de cero":"Start from scratch",
+"En este navegador":"In this browser",
+"En los textos revisados Peat favorece grasas más saturadas y reducir poliinsaturadas, pero no se ha verificado una proporción universal de saturadas / monoinsaturadas / poliinsaturadas. Por tanto, no se fija un reparto numérico ni se recomienda aumentar saturadas para alcanzar una barra. No hay un porcentaje oficial de monoinsaturadas que podamos atribuirle.":"In the texts reviewed Peat favors more saturated fats and reducing polyunsaturated ones, but no universal saturated / monounsaturated / polyunsaturated split has been verified. So no numeric split is set and increasing saturated fat to fill a bar isn't recommended. There's no official monounsaturated percentage we can attribute to him.",
+"En masa":"By mass",
+"En récord":"At record",
+"En tu rango":"In your range",
+"En un estudio del Nurses' Health Study (citado en WikiPeatia), las mujeres con más riboflavina (B#) en la dieta tuvieron un # % menos de síndrome premenstrual. Fuentes: leche, huevos e hígado.":"In a Nurses' Health Study analysis (cited on WikiPeatia), women with more riboflavin (B#) in their diet had # % less premenstrual syndrome. Sources: milk, eggs and liver.",
+"Encuentra un registro":"Find an entry",
+"Energía":"Energy",
+"Energía (kcal)":"Energy (kcal)",
+"Energía de cada día frente a tu meta (línea blanca). Toca un día para ver sus macros.":"Each day's energy vs your goal (white line). Tap a day to see its macros.",
+"Energía y contexto":"Energy and context",
+"Energía: #% de tu meta de media":"Energy: #% of your goal on average",
+"Ensalada zanahoria Ray Peat (g)":"Ray Peat carrot salad (g)",
+"Entrenamientos":"Workouts",
+"Entrenamientos importados; puedes deshacer":"Workouts imported; you can undo",
+"Entreno":"Training",
+"Entreno de fuerza":"Strength training",
+"Entreno y nutrición":"Training and nutrition",
+"Enviando…":"Sending…",
+"Enviar":"Send",
+"Enviar otra":"Send another",
+"Enviar resumen y analizar con IA":"Send summary and analyze with AI",
+"Enviar sugerencia":"Send suggestion",
+"Equilibrio del día":"Balance of the day",
+"Equilibrios y tipos de grasa de la semana":"Balances and fat types for the week",
+"Escribe alimentos o pega el código.":"Write foods or paste the code.",
+"Escribe instrucciones en el cuadro de arriba.":"Write instructions in the box above.",
+"Escribe todo en un mensaje: «# ml de leche y # plátanos; en la comida # g de arroz y # g de ternera».":"Write it all in one message: \"# ml of milk and # bananas; for lunch # g of rice and # g of beef\".",
+"Escribe tus hábitos de cocina, marcas habituales, raciones…":"Write your cooking habits, usual brands, portions…",
+"Escribe un título y una descripción un poco más larga.":"Write a title and a slightly longer description.",
+"Escribir una sugerencia":"Write a suggestion",
+"Espalda":"Back",
+"Esta revisión no cubre toda su obra y no ha identificado una tabla verificable de # dosis universales para maximizar tu metabolismo. Las cifras de los gráficos son tus objetivos del contexto, no una prescripción ni un indicador clínico.":"This review doesn't cover all his work and hasn't identified a verifiable table of # universal doses to maximize your metabolism. The chart numbers are your context goals, not a prescription or a clinical marker.",
+"Esta semana":"This week",
+"Estado":"Status",
+"Estado de la app":"App status",
+"Este batido: +# g de proteína (# g de la base + # g de la whey).":"This shake: +# g of protein (# g from the base + # g from whey).",
+"Explicaciones visibles de nuevo.":"Explanations visible again.",
+"Exporta tus entrenos en CSV desde tu app y elígelo aquí. La app reconoce sola las columnas; si no, eliges una vez cuál es la fecha y cuál el ejercicio y se recuerda.":"Export your workouts as CSV from your app and choose it here. The app recognizes the columns automatically; if not, you choose the date and exercise once and it's remembered.",
+"Exportar JSON":"Export JSON",
+"Exportar datos para IA":"Export data for AI",
+"Extra añadido: # UI":"Extra added: # IU",
+"Falta conectar la IA. Abre «Conectar IA» o usa cantidades reconocidas sin IA.":"The AI isn't connected. Open \"Connect AI\" or use amounts recognized without AI.",
+"Faltan # g":"# g left",
+"Faltan # kcal":"# kcal left",
+"Faltan datos de calcio o fósforo.":"Missing calcium or phosphorus data.",
+"Faltan datos de grasa.":"Missing fat data.",
+"Faltan datos de vitamina A o D.":"Missing vitamin A or D data.",
+"Faltan datos de zinc o cobre.":"Missing zinc or copper data.",
+"Favoritos":"Favorites",
+"Fecha":"Date",
+"Fechas sin zona horaria: hora local del navegador. Con zona explícita: se conserva el instante y se asigna al día local. No se adivinan columnas o unidades ausentes.":"Dates without a time zone: browser local time. With an explicit zone: the instant is kept and assigned to the local day. Missing columns or units aren't guessed.",
+"Fibra (g)":"Fiber (g)",
+"Filtrar por estado":"Filter by status",
+"Filtro de alimentos":"Food filter",
+"Folato":"Folate",
+"Folato (µg)":"Folate (µg)",
+"Folato: sin datos":"Folate: no data",
+"Foro o grupo sobre Peat":"Peat forum or group",
+"Foros":"Forums",
+"Foto":"Photo",
+"Foto aquí":"Photo here",
+"Foto en tu chat":"Photo in your chat",
+"Foto → comida":"Photo → meal",
+"Fuente / etiqueta":"Source / label",
+"Fuente técnica sobre benfotiamina":"Technical source on benfotiamine",
+"Fuentes de Peat y límites de interpretación":"Peat sources and limits of interpretation",
+"Fórmula de calorías de hombre y referencias generales de Peat/Dinkov.":"Male calorie formula and general Peat/Dinkov references.",
+"Fórmula de mujer, al menos # g de proteína y notas de «Nutrition for Women» y «From PMS to Menopause».":"Female formula, at least # g of protein and notes from \"Nutrition for Women\" and \"From PMS to Menopause\".",
+"Fósforo":"Phosphorus",
+"Fósforo (mg)":"Phosphorus (mg)",
+"Fósforo:":"Phosphorus:",
+"Fósforo: sin datos":"Phosphorus: no data",
+"G # g":"F # g",
+"Gambas":"Prawns",
+"Gelatina":"Gelatin",
+"Gelatina o colágeno":"Gelatin or collagen",
+"Gimnasio":"Gym",
+"Gimnasio y nutrición.":"Gym and nutrition.",
+"Glicina":"Glycine",
+"Glicina libre":"Free glycine",
+"Glicina libre (g)":"Free glycine (g)",
+"Glicina: # g":"Glycine: # g",
+"Gramos de polvo whey en el próximo batido":"Grams of whey powder in the next shake",
+"Gramos, no calorías":"Grams, not calories",
+"Grasa":"Fat",
+"Grasa (g)":"Fat (g)",
+"Grasa monoinsaturada (g)":"Monounsaturated fat (g)",
+"Grasa saturada (g)":"Saturated fat (g)",
+"Grasa total":"Total fat",
+"Grasa total (g)":"Total fat (g)",
+"Grasa: #% de tu meta de media":"Fat: #% of your goal on average",
+"Grasas":"Fats",
+"Grasas #%":"Fats #%",
+"Grasas: # por ciento de la energía de macros":"Fats: # percent of macro energy",
+"Gratis con límites diarios. Es la opción recomendada.":"Free with daily limits. The recommended option.",
+"Gratis, sin cuenta y sin anuncios. No es consejo médico.":"Free, no account and no ads. Not medical advice.",
+"Groq, DeepSeek, Mistral, Together… Pega la dirección base de su API (suele acabar en /v#).":"Groq, DeepSeek, Mistral, Together… Paste their API base URL (usually ends in /v#).",
+"Guarda tus datos":"Save your data",
+"Guarda una copia de seguridad de vez en cuando.":"Save a backup now and then.",
+"Guardado":"Saved",
+"Guardado local":"Saved locally",
+"Guardar HTML con mis datos":"Save HTML with my data",
+"Guardar copia":"Save backup",
+"Guardar notas":"Save notes",
+"Guardar objetivos":"Save goals",
+"Guardar para días nuevos":"Save for new days",
+"Guardar perfil":"Save profile",
+"Guardar rango":"Save range",
+"Guardar solo para este día":"Save for this day only",
+"Guardar y añadir al día":"Save and add to the day",
+"Guardar y llevar tus datos":"Save and move your data",
+"Guía":"Guide",
+"Guía OMS":"WHO guide",
+"Guía de uso":"User guide",
+"H # g":"C # g",
+"Habitual si comes poca carne, huevos o leche.":"Common if you eat little meat, eggs or milk.",
+"Habitual. Peat lo citaba frente al exceso de cobre o de estrógeno.":"Common. Peat mentioned it against excess copper or estrogen.",
+"Habitual. Peat lo desaconsejaba salvo carencia demostrada en un análisis: el hierro se acumula.":"Common. Peat advised against it unless a test shows a deficiency: iron accumulates.",
+"Hace # meses":"# months ago",
+"Hacer foto":"Take photo",
+"Hay una versión nueva":"There's a new version",
+"Haz una copia de tus datos":"Back up your data",
+"Hidrato : proteína":"Carbs : protein",
+"Hidratos":"Carbs",
+"Hidratos # g":"Carbs # g",
+"Hidratos #%":"Carbs #%",
+"Hidratos : proteína":"Carbs : protein",
+"Hidratos por gramo de proteína":"Carbs per gram of protein",
+"Hidratos suficientes":"Enough carbs",
+"Hidratos:":"Carbs:",
+"Hidratos: # por ciento de la energía de macros":"Carbs: # percent of macro energy",
+"Hidratos: #% de tu meta de media":"Carbs: #% of your goal on average",
+"Hierro":"Iron",
+"Hierro (mg)":"Iron (mg)",
+"Hierro ↗":"Iron ↗",
+"Hierro: Peat lo trataba como algo que conviene no acumular, así que es un tope.":"Iron: Peat treated it as something best not to accumulate, so it's a maximum.",
+"Hierro: sin datos":"Iron: no data",
+"Historial completo (#)":"Full history (#)",
+"Hoy":"Today",
+"Hoy tu pauta no aporta micronutrientes.":"Today your plan provides no micronutrients.",
+"Hoy: cómo vas":"Today: how you're doing",
+"Huevos camperos":"Free-range eggs",
+"Huevos camperos (g)":"Free-range eggs (g)",
+"Hígado de ternera":"Beef liver",
+"IA":"AI",
+"IA opcional":"Optional AI",
+"Ideas, cambios, errores o ideas Peat":"Ideas, changes, bugs or Peat ideas",
+"Idioma de la app":"App language",
+"Idioma · Language":"Language · Idioma",
+"Igual que ayer":"Same as yesterday",
+"Importa el CSV de tu app de entrenamiento arriba para ver tu progresión, récords y gráficos.":"Import the CSV from your training app above to see your progress, records and charts.",
+"Importar copia JSON":"Import JSON backup",
+"Importar sesiones nuevas":"Import new sessions",
+"Incluir la versión de la app y el tipo de móvil (sin datos personales)":"Include the app version and phone type (no personal data)",
+"Incluye # kcal de tu pauta (glicina).":"Includes # kcal from your plan (glycine).",
+"Incompletas":"Incomplete",
+"Informe":"Report",
+"Informe completo listo para analizar":"Full report ready to analyze",
+"Intra / Partido":"Intra / Game",
+"Introduce el aporte de la etiqueta, no el peso total de la cápsula. No se convierten UI ni sales automáticamente.":"Enter the amount on the label, not the total capsule weight. IU and salts are not converted automatically.",
+"Ir a Gimnasio":"Go to Gym",
+"Ir directamente a Gimnasio":"Go straight to Gym",
+"J #":"T #",
+"J D":"T S",
+"JUE":"THU",
+"Jue #-#":"Thu #-#",
+"Jueves":"Thursday",
+"Jueves: Descanso":"Thursday: Rest",
+"Kilogramos (kg)":"Kilograms (kg)",
+"L #":"M #",
+"L M X J V S D":"M T W T F S S",
+"L X S D":"M W S S",
+"LUN":"MON",
+"La benfotiamina es una fuente/derivado de B# pero # mg del compuesto no se presentan aquí como # mg equivalentes de tiamina alimentaria sin una etiqueta que lo confirme. Si tu etiqueta declara esa equivalencia, puedes introducirla en la pauta sin cambiar la dosis del compuesto.":"Benfotiamine is a source/derivative of B# but # mg of the compound aren't shown here as # mg of dietary thiamine equivalent without a label confirming it. If your label states that equivalence, you can enter it in the plan without changing the compound dose.",
+"La carne y los huevos bajan el ratio; acompáñalos de leche o queso.":"Meat and eggs lower the ratio; pair them with milk or cheese.",
+"La clave se guarda solo en este navegador si marcas «Recordar». Nunca va al código, a GitHub ni a las copias JSON o HTML. Su uso puede tener límites o costes según tu cuenta. Para fotos hace falta un modelo con visión.":"The key is saved only in this browser if you tick \"Remember\". It never goes to the code, GitHub or JSON/HTML backups. Its use may have limits or costs depending on your account. Photos need a vision model.",
+"La energía registrada se compara con tu planificación personal. Una barra no mide metabolismo, función tiroidea ni gasto real. Revisa primero si has anotado todo el día antes de interpretar un déficit.":"Logged energy is compared with your personal plan. A bar doesn't measure metabolism, thyroid function or real expenditure. First check you've logged the whole day before reading a deficit.",
+"La proteína alimentaria y la glicina libre se mantienen separadas. Sin un perfil de aminoácidos no se puede calcular tu balance de glicina, triptófano o metionina.":"Dietary protein and free glycine are kept separate. Without an amino acid profile, your glycine, tryptophan or methionine balance can't be calculated.",
+"La vitamina A y la D se regulan entre sí: mucha de una sin la otra bloquea su efecto, y el exceso de A puede frenar la tiroides. Se comparan en UI: A (µg × #) frente a D (µg × #).":"Vitamins A and D regulate each other: a lot of one without the other blocks its effect, and excess A can slow the thyroid. They're compared in IU: A (µg × #) vs D (µg × #).",
+"Las dosis rápidas son las de tu pauta, no una recomendación de tomar más. Puedes editar, eliminar o deshacer después.":"The quick doses are those of your plan, not a recommendation to take more. You can edit, delete or undo later.",
+"Leche entera":"Whole milk",
+"Leche entera (ml)":"Whole milk (ml)",
+"Leche y queso son la forma más fácil: tienen más calcio que fósforo.":"Milk and cheese are the easiest way: they have more calcium than phosphorus.",
+"Leche, queso, fruta, zumo, patata, arroz y carne magra casi no suman PUFA.":"Milk, cheese, fruit, juice, potato, rice and lean meat add almost no PUFA.",
+"Lectura Peat:":"Peat's view:",
+"Libras (lb), convertir a kg":"Pounds (lb), convert to kg",
+"Limpiar":"Clear",
+"Listo: las fotos y el texto libre se analizan dentro de la app.":"Done: photos and free text are analyzed inside the app.",
+"Llevas # UI de A y # UI de D.":"You have # IU of A and # IU of D.",
+"Llevas # UI de A y # UI de D. Faltan unas # UI de A (o quitar unas # UI de D) para llegar a # : #":"You have # IU of A and # IU of D. You need about # IU more A (or # IU less D) to reach # : #",
+"Llevas # UI de A y # UI de D. Faltan unas # UI de D (o quitar unas # UI de A) para llegar a # : #":"You have # IU of A and # IU of D. You need about # IU more D (or # IU less A) to reach # : #",
+"Llevas # g de PUFA: # g por encima de tu máximo. No sumes más hoy.":"You have # g of PUFA: # g over your maximum. Don't add more today.",
+"Llevas # g de PUFA; te quedan # g.":"You have # g of PUFA; # g left.",
+"Llevas # g de hidratos para # g de proteína.":"You have # g of carbs for # g of protein.",
+"Llevas # g de hidratos y # g de proteína. Faltan unos # g de hidratos; la proteína no hace falta bajarla.":"You have # g of carbs and # g of protein. You need about # g more carbs; no need to lower protein.",
+"Llevas # mg de calcio frente a # mg de fósforo.":"You have # mg of calcium vs # mg of phosphorus.",
+"Llevas # mg de calcio y # mg de fósforo. Faltan unos # mg de calcio; el fósforo no hace falta bajarlo.":"You have # mg of calcium and # mg of phosphorus. You need about # mg more calcium; no need to lower phosphorus.",
+"Llevas # mg de zinc y # mg de cobre.":"You have # mg of zinc and # mg of copper.",
+"Llevas # mg de zinc y # mg de cobre. Faltan unos # mg de cobre para llegar a # : #":"You have # mg of zinc and # mg of copper. You need about # mg more copper to reach # : #",
+"Llevas # mg de zinc y # mg de cobre. Faltan unos # mg de zinc para llegar a # : #":"You have # mg of zinc and # mg of copper. You need about # mg more zinc to reach # : #",
+"Lo básico de Peat":"Peat basics",
+"Lo que añadas aquí se suma solo cada día a tus nutrientes. Si un día no tomas algo, lo desmarcas en «Tu pauta».":"Whatever you add here is added to your nutrients every day. If you skip something one day, untick it in \"Your plan\".",
+"Lo que comes se guarda en":"What you eat is saved in",
+"Lo que más aporta hoy":"What contributes most today",
+"Lo que te aporta tu pauta":"What your plan provides",
+"Log → icono de compartir → Exportar entrenos.":"Log → share icon → Export workouts.",
+"Los anillos comparan hidratos, proteína y grasa con tu meta (pueden pasar del # %).":"The rings compare carbs, protein and fat with your goal (they can go over # %).",
+"Los artículos revisados no justifican una tabla universal de # dosis que maximicen el metabolismo. Se conservan tus objetivos editables sin atribuirle cifras no verificadas. Los gráficos muestran ingestas, no función tiroidea ni glucógeno medido.":"The articles reviewed don't justify a universal table of # doses that maximize metabolism. Your editable goals are kept without attributing unverified numbers. Charts show intake, not thyroid function or measured glycogen.",
+"Los cambios se aplican desde hoy en adelante. Los días pasados no cambian.":"Changes apply from today on. Past days don't change.",
+"Los objetivos personales no son dosis de suplementos. La masa de benfotiamina no se convierte automáticamente a tiamina. La glicina no se suma como proteína alimentaria.":"Personal goals are not supplement doses. Benfotiamine mass isn't converted to thiamine automatically. Glycine isn't counted as dietary protein.",
+"Los porcentajes comparan cantidades registradas con tus metas editables. Más del # % no significa más beneficio. Un dato ausente no es cero y una toma prevista no confirma que la hayas tomado.":"Percentages compare logged amounts with your editable goals. More than # % doesn't mean more benefit. A missing value isn't zero and a planned dose doesn't confirm you took it.",
+"Los porcentajes de saturadas, monoinsaturadas y PUFA usan la grasa total como denominador. El gris no se interpreta como monoinsaturadas. Un porcentaje bajo puede esconder muchos gramos si la grasa total es alta.":"Saturated, monounsaturated and PUFA percentages use total fat as the denominator. Grey isn't read as monounsaturated. A low percentage can hide many grams if total fat is high.",
+"Los suplementos de tu pauta se suman solos cada día.":"The supplements in your plan are added automatically every day.",
+"Luego":"Later",
+"Lun #-#":"Mon #-#",
+"Lunes":"Monday",
+"Lunes: Pesas":"Monday: Weights",
+"Lácteos, fruta y tolerancia":"Dairy, fruit and tolerance",
+"Límite del día # g":"Today's limit # g",
+"Límite diario de PUFA (g)":"Daily PUFA limit (g)",
+"Límite: mejor por debajo":"Limit: lower is better",
+"M #":"T #",
+"M J V":"T T F",
+"MAR":"TUE",
+"MIÉ":"WED",
+"MM/DD/AAAA":"MM/DD/YYYY",
+"Macros del contexto original; sin etiqueta verificada.":"Macros from the original context; label not verified.",
+"Magnesio":"Magnesium",
+"Magnesio (mg)":"Magnesium (mg)",
+"Magnesio elemental, no peso de la sal. Si cambias la dosis, el aporte se recalcula en proporción. Si cambias la unidad, revisa este valor con la etiqueta.":"Elemental magnesium, not the weight of the salt. If you change the dose, the intake is recalculated proportionally. If you change the unit, check this value against the label.",
+"Magnesio ↗":"Magnesium ↗",
+"Magnesio: sin datos":"Magnesium: no data",
+"Manganeso":"Manganese",
+"Manganeso (mg)":"Manganese (mg)",
+"Manganeso: sin datos":"Manganese: no data",
+"Mantequilla":"Butter",
+"Mantequilla / Aceite coco (g)":"Butter / Coconut oil (g)",
+"Mapa por día":"Map by day",
+"Mapa visual":"Visual map",
+"Mar #-#":"Tue #-#",
+"Marcar completo":"Mark complete",
+"Marcar día completo":"Mark day complete",
+"Martes":"Tuesday",
+"Martes: Descanso":"Tuesday: Rest",
+"Media # sem.":"# wk avg.",
+"Media de # días con comidas frente a tu meta diaria. Los días sin registrar no cuentan como cero. En grasa, la saturada cuenta la mitad.":"Average of # days with meals vs your daily goal. Days not logged don't count as zero. For fat, saturated counts half.",
+"Media mañana":"Mid-morning",
+"Medicación":"Medication",
+"Mejor serie (reps)":"Best set (reps)",
+"Menos PUFA":"Less PUFA",
+"Menos es mejor: la franja verde de la barra es lo permitido.":"Less is better: the green band on the bar is what's allowed.",
+"Menú":"Menu",
+"Menú BioPeat":"BioPeat menu",
+"Menú de BioPeat":"BioPeat menu",
+"Menú: perfiles, IA y sugerencias":"Menu: profiles, AI and suggestions",
+"Merienda":"Snack",
+"Merienda / Post-entreno":"Snack / Post-workout",
+"Merluza":"Hake",
+"Mes anterior":"Previous month",
+"Mes siguiente":"Next month",
+"Mes y año":"Month and year",
+"Meta # mg":"Goal # mg",
+"Meta # mg de compuesto":"Goal # mg of compound",
+"Meta # µg":"Goal # µg",
+"Meta # µg RAE":"Goal # µg RAE",
+"Meta: # de calcio por cada # de fósforo, o más":"Goal: # of calcium per # of phosphorus, or more",
+"Meta: # g de hidratos por g de proteína":"Goal: # g of carbs per g of protein",
+"Metas guardadas":"Goals saved",
+"Mi batido":"My shake",
+"Mi desayuno habitual":"My usual breakfast",
+"Mi despensa":"My pantry",
+"Mi gimnasio":"My gym",
+"Mi perfil":"My profile",
+"Mi semana":"My week",
+"Micronutrientes":"Micronutrients",
+"Miel":"Honey",
+"Minerales":"Minerals",
+"Mis habituales":"My usuals",
+"Mis objetivos personales":"My personal goals",
+"Mié #-#":"Wed #-#",
+"Miércoles":"Wednesday",
+"Miércoles: Pesas":"Wednesday: Weights",
+"Modelo":"Model",
+"Modo resumen":"Summary mode",
+"Modo resumen: solo datos y gráficos.":"Summary mode: data and charts only.",
+"Momento":"Moment",
+"Momento de la comida":"Meal moment",
+"Momento si la IA no lo indica":"Meal if the AI doesn't say",
+"Monoinsaturadas":"Monounsaturated",
+"Mucha vitamina A para la D que llevas.":"A lot of vitamin A for the D you have.",
+"Mucho zinc para el cobre que llevas: te falta cobre.":"A lot of zinc for the copper you have: you're short on copper.",
+"Mudar mis datos a otra dirección":"Move my data to another address",
+"Muestra de nuevo notas y explicaciones":"Show notes and explanations again",
+"Multivitamínico":"Multivitamin",
+"Muy habitual, pero Peat lo desaconsejaba: es grasa poliinsaturada (PUFA) y se oxida con facilidad.":"Very common, but Peat advised against it: it's polyunsaturated fat (PUFA) and oxidizes easily.",
+"Muy habitual. Peat no los recomendaba: muchos llevan hierro y aditivos. Si lo tomas, añade a mano lo que aporta según la etiqueta.":"Very common. Peat didn't recommend them: many contain iron and additives. If you take one, add what it provides by hand from the label.",
+"Muy habitual. Peat prefería sacarla de la fruta y el zumo de naranja.":"Very common. Peat preferred getting it from fruit and orange juice.",
+"Muy usados por la población. Si Peat los desaconsejaba, se indica por qué.":"Widely used. If Peat advised against them, it says why.",
+"Más":"More",
+"Más A":"More A",
+"Más D":"More D",
+"Más PUFA":"More PUFA",
+"Más calcio":"More calcium",
+"Más cobre":"More copper",
+"Más fósforo":"More phosphorus",
+"Más hidratos":"More carbs",
+"Más hidratos para entrenar fuerte y recuperar.":"More carbs to train hard and recover.",
+"Más proteína":"More protein",
+"Más zinc":"More zinc",
+"Máximo # g (menos es mejor)":"Maximum # g (less is better)",
+"Máximo de PUFA (g/día)":"Max PUFA (g/day)",
+"Métrica":"Metric",
+"Métrica de tendencia":"Trend metric",
+"Niacina":"Niacin",
+"Niacina (mg)":"Niacin (mg)",
+"Niacina: sin datos":"Niacin: no data",
+"Niacinamida (B#)":"Niacinamide (B#)",
+"Ninguno. Si no tomas suplementos, déjalo así.":"None. If you don't take supplements, leave it like this.",
+"Ningún alimento coincide.":"No food matches.",
+"Ningún nutriente en este filtro.":"No nutrient in this filter.",
+"No es de Peat, pero es habitual si entrenas fuerza.":"Not from Peat, but common if you lift weights.",
+"No hay dos semanas cerradas con # días completos y composición suficiente para comparar tendencia. Las semanas parciales se muestran, pero no se etiquetan como mejora o empeoramiento. Próximo paso: compara raciones y días sin registrar antes de cambiar tus metas.":"There aren't two closed weeks with # complete days and enough composition to compare a trend. Partial weeks are shown, but not labeled as better or worse. Next step: compare portions and unlogged days before changing your goals.",
+"No hay tomas para este día.":"No doses for this day.",
+"No se convierte su defensa del azúcar en una meta ilimitada de azúcar aislado. En su texto también distingue el azúcar refinado de alimentos con otros nutrientes.":"His defense of sugar isn't turned into an unlimited goal of isolated sugar. In his text he also distinguishes refined sugar from foods with other nutrients.",
+"No se ha añadido nada: la IA respondió, pero no en el formato esperado:":"Nothing was added: the AI answered, but not in the expected format:",
+"No se ha identificado una tabla verificable de # dosis universales de Peat. No se asigna una puntuación de salud ni se recomienda subir suplementos para completar barras.":"No verifiable table of # universal Peat doses has been identified. No health score is given and raising supplements to fill bars isn't recommended.",
+"No se inventan comidas ni calorías.":"No meals or calories are made up.",
+"No se modifica el historial. Puedes restablecer la pauta del día desde la pantalla anterior.":"History isn't changed. You can reset the day's plan from the previous screen.",
+"No son una recomendación médica. Toca para añadir y ajusta la dosis a tu etiqueta.":"Not medical advice. Tap to add and adjust the dose to your label.",
+"No suma a ningún nutriente":"Doesn't add to any nutrient",
+"Nombre":"Name",
+"Notas":"Notes",
+"Notas guardadas":"Notes saved",
+"Notas para la IA":"Notes for the AI",
+"Notas para la IA (cocina, gustos, intolerancias)":"Notes for the AI (cooking, tastes, intolerances)",
+"Nunca":"Never",
+"Nutriente":"Nutrient",
+"Nutrientes":"Nutrients",
+"OMS: alimentación saludable":"WHO: healthy diet",
+"Objetivo":"Goal",
+"Objetivo # kcal":"Goal # kcal",
+"Objetivo personal: # kcal":"Personal goal: # kcal",
+"Objetivo, semana, comidas y suplementos":"Goal, week, meals and supplements",
+"Ocho semanas":"Eight weeks",
+"Oculta explicaciones: solo números, gráficos y botones":"Hides explanations: only numbers, charts and buttons",
+"Oficial":"Official",
+"Oficial: # mg al día para mujeres con menstruación. Peat («From PMS to Menopause», «The Dangers of Iron: Exacerbated by Estrogen»): el estrógeno hace absorber y retener más hierro, así que no conviene suplementarlo sin análisis. Mejor por debajo del tope. Cuenta la media de # días.":"Official: # mg a day for menstruating women. Peat (\"From PMS to Menopause\", \"The Dangers of Iron: Exacerbated by Estrogen\"): estrogen makes the body absorb and retain more iron, so supplementing it without a test isn't advisable. Better below the maximum. Uses the #-day average.",
+"Oficial: # mg al día para mujeres. Peat: el estrógeno sube el cobre en sangre, y el zinc de ostras, carne, huevos y leche ayuda a equilibrarlo.":"Official: # mg a day for women. Peat: estrogen raises copper in the blood, and zinc from oysters, meat, eggs and milk helps balance it.",
+"Oficial: # µg al día. Peat: la leche y los huevos son buenas fuentes, y la B# ayuda a convertir el caroteno en vitamina A. Cuenta la media de # días.":"Official: # µg a day. Peat: milk and eggs are good sources, and B# helps convert carotene into vitamin A. Uses the #-day average.",
+"Omega-# (aceite de pescado)":"Omega-# (fish oil)",
+"Opcional. Hábitos que la IA tendrá en cuenta al analizar fotos y textos, por ejemplo: «Uso leche entera, cocino con mantequilla, el arroz lo peso en crudo».":"Optional. Habits the AI will take into account when analyzing photos and texts, for example: \"I use whole milk, cook with butter, weigh rice raw\".",
+"Opciones de cálculo y tablas":"Calculation options and tables",
+"Orden de las fechas":"Date order",
+"Otra app:":"Other app:",
+"Otra compatible (Groq, DeepSeek, Mistral…)":"Other compatible (Groq, DeepSeek, Mistral…)",
+"Otra compatible con OpenAI":"Other OpenAI-compatible",
+"Otras / sin clasificar":"Other / unclassified",
+"Otro":"Other",
+"Otro micronutriente según etiqueta":"Other micronutrient per label",
+"Otros":"Others",
+"Otros habituales (#)":"Other common ones (#)",
+"PUFA (grasas inestables)":"PUFA (unstable fats)",
+"PUFA / presupuesto personal":"PUFA / personal budget",
+"Pantoténico":"Pantothenic",
+"Pantoténico (mg)":"Pantothenic (mg)",
+"Pantoténico: sin datos":"Pantothenic: no data",
+"Para analizar fotos aquí, conecta la IA una vez.":"To analyze photos here, connect the AI once.",
+"Para analizar fotos y texto libre, conecta tu IA en":"To analyze photos and free text, connect your AI in",
+"Para cubrirlo, añade (se suma a":"To cover it, add (added to",
+"Para llegar a tus metas de hoy":"To reach today's goals",
+"Para mantenerlo":"To keep it up",
+"Para responder con todos tus datos necesito que conectes tu IA (Gemini es gratis; también vale ChatGPT, Claude u otra). Solo se hace una vez.":"To answer with all your data I need you to connect your AI (Gemini is free; ChatGPT, Claude or others also work). You only do it once.",
+"Parcial":"Partial",
+"Parte de cada meta que cubren tus suplementos hoy (naranja) y la comida (verde).":"Share of each goal covered today by your supplements (orange) and food (green).",
+"Patata bien cocida":"Well-cooked potato",
+"Patata bien cocida (g)":"Well-cooked potato (g)",
+"Pauta":"Plan",
+"Pauta / tomas":"Plan / doses",
+"Pauta activa":"Plan active",
+"Pauta guardada para días nuevos":"Plan saved for new days",
+"Pauta personal declarada; aporte previsto, equivalencia sin etiqueta verificada.":"Declared personal plan; planned intake, equivalence without a verified label.",
+"Pauta prevista":"Planned dose",
+"Pauta/tomas #":"Plan/doses #",
+"Peat («From PMS to Menopause»): el calcio de la leche frena la PTH y protege el hueso; lo prefería a los estrógenos.":"Peat (\"From PMS to Menopause\"): calcium from milk lowers PTH and protects bone; he preferred it to estrogen.",
+"Peat («From PMS to Menopause», capítulo de osteoporosis): la leche y el calcio frenan la PTH y protegen el hueso; él los prefería a la terapia de estrógenos. Peat/Dinkov: #-# mg al día con calcio y fósforo cerca de # : #":"Peat (\"From PMS to Menopause\", osteoporosis chapter): milk and calcium lower PTH and protect bone; he preferred them to estrogen therapy. Peat/Dinkov: #-# mg a day with calcium and phosphorus close to # : #",
+"Peat («Nutrition for Women»): el magnesio mantiene el ATP y puede cortar los calambres menstruales; la sal ayuda a retenerlo. Peat/Dinkov: unos # mg al día desde comida si la tiroides va bien.":"Peat (\"Nutrition for Women\"): magnesium maintains ATP and can stop menstrual cramps; salt helps retain it. Peat/Dinkov: about # mg a day from food if the thyroid is working well.",
+"Peat («Nutrition for Women»): la vitamina A es una de las sustancias que se oponen al estrógeno.":"Peat (\"Nutrition for Women\"): vitamin A is one of the substances that oppose estrogen.",
+"Peat («Nutrition for Women»): no restringir la sal. Con exceso de estrógeno se retiene agua, y un poco más de sodio suele mejorar el edema premenstrual y el insomnio. Es una referencia, no un mínimo obligatorio.":"Peat (\"Nutrition for Women\"): don't restrict salt. With excess estrogen water is retained, and a bit more sodium often improves premenstrual edema and insomnia. It's a reference, not a required minimum.",
+"Peat analiza el calcio junto al fosfato y señala que el óptimo dietético y su balance con otros minerales no están determinados. La referencia de la app (por defecto #) es tu preferencia personal.":"Peat analyzes calcium together with phosphate and notes that the dietary optimum and its balance with other minerals aren't determined. The app's reference (default #) is your personal preference.",
+"Peat citaba unos # mg de zinc en suplemento para casos de exceso de cobre o estrógenos. En comida: ostras, hígado, huevos y leche (foros).":"Peat quoted about # mg of supplemental zinc for cases of excess copper or estrogen. From food: oysters, liver, eggs and milk (forums).",
+"Peat da importancia a considerar calcio y fosfato conjuntamente, pero en su artículo sobre fosfato señala que el óptimo dietético y su balance no están determinados. Por eso no se inventa un nuevo ratio ideal para ti.":"Peat considered calcium and phosphate together, but in his phosphate article he notes the dietary optimum and its balance aren't determined. So no new ideal ratio is made up for you.",
+"Peat discute conjuntamente la disponibilidad de energía, carbohidratos y proteínas. No se deriva de ese enfoque un reparto universal para ti.":"Peat discusses energy, carbohydrate and protein availability together. No universal split for you follows from that approach.",
+"Peat favorecía reducir poliinsaturadas y grasas más saturadas. No se ha verificado un reparto porcentual universal en los textos revisados. Su postura no equivale al consenso sanitario.":"Peat favored reducing polyunsaturated fats and more saturated fats. No universal percentage split has been verified in the texts reviewed. His position is not the health consensus.",
+"Peat insistía en tomar al menos tanto calcio como fósforo. Cuando sobra fósforo (carne, huevos, cereales) y falta calcio, sube la PTH, una hormona que saca calcio del hueso y favorece la inflamación y el estrés.":"Peat insisted on getting at least as much calcium as phosphorus. When phosphorus is high (meat, eggs, grains) and calcium is low, PTH rises, a hormone that pulls calcium from bone and promotes inflammation and stress.",
+"Peat la usaba para aprovechar mejor el azúcar.":"Peat used it to make better use of sugar.",
+"Peat lo usaba cuando faltan lácteos, para tener más calcio que fósforo.":"Peat used it when dairy is lacking, to get more calcium than phosphorus.",
+"Peat no dio cifras distintas para hombre y mujer en estos equilibrios: por defecto son # g, # y # para los dos.":"Peat didn't give different numbers for men and women in these balances: by default they're # g, # and # for both.",
+"Peat presta atención a las diferencias entre proteínas musculares y gelatina. Eso no convierte la glicina aislada en proteína completa ni justifica una dosis automática.":"Peat paid attention to the differences between muscle proteins and gelatin. That doesn't make isolated glycine a complete protein or justify an automatic dose.",
+"Peat y Dinkov en las metas de la app":"Peat and Dinkov in the app's goals",
+"Peat y Dinkov la consideran básica si no tomas mucho sol (# UI = # µg).":"Peat and Dinkov consider it basic if you don't get much sun (# IU = # µg).",
+"Peat y Dinkov la usaban como antiinflamatorio. Solo si ya la tomas y te la ha indicado tu médico.":"Peat and Dinkov used it as an anti-inflammatory. Only if you already take it and your doctor has prescribed it.",
+"Peat y Dinkov: lo habitual es acumular hierro, no tener poco; con poco cobre el cuerpo lo retiene. El tope es editable; mejor por debajo. Cuenta la media de # días.":"Peat and Dinkov: the usual problem is accumulating iron, not having too little; with little copper the body retains it. The maximum is editable; lower is better. Uses the #-day average.",
+"Peat y Dinkov: unos # mg al día desde comida (leche, fruta, café, carne, queso, huevos, marisco) si la tiroides va bien. Tu meta es editable.":"Peat and Dinkov: about # mg a day from food (milk, fruit, coffee, meat, cheese, eggs, shellfish) if the thyroid is working well. Your goal is editable.",
+"Peat y Dinkov: unos # mg al día en total. Pon los mg de magnesio elemental de tu etiqueta.":"Peat and Dinkov: about # mg a day in total. Enter the mg of elemental magnesium on your label.",
+"Peat y Dinkov: unos #-# mg al día con calcio y fósforo cerca de # : # (en foros también se cita # mg). Leche y queso lo consiguen fácil; tomar parte del calcio por la noche ayuda a bajar la PTH.":"Peat and Dinkov: about #-# mg a day with calcium and phosphorus close to # : # (forums also quote # mg). Milk and cheese make it easy; taking some calcium at night helps lower PTH.",
+"Peat, porcentajes y límites de la estimación":"Peat, percentages and limits of the estimate",
+"Peat: # µg es un suplemento seguro; el selenio y el azúcar permiten pasar T# a T# en el hígado. Oficial: # µg al día y máximo # µg. Tu zona de #-# µg es personal. Cuenta la media de # días.":"Peat: # µg is a safe supplement; selenium and sugar allow T# to be converted to T# in the liver. Official: # µg a day and maximum # µg. Your range of #-# µg is personal. Uses the #-day average.",
+"Peat: # µg es una cantidad segura; ayuda a activar la hormona tiroidea.":"Peat: # µg is a safe amount; it helps activate thyroid hormone.",
+"Peat: # µg es una cantidad segura; la falta y el exceso dañan la tiroides. Fuentes: pescado, huevos y leche. Tu tope de # µg es personal. Cuenta la media de # días.":"Peat: # µg is a safe amount; both deficiency and excess harm the thyroid. Sources: fish, eggs and milk. Your maximum of # µg is personal. Uses the #-day average.",
+"Peat: ayuda a bajar los ácidos grasos libres en sangre.":"Peat: helps lower free fatty acids in the blood.",
+"Peat: el problema es que sobre fósforo frente al calcio (no más de # de fósforo por cada # de calcio). Por eso aquí no hay meta ni «te falta»: mira el equilibrio calcio : fósforo.":"Peat: the problem is too much phosphorus relative to calcium (no more than # of phosphorus per # of calcium). That's why there's no goal or \"missing\" here: look at the calcium : phosphorus balance.",
+"Peat: equilibra la proteína de la carne y ayuda a dormir.":"Peat: balances the protein from meat and helps you sleep.",
+"Peat: frena la oxidación de las grasas PUFA; la necesidad sube con el PUFA que comes. En foros se recuerda unas # UI al día como máximo si se toma mucho tiempo (cifra sin confirmar). Cuenta la media de # días.":"Peat: slows the oxidation of PUFA fats; the need rises with the PUFA you eat. Forums recall about # IU a day as a maximum if taken long term (unconfirmed figure). Uses the #-day average.",
+"Peat: la gelatina aporta glicina y equilibra la carne muscular. Es proteína: si la añades como comida, cuenta en tus macros.":"Peat: gelatin provides glycine and balances muscle meat. It's protein: if you add it as food, it counts in your macros.",
+"Peat: la tiroides y las hormonas protectoras la necesitan. Si esa semana comes hígado, sáltala.":"Peat: the thyroid and protective hormones need it. If you eat liver that week, skip it.",
+"Peat: la vitamina A se opone al estrógeno («Nutrition for Women») y, con la tiroides y el colesterol, hace falta para fabricar las hormonas protectoras. Referencia Peat: unas # UI al día (≈# µg) si la tiroides va bien. Cuenta la media de # días.":"Peat: vitamin A opposes estrogen (\"Nutrition for Women\") and, with thyroid and cholesterol, is needed to make the protective hormones. Peat reference: about # IU a day (≈# µg) if the thyroid is working well. Uses the #-day average.",
+"Peat: la vitamina E actúa como antagonista del estrógeno (artículo «Vitamin E: Estrogen antagonist, energy promoter, and anti-inflammatory») y su falta provoca calambres («Nutrition for Women»). Cuenta la media de # días.":"Peat: vitamin E acts as an estrogen antagonist (article \"Vitamin E: Estrogen antagonist, energy promoter, and anti-inflammatory\") and its lack causes cramps (\"Nutrition for Women\"). Uses the #-day average.",
+"Peat: las grasas poliinsaturadas (aceites de semillas, frutos secos, pollo y cerdo de pienso, pescado azul) se oxidan con facilidad y frenan la tiroides y el gasto de energía. No es una meta a llenar: es un máximo.":"Peat: polyunsaturated fats (seed oils, nuts, grain-fed chicken and pork, oily fish) oxidize easily and slow the thyroid and energy expenditure. It's not a goal to fill: it's a maximum.",
+"Peat: las grasas poliinsaturadas se oxidan con facilidad y frenan la tiroides. Es un máximo, no una meta a llenar.":"Peat: polyunsaturated fats oxidize easily and slow the thyroid. It's a maximum, not a goal to fill.",
+"Peat: protege frente a las grasas PUFA y se opone al estrógeno (# UI natural ≈ # mg).":"Peat: protects against PUFA fats and opposes estrogen (# IU natural ≈ # mg).",
+"Peat: sal al gusto; la usaba para bajar la adrenalina y no la restringía. La meta es una referencia, no un mínimo obligatorio.":"Peat: salt to taste; he used it to lower adrenaline and didn't restrict it. The goal is a reference, not a required minimum.",
+"Peat: si faltan hidratos, el cuerpo quema proteína como combustible y sube el cortisol (hormona del estrés). Con suficiente azúcar de fruta, zumo o miel, la proteína se usa para músculo y la tiroides trabaja mejor.":"Peat: if carbs are lacking, the body burns protein as fuel and cortisol (stress hormone) rises. With enough sugar from fruit, juice or honey, protein goes to muscle and the thyroid works better.",
+"Peat: sin dosis fija; mejor desde marisco (ostras, gambas) e hígado. Con poco cobre el cuerpo retiene hierro. Oficial: # mg y tope de # mg. Cuenta la media de # días.":"Peat: no fixed dose; best from shellfish (oysters, prawns) and liver. With little copper the body retains iron. Official: # mg and a maximum of # mg. Uses the #-day average.",
+"Peat: unas # UI al día (≈# µg) si la tiroides va bien, y hasta # UI con la tiroides muy activa; en exceso compite con la hormona tiroidea. Fuentes: huevos, leche, mantequilla e hígado (en foros, unos # g de hígado a la semana). Tu tope de # µg es personal. Cuenta la media de # días.":"Peat: about # IU a day (≈# µg) if the thyroid is working well, and up to # IU with a very active thyroid; in excess it competes with thyroid hormone. Sources: eggs, milk, butter and liver (in forums, about # g of liver a week). Your maximum of # µg is personal. Uses the #-day average.",
+"Pecho":"Chest",
+"Pega aquí la respuesta de tu IA":"Paste your AI's answer here",
+"Pega aquí tu clave":"Paste your key here",
+"Pega la respuesta completa. Puede llevar texto o ``` alrededor: la web busca el bloque BIOPEAT o el JSON.":"Paste the full answer. It can include text or ``` around it: the app finds the BIOPEAT block or the JSON.",
+"Pega primero tu clave.":"Paste your key first.",
+"Pegar del portapapeles":"Paste from clipboard",
+"Perfil activo: Mi perfil":"Active profile: My profile",
+"Perfil de grasa en la simulación: # % clasificado.":"Fat profile in the simulation: # % classified.",
+"Perfil de huevo":"Egg profile",
+"Perfil de leche":"Milk profile",
+"Perfil guardado y aplicado también a este día":"Profile saved and also applied to this day",
+"Perfil «Mi perfil» guardado":"Profile \"My profile\" saved",
+"Perfil → Ajustes → Export & Import Data → Export Workouts.":"Profile → Settings → Export & Import Data → Export Workouts.",
+"Perfil, metas y datos":"Profile, goals and data",
+"Perfil: ♀ mujer":"Profile: ♀ female",
+"Perfiles":"Profiles",
+"Periodo":"Period",
+"Periodo a incluir":"Period to include",
+"Pesas":"Weights",
+"Peso # kg × #":"Weight # kg × #",
+"Peso (kg)":"Weight (kg)",
+"Peso + reps":"Weight + reps",
+"Peso máx.":"Max weight",
+"Peso máx. (kg)":"Max weight (kg)",
+"Peso máximo":"Max weight",
+"Plegar":"Collapse",
+"Plátano maduro":"Ripe banana",
+"Plátano maduro (g)":"Ripe banana (g)",
+"Poca vitamina A para la D que llevas.":"Little vitamin A for the D you have.",
+"Poco zinc para el cobre que llevas.":"Little zinc for the copper you have.",
+"Pocos hidratos para la proteína (#)":"Few carbs for the protein (#)",
+"Poliinsaturadas":"Polyunsaturated",
+"Por # g":"Per # g",
+"Por # ml":"Per # ml",
+"Por comidas":"By meals",
+"Por debajo":"Below",
+"Por encima":"Above",
+"Por macros":"By macros",
+"Porcentajes de tus metas, sin tope. «Parcial» = a algún alimento le falta el dato. Puedes comparar también con las referencias oficiales de la UE o de EE. UU.":"Percentages of your goals, no cap. \"Partial\" = a food is missing that value. You can also compare with the official EU or US references.",
+"Porcentajes del reparto de energía, no del objetivo diario. Incluye la pauta prevista activa.":"Percentages of the energy split, not of the daily goal. Includes the active planned doses.",
+"Potasio":"Potassium",
+"Potasio (mg)":"Potassium (mg)",
+"Potasio: sin datos":"Potassium: no data",
+"Prefiero no decirlo":"I'd rather not say",
+"Pregunta a tu IA, cambia de perfil, informe para IA y sugerir una mejora":"Ask your AI, switch profile, AI report and suggest an improvement",
+"Pregúntale lo que quieras a tu IA…":"Ask your AI anything…",
+"Previsión de un batido nuevo, aún no añadido. Mover el slider no cambia el registro ni los batidos ya guardados. Comparación con tu meta, no una necesidad médica.":"Forecast for a new shake, not added yet. Moving the slider doesn't change the log or shakes already saved. Compared with your goal, not a medical need.",
+"Prevista":"Planned",
+"Previsto":"Planned",
+"Privacidad":"Privacy",
+"Privacidad y aviso legal":"Privacy and legal notice",
+"Probar conexión":"Test connection",
+"Probar una ración":"Try a portion",
+"Progresión (+#RM)":"Progress (+#RM)",
+"Progresión por ejercicio":"Progress by exercise",
+"Prompt copiado: pégalo en tu chat de IA junto a la foto.":"Prompt copied: paste it into your AI chat with the photo.",
+"Proteína":"Protein",
+"Proteína (g)":"Protein (g)",
+"Proteína alimentaria":"Dietary protein",
+"Proteína alimentaria (g)":"Dietary protein (g)",
+"Proteína del día":"Today's protein",
+"Proteína y carbohidratos":"Protein and carbohydrates",
+"Proteína ↗":"Protein ↗",
+"Proteína, glicina y variedad":"Protein, glycine and variety",
+"Proteína:":"Protein:",
+"Proteína: #% de tu meta de media":"Protein: #% of your goal on average",
+"Proteína: Peat situaba el mínimo en unos #–# g al día y más con ejercicio intenso; por eso la app pone al menos # g en mujer y # g en hombre.":"Protein: Peat put the minimum at about #–# g a day and more with intense exercise; that's why the app sets at least # g for women and # g for men.",
+"Proteínas":"Protein",
+"Proteínas #%":"Protein #%",
+"Proteínas: # por ciento de la energía de macros":"Protein: # percent of macro energy",
+"Proyecto independiente":"Independent project",
+"Puedes desactivar las estimaciones o introducir saturadas, monoinsaturadas y PUFA en Editar registro. Si la suma supera la grasa total, se muestra el conflicto y no se corrigen las cifras a escondidas.":"You can turn off estimates or enter saturated, monounsaturated and PUFA in Edit entry. If the sum exceeds total fat, the conflict is shown and the numbers aren't silently corrected.",
+"Puedes describir desayuno, comida, merienda y cena en un solo mensaje. Cada plato se guarda en su momento y en la fecha seleccionada. Si no indicas momento se usa el selector. Se añade al registro existente, no lo sustituye; evita reenviar el mismo día completo dos veces.":"You can describe breakfast, lunch, snack and dinner in a single message. Each dish is saved in its meal and on the selected date. If you don't give a meal, the selector is used. It's added to the existing log, not replaced; avoid sending the same full day twice.",
+"Pulsa una comida para verla en Registro. Si una está vacía, «Igual que ayer» la copia con un toque.":"Tap a meal to see it in Log. If one is empty, \"Same as yesterday\" copies it with one tap.",
+"Punto de partida":"Starting point",
+"Pégala aquí, marca «Recordar» y pulsa":"Paste it here, tick \"Remember\" and tap",
+"Queso Parmigiano Reggiano":"Parmigiano Reggiano cheese",
+"Queso Parmigiano Reggiano (g)":"Parmigiano Reggiano cheese (g)",
+"Quitar el ajuste de este día":"Remove this day's adjustment",
+"Qué mostrar en el calendario":"What to show in the calendar",
+"Qué no se puede afirmar":"What can't be claimed",
+"Qué nutriente aporta":"Which nutrient it provides",
+"Qué quieres, para qué y cómo te imaginas que funcione. Si algo falla: qué tocaste, qué esperabas y qué pasó.":"What you want, what for and how you imagine it working. If something's broken: what you tapped, what you expected and what happened.",
+"Racha":"Streak",
+"Rango «bien» desde (%)":"\"Good\" range from (%)",
+"Ratio en masa: calcio (mg) / fósforo (mg). Si falta composición en alimentos, el resultado es parcial. Un ratio alto o bajo no mide niveles sanguíneos ni indica por sí solo qué suplementar.":"Ratio by mass: calcium (mg) / phosphorus (mg). If food composition is missing, the result is partial. A high or low ratio doesn't measure blood levels or tell you on its own what to supplement.",
+"Recordar en este dispositivo":"Remember on this device",
+"Recordar más tarde":"Remind me later",
+"Referencia calcio : fósforo":"Calcium : phosphorus reference",
+"Registra lo que comes y mira, de un vistazo, tus calorías, macros, # vitaminas y minerales y los equilibrios que Ray Peat consideraba clave, con ideas concretas de qué comer.":"Log what you eat and see, at a glance, your calories, macros, # vitamins and minerals and the balances Ray Peat considered key, with concrete ideas of what to eat.",
+"Registrado":"Logged",
+"Registro":"Log",
+"Registro de comidas":"Meal log",
+"Registro eliminado":"Entry deleted",
+"Registros antiguos sin fecha":"Old undated entries",
+"Reparto calculado #/#/#: # kcal. Fichas y tomas: # kcal. Diferencia # kcal: redondeos, métodos de composición o aportes aparte, como glicina. No se fuerza que coincidan.":"Split calculated #/#/#: # kcal. Entries and doses: # kcal. Difference # kcal: rounding, composition methods or separate intake such as glycine. They aren't forced to match.",
+"Reparto de calorías por macronutriente":"Calorie split by macronutrient",
+"Reparto de energía de macros":"Macro energy split",
+"Reparto muscular":"Muscle split",
+"Reparto: más energía de hidratos que de grasa (al menos # g de hidratos por g de proteína), con poca grasa poliinsaturada (PUFA).":"Split: more energy from carbs than from fat (at least # g of carbs per g of protein), with little polyunsaturated fat (PUFA).",
+"Reps con el peso máx.":"Reps at max weight",
+"Reps con ese peso":"Reps at that weight",
+"Reps totales":"Total reps",
+"Restaurar copia":"Restore backup",
+"Resumen":"Summary",
+"Resumen del día":"Day summary",
+"Revisa el formato":"Check the format",
+"Revisa tus metas. Todo se puede cambiar después en Más → Perfiles.":"Review your goals. You can change everything later in More → Profiles.",
+"Revisa tus vitaminas y minerales de la semana (media de los días con comidas) y te dice qué te ha quedado corto y qué comer para cubrirlo. Toca un alimento y se añade a hoy.":"Reviews your week's vitamins and minerals (average of days with meals) and tells you what fell short and what to eat to cover it. Tap a food and it's added to today.",
+"Revisión v#":"Review v#",
+"Reúne tu contexto, perfil, metas, pauta de suplementos, momentos de comida, hábitos, macros, los # equilibrios, los # micronutrientes, cada día registrado y tus entrenos.":"Gathers your context, profile, goals, supplement plan, meal moments, habits, macros, the # balances, the # micronutrients, every logged day and your workouts.",
+"Riboflavina":"Riboflavin",
+"Riboflavina (mg)":"Riboflavin (mg)",
+"Riboflavina: sin datos":"Riboflavin: no data",
+"Récord":"Record",
+"Récords # d":"Records # d",
+"Récords de repeticiones por peso":"Rep records by weight",
+"Récords recientes":"Recent records",
+"Saltar":"Skip",
+"Saturadas":"Saturated",
+"Saturadas #%":"Saturated #%",
+"Se conserva la distinción entre proteína alimentaria, gelatina y glicina suplementaria. No se infiere el balance de aminoácidos de una foto ni de gramos de proteína sin composición.":"The distinction between dietary protein, gelatin and supplemental glycine is kept. The amino acid balance isn't inferred from a photo or from grams of protein without a composition.",
+"Se conservan los valores registrados. Solo se completan campos ausentes con las fichas USDA de tus alimentos base o con perfiles genéricos por tipo de alimento (lácteos, carnes, huevos, pescados, cacao, aceites…), como estimación, no análisis de tu marca o preparación. En leche en ml se aproxima # ml a # g. Un plato desconocido se clasifica por las palabras de su nombre; si no encaja en ningún tipo, se usa un perfil mixto. El resto gris incluye datos ausentes y otros lípidos; no equivale a monoinsaturadas ni a grasas trans.":"Logged values are kept. Only missing fields are filled from the USDA entries of your base foods or from generic profiles by food type (dairy, meat, eggs, fish, cocoa, oils…), as an estimate, not an analysis of your brand or preparation. For milk in ml, # ml ≈ # g. An unknown dish is classified by the words in its name; if it doesn't fit any type, a mixed profile is used. The grey remainder includes missing data and other lipids; it isn't monounsaturated or trans fat.",
+"Se guardan para este día y los días nuevos; el pasado no cambia. B# compara tu pauta de benfotiamina.":"Saved for this day and new days; the past doesn't change. B# compares your benfotiamine plan.",
+"Se ha abierto la dirección nueva: confirma allí la mudanza. Aquí no se borra nada.":"The new address has opened: confirm the move there. Nothing is deleted here.",
+"Se ha evitado un doble toque.":"A double tap was avoided.",
+"Se suma sola cada día. Solo toca algo si hoy cambia.":"Adds itself every day. Only touch it if today is different.",
+"Se valoran con lo de hoy. El fósforo es solo referencia: lo que importa es calcio : fósforo.":"Judged on today's intake. Phosphorus is reference only: what matters is calcium : phosphorus.",
+"Según etiqueta":"Per label",
+"Selecciona una foto, indica cantidades si las conoces y pulsa Analizar foto y añadir. Se guarda en el día y momento seleccionados; puedes editar o deshacer. La selección por sí sola no envía nada.":"Pick a photo, enter amounts if you know them and tap Analyze photo and add. It's saved on the selected day and meal; you can edit or undo. Selecting alone doesn't send anything.",
+"Selenio":"Selenium",
+"Semana":"Week",
+"Semana anterior":"Previous week",
+"Semana siguiente":"Next week",
+"Semana y nutrientes":"Week and nutrients",
+"Series por semana y grupo muscular; debajo, nº de sesiones. Toca una semana para ver sus entrenos.":"Sets per week and muscle group; below, number of sessions. Tap a week to see its workouts.",
+"Servidor propio":"Own server",
+"Sesiones de gym":"Gym sessions",
+"Sexo":"Sex",
+"Si desayunas casi siempre lo mismo, se añade con un solo toque cada mañana.":"If you almost always have the same breakfast, it's added with one tap every morning.",
+"Si desayunas o tomas un batido casi siempre igual, configúralo una vez y añádelo cada día con un toque.":"If you almost always have the same breakfast or shake, set it up once and add it every day with one tap.",
+"Si desayunas o tomas un batido casi siempre igual, configúralo y lo añadirás cada día con un toque. Si no, déjalos en «No».":"If you almost always have the same breakfast or shake, set it up and add it every day with one tap. If not, leave them on \"No\".",
+"Si hoy no tomas uno, ve a":"If you skip one today, go to",
+"Si lo tomas, aparece con su deslizador de whey para añadirlo de un toque.":"If you have it, it shows up with its whey slider so you can add it with one tap.",
+"Si te equivocas, pulsa":"If you make a mistake, tap",
+"Si una comida lleva mucha carne, súmale patata, arroz o zumo.":"If a meal has a lot of meat, add potato, rice or juice.",
+"Sigue alternando carne roja con algo de marisco o hígado.":"Keep alternating red meat with some shellfish or liver.",
+"Sigue cocinando con mantequilla o aceite de coco.":"Keep cooking with butter or coconut oil.",
+"Siguiente objetivo:":"Next target:",
+"Siguiente ›":"Next ›",
+"Simula antes de cambiar. Elige algo de hoy para cambiar su cantidad, o cualquier alimento de tu despensa para ver cómo quedarías si lo añades. No se guarda nada hasta pulsar Aplicar.":"Simulate before changing. Pick something from today to change its amount, or any food in your pantry to see where you'd end up if you add it. Nothing is saved until you tap Apply.",
+"Sin IA, la app funciona igual con tus alimentos y cantidades.":"Without AI, the app works just the same with your foods and amounts.",
+"Sin análisis todavía. Necesita entrenamientos importados y la IA conectada.":"No analysis yet. It needs imported workouts and the AI connected.",
+"Sin cifra de Peat. Fuentes habituales: zumo de naranja (unos # mg por vaso), fruta, leche y patata. Tu meta es editable.":"No Peat figure. Common sources: orange juice (about # mg per glass), fruit, milk and potato. Your goal is editable.",
+"Sin clasificar #%":"Unclassified #%",
+"Sin clave de API: # Copia el prompt. # Pégalo con la foto en el chat que uses (ChatGPT, Claude, Gemini, Copilot…). # Copia su respuesta entera y pégala abajo. # Pulsa Añadir.":"No API key: # Copy the prompt. # Paste it with the photo in the chat you use (ChatGPT, Claude, Gemini, Copilot…). # Copy its full answer and paste it below. # Tap Add.",
+"Sin clave: «Foto en tu chat» prepara el texto para pegarlo en el chat que ya uses.":"No key: \"Photo in your chat\" prepares the text to paste into the chat you already use.",
+"Sin comidas registradas ese día":"No meals logged that day",
+"Sin conectar":"Not connected",
+"Sin cuentas: solo se envía lo que escribes aquí. Nunca tus comidas ni tus datos.":"No accounts: only what you write here is sent. Never your meals or your data.",
+"Sin datos":"No data",
+"Sin datos completos":"Incomplete data",
+"Sin equivalencia confirmada":"No confirmed equivalence",
+"Sin grasa registrada. No se inventa un perfil.":"No fat logged. No profile is made up.",
+"Sin marcar completo":"Not marked complete",
+"Sin registrar":"Not logged",
+"Sin registro":"Not logged",
+"Sin registros en este filtro.":"No entries in this filter.",
+"Sobre tus comidas, macros, micros, gym o la app":"About your meals, macros, micros, gym or the app",
+"Sodio":"Sodium",
+"Sodio (mg)":"Sodium (mg)",
+"Sodio : potasio":"Sodium : potassium",
+"Sodio: sin datos":"Sodium: no data",
+"Solo alimentos":"Food only",
+"Solo cantidades":"Amounts only",
+"Solo días marcados completos":"Only days marked complete",
+"Solo el día #-#-#":"Only on #-#-#",
+"Solo los que tomas de verdad: se suman solos cada día. Puedes cambiar los días y los detalles después en «Tu pauta».":"Only the ones you really take: they're added every day. You can change days and details later in \"Your plan\".",
+"Solo referencia":"Reference only",
+"Su discusión del contexto de la glucemia no permite deducir un reparto universal de gramos para tu entrenamiento. Se mantiene tu planificación editable, sin aumentar azúcar o reducir grasa automáticamente.":"His discussion of the glycemic context doesn't allow a universal gram split for your training. Your editable plan is kept, without automatically increasing sugar or cutting fat.",
+"Su postura no coincide con la guía sanitaria actual: la OMS recomienda no más del # % de la energía total en saturadas y preferir grasas insaturadas. Este # % es de calorías totales, no del reparto de grasa. No se presenta la postura de Peat como consenso clínico.":"His position doesn't match current health guidance: the WHO recommends no more than # % of total energy from saturated fat and preferring unsaturated fats. That # % is of total calories, not of the fat split. Peat's view isn't presented as clinical consensus.",
+"Sugerencia de uso: abre los alimentos que aportan proteína y comprueba sus cantidades; el batido es una opción, no una obligación.":"Tip: open the foods that provide protein and check their amounts; the shake is an option, not an obligation.",
+"Sugerencia de uso: compara los alimentos que aportan calcio y fósforo, y completa etiquetas antes de sacar conclusiones.":"Tip: compare the foods that provide calcium and phosphorus, and complete labels before drawing conclusions.",
+"Sugerencia de uso: distingue alimentos, tomas confirmadas y pauta prevista; revisa la etiqueta y las unidades.":"Tip: tell apart foods, confirmed doses and planned doses; check the label and the units.",
+"Sugerencia de uso: revisa aceites, salsas y preparación que no hayas anotado. No aumentes saturadas solo para completar un gráfico.":"Tip: check oils, sauces and cooking you haven't logged. Don't increase saturated fat just to fill a chart.",
+"Sugerencia de uso: revisa raciones y comidas pendientes, no intentes completar una barra con suplementos.":"Tip: check portions and pending meals; don't try to fill a bar with supplements.",
+"Sugerencias con enfoque Peat (#)":"Peat-style suggestions (#)",
+"Sugerir una mejora":"Suggest an improvement",
+"Suma conocida / metas de días incluidos. No es una puntuación de salud.":"Known sum / goals of included days. It's not a health score.",
+"Supera # kg × # reps, o sube a # kg y busca #+ reps.":"Beat # kg × # reps, or go up to # kg and aim for #+ reps.",
+"Suplemento":"Supplement",
+"Suplemento extra":"Extra supplement",
+"Suplementos":"Supplements",
+"Suplementos / medicación":"Supplements / medication",
+"Suplementos activos":"Active supplements",
+"Suplementos de cada día":"Daily supplements",
+"Suplementos que tomas":"Supplements you take",
+"Suplementos y medicación":"Supplements and medication",
+"SÁB":"SAT",
+"Sáb #-#":"Sat #-#",
+"Sábado":"Saturday",
+"Sábado: Descanso":"Saturday: Rest",
+"TMB # kcal":"BMR # kcal",
+"Tamaño":"Size",
+"También puedes hacer una foto, tocar tus rápidos ⭐ o tu desayuno habitual.":"You can also take a photo, tap your quick adds ⭐ or your usual breakfast.",
+"Tarjetas":"Cards",
+"Te SOBRA PUFA":"Too much PUFA",
+"Te falta CALCIO":"You're short on CALCIUM",
+"Te falta COBRE":"You're short on COPPER",
+"Te falta VITAMINA A":"You're short on VITAMIN A",
+"Te falta VITAMINA D":"You're short on VITAMIN D",
+"Te falta ZINC":"You're short on ZINC",
+"Te falta calcio: por cada # mg de fósforo llevas # mg de calcio.":"You're short on calcium: for every # mg of phosphorus you have # mg of calcium.",
+"Te faltan":"You're missing",
+"Te faltan HIDRATOS":"You're short on CARBS",
+"Te faltan unos # g de hidratos para llegar a # : #":"You need about # g more carbs to reach # : #",
+"Te han quedado cortos":"Fell short this week:",
+"Te has pasado # g de tu límite.":"You're # g over your limit.",
+"Te quedan # g":"# g left",
+"Te quedan # kcal":"# kcal left",
+"Te quedas corto de":"You're short on",
+"Tendencia":"Trend",
+"Texto":"Text",
+"Texto de referencia":"Reference text",
+"Tiamina":"Thiamine",
+"Tiamina (B#)":"Thiamine (B#)",
+"Tiamina (mg)":"Thiamine (mg)",
+"Tiamina alimentaria aparte: # mg":"Dietary thiamine shown separately: # mg",
+"Tiamina de alimentos, aparte":"Thiamine from food, shown separately",
+"Tiamina: sin datos":"Thiamine: no data",
+"Tipo":"Type",
+"Tipo de grasa y datos que faltan":"Fat type and missing data",
+"Tipos de grasa registrados / estimados":"Fat types logged / estimated",
+"Toca para explorar":"Tap to explore",
+"Toca un día para cambiarlo: Pesas → Deporte → Descanso. Las calorías de cada día se ajustan solas.":"Tap a day to change it: Weights → Sport → Rest. Each day's calories adjust automatically.",
+"Toca un gráfico para ver el detalle. Los porcentajes pueden superar el # %.":"Tap a chart to see the detail. Percentages can go over # %.",
+"Toca una franja":"Tap a segment",
+"Toca una función para desplegarla":"Tap a feature to expand it",
+"Todo":"All",
+"Todo el historial registrado":"Full logged history",
+"Todo lo que comes queda aquí: tus fichas y los platos que analiza la IA se guardan solos. Lo más habitual aparece primero. Escribe la cantidad y pulsa + para añadirlo al momento elegido; ✎ edita la ficha. Así no gastas consultas de IA en lo que ya conoce.":"Everything you eat ends up here: your entries and dishes analyzed by the AI are saved automatically. The most common appear first. Type the amount and tap + to add it to the chosen meal; ✎ edits the entry. That way you don't spend AI queries on what it already knows.",
+"Todo se guarda solo en tu móvil: no hay cuenta ni servidor.":"Everything is saved only on your phone: no account, no server.",
+"Todo se puede cambiar después desde el menú (logo) → Perfiles → ⚙.":"You can change everything later from the menu (logo) → Profiles → ⚙.",
+"Todo se queda en tu móvil: no se conecta ninguna cuenta. Una sesión ya importada se omite si vuelves a importar el mismo archivo. Las libras y los metros se pasan solos a kg y km.":"Everything stays on your phone: no account is connected. An already imported session is skipped if you import the same file again. Pounds and meters are converted to kg and km automatically.",
+"Todos":"All",
+"Todos (#)":"All (#)",
+"Todos los días con comidas":"All days with meals",
+"Todos los días igual":"Every day the same",
+"Tomas # de # mg al día":"You get # of # mg per day",
+"Tomas # de # µg al día":"You get # of # µg per day",
+"Tope # g":"Max # g",
+"Tope # mg":"Max # mg",
+"Totales":"Totals",
+"Totales diarios. * Composición parcial. % semanales en las tarjetas, no medias de porcentajes.":"Daily totals. * Partial composition. Weekly % on the cards, not averages of percentages.",
+"Traer mis datos":"Bring my data",
+"Traer tus entrenamientos":"Bring in your workouts",
+"Tu IA":"Your AI",
+"Tu batido":"Your shake",
+"Tu calendario":"Your calendar",
+"Tu chat de IA → pegar aquí (sin clave)":"Your AI chat → paste here (no key)",
+"Tu desayuno":"Your breakfast",
+"Tu desayuno habitual":"Your usual breakfast",
+"Tu día, claro.":"Your day, clearly.",
+"Tu entrenamiento real, en sus fechas. Importa el CSV de tu app (Hevy, Strong, Fitbod, FitNotes…) y míralo junto a tus comidas.":"Your real training, on its dates. Import the CSV from your app (Hevy, Strong, Fitbod, FitNotes…) and see it next to your meals.",
+"Tu idea llega directamente al creador de BioPeat. Las mejoras se publican para todos.":"Your idea goes straight to the creator of BioPeat. Improvements are released for everyone.",
+"Tu meta":"Your goal",
+"Tu pauta":"Your plan",
+"Tu pauta diaria de D# y retinol ya lo mantiene.":"Your daily D# and retinol plan already keeps it there.",
+"Tu pauta.":"Your plan.",
+"Tu perfil ·":"Your profile ·",
+"Tu perfil: Mi perfil":"Your profile: My profile",
+"Tu registro.":"Your log.",
+"Tu semana":"Your week",
+"Tu semana.":"Your week.",
+"Tu sugerencia «#» ha llegado. Si se aplica, la verás en una próxima versión de la app.":"Your suggestion \"#\" has arrived. If it's applied, you'll see it in an upcoming version of the app.",
+"Tu umbral personal de PUFA sigue disponible en los ratios. Es una preferencia previa, no una dosis universal de Peat. Una proporción pequeña de PUFA puede seguir suponiendo muchos gramos si la grasa total es alta; se muestran ambos datos.":"Your personal PUFA threshold is still available in the ratios. It's a prior preference, not a universal Peat dose. A small share of PUFA can still be many grams if total fat is high; both values are shown.",
+"Tus comidas habituales":"Your usual meals",
+"Tus comidas, de un vistazo":"Your meals at a glance",
+"Tus datos viven en este navegador y van ligados a esta dirección web. Si la app se muda (por ejemplo, a un dominio propio), escribe aquí la dirección nueva: se abrirá con tus datos dentro y solo tendrás que confirmar. Aquí no se borra nada.":"Your data lives in this browser and is tied to this web address. If the app moves (for example, to its own domain), enter the new address here: it will open with your data inside and you just confirm. Nothing is deleted here.",
+"Tus entrenos importados":"Your imported workouts",
+"Tus habituales, una foto o un texto. Sin pasos extra.":"Your usuals, a photo or a text. No extra steps.",
+"Tus nutrientes.":"Your nutrients.",
+"Tus rápidos":"Your quick adds",
+"Tus sesiones":"Your sessions",
+"Título corto":"Short title",
+"Tú":"You",
+"Tú eliges cada cosa: sin comidas fijas ni suplementos.":"You choose everything: no fixed meals or supplements.",
+"UI de producto":"IU of product",
+"URL de tu servidor de análisis":"Your analysis server URL",
+"Un # % menos de calorías, con proteína alta y sin quitar hidratos.":"# % fewer calories, with high protein and without cutting carbs.",
+"Un # % más de calorías y más proteína los días de entreno.":"# % more calories and more protein on training days.",
+"Un amigo o familiar":"A friend or family member",
+"Un filete de ternera":"A beef steak",
+"Un filete de ternera (# g)":"A beef steak (# g)",
+"Un plato de arroz":"A plate of rice",
+"Un plato de arroz (# g)":"A plate of rice (# g)",
+"Un plato de patata cocida":"A plate of boiled potato",
+"Un plato de patata cocida (# g)":"A plate of boiled potato (# g)",
+"Un plátano":"A banana",
+"Un toque = añadir a Comida":"One tap = add to Lunch",
+"Un toque en una dosis habitual, o cambia la cantidad debajo. Se añade solo a este día; la pauta automática queda intacta.":"One tap on a usual dose, or change the amount below. It's added only to this day; the automatic plan stays intact.",
+"Un vaso de leche":"A glass of milk",
+"Un vaso de zumo de naranja":"A glass of orange juice",
+"Una cucharada de azúcar":"A spoonful of sugar",
+"Una cucharada de miel":"A spoonful of honey",
+"Una sola clave para muchos modelos, algunos gratis (los que acaban en «:free»).":"One key for many models, some free (the ones ending in \":free\").",
+"Unidad":"Unit",
+"Unidad de distancia":"Distance unit",
+"V #":"F #",
+"VIE":"FRI",
+"Vaciar comidas":"Clear meals",
+"Vacío = lo que calcula tu perfil (objetivo, sexo, peso y días de entreno). Los hidratos son el resto de la energía.":"Empty = what your profile calculates (goal, sex, weight and training days). Carbs are the rest of the energy.",
+"Valores por # g/ml. No inventes los micros: deja vacío lo desconocido. Para añadir un alimento hacen falta kcal, proteína, carbohidratos y grasa.":"Values per # g/ml. Don't make up micros: leave unknown ones empty. To add a food you need kcal, protein, carbohydrates and fat.",
+"Ver # más":"See # more",
+"Ver / editar este día":"See / edit this day",
+"Ver aportes por alimento o toma":"See contributions by food or dose",
+"Ver detalle y de dónde sale la cifra":"See detail and where the number comes from",
+"Ver la semana":"See the week",
+"Ver los # micronutrientes de la semana":"See the week's # micronutrients",
+"Ver o copiar el prompt manualmente":"See or copy the prompt manually",
+"Ver sesión completa":"See full session",
+"Ver tabla detallada de los # nutrientes por día":"See detailed table of the # nutrients by day",
+"Ver todos":"See all",
+"Ver vista previa del informe":"See report preview",
+"Verde = bien":"Green = good",
+"Versión":"Version",
+"Vie #-#":"Fri #-#",
+"Viernes":"Friday",
+"Viernes: Pesas":"Friday: Weights",
+"Vista Resumen":"Summary view",
+"Vista con Explicaciones Peat":"View with Peat explanations",
+"Visualización de nutrientes":"Nutrient view",
+"Vitamina A":"Vitamin A",
+"Vitamina A (retinol)":"Vitamin A (retinol)",
+"Vitamina A (µg RAE)":"Vitamin A (µg RAE)",
+"Vitamina A : D":"Vitamin A : D",
+"Vitamina A preformada (µg RAE)":"Preformed vitamin A (µg RAE)",
+"Vitamina A ↗":"Vitamin A ↗",
+"Vitamina A:":"Vitamin A:",
+"Vitamina A: sin datos":"Vitamin A: no data",
+"Vitamina B#":"Vitamin B#",
+"Vitamina C":"Vitamin C",
+"Vitamina C (mg)":"Vitamin C (mg)",
+"Vitamina C: sin datos":"Vitamin C: no data",
+"Vitamina D":"Vitamin D",
+"Vitamina D (µg)":"Vitamin D (µg)",
+"Vitamina D ↗":"Vitamin D ↗",
+"Vitamina D#":"Vitamin D#",
+"Vitamina D:":"Vitamin D:",
+"Vitamina D: sin datos":"Vitamin D: no data",
+"Vitamina E":"Vitamin E",
+"Vitamina K":"Vitamin K",
+"Vitamina K (µg)":"Vitamin K (µg)",
+"Vitamina K ↗":"Vitamin K ↗",
+"Vitamina K# (MK-#)":"Vitamin K# (MK-#)",
+"Vitamina K: sin datos":"Vitamin K: no data",
+"Volumen":"Volume",
+"Volumen semanal":"Weekly volume",
+"Volver a la ventana anterior":"Back to previous window",
+"Volver al plan Peat por defecto":"Back to the default Peat plan",
+"Vuelve a las metas que calcula tu perfil (objetivo, sexo, peso y días de entreno), con PUFA ≤ # g y Ca:P ≥ # Hidratos = el resto, mínimo # g por g de proteína.":"Goes back to the goals your profile calculates (goal, sex, weight and training days), with PUFA ≤ # g and Ca:P ≥ # Carbs = the rest, at least # g per g of protein.",
+"Web de BioPeat":"BioPeat website",
+"Whey Protein (g)":"Whey protein (g)",
+"X #":"W #",
+"Yodo":"Iodine",
+"Yodo (µg)":"Iodine (µg)",
+"Yodo ↗":"Iodine ↗",
+"Yodo: sin datos":"Iodine: no data",
+"Zinc : cobre":"Zinc : copper",
+"Zinc y cobre compiten al absorberse. Peat daba mucha importancia al cobre: hace funcionar la enzima con la que la mitocondria usa el oxígeno. Lo ideal es unas # veces más zinc que cobre.":"Zinc and copper compete for absorption. Peat gave great importance to copper: it runs the enzyme the mitochondria use to use oxygen. Ideally about # times more zinc than copper.",
+"Zinc y cobre equilibrados":"Zinc and copper balanced",
+"Zinc: sin datos":"Zinc: no data",
+"Zona #-# µg":"Range #-# µg",
+"Zona #-# µg RAE":"Range #-# µg RAE",
+"Zona buena: entre # y # de A por cada # de D (en UI)":"Good range: between # and # of A per # of D (in IU)",
+"Zona buena: entre # y # de zinc por cada # de cobre":"Good range: between # and # of zinc per # of copper",
+"Zumo de naranja, fruta madura y miel suben el ratio sin añadir proteína.":"Orange juice, ripe fruit and honey raise the ratio without adding protein.",
+"Zumo de naranja, leche y queso, sal al gusto y fruta madura son la base de las ideas del día. Donde no hay cifra de Peat se usa una referencia oficial o tu meta.":"Orange juice, milk and cheese, salt to taste and ripe fruit are the basis of the day's ideas. Where Peat gave no number, an official reference or your goal is used.",
+"Zumo naranja exprimido":"Fresh orange juice",
+"Zumo naranja exprimido (ml)":"Fresh orange juice (ml)",
+"Zumo ↗":"Juice ↗",
+"avanzado":"advanced",
+"añadir nuevo":"add new",
+"benfotiamina # mg":"benfotiamine # mg",
+"busca «Exportar» o «CSV» en sus ajustes. Si solo guarda pasos o pulsaciones (Apple Salud, Google Fit), no sirve: hacen falta los ejercicios con series.":"look for \"Export\" or \"CSV\" in its settings. If it only stores steps or heart rate (Apple Health, Google Fit), it won't work: you need exercises with sets.",
+"cobre # mg":"copper # mg",
+"comida":"lunch",
+"cubre el # % del hueco":"covers # % of the gap",
+"cápsulas":"capsules",
+"de dónde sale cada zona ideal":"where each ideal range comes from",
+"de ellos # previstos.":"of which # planned.",
+"de hoy):":"today):",
+"de macros":"of macros",
+"depósito: se mide la media de # días":"store: measured as a #-day average",
+"en el aviso de abajo.":"in the notice below.",
+"en zona":"in range",
+"fotos y texto libre":"photos and free text",
+"fósforo # mg":"phosphorus # mg",
+"gotas":"drops",
+"gratis, recomendado":"free, recommended",
+"habitual":"usual",
+"hasta (%)":"up to (%)",
+"histórico":"all-time",
+"hoy +# al cerrar el día)":"today +# when you close the day)",
+"https://tu-servidor/analizar":"https://your-server/analyze",
+"incluye previstos":"includes planned",
+"llevas # g en total, de ellas # g saturadas. Para tu meta de grasa la saturada cuenta ×# así que cuentan # g. Los kcal sí cuentan todo. Es una regla tuya: la grasa saturada de leche, mantequilla o coco es la que mejor encaja con Peat; la que se vigila es el PUFA.":"you have # g in total, # g of it saturated. For your fat goal saturated counts ×# so # g count. Kcal do count everything. It's your rule: saturated fat from milk, butter or coconut is what fits Peat best; PUFA is what's watched.",
+"límite: mejor por debajo":"limit: lower is better",
+"línea = # % de tu meta.":"line = # % of your goal.",
+"media de # días (#/# con registro":"#-day average (#/# logged",
+"media de # días (#/# con registro)":"#-day average (#/# logged)",
+"media del mes":"monthly average",
+"mejor (Epley)":"best (Epley)",
+"metros":"meters",
+"mg benfotiamina":"mg benfotiamine",
+"micronutrientes. Toca uno para ver qué comer.":"micronutrients. Tap one to see what to eat.",
+"millas":"miles",
+"mira calcio : fósforo":"see calcium : phosphorus",
+"miércoles, # oct":"Wednesday, Oct #",
+"muchos modelos":"many models",
+"muestra # vitaminas y minerales con su zona ideal y de dónde sale cada cifra.":"shows # vitamins and minerals with their ideal range and where each number comes from.",
+"máx":"max",
+"noche":"night",
+"ocho semanas":"eight weeks",
+"oct #":"Oct #",
+"pauta #":"plan #",
+"pauta (mg)":"plan (mg)",
+"proteína # g":"protein # g",
+"prueba":"test",
+"puede ser parcial":"may be partial",
+"queda en # : #":"ends at # : #",
+"responde # preguntas: cómo voy, día a día, qué me falta y si voy mejorando.":"answers # questions: how am I doing, day by day, what am I missing and am I improving.",
+"se añade a Comida":"added to Lunch",
+"seguidas entrenando":"in a row training",
+"series/sem":"sets/wk",
+"sin batido":"no shake",
+"sin datos":"no data",
+"sin meta universal":"no universal goal",
+"sueles # g":"usually # g",
+"sueles # ml":"usually # ml",
+"suplementos/tomas #":"supplements/doses #",
+"te acerca: queda en # : #":"gets you closer: ends at # : #",
+"te faltan":"missing",
+"te faltan #":"missing #",
+"te pasas":"over",
+"te propone alimentos que se añaden con un toque.":"suggests foods you can add with one tap.",
+"te quedarían # g":"you'd have # g left",
+"te quedarían # kcal":"you'd have # kcal left",
+"toca para ver cómo":"tap to see how",
+"total semanal":"weekly total",
+"tu referencia # : #":"your reference # : #",
+"ver abajo":"see below",
+"y":"and",
+"y la próxima vez se reconoce solo.":"and next time it's recognized automatically.",
+"y tócalo: deja de contar ese día.":"and tap it: it stops counting that day.",
+"zona":"range",
+"¡Empezar!":"Let's go!",
+"¡Gracias!":"Thank you!",
+"«From PMS to Menopause» dedica un capítulo a los aceites insaturados: Peat los describe como tóxicos y estrogénicos.":"\"From PMS to Menopause\" has a chapter on unsaturated oils: Peat describes them as toxic and estrogenic.",
+"«Más» y el menú":"\"More\" and the menu",
+"«Nutrition for Women»: el hígado fabrica la mayor parte de la T# solo si tiene glucosa; Peat proponía comer a menudo y tomar sorbos de zumo de naranja a lo largo del día.":"\"Nutrition for Women\": the liver makes most of T# only if it has glucose; Peat suggested eating often and sipping orange juice throughout the day.",
+"¿Cómo conociste BioPeat? (opcional)":"How did you hear about BioPeat? (optional)",
+"¿Cómo voy hoy?":"How am I doing today?",
+"¿Cómo voy?":"How am I doing?",
+"¿Echas algo de menos o algo no funciona? Cuéntalo: llega directamente al creador de la app y las mejoras se publican para todos.":"Missing something or something not working? Tell us: it goes straight to the app's creator and improvements are released for everyone.",
+"¿Hoy no te has tomado algo? Tócalo y deja de contar. Vuelve a tocarlo para recuperarlo.":"Didn't take something today? Tap it and it stops counting. Tap again to bring it back.",
+"¿Por qué importa?":"Why does it matter?",
+"¿Qué buscas?":"What's your goal?",
+"¿Qué comí ayer?":"What did I eat yesterday?",
+"¿Qué has comido?":"What did you eat?",
+"¿Qué me falta?":"What am I missing?",
+"¿Traer tus datos aquí?":"Bring your data here?",
+"¿Voy mejorando?":"Am I improving?",
+"¿Ya la usabas en otro móvil?":"Already used it on another phone?",
+"Última copia":"Last backup",
+"Última sesión":"Last session",
+"Últimas # semanas. Toca un grupo para ver sus ejercicios. Clasificación automática por nombre, orientativa.":"Last # weeks. Tap a group to see its exercises. Automatic classification by name, approximate.",
+"Último":"Last",
+"Últimos # días":"Last # days",
+"ámbar = mejorable":"amber = could improve",
+"última # oct":"last Oct #",
+"‹ Atrás":"‹ Back",
+"↔ Probar una ración o un alimento antes de añadirlo":"↔ Try a portion or a food before adding it",
+"↶ Deshacer":"↶ Undo",
+"≈ estimado":"≈ estimated",
+"▼ Meta # mg":"▼ Goal # mg",
+"▼ Meta # µg":"▼ Goal # µg",
+"▼ Zona #-# µg":"▼ Range #-# µg",
+"▼ Zona #-# µg RAE":"▼ Range #-# µg RAE",
+"● Comida":"● Food",
+"● Pauta/tomas":"● Plan/doses",
+"● Por encima del objetivo":"● Above goal",
+"☆ = favorito":"☆ = favorite",
+"♀ En mujer:":"♀ For women:",
+"♀ Mujer":"♀ Female",
+"♂ Hombre":"♂ Male",
+"⚙ Objetivo, semana, comidas y suplementos":"⚙ Goal, week, meals and supplements",
+"⚡ Diarios":"⚡ Daily",
+"⚡ Rendimiento deportivo":"⚡ Athletic performance",
+"⚡ Vista Resumen":"⚡ Summary view",
+"✓ Guardar perfil":"✓ Save profile",
+"✓ Meta # mg":"✓ Goal # mg",
+"✓ Meta # mg benfotiamina":"✓ Goal # mg benfotiamine",
+"✓ Meta # µg":"✓ Goal # µg",
+"✓ Tope # g":"✓ Max # g",
+"✓ Tope # mg":"✓ Max # mg",
+"✓ Ya estás usando el plan Peat por defecto":"✓ You're already using the default Peat plan",
+"✓ hidratos:proteína #":"✓ carbs:protein #",
+"✦ Pedir sugerencia a la IA":"✦ Ask the AI for a suggestion",
+"✦ Pregunta a tu IA":"✦ Ask your AI",
+"✨ Hay una versión nueva (v#). Tus datos se conservan.":"✨ There's a new version (v#). Your data is kept.",
+"✨ Nueva función":"✨ New feature",
+"🎯 Perder grasa sin estrés":"🎯 Lose fat without stress",
+"🎯 🔥 Energía y salud hormonal":"🎯 🔥 Energy and hormonal health",
+"🏆 Peso # kg × #":"🏆 Weight # kg × #",
+"🐞 Algo falla":"🐞 Something's broken",
+"💊 Sin suplementos":"💊 No supplements",
+"💪 Ganar músculo":"💪 Build muscle",
+"📅 # días de entreno a la semana":"📅 # training days per week",
+"🔋 Tanques (media de # días)":"🔋 Stores (#-day average)",
+"🔥 Energía y salud hormonal":"🔥 Energy and hormonal health",
+"🛠 Cambio o mejora":"🛠 Change or improvement",
+"🛡️ Escudo Peat (máximos)":"🛡️ Peat shield (maximums)",
+"🥛 Desayuno habitual":"🥛 Usual breakfast",
+"🥛 Idea Peat o de nutrición":"🥛 Peat or nutrition idea",
+"🥛 Sin desayuno fijo":"🥛 No fixed breakfast",
+"🥤 Batido habitual":"🥤 Usual shake",
+"🧠 Vista con Explicaciones Peat":"🧠 View with Peat explanations"
+};
+// ===== v59: idioma (español / inglés) =====
+// Los textos se escriben en español en el código. En inglés, un traductor recorre la página y cambia cada texto por su traducción de I18N_EN.
+// Las cifras se sustituyen por # en la clave («Faltan # kcal» → «# kcal left»): mismo número y orden de # en los dos idiomas.
+// Para un texto nuevo: añade su línea a I18N_EN (está justo encima). Lo que no esté en la tabla se queda en español.
+const NUM_RE=/\d[\d.,]*/g,TR_ORIG=new WeakMap(),TR_ATTR=new WeakMap(),TR_ATTRS=['placeholder','aria-label','title'];
+const WD_EN=['M','T','W','T','F','S','S'];
+function trOne(s){
+  if(!s||!/[A-Za-zÀ-ÿ]/.test(s))return null;
+  const t=I18N_EN[s.replace(NUM_RE,'#')];
+  if(t==null)return null;
+  const nums=s.match(NUM_RE)||[];let i=0;
+  return t.replace(/#/g,()=>nums[i++]??'#');
+}
+// Plantillas para etiquetas con un nombre dentro («Editar Leche entera»). Solo se usan si el nombre se traduce o en atributos (aria-label…).
+const TR_VERB={Editar:'Edit',Eliminar:'Delete','Añadir':'Add',Quitar:'Remove',Configurar:'Set up',Renombrar:'Rename','Más':'More','Menos':'Less'};
+const TR_TPL=[
+ [/^(Editar|Eliminar|Añadir|Quitar|Configurar|Renombrar|Más|Menos) (.+)$/,(m,attr)=>{const x=trOne(m[2]);return x!=null||attr?TR_VERB[m[1]]+' '+(x??m[2]):null;}],
+ [/^\+ ([\d.,]+ (?:g|ml)) de (.+)$/,m=>{const x=trLower(m[2]);return x?'+ '+m[1]+' of '+x.toLowerCase():null;}],
+ [/^Cantidad de (.+) en (g|ml)$/,m=>'Amount of '+(trOne(m[1])||m[1])+' in '+m[2]],
+ [/^Cantidad de (.+)$/,(m,attr)=>{const x=trOne(m[1]);return x!=null||attr?'Amount of '+(x??m[1]):null;}],
+ [/^(Añadir a|Quitar de) favoritos: (.+)$/,m=>(m[1]==='Añadir a'?'Add to':'Remove from')+' favorites: '+(trOne(m[2])||m[2])],
+ [/^Ver aportes de (.+)$/,m=>'See contributions of '+(trOne(m[1])||m[1])],
+ [/^(.+): cuenta hoy\. Tocar si no la has tomado$/,m=>(trOne(m[1])||m[1])+': counts today. Tap if you didn\'t take it'],
+ [/^Añadido a (.+?): (.+)$/,m=>'Added to '+(trOne(m[1])||m[1])+': '+(trOne(m[2])||m[2])],
+ [/^Perfil activo: (.+)$/,m=>'Active profile: '+(trOne(m[1])||m[1])],
+ [/^Tu perfil: (.+)$/,m=>'Your profile: '+(trOne(m[1])||m[1])],
+ [/^Perfil «(.+)» guardado$/,m=>'Profile "'+m[1]+'" saved'],
+ [/^Perfil «(.+)» creado y activado \((.+)\)$/,m=>'Profile "'+m[1]+'" created and active ('+(trOne(m[2])||m[2])+')']
+];
+// Busca la traducción sin distinguir mayúsculas («queso parmigiano reggiano»).
+let trLowMap=null;
+function trLower(s){if(!trLowMap){trLowMap={};for(const k of Object.keys(I18N_EN))trLowMap[k.toLowerCase()]=I18N_EN[k];}return trOne(s)??trLowMap[s.toLowerCase()]??null;}
+function trTpl(s,attr){for(const [re,fn] of TR_TPL){const m=s.match(re);if(m){const r=fn(m,attr);if(r!=null)return r;}}return null;}
+function trText(s,attr=false){
+  let r=trOne(s);if(r!=null)return r;
+  r=trTpl(s,attr);if(r!=null)return r;
+  if(s.includes(' · ')){let any=false;const out=s.split(' · ').map(p=>{const x=trOne(p.trim())??trTpl(p.trim(),attr);if(x!=null){any=true;return x;}return p;});if(any)return out.join(' · ');}
+  return null;
+}
+function trNode(n){
+  const p=n.parentElement;
+  if(!p||p.closest('script,style,textarea,[data-no-tr]'))return;
+  const raw=n.nodeValue,s=raw.trim();
+  if(!s)return;
+  let t=null;
+  if(s.length===1&&p.matches('.calendar-weekdays span'))t=WD_EN[[...p.parentElement.children].indexOf(p)]??null;
+  else if(s.length===1&&p.matches('.bp-day-col b'))t=WD_EN[[...p.closest('.bp-day-sched').children].indexOf(p.closest('.bp-day-col'))]??null;
+  else t=trText(s);
+  if(t==null||t===s)return;
+  if(p.tagName==='OPTION'&&!p.hasAttribute('value'))p.setAttribute('value',s);
+  if(!TR_ORIG.has(n))TR_ORIG.set(n,raw);
+  n.nodeValue=raw.replace(s,t);
+}
+function trEl(el){
+  for(const a of TR_ATTRS){
+    const v=el.getAttribute&&el.getAttribute(a);if(!v)continue;
+    const t=trText(v.trim(),true);if(t==null||t===v)continue;
+    const o=TR_ATTR.get(el)||{};if(!(a in o))o[a]=v;TR_ATTR.set(el,o);
+    el.setAttribute(a,t);
+  }
+}
+function trTree(root){
+  if(LANG!=='en'||!root)return;
+  if(root.nodeType===3){trNode(root);return;}
+  if(root.nodeType!==1)return;
+  trEl(root);
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT|NodeFilter.SHOW_ELEMENT);let n;
+  while((n=w.nextNode()))n.nodeType===3?trNode(n):trEl(n);
+}
+// Vuelve al español sin recargar: restaura los textos originales guardados.
+function untrTree(root){
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT|NodeFilter.SHOW_ELEMENT);let n;
+  while((n=w.nextNode())){
+    if(n.nodeType===3){if(TR_ORIG.has(n)){n.nodeValue=TR_ORIG.get(n);TR_ORIG.delete(n);}continue;}
+    const o=TR_ATTR.get(n);if(o){for(const [a,v] of Object.entries(o))n.setAttribute(a,v);TR_ATTR.delete(n);}
+  }
+}
+const trObserver=new MutationObserver(list=>{
+  if(LANG!=='en')return;
+  for(const m of list){if(m.type==='childList')m.addedNodes.forEach(trTree);else if(m.type==='characterData')trNode(m.target);else trEl(m.target);}
+});
+function setLang(l,quiet){
+  l=l==='en'?'en':'es';
+  const changed=l!==LANG;
+  LANG=l;
+  try{localStorage.setItem('bp_lang',l);}catch(e){}
+  document.documentElement.lang=l;
+  if(l==='en')trTree(document.body);else if(changed)untrTree(document.body);
+  if(changed&&ready){render();refreshDrawerSummary();}
+  document.querySelectorAll('[data-set-lang]').forEach(b=>{const on=b.dataset.setLang===l;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
+  if($('lang-select'))$('lang-select').value=l;
+  if(changed&&!quiet)toast(l==='en'?'Language: English':'Idioma: español');
+}
+function langPickerHTML(){
+  return '<div class="bp-lang" role="group" aria-label="Idioma / Language"><button type="button" class="bp-lang-btn'+(LANG==='es'?' active':'')+'" data-set-lang="es" data-no-tr="1">Español</button><button type="button" class="bp-lang-btn'+(LANG==='en'?' active':'')+'" data-set-lang="en" data-no-tr="1">English</button></div>';
+}
+onClick(e=>{const b=e.target.closest('[data-set-lang]');if(b)setLang(b.dataset.setLang);});
+trObserver.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:TR_ATTRS});
+document.documentElement.lang=LANG;
+trTree(document.body);
+
+// ===== v59: estadísticas sin cookies (GoatCounter), solo en la web publicada =====
+const GC_CODE='biopeat';
+function startStats(){
+  if(!/github\.io$|^biopeat\./.test(location.hostname)||document.querySelector('script[data-goatcounter]'))return;
+  const s=document.createElement('script');
+  s.async=true;s.src='//gc.zgo.at/count.js';s.dataset.goatcounter='https://'+GC_CODE+'.goatcounter.com/count';
+  document.head.append(s);
+}
+startStats();
+
+// ===== v59: mudanza de datos a otra dirección web (por ejemplo, un dominio propio) =====
+// Los datos viven en el navegador y van ligados a la dirección. Esto los empaqueta, comprimidos, en el enlace de la nueva dirección.
+const MOVE_TAG='bp-move=';
+async function packMove(){
+  syncCurrentProfileToStore();
+  const json=JSON.stringify({v:1,store:ensureProfilesStore(),main:storableState()});
+  let bytes=new TextEncoder().encode(json),zip=false;
+  if(typeof CompressionStream==='function'){bytes=new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer());zip=true;}
+  let bin='';for(let i=0;i<bytes.length;i+=32768)bin+=String.fromCharCode(...bytes.subarray(i,i+32768));
+  return (zip?'z':'p')+btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+async function unpackMove(code){
+  const zip=code[0]==='z',b64=code.slice(1).replace(/-/g,'+').replace(/_/g,'/');
+  const bin=atob(b64+'==='.slice((b64.length+3)%4));let bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
+  if(zip){if(typeof DecompressionStream!=='function')throw Error('Este navegador no puede abrir el paquete. Actualízalo o usa la copia de seguridad.');bytes=new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer());}
+  const o=JSON.parse(new TextDecoder().decode(bytes));
+  if(!o||o.v!==1||!o.store?.items||!o.main)throw Error('Paquete de mudanza no válido.');
+  migrate(clone(o.main));
+  return o;
+}
+async function moveData(){
+  let u;try{u=new URL($('move-url').value.trim());}catch(e){throw Error('Escribe la dirección nueva completa (empieza por https://).');}
+  if(u.protocol!=='https:'&&!['localhost','127.0.0.1'].includes(u.hostname))throw Error('La dirección nueva debe empezar por https://');
+  const code=await packMove();
+  if(code.length>1800000)throw Error('Tus datos son demasiado grandes para pasarlos así. Usa la copia de seguridad JSON.');
+  u.hash=MOVE_TAG+code;
+  window.open(u.href,'_blank','noopener');
+  toast('Se ha abierto la dirección nueva: confirma allí la mudanza. Aquí no se borra nada.');
+}
+// Se lee y se quita del enlace al arrancar (antes de abrir ninguna ventana, para que «Atrás» no lo devuelva).
+function takeMoveCode(){
+  const h=location.hash;
+  if(!h.startsWith('#'+MOVE_TAG))return '';
+  history.replaceState(null,'',location.pathname+location.search);
+  return h.slice(MOVE_TAG.length+1);
+}
+async function checkMove(code){
+  if(!code)return;
+  let o;try{o=await unpackMove(code);}catch(e){toast('No se ha podido traer los datos: '+e.message);return;}
+  const n=Object.keys(o.store.items).length,a=dataSummary(o.main);
+  modal('¿Traer tus datos aquí?','<p class="section-note">Llegan '+n+' '+(n===1?'perfil':'perfiles')+' desde tu dirección anterior. El activo tiene '+a.days+' días con comidas y '+a.foods+' alimentos. Lo que hubiera en esta dirección se sustituye.</p><button class="btn btn-amber full" type="button" id="move-ok">Traer mis datos</button><button class="btn ghost full" type="button" id="move-cancel">Ahora no</button>');
+  window.__bpMove=o;
+}
+onClick(e=>{
+  if(e.target.closest('#move-go'))attempt(moveData);
+  if(e.target.closest('#move-cancel')){window.__bpMove=null;$('modal').close();}
+  if(e.target.closest('#move-ok')&&window.__bpMove){
+    const o=window.__bpMove;window.__bpMove=null;
+    try{localStorage.setItem(PROFILES_KEY,JSON.stringify(o.store));localStorage.setItem(STORE,JSON.stringify(o.main));}catch(err){toast('No se pudo guardar: '+err.message);return;}
+    profilesMem=null;$('modal').close();
+    state=migrate(clone(o.main));ensureDay();save();render();refreshDrawerSummary();
+    toast('Datos traídos. Ya puedes usar BioPeat en esta dirección.');
+  }
+});
 // ===== Arranque =====
 init().catch(e=>{storageMode='memory';ensureDay();ready=true;render();document.body.dataset.ready='true';toast('Inicio sin guardado: '+e.message);});
 </script><script>if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});</script>

@@ -24,12 +24,12 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 <h2>Preparación (solo la primera vez)</h2>
 <ol>
 <li>Sube a GitHub <b>index.html</b> y <b>actualizar.html</b> (Add file → Upload files → Commit changes).</li>
-<li>En Gemini: Gems → «BioPeat Dev» → pega las instrucciones <b>INSTRUCCIONES_GEM_BIOPEAT_DEV_v5.txt</b>. En Claude: Proyectos → «BioPeat Dev» → pega <b>INSTRUCCIONES_CLAUDE_BIOPEAT_DEV_v5.txt</b>. En los dos, sube AGENTS.md, CONTEXTO_BIOPEAT.md y MAPA_DEL_CODIGO.md.</li>
+<li>En Gemini: Gems → «BioPeat Dev» → pega las instrucciones <b>INSTRUCCIONES_GEM_BIOPEAT_DEV_v7.txt</b>. En Claude: Proyectos → «BioPeat Dev» → pega <b>INSTRUCCIONES_CLAUDE_BIOPEAT_DEV_v7.txt</b>. En los dos, sube AGENTS.md, CONTEXTO_BIOPEAT.md y MAPA_DEL_CODIGO.md.</li>
 <li>Guarda esta página en marcadores. Es la dirección de tu app con <b>/actualizar.html</b> al final (ejemplo: <i>tu-usuario.github.io/biopeat/actualizar.html</i>).</li>
 </ol>
 <h2>Cada cambio (unos 5 minutos)</h2>
 <ol>
-<li><b>Paso 1:</b> escribe 1-3 palabras de lo que quieres cambiar y pulsa «Descargar archivo enfocado» (vale para Gemini y para Claude). Si la IA te pide una función que no está en el archivo, añade su nombre a las palabras y descárgalo otra vez.</li>
+<li><b>Paso 1:</b> escribe 1-3 palabras de lo que quieres cambiar (añade «ingles» si el cambio tiene textos nuevos, para que la IA pueda poner también su traducción) y pulsa «Descargar archivo enfocado» (vale para Gemini y para Claude). Si la IA te pide una función que no está en el archivo, añade su nombre a las palabras y descárgalo otra vez.</li>
 <li>Abre «BioPeat Dev» (Gem o proyecto de Claude), <b>empieza un chat nuevo</b>, adjunta ese archivo y escribe lo que quieres, como si se lo dijeras a una persona. Puedes pedir varias cosas a la vez.</li>
 <li>Cuando responda, pulsa «Copiar» en su respuesta (copia TODA) y pégala en el <b>Paso 2</b>. Pulsa «Aplicar y comprobar».</li>
 <li><b>Si sale ✗ rojo:</b> «Copiar mensaje del error» (incluye el bloque, la línea y el trozo de código que falla) → pégalo en el mismo chat → copia su nueva respuesta → bórrala del Paso 2, pega la nueva y vuelve a comprobar. Si solo trae los bloques corregidos, la página los combina con los anteriores.</li>
@@ -116,7 +116,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
-const PROTECTED=["STORE='biopeat_pro_v10'","biopeat_profiles_v1","compare17","workouts18","favorites22","microTargets17","goalOrigin17","ratioGoals17","function migrate(","function render(","function storableState("];
+const PROTECTED=["STORE='biopeat_pro_v10'","biopeat_profiles_v1","const I18N_EN=","compare17","workouts18","favorites22","microTargets17","goalOrigin17","ratioGoals17","function migrate(","function render(","function storableState("];
 let pubText='',current='',result=null,errText='',errExtra='',reviewText='',parts=1;
 let prevBlocks=[];try{prevBlocks=JSON.parse(sessionStorage.getItem('bp_blocks')||'[]');}catch(e){}
 
@@ -315,7 +315,9 @@ function focusedVersion(t,words){
   const s=a+'<script id="app">'.length,e=t.indexOf('</'+'script>',s),js=t.slice(s,e),ch=chunksOf(js);
   const kw=nrm(words).split(/[,;\s]+/).filter(w=>w.length>=3);
   let kept=0,skip=0;const out=[];
-  ch.forEach((c,i)=>{const n=nrm(c),need=i===0||/APP_VERSION=|\/\/ ===== Arranque|^function render\(|^function migrate\(/m.test(c)||kw.some(k=>n.includes(k));if(need){if(skip)out.push('/* … '+skip+' trozos omitidos … */');skip=0;out.push(c);kept++;}else skip++;});
+  // El diccionario de inglés (I18N_EN) es muy grande: solo entra si se pide (palabras «ingles», «idioma», «traduccion» o «i18n»).
+  const wantDict=kw.some(k=>/^(ingles|english|idioma|traduc|i18n)/.test(k));
+  ch.forEach((c,i)=>{const n=nrm(c),dict=/^const I18N_EN=/.test(c),need=dict?wantDict:(i===0||/APP_VERSION=|\/\/ ===== Arranque|^function render\(|^function migrate\(/m.test(c)||kw.some(k=>n.includes(k)));if(need){if(skip)out.push('/* … '+skip+' trozos omitidos … */');skip=0;out.push(c);kept++;}else skip++;});
   if(skip)out.push('/* … '+skip+' trozos omitidos … */');
   const note='/* [ARCHIVO ENFOCADO para «'+words+'»: contiene '+kept+' de '+ch.length+' trozos del script, todo el HTML y nada de CSS. Solo puedes BUSCAR texto que veas aquí. Si necesitas una función que no está, dile a Diego su nombre para que descargue otro archivo enfocado que la incluya. Para estilos nuevos usa BUSCAR «</style><!--FIN-CSS-->».] */';
   const pre=lightVersion(t.slice(0,s));

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BioPeat · El contador de comidas pensado para Ray Peat</title>
+<meta name="description" content="BioPeat: registra lo que comes y ve tus calorías, macros, 25 vitaminas y minerales y los equilibrios de Ray Peat. Gratis, sin cuenta y con tus datos en tu móvil.">
+<meta name="theme-color" content="#16243a">
+<meta property="og:title" content="BioPeat · El contador de comidas pensado para Ray Peat">
+<meta property="og:description" content="Calcio : fósforo, PUFA, hidratos : proteína y 25 micronutrientes con zonas Peat. Gratis, sin cuenta, tus datos en tu móvil.">
+<meta property="og:image" content="icon-512.png">
+<link rel="icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--bg:#16243a;--card:#1f3049;--line:#ffffff1a;--gold:#e9bf5c;--gold2:#f6dc9a;--txt:#f4f7fc;--mut:#b8c6d9}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(900px 500px at 15% -120px,#e9bf5c18,transparent 70%),var(--bg);color:var(--txt);line-height:1.6;-webkit-font-smoothing:antialiased}
+.w{max-width:880px;margin:0 auto;padding:20px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px}
+.brand img{width:40px;height:40px;border-radius:11px}
+.lang{display:flex;gap:6px}
+.lang button{min-height:40px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:#ffffff0d;color:var(--txt);font-weight:700;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--gold);color:#14213a;border-color:var(--gold)}
+.hero{text-align:center;padding:42px 0 22px}
+.hero h1{font-size:clamp(30px,6vw,46px);line-height:1.1;letter-spacing:-.03em;margin:0 0 14px}
+.hero h1 span{color:var(--gold2)}
+.hero p{font-size:18px;color:var(--mut);max-width:620px;margin:0 auto 24px}
+.cta{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 28px;border-radius:16px;background:linear-gradient(135deg,#f6dc9a,#e9bf5c 55%,#d4a53f);color:#14213a;font-weight:850;font-size:18px;text-decoration:none;box-shadow:0 10px 30px #e9bf5c44}
+.badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px;font-size:13px;color:var(--mut)}
+.badges span{padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:#ffffff08}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:26px 0}
+.card{background:linear-gradient(180deg,#22344d,#1e2f47);border:1px solid var(--line);border-radius:18px;padding:18px}
+.card h3{margin:0 0 6px;font-size:17px;color:var(--gold2)}
+.card p{margin:0;color:var(--mut);font-size:14.5px}
+h2{font-size:24px;letter-spacing:-.02em;margin:38px 0 12px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+ol{padding-left:20px;margin:6px 0}li{margin:4px 0;color:#dfe7f2}
+details{background:#ffffff08;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:8px 0}
+summary{cursor:pointer;font-weight:750;min-height:28px}
+details p{color:var(--mut);margin:8px 0 2px}
+.legal{font-size:14.5px;color:#dfe7f2}
+.legal p,.legal li{color:#cfd9e6}
+footer{margin:40px 0 20px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--mut);text-align:center}
+footer a,.legal a{color:var(--gold2)}
+html[lang=es] [data-lang=en],html[lang=en] [data-lang=es],html:not([lang=es]):not([lang=en]) [data-lang=en]{display:none!important}
+</style>
+</head>
+<body>
+<div class="w">
+<header><div class="brand"><img src="icon-192.png" alt="">BioPeat</div><div class="lang" role="group" aria-label="Idioma / Language"><button type="button" data-l="es" aria-pressed="true">ES</button><button type="button" data-l="en" aria-pressed="false">EN</button></div></header>
+
+<section class="hero">
+<h1 data-lang="es">El contador de comidas <span>pensado para Ray Peat</span></h1>
+<h1 data-lang="en">The food tracker <span>built for Ray Peat's ideas</span></h1>
+<p data-lang="es">Apunta lo que comes y mira de un vistazo tus calorías, macros, 25 vitaminas y minerales y los equilibrios que Peat vigilaba: calcio : fósforo, grasas PUFA, hidratos : proteína, A : D y zinc : cobre. Con ideas concretas de qué comer.</p>
+<p data-lang="en">Log what you eat and see at a glance your calories, macros, 25 vitamins and minerals and the balances Peat watched: calcium : phosphorus, PUFA, carbs : protein, A : D and zinc : copper. With concrete ideas of what to eat.</p>
+<a class="cta" href="./" data-lang="es">Abrir la app gratis</a><a class="cta" href="./" data-lang="en">Open the app for free</a>
+<div class="badges" data-lang="es"><span>Gratis</span><span>Sin cuenta</span><span>Sin anuncios</span><span>Tus datos en tu móvil</span><span>Android e iPhone</span></div>
+<div class="badges" data-lang="en"><span>Free</span><span>No account</span><span>No ads</span><span>Your data stays on your phone</span><span>Android and iPhone</span></div>
+</section>
+
+<div class="grid">
+<div class="card"><h3 data-lang="es">Equilibrio del día</h3><h3 data-lang="en">Balance of the day</h3><p data-lang="es">Cinco equilibrios Peat con semáforo, por qué importan y qué comer para corregirlos, con un toque.</p><p data-lang="en">Five Peat balances with a traffic light, why they matter and what to eat to fix them, in one tap.</p></div>
+<div class="card"><h3 data-lang="es">25 micronutrientes</h3><h3 data-lang="en">25 micronutrients</h3><p data-lang="es">Cada uno con su zona ideal y la fuente de la cifra (Peat, Dinkov, oficial). Compara también con la UE o EE. UU.</p><p data-lang="en">Each with its ideal range and the source of the number (Peat, Dinkov, official). Also compare with EU or US references.</p></div>
+<div class="card"><h3 data-lang="es">Rápido de verdad</h3><h3 data-lang="en">Really fast</h3><p data-lang="es">Escribe «200 ml de leche y 2 plátanos», haz una foto o toca tu desayuno habitual. Funciona con una mano.</p><p data-lang="en">Type what you ate, take a photo or tap your usual breakfast. Works with one hand.</p></div>
+<div class="card"><h3 data-lang="es">Tu IA, la que quieras</h3><h3 data-lang="en">Your AI, any you like</h3><p data-lang="es">Opcional: Gemini (gratis), ChatGPT, Claude u OpenRouter. Sin IA también funciona.</p><p data-lang="en">Optional: Gemini (free), ChatGPT, Claude or OpenRouter. It also works without AI.</p></div>
+<div class="card"><h3 data-lang="es">Semana y gimnasio</h3><h3 data-lang="en">Week and gym</h3><p data-lang="es">Qué te falta esta semana, tendencias y tus entrenos de Hevy, Strong o Fitbod junto a tu comida.</p><p data-lang="en">What you're missing this week, trends, and your Hevy, Strong or Fitbod workouts next to your food.</p></div>
+<div class="card"><h3 data-lang="es">Hombre y mujer</h3><h3 data-lang="en">Men and women</h3><p data-lang="es">Perfiles con referencias de Peat para mujer («Nutrition for Women», «From PMS to Menopause»).</p><p data-lang="en">Profiles with Peat references for women ("Nutrition for Women", "From PMS to Menopause").</p></div>
+</div>
+
+<h2 data-lang="es">Instálala en tu móvil (30 segundos)</h2><h2 data-lang="en">Install it on your phone (30 seconds)</h2>
+<div class="steps">
+<div class="card"><h3>Android</h3><ol data-lang="es"><li>Abre la app en Chrome.</li><li>Toca el menú <b>⋮</b> → <b>Instalar app</b> (o «Añadir a pantalla de inicio»).</li><li>Ábrela desde su icono, como cualquier app.</li></ol><ol data-lang="en"><li>Open the app in Chrome.</li><li>Tap the menu <b>⋮</b> → <b>Install app</b> (or "Add to home screen").</li><li>Open it from its icon, like any app.</li></ol></div>
+<div class="card"><h3>iPhone</h3><ol data-lang="es"><li>Abre la app en Safari.</li><li>Toca <b>Compartir</b> (cuadrado con flecha) → <b>Añadir a pantalla de inicio</b>.</li><li>Ábrela desde su icono.</li></ol><ol data-lang="en"><li>Open the app in Safari.</li><li>Tap <b>Share</b> (square with arrow) → <b>Add to Home Screen</b>.</li><li>Open it from its icon.</li></ol></div>
+</div>
+
+<h2 data-lang="es">Preguntas frecuentes</h2><h2 data-lang="en">FAQ</h2>
+<div data-lang="es">
+<details><summary>¿Es gratis?</summary><p>Sí, del todo. No hay anuncios, cuentas ni versión de pago.</p></details>
+<details><summary>¿Dónde están mis datos?</summary><p>Solo en tu móvil, en el navegador. No hay servidor. Haz copias de seguridad de vez en cuando desde la app (Más → Copia de seguridad).</p></details>
+<details><summary>¿Necesito una IA?</summary><p>No. Con tus alimentos y cantidades funciona sin IA. Para analizar fotos y texto libre puedes conectar tu propia IA (Gemini es gratis).</p></details>
+<details><summary>¿Es consejo médico?</summary><p>No. Es una herramienta para registrar y entender lo que comes, inspirada en las ideas de Ray Peat. Consulta a un profesional de la salud para cualquier decisión médica.</p></details>
+<details><summary>¿Puedo proponer mejoras?</summary><p>Sí: en la app, Menú → Sugerir una mejora. Llegan directamente al creador y las mejoras se publican para todos.</p></details>
+</div>
+<div data-lang="en">
+<details><summary>Is it free?</summary><p>Yes, completely. No ads, accounts or paid version.</p></details>
+<details><summary>Where is my data?</summary><p>Only on your phone, in the browser. There's no server. Back up now and then from the app (More → Backup).</p></details>
+<details><summary>Do I need an AI?</summary><p>No. It works without AI using your foods and amounts. To analyze photos and free text you can connect your own AI (Gemini is free).</p></details>
+<details><summary>Is it medical advice?</summary><p>No. It's a tool to log and understand what you eat, inspired by Ray Peat's ideas. Talk to a health professional about any medical decision.</p></details>
+<details><summary>Can I suggest improvements?</summary><p>Yes: in the app, Menu → Suggest an improvement. Suggestions go straight to the creator and improvements are released for everyone.</p></details>
+</div>
+
+<section class="legal" id="privacidad">
+<h2 data-lang="es">Política de privacidad</h2><h2 data-lang="en">Privacy policy</h2>
+<div data-lang="es">
+<p><b>Responsable:</b> el creador de BioPeat (proyecto personal e independiente). Contacto: <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a>.</p>
+<ul>
+<li><b>Tus datos de comida, salud y entrenos se guardan solo en tu dispositivo</b> (almacenamiento del navegador). No se envían a ningún servidor de BioPeat porque no existe. Puedes borrarlos cuando quieras borrando los datos del sitio en tu navegador.</li>
+<li><b>Estadísticas:</b> usamos GoatCounter para contar visitas de forma anónima, sin cookies y sin guardar tu dirección IP. Sirve para saber cuánta gente usa la app y desde dónde llega.</li>
+<li><b>Sugerencias:</b> si envías una sugerencia, su texto (tipo, título, descripción, versión de la app, tipo de dispositivo si lo marcas y cómo nos conociste si lo eliges) se guarda en un formulario de Google. No pedimos nombre ni correo. No escribas datos personales ni de salud en ella.</li>
+<li><b>IA:</b> si conectas una IA, la app envía directamente a ese proveedor (Google, OpenAI, Anthropic u otro que elijas) lo que pides analizar. Se rige por la política de privacidad de ese proveedor. Tu clave se guarda solo en tu dispositivo.</li>
+<li><b>Alojamiento:</b> la app se sirve desde GitHub Pages, que puede registrar datos técnicos de acceso según su propia política.</li>
+<li><b>Tus derechos:</b> como no guardamos tus datos personales, no hay nada que borrar por nuestra parte salvo sugerencias. Si quieres que eliminemos una, escríbenos al correo de contacto. También puedes reclamar ante la Agencia Española de Protección de Datos.</li>
+</ul>
+</div>
+<div data-lang="en">
+<p><b>Controller:</b> the creator of BioPeat (personal, independent project). Contact: <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a>.</p>
+<ul>
+<li><b>Your food, health and workout data is stored only on your device</b> (browser storage). It isn't sent to any BioPeat server because there isn't one. You can delete it at any time by clearing the site data in your browser.</li>
+<li><b>Analytics:</b> we use GoatCounter to count visits anonymously, without cookies and without storing your IP address. It tells us how many people use the app and where they come from.</li>
+<li><b>Suggestions:</b> if you send a suggestion, its text (type, title, description, app version, device type if you tick it and how you heard about us if you choose it) is stored in a Google form. We don't ask for your name or email. Don't include personal or health data in it.</li>
+<li><b>AI:</b> if you connect an AI, the app sends what you ask to analyze directly to that provider (Google, OpenAI, Anthropic or another you choose), under that provider's privacy policy. Your key is stored only on your device.</li>
+<li><b>Hosting:</b> the app is served from GitHub Pages, which may log technical access data under its own policy.</li>
+<li><b>Your rights:</b> since we don't store your personal data, there's nothing to delete on our side except suggestions. If you want one removed, email us. You can also complain to your data protection authority.</li>
+</ul>
+</div>
+</section>
+
+<section class="legal" id="aviso-legal">
+<h2 data-lang="es">Aviso legal</h2><h2 data-lang="en">Legal notice</h2>
+<div data-lang="es">
+<ul>
+<li><b>No es consejo médico.</b> BioPeat es una herramienta informativa para registrar lo que comes. No diagnostica, no trata ni sustituye a un profesional de la salud. Consulta a tu médico antes de cambiar tu dieta, tus suplementos o tu medicación, sobre todo si estás embarazada, tomas medicación o tienes una enfermedad.</li>
+<li><b>Proyecto independiente.</b> BioPeat no tiene relación con Ray Peat, su familia ni raypeat.com. Las referencias a sus ideas resumen textos públicos y a sus seguidores, indicando la fuente cuando la hay.</li>
+<li><b>Sin garantías.</b> Las cifras de nutrientes son estimaciones (fichas de referencia como USDA o lo que estima una IA) y pueden contener errores. La app se ofrece gratis, tal cual, sin garantías.</li>
+<li><b>Contacto:</b> <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a>.</li>
+</ul>
+</div>
+<div data-lang="en">
+<ul>
+<li><b>Not medical advice.</b> BioPeat is an informational tool to log what you eat. It doesn't diagnose, treat or replace a health professional. Talk to your doctor before changing your diet, supplements or medication, especially if you're pregnant, take medication or have a condition.</li>
+<li><b>Independent project.</b> BioPeat is not affiliated with Ray Peat, his family or raypeat.com. References to his ideas summarize public texts and his followers, citing the source when there is one.</li>
+<li><b>No warranty.</b> Nutrient numbers are estimates (reference data such as USDA, or what an AI estimates) and may contain errors. The app is offered free, as is, without warranty.</li>
+<li><b>Contact:</b> <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a>.</li>
+</ul>
+</div>
+</section>
+
+<footer><span data-lang="es">BioPeat · gratis, sin cuenta, tus datos en tu móvil · </span><span data-lang="en">BioPeat · free, no account, your data on your phone · </span><a href="./">App</a> · <a href="#privacidad" data-lang="es">Privacidad</a><a href="#privacidad" data-lang="en">Privacy</a> · <a href="#aviso-legal" data-lang="es">Aviso legal</a><a href="#aviso-legal" data-lang="en">Legal notice</a></footer>
+</div>
+<script>
+(function(){
+  var saved=null;try{saved=localStorage.getItem('bp_lang');}catch(e){}
+  var l=saved||(/^es\b/i.test(navigator.language||'es')?'es':'en');
+  function set(x){document.documentElement.lang=x;document.querySelectorAll('[data-l]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.l===x));});try{localStorage.setItem('bp_lang',x);}catch(e){}}
+  document.querySelectorAll('[data-l]').forEach(function(b){b.addEventListener('click',function(){set(b.dataset.l);});});
+  set(l);
+  if(/github\.io$|^biopeat\./.test(location.hostname)){var s=document.createElement('script');s.async=true;s.src='//gc.zgo.at/count.js';s.setAttribute('data-goatcounter','https://biopeat.goatcounter.com/count');document.head.appendChild(s);}
+})();
+</script>
+</body>
+</html>

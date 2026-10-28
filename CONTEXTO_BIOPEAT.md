@@ -1,6 +1,6 @@
 # CONTEXTO · BioPeat
 
-**Versión actual: v58** (revisión de datos 26)
+**Versión actual: v59** (revisión de datos 26)
 
 Documento maestro. Lo lee la IA que programa BioPeat (Gemini «BioPeat Dev» o Claude). Los cambios se entregan en bloques `@@@` y los aplica y prueba `actualizar.html`. **Se actualiza sustituyendo el texto de cada apartado, nunca añadiendo apartados nuevos al final.** Si algo de aquí contradice al código, manda el código; avisa de la diferencia.
 
@@ -11,6 +11,8 @@ Documento maestro. Lo lee la IA que programa BioPeat (Gemini «BioPeat Dev» o C
 - **Nutrientes → Comparar:** mis metas, referencia UE (EFSA) o EE. UU. (NIH) por sexo (`REF_TABLE`, `refMode`); solo cambia la comparación, nunca las metas.
 - **Una mano:** en el móvil las ventanas son hojas que salen desde abajo (se cierran deslizando hacia abajo), «Añadir» es el botón central elevado, y deslizar el recuadro de la fecha cambia de día.
 - **Sugerencias de usuarios:** Más → Sugerir una mejora las envía (sin cuentas) al formulario de Google de Diego (`FORM_URL`, `FORM_FIELDS`: tipo, título, descripción, versión) con `fetch` `no-cors`; llegan a una hoja de Google. Diego las ve en `actualizar.html` → Buzón (lee la hoja publicada en CSV), marca las que quiere, copia la petición para la IA y las marca como «Hecha».
+- **Idiomas (v59):** español e inglés. Se elige en el paso 1 del asistente (primera vez y perfil nuevo) y en Ajustes (`setLang`, preferencia `bp_lang` del dispositivo; por defecto, el idioma del móvil). Traducción en pantalla con la tabla `I18N_EN`; los datos se guardan siempre en español. La IA responde en el idioma elegido.
+- **Lanzamiento (v59):** `inicio.html` es la web de presentación (ES/EN) con instalación, preguntas, **privacidad** (#privacidad) y **aviso legal** (#aviso-legal); contacto biopeatapp@gmail.com. Estadísticas sin cookies con GoatCounter (código `biopeat`, solo en la web publicada). **Mudanza:** Ajustes → «Mudar mis datos a otra dirección» abre la nueva dirección con los datos comprimidos en el enlace (`#bp-move=`) y allí se confirman. Sugerencias con «¿Cómo nos has conocido?» (va en la descripción como «[Origen: …]»).
 - **Actualizaciones:** cada `index.html` publicado llega a todos los usuarios (aviso «Hay una versión nueva»). Los datos de cada uno no se tocan.
 
 ## 1. Diego y cómo quiere la app
@@ -76,7 +78,7 @@ Se guardan por perfil en `state.v54.breakfast` y `state.v54.shake` y se editan e
 - **No inventes cifras atribuidas a Peat.** Donde no hay cifra suya, se usa la meta personal.
 - **Mujer:** la tabla `OPT_FEMALE` cambia solo lo que tiene fuente (se aplica con `applySexOpt()` en cada `render()`): hierro tope 18 mg (oficial; Peat: el estrógeno hace absorber más hierro, «From PMS to Menopause»), zinc 8 mg (oficial), magnesio 400 mg (Peat/Dinkov; «Nutrition for Women»: corta los calambres menstruales), sodio sin restringir (edema premenstrual), y notas de Peat en vitamina A, E, B2 y calcio. `femaleWhy()` añade una frase de Peat para mujer en los equilibrios. **Peat no dio cifras distintas para mujer en PUFA, Ca:P ni C:P: son las mismas (4 g, 1,2 y 3).** Metas de partida de un perfil nuevo: `NEW_PROFILE_MICRO`.
 
-## 6. Qué hace la app (v58)
+## 6. Qué hace la app (v59)
 Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más** (no cambiar el orden) y botón redondo de **Gimnasio**.
 - **Menú lateral** (tocar el logo): Perfiles (tocar = usar; ⚙ = asistente; ✎ renombrar; × borrar; «+ Crear perfil nuevo»), Exportar datos para IA y Pregunta a tu IA. La lista se desplaza sola sin mover la página.
 - **Asistente de perfil** (`wizOpen({mode})`, modos `first` / `new` / `edit`): 5 pasos (Tú · Objetivo · Comidas · Suplementos · Resumen con las metas de un día de entreno y uno de descanso). Sale solo al empezar de cero (con botón para restaurar una copia). Al crear un perfil se puede empezar de cero o copiar la despensa y la pauta del perfil activo. Al guardar, las dosis y aportes de la pauta se conservan (si cambias la dosis, el aporte se escala).
@@ -118,6 +120,7 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **Prohibido** añadir otro `<script>` o «envolver» funciones (`x=function…`, `window.x=…`): la v54 lo hizo y el perfil de mujer volvía a hombre al recargar. `smoke.py` lo detecta y falla.
 
 ## 10. Historial (una línea por versión, máximo 8)
+- **v59 · Copilot:** español e inglés (`I18N_EN`, `trTree`, `setLang`, `LOC()`), web `inicio.html` con privacidad y aviso legal, GoatCounter, mudanza de datos por enlace, «¿Cómo nos has conocido?» en sugerencias, IA en el idioma del usuario y modo resumen más compacto arriba.
 - **v58 · Copilot:** nada de Diego en el código (su plan de macros pasa a sus metas con `upgradeTo26`; fuera `PLAN`, `DIEGO_V54`, `DEF_P`, Nesquik y Haribo); «Lo básico de Peat» al crear perfil; plantillas Peat de desayuno y batido; 19 suplementos en dos grupos + añadir a mano; comparar nutrientes con UE/EE. UU.; chat de IA fijo abajo del menú y «Más» sin repetir el menú.
 - **v57 · Copilot:** sugerencias por formulario de Google (sin cuentas) y buzón que lee la hoja; IA de cualquier proveedor (Gemini, ChatGPT, Claude, OpenRouter, compatible) con `callChat()` y elección de modelo; gimnasio con el CSV de cualquier app (Hevy, Strong, Fitbod, FitNotes, genérico) con detección y formato recordado.
 - **v56 · Copilot:** app pública: sin datos de Diego por defecto; asistente con bienvenida, ayuda por paso y sugerencias de suplementos Peat (`SUPP_CATALOG`); guía de uso (`TOUR`); centro Más (`HUB`) con iconos propios (`ICON`/`ico()`); buzón de sugerencias (GitHub issues `[BioPeat]`); hojas inferiores, botón Añadir central y gestos de una mano; aspecto pulido; manifest con accesos directos; `actualizar.html` con archivo enfocado, cambios por partes y buzón.
@@ -125,7 +128,6 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **v51-v54 · Gemini:** menú lateral, perfiles, informe para IA, chat con la IA, sexo hombre/mujer y asistente de perfil (como bloque aparte, integrado en v55).
 - **v50 · Copilot:** micronutrientes con una sola tabla de zonas ideales (`OPT`); depósito de 7 días sin «parcial» falsos; «¿Qué me falta?» rehecho; arreglos de fósforo, selenio/yodo/A, colores de la semana y «Ca:P 1,10».
 - **v49 · Copilot:** grasa saturada ×0,5 para la meta de grasa (`SAT_W`); depósitos sin el día abierto; `actualizar.html` más tolerante y con errores localizados; GitHub actualiza CONTEXTO y MAPA solo.
-- **v43 · Copilot:** IA con reintentos si Gemini está saturado; aviso de versión nueva; restaurar copia con resumen; prueba automática en GitHub.
 
 ## 11. Pendiente / ideas
 - Unificar las capas de CSS sin cambiar el aspecto (hay reglas repetidas de varias versiones).

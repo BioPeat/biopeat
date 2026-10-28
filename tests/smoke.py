@@ -27,7 +27,7 @@ def ok(msg):
 # ---------- 1. Comprobaciones estáticas (sin navegador) ----------
 ALLOWED = {'index.html', 'manifest.json', 'sw.js', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png',
            'AGENTS.md', 'CONTEXTO_BIOPEAT.md', 'MAPA_DEL_CODIGO.md', 'README.md', 'tools/sincronizar_version.py',
-           'tests/smoke.py', 'tests/datos_prueba.json', 'tools/mapa.py', '.github/workflows/check.yml', 'actualizar.html'}
+           'tests/smoke.py', 'tests/datos_prueba.json', 'tools/mapa.py', '.github/workflows/check.yml', 'actualizar.html', 'inicio.html'}
 
 def static_checks():
     print('1. Comprobaciones del código')
@@ -98,7 +98,7 @@ async def browser_checks():
     async with async_playwright() as p:
         exe = os.environ.get('CHROMIUM_PATH')
         b = await p.chromium.launch(**({'executable_path': exe} if exe else {}))
-        ctx = await b.new_context(viewport={'width': 400, 'height': 850}, reduced_motion='reduce')
+        ctx = await b.new_context(viewport={'width': 400, 'height': 850}, reduced_motion='reduce', locale='es-ES')
         pg = await ctx.new_page()
         await pg.clock.set_fixed_time(NOW)
         errs = []
@@ -345,6 +345,28 @@ async def browser_checks():
         r = await ev("({g:[...new Set(SUPP_CATALOG.map(c=>c.g))],n:SUPP_CATALOG.length})")
         ok(f"Catálogo de suplementos con Peat y habituales ({r['n']})") if r['g'] == ['peat', 'comun'] and r['n'] >= 18 else fail('Catálogo de suplementos: ' + str(r))
         check_errs('v58')
+        print('6h. v59: inglés, mudanza de datos')
+        await load(FIXTURE.read_text(encoding='utf-8'))
+        await ev("setLang('en')"); await ev(f"goDate('{DAY}')"); await pg.wait_for_timeout(200)
+        r = await ev("({nav:document.querySelector('.nav-item[data-view=today]').innerText,meal:$('meal-select').value,opt:$('meal-select').selectedOptions[0].textContent,lang:document.documentElement.lang,num:fmt(1234.5,1)})")
+        ok('Inglés: menú, comidas y números en inglés') if 'Today' in r['nav'] and r['meal'] in ('Comida','Desayuno','Merienda','Cena','Media mañana') and r['opt'] in ('Lunch','Breakfast','Snack','Dinner','Mid-morning') and r['lang'] == 'en' and r['num'] == '1,234.5' else fail('Inglés: ' + str(r))
+        n0 = await ev("day().entries.length")
+        await ev("$('smart-input').value='200 ml de leche';$('smart-add').click()"); await pg.wait_for_timeout(300)
+        ok('En inglés se sigue guardando el momento en español (los datos no cambian)') if await ev("day().entries.length") == n0 + 1 and await ev("day().entries.at(-1).meal") in ('Comida','Desayuno','Merienda','Cena','Media mañana') else fail('En inglés el momento de la comida se guarda traducido')
+        SP = r"""(()=>{let a=0,b=0;const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){const p=n.parentElement;if(!p||p.closest('script,style,textarea,[hidden]')||p.offsetParent===null)continue;const t=n.nodeValue.trim();if(!/[a-z]{3}/i.test(t))continue;a++;if(/\b(los|las|tus|para|qué|días|semana|añadir|hoy|está|aquí)\b/i.test(t))b++;}return [a,b];})()"""
+        await ev("document.querySelectorAll('details').forEach(d=>d.open=true);renderWeekly();renderGym()"); await pg.wait_for_timeout(300)
+        tot, sp = await ev(SP)
+        ok(f'Inglés: {round(100*(1-sp/max(1,tot)))} % de los textos visibles traducidos ({sp} quedan en español)') if sp / max(1, tot) < 0.06 else fail(f'Inglés: quedan muchos textos en español ({sp} de {tot})')
+        await ev("setLang('es')"); await pg.wait_for_timeout(150)
+        ok('Vuelve al español sin recargar') if 'Hoy' in await ev("document.querySelector('.nav-item[data-view=today]').innerText") and await ev("$('meal-select').selectedOptions[0].textContent") in ('Comida','Desayuno','Merienda','Cena','Media mañana') else fail('No vuelve al español')
+        code = await ev("packMove()")
+        await ev("localStorage.clear()")
+        await pg.goto('about:blank'); await pg.goto(url + '#bp-move=' + code); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(700)
+        if await ev("!!$('move-ok')"):
+            await ev("$('move-ok').click()"); await pg.wait_for_timeout(300)
+        r = await ev("({d:Object.values(state.days).filter(d=>d.entries.some(e=>e.kind==='food')).length,h:location.hash,w:state.workouts18.length})")
+        ok(f"Mudanza: llegan los datos ({r['d']} días, {r['w']} entrenos)") if r['d'] >= 3 and r['w'] >= 5 and not r['h'] else fail('Mudanza de datos: ' + str(r))
+        check_errs('v59')
         print('6e. v56: app pública, guía, Más, sugerencias')
         await go_url(); await ev("localStorage.clear()"); await pg.reload(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(250)
         r = await ev("({plan:state.plan.length,ctx:state.context,nes:!!state.foods.nesquik,bk:profV().breakfast.enabled,help:!!document.querySelector('#bp-wiz .bp-wiz-help'),welcome:!!document.querySelector('#bp-wiz .bp-welcome'),name:activeProfileName()})")

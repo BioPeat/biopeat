@@ -2,6 +2,8 @@
 
 App de nutrición gratuita con enfoque Ray Peat / Georgi Dinkov, en un solo archivo (`index.html`), publicada con GitHub Pages e instalable en el móvil. Cualquiera puede usarla: la primera vez un asistente la configura y una guía explica cómo se usa.
 
+- **Web de presentación:** `inicio.html` (qué es, cómo instalarla, preguntas, privacidad y aviso legal, en español e inglés).
+- **Idiomas:** español e inglés. Las traducciones están en `I18N_EN` dentro de `index.html`.
 - **Datos:** viven solo en el móvil de cada usuario (sin cuenta ni servidor). Nunca se suben aquí.
 - **Actualizaciones:** al publicar un `index.html` nuevo, a todos los usuarios les sale «Hay una versión nueva».
 - **Sugerencias de usuarios:** llegan solas a una hoja de Google (formulario). Se revisan en `actualizar.html` → Buzón de sugerencias.

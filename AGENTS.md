@@ -65,3 +65,11 @@ Lo usan el Gem de Gemini «BioPeat Dev» y el proyecto de Claude «BioPeat Dev»
 - Iconos: usa `ico(nombre)` (tabla `ICON`, iconos de línea). No uses emojis como iconos principales.
 - La guía de uso es `TOUR` (`showTour(i)`). Si añades una función importante, añade una línea a la guía.
 
+### 8. Idiomas (desde v59)
+- La app está en **español e inglés**. El código y los textos se escriben **en español**; un traductor (`trTree`, `MutationObserver`) cambia en pantalla cada texto por su traducción de **`I18N_EN`** (una línea por texto, justo antes del bloque «v59: idioma»).
+- **Cada texto visible nuevo necesita su línea en `I18N_EN`**: la clave es el texto en español con cada cifra cambiada por `#` y el valor, el inglés con los mismos `#` en el mismo orden. Ej.: `"Faltan # kcal":"# kcal left",`. Para tener esa tabla en el archivo enfocado, pide a Diego que añada la palabra «ingles» al descargarlo.
+- **Nunca** guardes datos traducidos: los momentos de comida (`Desayuno`, `Comida`…) y los valores de los `<select>` siguen en español. Los nombres que escribe el usuario no se traducen.
+- Fechas y números: usa `LOC()` (no `'es-ES'` a mano) en `toLocaleDateString` y `toLocaleString`.
+- Si un texto no debe traducirse, ponle `data-no-tr="1"`.
+- Otras piezas de v59: `startStats()` (GoatCounter, sin cookies), mudanza de datos (`packMove`, `checkMove`, `#bp-move=` en el enlace), `inicio.html` (web, privacidad y aviso legal).
+
