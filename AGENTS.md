@@ -56,8 +56,10 @@ Lo usan el Gem de Gemini «BioPeat Dev» y el proyecto de Claude «BioPeat Dev»
 - Nada de explicaciones largas: 2-5 viñetas, los bloques y cómo probarlo.
 
 ## 7. App pública (desde v56)
-- La usa cualquiera. **Nunca pongas datos de Diego por defecto** (pauta, desayuno, plan de macros, nombre, contexto). `defaults()` es un usuario genérico: sin pauta, sin desayuno ni batido fijos, metas genéricas; el asistente lo configura. Lo de Diego vive solo en sus datos guardados (`useDiegoPlan`, su pauta).
-- Sugerencias de suplementos: solo en `SUPP_CATALOG` (genéricas, enfoque Peat, editables, con su «por qué»). No son recomendaciones médicas.
+- La usa cualquiera. **Nunca pongas datos de Diego en el código** (pauta, desayuno, plan de macros, nombres de días, contexto). `defaults()` es un usuario genérico; el asistente lo configura. Lo de Diego vive solo en sus datos guardados y en CONTEXTO_BIOPEAT.md.
+- **Más** (`HUB`) y el **menú lateral** no repiten funciones: Más = secciones de uso diario; menú = perfiles, informe, sugerencias y el chat de IA fijo abajo.
+- **Comparar nutrientes:** `REF_TABLE` (UE y EE. UU. por sexo) y `refMode`; nunca cambian las metas del usuario.
+- Sugerencias de suplementos: solo en `SUPP_CATALOG` (`g:'peat'` o `g:'comun'`, con su «por qué»; si Peat lo desaconsejaba, dilo). «Lo básico de Peat»: `PEAT_BASIC`, `PEAT_BREAKFAST`, `PEAT_SHAKE`. No son recomendaciones médicas.
 - Textos para cualquier persona: tú/usted genérico, sin «tu pauta de K2» ni cifras de Diego.
 - Una mano: las ventanas son hojas inferiores en el móvil; los accesos nuevos van al centro **Más** (`HUB`) y no a la parte de arriba de la pantalla. Botones de al menos 44 px.
 - Iconos: usa `ico(nombre)` (tabla `ICON`, iconos de línea). No uses emojis como iconos principales.

@@ -1,12 +1,14 @@
 # CONTEXTO · BioPeat
 
-**Versión actual: v57** (revisión de datos 25)
+**Versión actual: v58** (revisión de datos 26)
 
 Documento maestro. Lo lee la IA que programa BioPeat (Gemini «BioPeat Dev» o Claude). Los cambios se entregan en bloques `@@@` y los aplica y prueba `actualizar.html`. **Se actualiza sustituyendo el texto de cada apartado, nunca añadiendo apartados nuevos al final.** Si algo de aquí contradice al código, manda el código; avisa de la diferencia.
 
 ## 0. App pública (desde v56)
-- **BioPeat la usa cualquiera.** Diego es el creador y el usuario principal, pero nada suyo sale por defecto: un usuario nuevo empieza con `defaults()` genérico (sin pauta, sin desayuno ni batido fijos, metas genéricas, sin Nesquik ni Haribo) y el **asistente** lo configura (bienvenida, ayuda en cada paso y sugerencias de suplementos de `SUPP_CATALOG`). Al terminar sale la **guía de uso** (`TOUR`, siempre en Más → Guía de uso).
-- **Más** (barra inferior) es el centro de todo, en botones grandes (`HUB`): Nutrientes, Tu pauta, Gimnasio, Ajustes, Perfiles, Pregunta a tu IA, Informe para IA, Copia de seguridad, Sugerir una mejora y Guía de uso.
+- **BioPeat la usa cualquiera.** Diego es el creador y el usuario principal, pero **nada suyo está en el código** (desde v58): ni su pauta, ni su desayuno o batido, ni su plan de macros, ni sus nombres de días. Todo eso vive solo en sus datos guardados y se describe en los apartados 1-4 para que la IA lo conozca. Un usuario nuevo: un usuario nuevo empieza con `defaults()` genérico (sin pauta, sin desayuno ni batido fijos, metas genéricas, sin Nesquik ni Haribo) y el **asistente** lo configura (bienvenida, ayuda en cada paso y sugerencias de suplementos de `SUPP_CATALOG`). Al terminar sale la **guía de uso** (`TOUR`, siempre en Más → Guía de uso).
+- **Más** (barra inferior, `HUB`): Nutrientes, Tu pauta, Gimnasio, Ajustes, Copia de seguridad y Guía de uso, más un botón ancho que abre el **menú lateral** (logo): Perfiles, Exportar datos para IA y Sugerir una mejora, con **Pregunta a tu IA siempre visible abajo**. No se repiten funciones entre los dos.
+- **Asistente, punto de partida** (primera vez y perfil nuevo): «Empezar de cero» o «Lo básico de Peat» (`PEAT_BREAKFAST`, `PEAT_SHAKE` y suplementos `PEAT_BASIC`: D3, K2, E, magnesio y glicina, que se pueden quitar). Suplementos: `SUPP_CATALOG` en dos grupos (`g:'peat'` y `g:'comun'`, con la postura de Peat si los desaconsejaba) y «Añadir otro a mano».
+- **Nutrientes → Comparar:** mis metas, referencia UE (EFSA) o EE. UU. (NIH) por sexo (`REF_TABLE`, `refMode`); solo cambia la comparación, nunca las metas.
 - **Una mano:** en el móvil las ventanas son hojas que salen desde abajo (se cierran deslizando hacia abajo), «Añadir» es el botón central elevado, y deslizar el recuadro de la fecha cambia de día.
 - **Sugerencias de usuarios:** Más → Sugerir una mejora las envía (sin cuentas) al formulario de Google de Diego (`FORM_URL`, `FORM_FIELDS`: tipo, título, descripción, versión) con `fetch` `no-cors`; llegan a una hoja de Google. Diego las ve en `actualizar.html` → Buzón (lee la hoja publicada en CSV), marca las que quiere, copia la petición para la IA y las marca como «Hecha».
 - **Actualizaciones:** cada `index.html` publicado llega a todos los usuarios (aviso «Hay una versión nueva»). Los datos de cada uno no se tocan.
@@ -21,7 +23,7 @@ Documento maestro. Lo lee la IA que programa BioPeat (Gemini «BioPeat Dev» o C
 - Gustos: móvil primero, muy visual, gráficos que se tocan, porcentajes que pasan del 100 %, pocas pantallas, añadir con un toque (se puede deshacer). No soporta que se diga «hecho» o «comprobado» si no lo está.
 
 ## 2. Metas del día
-Se calculan siempre al vuelo con `targetFor(fecha)`. Orden de prioridad: ajuste manual de ese día → metas globales («todos los días» o «entreno/descanso») → plan del perfil. Diego usa su **plan personal** (`state.v54.useDiegoPlan`, tabla de abajo). Los demás perfiles calculan proteína y grasa con `GOAL_TYPES` (g/kg según objetivo, sexo y día de entreno o descanso) y la energía con la TMB × el FAF del tipo de día (`DAY_TYPES`). Mujer: TMB −161 en vez de +5, **proteína mínima 80 g** y un suelo de calorías para no quedarse corta.
+Se calculan siempre al vuelo con `targetFor(fecha)`. Orden de prioridad: ajuste manual de ese día → metas globales («todos los días» o «entreno/descanso») → plan del perfil. Desde v58 el plan de Diego (tabla de abajo) está guardado en **sus metas «entreno / descanso»** (`upgradeTo26` lo pasó una vez); ya no hay plan personal en el código. Los demás perfiles calculan proteína y grasa con `GOAL_TYPES` (g/kg según objetivo, sexo y día de entreno o descanso) y la energía con la TMB × el FAF del tipo de día (`DAY_TYPES`). Mujer: TMB −161 en vez de +5, **proteína mínima 80 g** y un suelo de calorías para no quedarse corta.
 
 | Día | Actividad | FAF | Proteína | Grasa | Aspirina |
 |---|---|---|---|---|---|
@@ -74,7 +76,7 @@ Se guardan por perfil en `state.v54.breakfast` y `state.v54.shake` y se editan e
 - **No inventes cifras atribuidas a Peat.** Donde no hay cifra suya, se usa la meta personal.
 - **Mujer:** la tabla `OPT_FEMALE` cambia solo lo que tiene fuente (se aplica con `applySexOpt()` en cada `render()`): hierro tope 18 mg (oficial; Peat: el estrógeno hace absorber más hierro, «From PMS to Menopause»), zinc 8 mg (oficial), magnesio 400 mg (Peat/Dinkov; «Nutrition for Women»: corta los calambres menstruales), sodio sin restringir (edema premenstrual), y notas de Peat en vitamina A, E, B2 y calcio. `femaleWhy()` añade una frase de Peat para mujer en los equilibrios. **Peat no dio cifras distintas para mujer en PUFA, Ca:P ni C:P: son las mismas (4 g, 1,2 y 3).** Metas de partida de un perfil nuevo: `NEW_PROFILE_MICRO`.
 
-## 6. Qué hace la app (v57)
+## 6. Qué hace la app (v58)
 Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más** (no cambiar el orden) y botón redondo de **Gimnasio**.
 - **Menú lateral** (tocar el logo): Perfiles (tocar = usar; ⚙ = asistente; ✎ renombrar; × borrar; «+ Crear perfil nuevo»), Exportar datos para IA y Pregunta a tu IA. La lista se desplaza sola sin mover la página.
 - **Asistente de perfil** (`wizOpen({mode})`, modos `first` / `new` / `edit`): 5 pasos (Tú · Objetivo · Comidas · Suplementos · Resumen con las metas de un día de entreno y uno de descanso). Sale solo al empezar de cero (con botón para restaurar una copia). Al crear un perfil se puede empezar de cero o copiar la despensa y la pauta del perfil activo. Al guardar, las dosis y aportes de la pauta se conservan (si cambias la dosis, el aporte se escala).
@@ -116,6 +118,7 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **Prohibido** añadir otro `<script>` o «envolver» funciones (`x=function…`, `window.x=…`): la v54 lo hizo y el perfil de mujer volvía a hombre al recargar. `smoke.py` lo detecta y falla.
 
 ## 10. Historial (una línea por versión, máximo 8)
+- **v58 · Copilot:** nada de Diego en el código (su plan de macros pasa a sus metas con `upgradeTo26`; fuera `PLAN`, `DIEGO_V54`, `DEF_P`, Nesquik y Haribo); «Lo básico de Peat» al crear perfil; plantillas Peat de desayuno y batido; 19 suplementos en dos grupos + añadir a mano; comparar nutrientes con UE/EE. UU.; chat de IA fijo abajo del menú y «Más» sin repetir el menú.
 - **v57 · Copilot:** sugerencias por formulario de Google (sin cuentas) y buzón que lee la hoja; IA de cualquier proveedor (Gemini, ChatGPT, Claude, OpenRouter, compatible) con `callChat()` y elección de modelo; gimnasio con el CSV de cualquier app (Hevy, Strong, Fitbod, FitNotes, genérico) con detección y formato recordado.
 - **v56 · Copilot:** app pública: sin datos de Diego por defecto; asistente con bienvenida, ayuda por paso y sugerencias de suplementos Peat (`SUPP_CATALOG`); guía de uso (`TOUR`); centro Más (`HUB`) con iconos propios (`ICON`/`ico()`); buzón de sugerencias (GitHub issues `[BioPeat]`); hojas inferiores, botón Añadir central y gestos de una mano; aspecto pulido; manifest con accesos directos; `actualizar.html` con archivo enfocado, cambios por partes y buzón.
 - **v55 · Copilot:** perfiles integrados en el script principal (sin parches); el perfil de mujer se conserva al recargar; asistente rehecho (5 pasos, resumen, conserva la posición, copia despensa y pauta, sale al empezar de cero) que ya no cambia las dosis de la pauta ni rompe el historial; repara el magnesio estropeado por v54; cifras y notas de mujer con fuente Peat; menú lateral con lista desplazable y chat plegable; `smoke.py` prueba perfiles y prohíbe parches.
@@ -123,7 +126,6 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **v50 · Copilot:** micronutrientes con una sola tabla de zonas ideales (`OPT`); depósito de 7 días sin «parcial» falsos; «¿Qué me falta?» rehecho; arreglos de fósforo, selenio/yodo/A, colores de la semana y «Ca:P 1,10».
 - **v49 · Copilot:** grasa saturada ×0,5 para la meta de grasa (`SAT_W`); depósitos sin el día abierto; `actualizar.html` más tolerante y con errores localizados; GitHub actualiza CONTEXTO y MAPA solo.
 - **v43 · Copilot:** IA con reintentos si Gemini está saturado; aviso de versión nueva; restaurar copia con resumen; prueba automática en GitHub.
-- **v42 · Copilot:** logo nuevo B+P dorado sobre azul noche, iconos PNG del móvil y tema azul noche y dorado.
 
 ## 11. Pendiente / ideas
 - Unificar las capas de CSS sin cambiar el aspecto (hay reglas repetidas de varias versiones).
