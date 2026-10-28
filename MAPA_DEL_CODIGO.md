@@ -492,51 +492,51 @@ Generado con `python tools/mapa.py`. No lo edites a mano. Las líneas son orient
 - L9521 `showTour(i=0)`
 - L9533 constante `HUB` — ----- Centro «Más»: todo a un toque del pulgar -----
 - L9534 `hubAction(v)`
-- L9543 constante `FORM_URL` — Llegan solas a una hoja de Google (formulario del creador de la app). Sin cuentas ni datos personales.
-- L9544 constante `FORM_FIELDS`
-- L9545 constante `FB_CATS`
-- L9547 `openFeedback()`
-- L9551 `feedbackData()`
-- L9558 `feedbackText()`
-- L9559 `sendFeedback()`
-- L9572 `shareFeedback()`
-- L9589 `bindSheetSwipe()` — Deslizar la ventana hacia abajo desde su cabecera la cierra.
-- L9596 `bindDateSwipe()` — Deslizar el recuadro de la fecha a izquierda o derecha cambia de día.
+- L9542 constante `FORM_URL` — Llegan solas a una hoja de Google (formulario del creador de la app). Sin cuentas ni datos personales.
+- L9543 constante `FORM_FIELDS`
+- L9544 constante `FB_CATS`
+- L9546 `openFeedback()`
+- L9550 `feedbackData()`
+- L9557 `feedbackText()`
+- L9558 `sendFeedback()`
+- L9571 `shareFeedback()`
+- L9588 `bindSheetSwipe()` — Deslizar la ventana hacia abajo desde su cabecera la cierra.
+- L9595 `bindDateSwipe()` — Deslizar el recuadro de la fecha a izquierda o derecha cambia de día.
 
 ### v59: traducciones al inglés (una por línea; el texto en español con # en lugar de las cifras)
 
-- L9604 constante `I18N_EN`
+- L9603 constante `I18N_EN`
 
 ### v59: idioma (español / inglés)
 
-- L10927 constante `NUM_RE` — Para un texto nuevo: añade su línea a I18N_EN (está justo encima). Lo que no esté en la tabla se queda en español.
-- L10928 constante `WD_EN`
-- L10929 `trOne(s)`
-- L10937 constante `TR_VERB` — Plantillas para etiquetas con un nombre dentro («Editar Leche entera»). Solo se usan si el nombre se traduce o en atributos (aria-label…).
-- L10938 constante `TR_TPL`
-- L10954 `trLower(s)`
-- L10955 `trTpl(s,attr)`
-- L10956 `trText(s,attr=false)`
-- L10962 `trNode(n)`
-- L10976 `trEl(el)`
-- L10984 `trTree(root)`
-- L10993 `untrTree(root)` — Vuelve al español sin recargar: restaura los textos originales guardados.
-- L11004 `setLang(l,quiet)`
-- L11016 `langPickerHTML()`
+- L10926 constante `NUM_RE` — Para un texto nuevo: añade su línea a I18N_EN (está justo encima). Lo que no esté en la tabla se queda en español.
+- L10927 constante `WD_EN`
+- L10928 `trOne(s)`
+- L10936 constante `TR_VERB` — Plantillas para etiquetas con un nombre dentro («Editar Leche entera»). Solo se usan si el nombre se traduce o en atributos (aria-label…).
+- L10937 constante `TR_TPL`
+- L10953 `trLower(s)`
+- L10954 `trTpl(s,attr)`
+- L10955 `trText(s,attr=false)`
+- L10961 `trNode(n)`
+- L10975 `trEl(el)`
+- L10983 `trTree(root)`
+- L10992 `untrTree(root)` — Vuelve al español sin recargar: restaura los textos originales guardados.
+- L11003 `setLang(l,quiet)`
+- L11015 `langPickerHTML()`
 
 ### v59: estadísticas sin cookies (GoatCounter), solo en la web publicada
 
-- L11025 constante `GC_CODE`
-- L11026 `startStats()`
+- L11024 constante `GC_CODE`
+- L11025 `startStats()`
 
 ### v59: mudanza de datos a otra dirección web (por ejemplo, un dominio propio)
 
-- L11036 constante `MOVE_TAG` — Los datos viven en el navegador y van ligados a la dirección. Esto los empaqueta, comprimidos, en el enlace de la nueva dirección.
-- L11037 `packMove()`
-- L11045 `unpackMove(code)`
-- L11054 `moveData()`
-- L11064 `takeMoveCode()` — Se lee y se quita del enlace al arrancar (antes de abrir ninguna ventana, para que «Atrás» no lo devuelva).
-- L11070 `checkMove(code)`
+- L11035 constante `MOVE_TAG` — Los datos viven en el navegador y van ligados a la dirección. Esto los empaqueta, comprimidos, en el enlace de la nueva dirección.
+- L11036 `packMove()`
+- L11044 `unpackMove(code)`
+- L11053 `moveData()`
+- L11063 `takeMoveCode()` — Se lee y se quita del enlace al arrancar (antes de abrir ninguna ventana, para que «Atrás» no lo devuelva).
+- L11069 `checkMove(code)`
 
 ### Arranque
 
