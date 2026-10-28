@@ -327,7 +327,7 @@ $('dl-focus').onclick=()=>{if(!current)return alert('Primero carga index.html');
 // ===== Cambios por partes: la siguiente parte se aplica encima del resultado anterior =====
 $('chain').onclick=()=>{if(!result)return;current=result;parts++;prevBlocks=[];try{sessionStorage.removeItem('bp_blocks');}catch(e){}$('patch').value='';$('res').hidden=true;$('cur').innerHTML='Versión publicada: <b>v'+ver(pubText)+'</b> · ahora vas por la <b>parte '+parts+'</b>, encima de las anteriores. Pega la siguiente parte de la IA en el Paso 2.';$('patch').scrollIntoView({behavior:'smooth',block:'center'});};
 // ===== Buzón de sugerencias: hoja de Google publicada como CSV (formulario de la app) =====
-const FB_CSV='https://docs.google.com/spreadsheets/d/e/2PACX-1vTMz1t8Pr2gicr7-gKpGmp1CSbxTutV-AX-_KiG1zGIcBJRrsJyypEook7qJBoIOSb5O78BcxzehPNY/pub?output=csv';
+const FB_CSV='https://docs.google.com/spreadsheets/d/e/2PACX-1vSwD4W1KPweTsespm7Hn0BabvnxNcdjsDp-DWee7nChM0_AwPWkwfoad33v22d7xNWreejlLf2S6Ulp/pub?gid=355236926&single=true&output=csv';
 const escH=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function csvRows(t){const rows=[];let row=[],cell='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(c==='"'){if(q&&t[i+1]==='"'){cell+='"';i++;}else q=!q;}else if(c===','&&!q){row.push(cell);cell='';}else if((c==='\n'||c==='\r')&&!q){if(c==='\r'&&t[i+1]==='\n')i++;row.push(cell);rows.push(row);row=[];cell='';}else cell+=c;}if(cell||row.length){row.push(cell);rows.push(row);}return rows.filter(r=>r.some(x=>x.trim()));}
 let fbItems=[],fbAll=[];
@@ -336,13 +336,13 @@ const fbKey=i=>i.when+'|'+i.title;
 function drawFb(){
   const done=new Set(fbDone()),show=$('fb-showdone').checked;
   fbItems=fbAll.filter(i=>show||!done.has(fbKey(i)));
-  $('fb-list').innerHTML=fbItems.length?fbItems.map((i,k)=>'<label class="fb-item"><input type="checkbox" data-fb="'+k+'"><span><b>'+escH(i.title)+'</b><small>'+escH(i.cat)+' · '+escH(i.when)+(done.has(fbKey(i))?' · ya hecha':'')+'</small><em>'+escH(i.text.slice(0,500))+'</em><button type="button" class="btn slate" style="min-height:36px;margin:6px 0 0;font-size:13px" data-fbdone="'+k+'">'+(done.has(fbKey(i))?'Volver a pendientes':'✓ Hecha o descartada')+'</button></span></label>').join(''):'<p class="muted">No hay sugerencias pendientes.</p>';
+  $('fb-list').innerHTML=fbItems.length?fbItems.map((i,k)=>'<label class="fb-item"><input type="checkbox" data-fb="'+k+'"><span><b>'+escH(i.title)+'</b><small>'+escH(i.cat)+' · '+escH(i.when)+(i.origin?' · vía '+escH(i.origin):'')+(done.has(fbKey(i))?' · ya hecha':'')+'</small><em>'+escH(i.text.slice(0,500))+'</em><button type="button" class="btn slate" style="min-height:36px;margin:6px 0 0;font-size:13px" data-fbdone="'+k+'">'+(done.has(fbKey(i))?'Volver a pendientes':'✓ Hecha o descartada')+'</button></span></label>').join(''):'<p class="muted">No hay sugerencias pendientes.</p>';
 }
 $('fb-load').onclick=async()=>{
   $('fb-list').innerHTML='<p class="muted">Cargando…</p>';
   try{const r=await fetch(FB_CSV+'&t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('Google respondió '+r.status);
     const rows=csvRows(await r.text());rows.shift();
-    fbAll=rows.map(c=>({when:c[0]||'',cat:c[1]||'',title:c[2]||'(sin título)',text:c[3]||'',version:c[4]||''})).reverse();
+    fbAll=rows.map(c=>({when:c[0]||'',cat:c[1]||'',title:c[2]||'(sin título)',text:c[3]||'',version:c[4]||'',origin:c[5]||''})).reverse();
     drawFb();
   }catch(e){$('fb-list').innerHTML='<p class="bad">No se pudieron cargar ('+escH(e.message)+'). Abre tu hoja de Google y copia las sugerencias en el recuadro de abajo.</p>';}
 };

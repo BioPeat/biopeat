@@ -9538,10 +9538,9 @@ function hubAction(v){
   if(v==='@tour')showTour(0);
 }
 onClick(e=>{const t=e.target.closest('[data-hub]');if(t)hubAction(t.dataset.hub);});
-// ----- Sugerencias de los usuarios: llegan como «issues» a GitHub (o por correo si FEEDBACK_EMAIL tiene una dirección) -----
 // Llegan solas a una hoja de Google (formulario del creador de la app). Sin cuentas ni datos personales.
-const FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLSfSVqbN-JWebGyJEW4aNnX5JFA9PY1mHxstl3skzlPo-gTOQA/formResponse';
-const FORM_FIELDS={tipo:'entry.950920296',titulo:'entry.2101093182',texto:'entry.1237254824',version:'entry.276234508'};
+const FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLSezF_3qlwpOTJcd60v3kW0VMCpEr0YeWUUdB4Ue_3QQkC4u0Q/formResponse';
+const FORM_FIELDS={tipo:'entry.1477350599',titulo:'entry.244687501',texto:'entry.2108934553',version:'entry.1278042396',origen:'entry.551104593'};
 const FB_CATS=[['idea','✨ Nueva función'],['mejora','🛠 Cambio o mejora'],['peat','🥛 Idea Peat o de nutrición'],['error','🐞 Algo falla']];
 let fbCat='idea',fbSending=false;
 function openFeedback(){
@@ -9553,15 +9552,15 @@ function feedbackData(){
   if(t.length<3||d.length<10)throw Error('Escribe un título y una descripción un poco más larga.');
   const dev=matchMedia('(pointer:coarse)').matches?'móvil':'ordenador';
   const orig=$('fb-origin')?.value||'';
-  return {cat,title:t,text:d+(orig?'\n\n[Origen: '+orig+']':''),version:$('fb-tech').checked?APP_VERSION+' · '+dev+' · '+navigator.userAgent.slice(0,140):APP_VERSION};
+  return {cat,title:t,text:d,origin:orig,version:$('fb-tech').checked?APP_VERSION+' · '+dev+' · '+navigator.userAgent.slice(0,140):APP_VERSION};
 }
-function feedbackText(){const f=feedbackData();return {title:'[BioPeat] '+f.cat+': '+f.title,body:'Tipo: '+f.cat+'\n\n'+f.text+'\n\n---\nVersión: '+f.version};}
+function feedbackText(){const f=feedbackData();return {title:'[BioPeat] '+f.cat+': '+f.title,body:'Tipo: '+f.cat+'\n\n'+f.text+(f.origin?'\n\nOrigen: '+f.origin:'')+'\n\n---\nVersión: '+f.version};}
 async function sendFeedback(){
   if(fbSending)return;
   const f=feedbackData(),last=Number(prefs.get('bp_fb_last'))||0;
   if(Date.now()-last<30000)throw Error('Espera unos segundos antes de enviar otra sugerencia.');
   if(navigator.onLine===false)throw Error('Sin conexión: envíala cuando tengas internet.');
-  const body=new URLSearchParams({[FORM_FIELDS.tipo]:f.cat,[FORM_FIELDS.titulo]:f.title,[FORM_FIELDS.texto]:f.text,[FORM_FIELDS.version]:f.version});
+  const body=new URLSearchParams({[FORM_FIELDS.tipo]:f.cat,[FORM_FIELDS.titulo]:f.title,[FORM_FIELDS.texto]:f.text,[FORM_FIELDS.version]:f.version,[FORM_FIELDS.origen]:f.origin||''});
   fbSending=true;const btn=$('fb-send');if(btn){btn.disabled=true;btn.textContent='Enviando…';}
   try{await fetch(FORM_URL,{method:'POST',mode:'no-cors',body,credentials:'omit'});}
   catch(e){throw Error('No se pudo enviar. Revisa tu conexión o usa «Compartir o copiar el texto».');}
