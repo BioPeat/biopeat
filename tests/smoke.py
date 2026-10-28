@@ -297,7 +297,7 @@ async def browser_checks():
         print('6f. v57: sugerencias por formulario, IA de cualquier proveedor, gimnasio de cualquier app')
         await ev("openFeedback()")
         await ev("$('fb-title').value='Recetas';$('fb-text').value='Poder guardar recetas con varios ingredientes';$('fb-send').click()"); await pg.wait_for_timeout(500)
-        ok_form = bool(form_posts) and 'entry.2101093182=Recetas' in form_posts[-1] and 'entry.950920296=' in form_posts[-1] and 'entry.276234508=v' in form_posts[-1]
+        ok_form = bool(form_posts) and 'entry.244687501=Recetas' in form_posts[-1] and 'entry.1477350599=' in form_posts[-1] and 'entry.1278042396=v' in form_posts[-1]
         ok('Sugerencia enviada al formulario de Google') if ok_form and await ev("!!$('fb-again')") else fail('La sugerencia no llega al formulario: ' + str(form_posts[-1:])[:200])
         await ev("$('modal').close()")
         await ev("$('ai-mode').value='openai';$('ai-mode').dispatchEvent(new Event('change'));$('gemini-key').value='sk-prueba';$('gemini-model').value='';syncAI()")
