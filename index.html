@@ -6145,28 +6145,38 @@ body.bp-light .lg.ok{background:#d1fae5!important;border-color:#059669!important
 body.bp-light .lg.low{background:#fef3c7!important;border-color:#d97706!important}
 body.bp-light .lg.high{background:#ede9fe!important;border-color:#7c3aed!important}
 body.bp-light .lg.none{background:#e2e8f0!important;border-color:#94a3b8!important}
-/* v65: logo en modo claro, botón gym activo/visible, pie de guía en oscuro, gestos y arrastre */
+/* v66: logo fijo en cabecera al subir, transparencia al hacer scroll, botón gym claro/oscuro y arrastre táctil */
+#bp-menu-btn,#gym-access{touch-action:none!important;user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none!important}
+body:not(.bp-light) .brand-icon{background:#111f33!important}
+body:not(.bp-light) .brand-icon #bp-bg{fill:url(#bpBg)!important}
+body:not(.bp-light) .brand-icon #bp-rim{stroke:url(#bpRim)!important}
+body:not(.bp-light) .brand-icon #bp-mark path{stroke:url(#bpGold)!important}
+body:not(.bp-light) .brand-icon #bp-mark circle{fill:url(#bpGold)!important}
 body.bp-light .brand-icon{background:#fffbeb!important}
 body.bp-light .brand-icon #bp-bg{fill:#fffbeb!important}
-body.bp-light .brand-icon #bp-glow{opacity:.25}
-body.bp-light .brand-icon #bp-rim{stroke:#f59e0b!important;stroke-opacity:.55}
+body.bp-light .brand-icon #bp-glow{opacity:.2}
+body.bp-light .brand-icon #bp-rim{stroke:#f59e0b!important;stroke-opacity:.6}
 body.bp-light .brand-icon #bp-mark path{stroke:#b45309!important}
 body.bp-light .brand-icon #bp-mark circle{fill:#b45309!important}
-body.bp-light .brand-icon,body.bp-light #bp-menu-btn:not(.scrolled){box-shadow:0 3px 10px rgba(180,83,9,.15),0 0 0 1.5px #f59e0b66!important}
-body.bp-light #bp-menu-btn.scrolled{box-shadow:0 6px 16px rgba(15,23,42,.18),0 0 0 2px #f59e0b!important}
-#gym-access,#gym-access:hover,#gym-access:focus,#gym-access:active{width:50px!important;height:50px!important;min-width:50px!important;min-height:50px!important;bottom:calc(78px + env(safe-area-inset-bottom))!important;background:#162133!important;color:#f6dc9a!important;border:1.5px solid #e9bf5c77!important;box-shadow:0 6px 18px rgba(0,0,0,.45)!important;opacity:1!important;pointer-events:auto!important;transform:none!important}
+#bp-menu-btn:not(.scrolled):not(.bp-dragging){position:relative!important;top:auto!important;left:auto!important;width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;border-radius:13px!important;opacity:1!important;filter:none!important;transform:none!important}
+body.bp-light .brand-icon,body.bp-light #bp-menu-btn:not(.scrolled){box-shadow:0 3px 10px rgba(180,83,9,.15),0 0 0 1.5px #f59e0b88!important}
+#bp-menu-btn.scrolled:not([aria-expanded=true]):not(.bp-dragging){opacity:.75!important;filter:none!important;transform:none!important;box-shadow:0 4px 16px #07111f99,0 0 0 1.5px #f6dc9aaa!important}
+body.bp-light #bp-menu-btn.scrolled:not([aria-expanded=true]):not(.bp-dragging){opacity:.75!important;filter:none!important;transform:none!important;box-shadow:0 6px 16px rgba(15,23,42,.18),0 0 0 2px #f59e0b!important}
+.header-bar:has(#bp-menu-btn:not(.scrolled)) .brand{padding-left:0!important}
+.header-bar:has(#bp-menu-btn.scrolled:not(.bp-custom-pos)) .brand{padding-left:58px!important}
+.header-bar:has(#bp-menu-btn.scrolled.bp-custom-pos) .brand{padding-left:0!important}
+#gym-access,#gym-access:hover,#gym-access:focus,#gym-access:active{width:50px!important;height:50px!important;min-width:50px!important;min-height:50px!important;bottom:calc(78px + env(safe-area-inset-bottom))!important;background:#162133!important;color:#f6dc9a!important;border:1.5px solid #e9bf5c88!important;box-shadow:0 6px 18px rgba(0,0,0,.45)!important;opacity:1!important;pointer-events:auto!important;transform:none!important}
 #gym-access svg{width:22px!important;height:22px!important}
-#gym-access.active,#gym-access.active:hover,#gym-access.active:focus{background:#e9bf5c!important;color:#0f172a!important;border-color:#f6dc9a!important;box-shadow:0 0 0 3px rgba(233,191,92,.3),0 6px 18px rgba(0,0,0,.4)!important}
-body.bp-light #gym-access,body.bp-light #gym-access:hover,body.bp-light #gym-access:focus,body.bp-light #gym-access:active{background:#1e293b!important;color:#f8fafc!important;border:1.5px solid #0f172a!important;box-shadow:0 6px 18px rgba(15,23,42,.25),0 0 0 2px #ffffff!important}
-body.bp-light #gym-access.active,body.bp-light #gym-access.active:hover,body.bp-light #gym-access.active:focus{background:#f59e0b!important;color:#0f172a!important;border-color:#b45309!important;box-shadow:0 0 0 3px rgba(245,158,11,.3),0 6px 16px rgba(180,83,9,.22)!important}
+#gym-access.active,#gym-access.active:hover,#gym-access.active:focus{background:#e9bf5c!important;color:#0f172a!important;border:2px solid #fbe7a6!important;box-shadow:0 0 0 3px rgba(233,191,92,.3),0 6px 18px rgba(0,0,0,.4)!important}
+body.bp-light #gym-access,body.bp-light #gym-access:hover,body.bp-light #gym-access:focus,body.bp-light #gym-access:active{background:#fffbeb!important;color:#b45309!important;border:2px solid #f59e0b!important;box-shadow:0 6px 18px rgba(180,83,9,.2),0 0 0 2px #ffffff!important}
+body.bp-light #gym-access.active,body.bp-light #gym-access.active:hover,body.bp-light #gym-access.active:focus{background:#f59e0b!important;color:#ffffff!important;border:2px solid #b45309!important;box-shadow:0 0 0 3px rgba(245,158,11,.32),0 6px 16px rgba(180,83,9,.25)!important}
 .bp-wiz-steps,.bp-wiz-foot{background:#131d30!important;border-color:var(--line)!important}
 .bp-tour+.bp-wiz-foot{background:transparent!important;border-top:0!important;padding-top:6px!important}
 body:not(.bp-light) .supp-chip{background:var(--surf)!important;border-color:#e9bf5c55!important;color:#f8fafc!important}
 body:not(.bp-light) .supp-chip.off{background:transparent!important;border-color:var(--line2)!important}
 body:not(.bp-light) .trend-week,body:not(.bp-light) .week-column,body:not(.bp-light) .cs-top>div,body:not(.bp-light) .wk-day,body:not(.bp-light) .wk-tile,body:not(.bp-light) .wk-chip,body:not(.bp-light) .rd-head,body:not(.bp-light) .gap-card,body:not(.bp-light) .gap-chip{background:var(--surf)!important;border-color:var(--line)!important}
 #bp-menu-btn.bp-custom-pos,#gym-access.bp-custom-pos{position:fixed!important;right:auto!important;bottom:auto!important;margin:0!important;z-index:60!important}
-.header-bar:has(#bp-menu-btn.bp-custom-pos) .brand{padding-left:0!important}
-.bp-dragging{transform:scale(1.12)!important;box-shadow:0 14px 30px rgba(0,0,0,.45),0 0 0 2.5px #e9bf5c!important;transition:none!important;user-select:none!important;touch-action:none!important}
+.bp-dragging,#bp-menu-btn.bp-dragging,#gym-access.bp-dragging{opacity:1!important;transform:scale(1.14)!important;box-shadow:0 14px 30px rgba(0,0,0,.45),0 0 0 3px #e9bf5c!important;transition:none!important}
 </style><!--FIN-CSS--><meta content="#16243a" name="theme-color"/><link href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22 aria-hidden=%22true%22%3E%3Cdefs%3E%3ClinearGradient id=%22bpBg%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22#1b2d47%22/%3E%3Cstop offset=%22.55%22 stop-color=%22#111f33%22/%3E%3Cstop offset=%221%22 stop-color=%22#0a1322%22/%3E%3C/linearGradient%3E%3CradialGradient id=%22bpGlow%22 cx=%22.3%22 cy=%22.22%22 r=%22.8%22%3E%3Cstop offset=%220%22 stop-color=%22#f3cf7a%22 stop-opacity=%22.16%22/%3E%3Cstop offset=%221%22 stop-color=%22#f3cf7a%22 stop-opacity=%220%22/%3E%3C/radialGradient%3E%3ClinearGradient id=%22bpGold%22 gradientUnits=%22userSpaceOnUse%22 x1=%22150%22 y1=%2284%22 x2=%22380%22 y2=%22436%22%3E%3Cstop offset=%220%22 stop-color=%22#fbe7a6%22/%3E%3Cstop offset=%22.42%22 stop-color=%22#e9bf5c%22/%3E%3Cstop offset=%221%22 stop-color=%22#b9842a%22/%3E%3C/linearGradient%3E%3ClinearGradient id=%22bpRim%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22#f3cf7a%22 stop-opacity=%22.55%22/%3E%3Cstop offset=%22.5%22 stop-color=%22#f3cf7a%22 stop-opacity=%22.08%22/%3E%3Cstop offset=%221%22 stop-color=%22#f3cf7a%22 stop-opacity=%22.35%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect id=%22bp-bg%22 width=%22512%22 height=%22512%22 rx=%22116%22 fill=%22url(#bpBg)%22/%3E%3Crect id=%22bp-glow%22 width=%22512%22 height=%22512%22 rx=%22116%22 fill=%22url(#bpGlow)%22/%3E%3Crect id=%22bp-rim%22 x=%226%22 y=%226%22 width=%22500%22 height=%22500%22 rx=%22110%22 fill=%22none%22 stroke=%22url(#bpRim)%22 stroke-width=%223%22/%3E%3Cg id=%22bp-mark%22 transform=%22translate(256 256) scale(1) translate(-256 -256) translate(-6 0)%22%3E%3Cpath d=%22M138 90H280A70 70 0 0 1 306 225A100 100 0 0 1 278 422H138Z%22 fill=%22none%22 stroke=%22url(#bpGold)%22 stroke-width=%2222%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M204 372V160H262A46 46 0 0 1 262 252H204%22 fill=%22none%22 stroke=%22url(#bpGold)%22 stroke-width=%2242%22 stroke-linejoin=%22round%22/%3E%3Ccircle cx=%22282%22 cy=%22342%22 r=%2215%22 fill=%22url(#bpGold)%22/%3E%3C/g%3E%3C/svg%3E" rel="icon"/><link href="icon-maskable-512.png?v=42" rel="apple-touch-icon"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="yes" name="mobile-web-app-capable"/><meta content="BioPeat" name="apple-mobile-web-app-title"/><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/><link href="manifest.json" rel="manifest"/></head><body>
 <button class="date-pill" hidden id="date-pill" type="button"></button><div class="container">
 <header class="card header-bar"><div class="brand"><button aria-controls="bp-drawer" aria-expanded="false" aria-label="Abrir menú de BioPeat" class="brand-icon bp-logo-btn" data-drawer-toggle="1" id="bp-menu-btn" title="Menú de BioPeat" type="button"><svg viewBox="0 0 512 512" aria-hidden="true"><defs><linearGradient id="bpBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1b2d47"/><stop offset=".55" stop-color="#111f33"/><stop offset="1" stop-color="#0a1322"/></linearGradient><radialGradient id="bpGlow" cx=".3" cy=".22" r=".8"><stop offset="0" stop-color="#f3cf7a" stop-opacity=".16"/><stop offset="1" stop-color="#f3cf7a" stop-opacity="0"/></radialGradient><linearGradient id="bpGold" gradientUnits="userSpaceOnUse" x1="150" y1="84" x2="380" y2="436"><stop offset="0" stop-color="#fbe7a6"/><stop offset=".42" stop-color="#e9bf5c"/><stop offset="1" stop-color="#b9842a"/></linearGradient><linearGradient id="bpRim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3cf7a" stop-opacity=".55"/><stop offset=".5" stop-color="#f3cf7a" stop-opacity=".08"/><stop offset="1" stop-color="#f3cf7a" stop-opacity=".35"/></linearGradient></defs><rect id="bp-bg" width="512" height="512" rx="116" fill="url(#bpBg)"/><rect id="bp-glow" width="512" height="512" rx="116" fill="url(#bpGlow)"/><rect id="bp-rim" x="6" y="6" width="500" height="500" rx="110" fill="none" stroke="url(#bpRim)" stroke-width="3"/><g id="bp-mark" transform="translate(256 256) scale(1) translate(-256 -256) translate(-6 0)"><path d="M138 90H280A70 70 0 0 1 306 225A100 100 0 0 1 278 422H138Z" fill="none" stroke="url(#bpGold)" stroke-width="22" stroke-linejoin="round"/><path d="M204 372V160H262A46 46 0 0 1 262 252H204" fill="none" stroke="url(#bpGold)" stroke-width="42" stroke-linejoin="round"/><circle cx="282" cy="342" r="15" fill="url(#bpGold)"/></g></svg></button><div><span class="badge badge-amber">BioPeat</span><h1><span id="header-user-name">Mi perfil</span> <span class="subtext">/ tu día, sencillo</span></h1><div class="subtext" id="header-profile">Nutrición con contexto</div></div></div><div class="header-actions"><button class="btn bp-theme-toggle" data-no-tr="1" data-theme-toggle="1" id="bp-theme-btn" type="button"></button><span class="pill" id="storage-status">Guardado</span></div></header>
@@ -6227,6 +6237,7 @@ body:not(.bp-light) .trend-week,body:not(.bp-light) .week-column,body:not(.bp-li
  Metas del día: SIEMPRE con targetFor(fecha) / dayGoal(). Nunca guardar metas calculadas dentro de cada día.
  Migraciones: upgradeToNN(s,o) se ejecuta UNA vez: comprobar (Number(o.appRevision)||0)<NN y subir APP_REVISION.
  Registro de cambios (una línea por versión, la más nueva arriba; detalle en CONTEXTO_BIOPEAT.md):
+   v66 · Gemini · Botón de gimnasio claro/activo según scroll, logo fijo en cabecera al subir, transparencia al hacer scroll y arrastre táctil fluido.
    v65 · Gemini · Logo en modo claro, botón de gimnasio fijo/activo, pie de guía limpio, gesto lateral de menú y botones flotantes arrastrables.
    v64 · Gemini · Corrección visual completa en modo claro y oscuro (guía, menú Más, barra inferior sin cortes, batido y contrastes).
    v63 · Gemini · Contraste completo en modo claro para todos los textos, etiquetas, chips, batido, pauta, nutrientes y huecos.
@@ -6331,7 +6342,7 @@ function optLine(k,goal,unit){
 function optRefHTML(k,goal,unit){const z=optInfo(k,goal);return '<p class="progress-note"><b>'+esc(optLine(k,goal,unit))+'.</b> '+esc(z.ref)+'</p>';}
 const microKind=k=>LIMIT.has(k)?'limit':DEPOSIT.has(k)?'deposit':'daily';
 const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'], ACTIVITIES=['Entreno','Descanso','Entreno','Descanso','Entreno','Descanso','Descanso'];
-const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v65', APP_REVISION=26;
+const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v66', APP_REVISION=26;
 let LANG=(()=>{try{const l=localStorage.getItem('bp_lang');if(l==='es'||l==='en')return l;}catch(e){}return /^es\b/i.test(navigator.language||'es')?'es':'en';})();
 const LOC=()=>LANG==='en'?'en-GB':'es-ES';
 const $=id=>document.getElementById(id), own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k), clone=x=>JSON.parse(JSON.stringify(x));
@@ -6575,6 +6586,7 @@ function renderHeader(){
   if($('header-user-name'))$('header-user-name').textContent=activeProfileName();
   if($('bp-prof-pill'))$('bp-prof-pill').textContent=activeProfileName();
   if(typeof syncThemeUI==='function')syncThemeUI();
+  if(typeof syncLogoTheme==='function')syncLogoTheme();
   $('header-profile').innerHTML=sexBadge(getSex())+` · ${fmt(state.profile.weight,1)} kg · ${fmt(state.profile.height)} cm · TMB ${fmt(bmr())} kcal`;
   $('week-days').innerHTML=DAYS.map((d,j)=>{const dt=shift(start,j);return `<button class="day-btn ${dt===date?'active':''}" data-date="${dt}" aria-label="${d} ${dt}" aria-pressed="${dt===date}"><span class="d-name">${['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'][j]}</span><span class="d-sub">${dt.slice(8)} · ${esc(DAY_TYPES[profV().dayTypes[j]]?.name||'')}</span></button>`;}).join('');
   $('day-context').textContent=`${DAYS[i]} · ${activityName(dayGoal().activity??i)} · Objetivo ${fmt(dayGoal().kcal)} kcal`;
@@ -7628,8 +7640,53 @@ function toggleTheme(){
 }
 syncThemeUI();
 onClick(e=>{if(e.target.closest('[data-theme-toggle]'))toggleTheme();});
-let scrollPending=false,bpDragMovedUntil=0;
-function syncDatePill(){const pill=$('date-pill'),card=$('date').closest('section'),r=card.getBoundingClientRect(),today=date===localDate(),mb=$('bp-menu-btn');pill.hidden=r.bottom>0;pill.textContent=(today?'Hoy · ':'Editando · ')+new Date(date+'T12:00:00').toLocaleDateString(LOC(),{weekday:'short',day:'numeric',month:'short'});pill.classList.toggle('past',!today);if(mb)mb.classList.toggle('scrolled',mb.classList.contains('bp-custom-pos')||r.bottom<=0);}
+let scrollPending=false,bpDragMovedUntil=0,bpMenuCustomPos=null,bpCustomAtTop=false;
+try{localStorage.removeItem('bp_pos_menu');localStorage.removeItem('bp_pos_gym');}catch(e){}
+function syncLogoTheme(){
+  const light=document.body.classList.contains('bp-light');
+  const bg=$('bp-bg'),rim=$('bp-rim'),mark=$('bp-mark');
+  if(bg)bg.setAttribute('fill',light?'#fffbeb':'url(#bpBg)');
+  if(rim)rim.setAttribute('stroke',light?'#f59e0b':'url(#bpRim)');
+  if(mark){
+    mark.querySelectorAll('path').forEach(p=>p.setAttribute('stroke',light?'#b45309':'url(#bpGold)'));
+    const c=mark.querySelector('circle');
+    if(c)c.setAttribute('fill',light?'#b45309':'url(#bpGold)');
+  }
+}
+function applyMenuBtnState(){
+  const mb=$('bp-menu-btn'),hbar=document.querySelector('.header-bar');
+  if(!mb||mb.classList.contains('bp-dragging'))return;
+  const hr=hbar?hbar.getBoundingClientRect():null;
+  const atTop=hr?hr.bottom>24:window.scrollY<=24;
+  if(!atTop)bpCustomAtTop=false;
+  if(atTop&&!bpCustomAtTop){
+    mb.classList.remove('scrolled','bp-custom-pos');
+    mb.style.removeProperty('left');
+    mb.style.removeProperty('top');
+  }else{
+    mb.classList.add('scrolled');
+    if(bpMenuCustomPos){
+      mb.classList.add('bp-custom-pos');
+      mb.style.left=bpMenuCustomPos.x+'px';
+      mb.style.top=bpMenuCustomPos.y+'px';
+    }else{
+      mb.classList.remove('bp-custom-pos');
+      mb.style.removeProperty('left');
+      mb.style.removeProperty('top');
+    }
+  }
+}
+function syncDatePill(){
+  const pill=$('date-pill'),card=$('date').closest('section'),r=card.getBoundingClientRect(),today=date===localDate();
+  pill.hidden=r.bottom>0;
+  pill.textContent=(today?'Hoy · ':'Editando · ')+new Date(date+'T12:00:00').toLocaleDateString(LOC(),{weekday:'short',day:'numeric',month:'short'});
+  pill.classList.toggle('past',!today);
+  applyMenuBtnState();
+  syncLogoTheme();
+  const ex=$('exercise'),er=ex?ex.getBoundingClientRect():null;
+  const inGym=Boolean(er&&er.top<innerHeight*0.55&&er.bottom>120);
+  $('gym-access')?.classList.toggle('active',inGym);
+}
 function clampBtnPos(el,x,y){
   const w=el.offsetWidth||46,h=el.offsetHeight||46;
   const cx=Math.max(8,Math.min(innerWidth-w-8,x));
@@ -7642,48 +7699,95 @@ function clampBtnPos(el,x,y){
 }
 function bindDraggableBtn(el,storeKey){
   if(!el)return;
-  try{const raw=localStorage.getItem(storeKey);if(raw){const p=JSON.parse(raw);if(Number.isFinite(p?.x)&&Number.isFinite(p?.y))clampBtnPos(el,p.x,p.y);}}catch(e){}
-  let timer=null,dragging=false,sx=0,sy=0,ox=0,oy=0;
-  el.addEventListener('pointerdown',e=>{
-    if(e.button&&e.button!==0)return;
-    sx=e.clientX;sy=e.clientY;
+  const isMenu=el.id==='bp-menu-btn';
+  try{
+    const raw=localStorage.getItem(storeKey);
+    if(raw){
+      const p=JSON.parse(raw);
+      if(Number.isFinite(p?.x)&&Number.isFinite(p?.y)){
+        if(isMenu)bpMenuCustomPos={x:Math.round(p.x),y:Math.round(p.y)};
+        else clampBtnPos(el,p.x,p.y);
+      }
+    }
+  }catch(e){}
+  let timer=null,pressing=false,dragging=false,moved=false,sx=0,sy=0,ox=0,oy=0,t0=0;
+  const start=(cx,cy)=>{
+    sx=cx;sy=cy;t0=Date.now();
     const rect=el.getBoundingClientRect();
-    ox=sx-rect.left;oy=sy-rect.top;
-    dragging=false;
+    ox=cx-rect.left;oy=cy-rect.top;
+    pressing=true;dragging=false;moved=false;
     clearTimeout(timer);
     timer=setTimeout(()=>{
+      if(!pressing)return;
       dragging=true;
       el.classList.add('bp-dragging');
-      try{el.setPointerCapture(e.pointerId);}catch(err){}
-      clampBtnPos(el,sx-ox,sy-oy);
-    },260);
-  });
-  el.addEventListener('pointermove',e=>{
-    if(!timer&&!dragging)return;
-    const dx=e.clientX-sx,dy=e.clientY-sy;
-    if(!dragging){if(Math.hypot(dx,dy)>10){clearTimeout(timer);timer=null;}return;}
-    e.preventDefault();
-    clampBtnPos(el,e.clientX-ox,e.clientY-oy);
-  });
-  const stop=e=>{
-    clearTimeout(timer);timer=null;
-    if(!dragging)return;
-    dragging=false;
-    el.classList.remove('bp-dragging');
-    const pos=clampBtnPos(el,e.clientX-ox,e.clientY-oy);
-    try{localStorage.setItem(storeKey,JSON.stringify(pos));}catch(err){}
-    bpDragMovedUntil=Date.now()+380;
+    },180);
   };
-  el.addEventListener('pointerup',stop);
-  el.addEventListener('pointercancel',()=>{clearTimeout(timer);timer=null;dragging=false;el.classList.remove('bp-dragging');});
-  el.addEventListener('click',e=>{if(Date.now()<bpDragMovedUntil){e.preventDefault();e.stopImmediatePropagation();}},true);
+  const move=(cx,cy,ev)=>{
+    if(!pressing)return;
+    const dx=cx-sx,dy=cy-sy;
+    if(!moved&&Math.hypot(dx,dy)>8){
+      moved=true;dragging=true;
+      clearTimeout(timer);timer=null;
+      el.classList.add('bp-dragging');
+    }
+    if(!dragging||!moved)return;
+    if(ev&&ev.cancelable)ev.preventDefault();
+    clampBtnPos(el,cx-ox,cy-oy);
+  };
+  const end=(cx,cy)=>{
+    clearTimeout(timer);timer=null;
+    if(!pressing)return;
+    pressing=false;
+    const wasMoved=moved,held=Date.now()-t0>320;
+    dragging=false;moved=false;
+    el.classList.remove('bp-dragging');
+    el.blur?.();
+    if(wasMoved){
+      const pos=clampBtnPos(el,cx-ox,cy-oy);
+      if(isMenu){
+        const hbar=document.querySelector('.header-bar'),hr=hbar?hbar.getBoundingClientRect():null;
+        const atTop=hr?hr.bottom>24:window.scrollY<=24;
+        if(atTop&&pos.x<85&&pos.y<105){
+          bpMenuCustomPos=null;bpCustomAtTop=false;
+          try{localStorage.removeItem(storeKey);}catch(err){}
+        }else{
+          bpMenuCustomPos=pos;bpCustomAtTop=atTop;
+          try{localStorage.setItem(storeKey,JSON.stringify(pos));}catch(err){}
+        }
+        applyMenuBtnState();
+      }else{
+        try{localStorage.setItem(storeKey,JSON.stringify(pos));}catch(err){}
+      }
+      bpDragMovedUntil=Date.now()+400;
+    }else{
+      if(isMenu)applyMenuBtnState();
+      if(held)bpDragMovedUntil=Date.now()+320;
+    }
+  };
+  const cancel=()=>{
+    clearTimeout(timer);timer=null;
+    pressing=false;dragging=false;moved=false;
+    el.classList.remove('bp-dragging');
+    el.blur?.();
+    if(isMenu)applyMenuBtnState();
+  };
+  el.addEventListener('touchstart',e=>{if(e.touches.length===1)start(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
+  el.addEventListener('touchmove',e=>{if(e.touches.length===1)move(e.touches[0].clientX,e.touches[0].clientY,e);},{passive:false});
+  el.addEventListener('touchend',e=>{const t=e.changedTouches[0];end(t?t.clientX:sx,t?t.clientY:sy);});
+  el.addEventListener('touchcancel',cancel);
+  el.addEventListener('mousedown',e=>{if(e.button===0)start(e.clientX,e.clientY);});
+  window.addEventListener('mousemove',e=>{if(pressing)move(e.clientX,e.clientY,e);});
+  window.addEventListener('mouseup',e=>{if(pressing)end(e.clientX,e.clientY);});
+  el.addEventListener('contextmenu',e=>e.preventDefault());
+  el.addEventListener('click',e=>{el.blur?.();if(Date.now()<bpDragMovedUntil){e.preventDefault();e.stopImmediatePropagation();}},true);
 }
 function bindDrawerGestures(){
   let sx=0,sy=0,active=false,inDate=false;
   document.addEventListener('touchstart',e=>{
     if(e.touches.length!==1||$('modal')?.open)return;
     const t=e.target;
-    if(t.closest('input[type=range],.days-scroll,.micro-filter-bar,.bp-chips,.bp-chat-chips,.week-heatmap,.week-table,.trend-chart,.gp-seg'))return;
+    if(t.closest('#bp-menu-btn,#gym-access,input[type=range],.days-scroll,.micro-filter-bar,.bp-chips,.bp-chat-chips,.week-heatmap,.week-table,.trend-chart,.gp-seg'))return;
     sx=e.touches[0].clientX;sy=e.touches[0].clientY;
     inDate=Boolean(t.closest('.datebar')||t.closest('section.card:has(#date)'));
     active=true;
@@ -7699,14 +7803,18 @@ function bindDrawerGestures(){
     else if(open&&dx<-55)toggleLeftDrawer(false);
   },{passive:true});
 }
-bindDraggableBtn($('bp-menu-btn'),'bp_pos_menu');
-bindDraggableBtn($('gym-access'),'bp_pos_gym');
+bindDraggableBtn($('bp-menu-btn'),'bp_drag_menu_v66');
+bindDraggableBtn($('gym-access'),'bp_drag_gym_v66');
 bindDrawerGestures();
+onClick(e=>{if(e.target.closest('[data-theme-toggle]'))setTimeout(syncLogoTheme,0);});
 window.addEventListener('resize',()=>{
-  for(const [id,k] of [['bp-menu-btn','bp_pos_menu'],['gym-access','bp_pos_gym']]){
-    const el=$(id);if(!el||!el.classList.contains('bp-custom-pos'))continue;
-    const r=el.getBoundingClientRect();clampBtnPos(el,r.left,r.top);
+  if(bpMenuCustomPos){
+    const mb=$('bp-menu-btn');
+    if(mb){const w=mb.offsetWidth||40,h=mb.offsetHeight||40;bpMenuCustomPos={x:Math.max(8,Math.min(innerWidth-w-8,bpMenuCustomPos.x)),y:Math.max(8,Math.min(innerHeight-h-8,bpMenuCustomPos.y))};}
   }
+  applyMenuBtnState();
+  const gm=$('gym-access');
+  if(gm&&gm.classList.contains('bp-custom-pos')){const r=gm.getBoundingClientRect();clampBtnPos(gm,r.left,r.top);}
 });
 $('date-pill').onclick=()=>$('date').closest('section').scrollIntoView({block:'start',behavior:'smooth'});
 window.addEventListener('scroll',()=>{if(scrollPending)return;scrollPending=true;requestAnimationFrame(()=>{scrollPending=false;let current='today';for(const el of document.querySelectorAll('main>.view, main>#weekly, main>#exercise'))if(el.getBoundingClientRect().top<innerHeight*.32)current=el.id==='weekly'?'week':el.id==='exercise'?'exercise':el.id.slice(5);view=current;setNav(current);flushLazy();syncDatePill();});},{passive:true});
