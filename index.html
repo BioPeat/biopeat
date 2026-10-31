@@ -6088,6 +6088,63 @@ body.bp-light .gp-ax{fill:#475569!important}
 body.bp-light .gp-ax-r{fill:#047857!important}
 body.bp-light .gp-bl{fill:#065f46!important}
 body.bp-light .gp-dot{fill:#ffffff!important;stroke:#0284c7!important}
+/* v64: corrección integral modo claro/oscuro, guía, menú Más, batido y barra inferior sin cortes */
+html{background:#0f172a}
+html:has(body.bp-light){background:#f1f5f9!important;color-scheme:light}
+.view,.weekly,.exercise,#week-micros-section,#week-ratios-section,#week-kpis,.calendar{scroll-margin-top:64px!important}
+.bottom-nav{bottom:0!important;width:100%!important;max-width:720px!important;padding:6px 10px calc(8px + env(safe-area-inset-bottom))!important;border-radius:22px 22px 0 0!important;border-bottom:0!important}
+.bottom-nav .nav-item[data-view=week] .nav-icon{color:inherit!important}
+#gym-access{width:44px!important;height:44px!important;bottom:calc(76px + env(safe-area-inset-bottom))!important;transition:opacity .18s ease,transform .18s ease}
+#gym-access.active{opacity:0!important;pointer-events:none!important;transform:scale(.85)}
+.whey,.shake-preview,.lens,.lens-ratios>span,.portion-metric,.portion-list button,.extra-chip,.hevy-preview,.gym-ai-output,.week-day-detail,.detail-row,.calendar-summary>span,.calendar-metrics button,.peat26{background:var(--surf)!important;border:1px solid var(--line2)!important}
+.coach-dot{border:1px solid rgba(15,23,42,.22)}
+body.bp-light .brand-icon,body.bp-light #bp-menu-btn:not(.scrolled){box-shadow:0 2px 8px rgba(15,23,42,.12),0 0 0 1px #cbd5e1!important}
+body.bp-light #bp-menu-btn.scrolled{box-shadow:0 4px 14px rgba(15,23,42,.16),0 0 0 2px #ffffff!important;filter:none!important;opacity:.96!important}
+body.bp-light .week-details summary{color:#334155!important;font-weight:700}
+body.bp-light .bp-clamp::after{color:#0284c7!important}
+body.bp-light .energy-card,body.bp-light .day-coach,body.bp-light .week-brief,body.bp-light .exercise>.section-heading{background:#ffffff!important}
+body.bp-light .energy-track span{background:linear-gradient(90deg,#d97706,#f59e0b)!important}
+body.bp-light .coach-ideas li{background:#f8fafc!important;border-color:#cbd5e1!important;color:#0f172a!important}
+body.bp-light .coach-ideas small{color:#475569!important}
+body.bp-light .btn-sky{background:#0284c7!important;color:#ffffff!important;box-shadow:none!important}
+body.bp-light .btn-emerald{background:#059669!important;color:#ffffff!important;box-shadow:none!important}
+body.bp-light .btn-amber{background:#f59e0b!important;color:#0f172a!important;box-shadow:none!important}
+body.bp-light .bp-hub-tile .bp-ico,body.bp-light .bp-hub-menu .bp-ico{background:#fef3c7!important;border-color:#fde68a!important;color:#b45309!important}
+body.bp-light .bp-hub-menu i{color:#64748b!important}
+body.bp-light .bp-tour-ico{background:#fef3c7!important;border-color:#fcd34d!important;color:#b45309!important}
+body.bp-light .bp-tour li{background:#f8fafc!important;border-color:#e2e8f0!important;color:#0f172a!important}
+body.bp-light .bp-tour-dots i{background:#cbd5e1!important}
+body.bp-light .bp-tour-dots i.on{background:#d97706!important}
+body.bp-light .bp-acc[open],body.bp-light .bp-acc[open]>summary.bp-acc-btn{background:#f1f5f9!important;border-color:#cbd5e1!important;color:#0f172a!important}
+body.bp-light .bp-drawer-title small,body.bp-light .bp-chat-head small,body.bp-light .bp-acc-arr{color:#475569!important}
+body.bp-light .bp-wiz-step b{background:#e2e8f0!important;color:#334155!important}
+body.bp-light .bp-wiz-step.active b{background:#d97706!important;color:#ffffff!important}
+body.bp-light .bp-wiz-step.done{background:#ecfdf5!important;border-color:#34d399!important;color:#065f46!important}
+body.bp-light .bp-wiz-step.done b{background:#059669!important;color:#ffffff!important}
+body.bp-light .bp-day-col[data-mode=gym]{background:#fffbeb!important;border-color:#f59e0b!important;color:#0f172a!important}
+body.bp-light .bp-day-col[data-mode=gym] span{background:#fef3c7!important;color:#92400e!important}
+body.bp-light .bp-day-col[data-mode=sport]{background:#f0f9ff!important;border-color:#38bdf8!important;color:#0f172a!important}
+body.bp-light .bp-day-col[data-mode=sport] span{background:#e0f2fe!important;color:#0369a1!important}
+body.bp-light .bp-day-col[data-mode=rest] span{background:#e2e8f0!important;color:#475569!important}
+body.bp-light .bp-switch{background:#e2e8f0!important;border-color:#cbd5e1!important;color:#334155!important}
+body.bp-light .bp-switch i{background:#94a3b8!important}
+body.bp-light .bp-switch.on,body.bp-light .bp-supp-card.on{background:#ecfdf5!important;border-color:#10b981!important;color:#065f46!important}
+body.bp-light .bp-switch.on i{background:#10b981!important}
+body.bp-light .bp-wiz-sum{color:#b45309!important;font-weight:700}
+body.bp-light .bp-sum-day b,body.bp-light .bp-sum-day span,body.bp-light .bp-cat b span{color:#334155!important}
+body.bp-light .wk-day,body.bp-light .wk-tile,body.bp-light .calendar-day,body.bp-light .calendar-summary>span,body.bp-light .calendar-metrics button,body.bp-light .detail-row,body.bp-light .remainder-grid>div,body.bp-light .heat-cell,body.bp-light .week-heatmap tbody th,body.bp-light .update-bar{background:#f8fafc!important;border-color:#cbd5e1!important;color:#0f172a!important}
+body.bp-light .wk-day>strong,body.bp-light .calendar-day>strong,body.bp-light .calendar-summary b,body.bp-light .detail-row strong,body.bp-light .brief-macro strong{color:#0f172a!important}
+body.bp-light .wk-tile b,body.bp-light .brief-counts b{color:#b45309!important}
+body.bp-light .wk-tile span,body.bp-light .brief-counts span,body.bp-light .brief-macro>span,body.bp-light .brief-macro small,body.bp-light .detail-row>span,body.bp-light .detail-row small,body.bp-light .calendar-weekdays span{color:#475569!important}
+body.bp-light .wk-day.met,body.bp-light .calendar-day.met,body.bp-light .status-chip.met{background:#ecfdf5!important;border-color:#34d399!important;color:#065f46!important}
+body.bp-light .wk-day.review,body.bp-light .calendar-day.review,body.bp-light .status-chip.review{background:#fffbeb!important;border-color:#fbbf24!important;color:#92400e!important}
+body.bp-light .wk-day.partial,body.bp-light .calendar-day.partial,body.bp-light .status-chip.partial{background:#f0f9ff!important;border-color:#38bdf8!important;color:#0369a1!important}
+body.bp-light .wk-day.unknown,body.bp-light .calendar-day.unknown,body.bp-light .status-chip.unknown{background:#f5f3ff!important;border-color:#c4b5fd!important;color:#5b21b6!important}
+body.bp-light .week-track b,body.bp-light .detail-row b{background:#0f172a!important}
+body.bp-light .lg.ok{background:#d1fae5!important;border-color:#059669!important}
+body.bp-light .lg.low{background:#fef3c7!important;border-color:#d97706!important}
+body.bp-light .lg.high{background:#ede9fe!important;border-color:#7c3aed!important}
+body.bp-light .lg.none{background:#e2e8f0!important;border-color:#94a3b8!important}
 </style><!--FIN-CSS--><meta content="#16243a" name="theme-color"/><link href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22 aria-hidden=%22true%22%3E%3Cdefs%3E%3ClinearGradient id=%22bpBg%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22#1b2d47%22/%3E%3Cstop offset=%22.55%22 stop-color=%22#111f33%22/%3E%3Cstop offset=%221%22 stop-color=%22#0a1322%22/%3E%3C/linearGradient%3E%3CradialGradient id=%22bpGlow%22 cx=%22.3%22 cy=%22.22%22 r=%22.8%22%3E%3Cstop offset=%220%22 stop-color=%22#f3cf7a%22 stop-opacity=%22.16%22/%3E%3Cstop offset=%221%22 stop-color=%22#f3cf7a%22 stop-opacity=%220%22/%3E%3C/radialGradient%3E%3ClinearGradient id=%22bpGold%22 gradientUnits=%22userSpaceOnUse%22 x1=%22150%22 y1=%2284%22 x2=%22380%22 y2=%22436%22%3E%3Cstop offset=%220%22 stop-color=%22#fbe7a6%22/%3E%3Cstop offset=%22.42%22 stop-color=%22#e9bf5c%22/%3E%3Cstop offset=%221%22 stop-color=%22#b9842a%22/%3E%3C/linearGradient%3E%3ClinearGradient id=%22bpRim%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22#f3cf7a%22 stop-opacity=%22.55%22/%3E%3Cstop offset=%22.5%22 stop-color=%22#f3cf7a%22 stop-opacity=%22.08%22/%3E%3Cstop offset=%221%22 stop-color=%22#f3cf7a%22 stop-opacity=%22.35%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect id=%22bp-bg%22 width=%22512%22 height=%22512%22 rx=%22116%22 fill=%22url(#bpBg)%22/%3E%3Crect id=%22bp-glow%22 width=%22512%22 height=%22512%22 rx=%22116%22 fill=%22url(#bpGlow)%22/%3E%3Crect id=%22bp-rim%22 x=%226%22 y=%226%22 width=%22500%22 height=%22500%22 rx=%22110%22 fill=%22none%22 stroke=%22url(#bpRim)%22 stroke-width=%223%22/%3E%3Cg id=%22bp-mark%22 transform=%22translate(256 256) scale(1) translate(-256 -256) translate(-6 0)%22%3E%3Cpath d=%22M138 90H280A70 70 0 0 1 306 225A100 100 0 0 1 278 422H138Z%22 fill=%22none%22 stroke=%22url(#bpGold)%22 stroke-width=%2222%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M204 372V160H262A46 46 0 0 1 262 252H204%22 fill=%22none%22 stroke=%22url(#bpGold)%22 stroke-width=%2242%22 stroke-linejoin=%22round%22/%3E%3Ccircle cx=%22282%22 cy=%22342%22 r=%2215%22 fill=%22url(#bpGold)%22/%3E%3C/g%3E%3C/svg%3E" rel="icon"/><link href="icon-maskable-512.png?v=42" rel="apple-touch-icon"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="yes" name="mobile-web-app-capable"/><meta content="BioPeat" name="apple-mobile-web-app-title"/><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/><link href="manifest.json" rel="manifest"/></head><body>
 <button class="date-pill" hidden id="date-pill" type="button"></button><div class="container">
 <header class="card header-bar"><div class="brand"><button aria-controls="bp-drawer" aria-expanded="false" aria-label="Abrir menú de BioPeat" class="brand-icon bp-logo-btn" data-drawer-toggle="1" id="bp-menu-btn" title="Menú de BioPeat" type="button"><svg viewBox="0 0 512 512" aria-hidden="true"><defs><linearGradient id="bpBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1b2d47"/><stop offset=".55" stop-color="#111f33"/><stop offset="1" stop-color="#0a1322"/></linearGradient><radialGradient id="bpGlow" cx=".3" cy=".22" r=".8"><stop offset="0" stop-color="#f3cf7a" stop-opacity=".16"/><stop offset="1" stop-color="#f3cf7a" stop-opacity="0"/></radialGradient><linearGradient id="bpGold" gradientUnits="userSpaceOnUse" x1="150" y1="84" x2="380" y2="436"><stop offset="0" stop-color="#fbe7a6"/><stop offset=".42" stop-color="#e9bf5c"/><stop offset="1" stop-color="#b9842a"/></linearGradient><linearGradient id="bpRim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3cf7a" stop-opacity=".55"/><stop offset=".5" stop-color="#f3cf7a" stop-opacity=".08"/><stop offset="1" stop-color="#f3cf7a" stop-opacity=".35"/></linearGradient></defs><rect id="bp-bg" width="512" height="512" rx="116" fill="url(#bpBg)"/><rect id="bp-glow" width="512" height="512" rx="116" fill="url(#bpGlow)"/><rect id="bp-rim" x="6" y="6" width="500" height="500" rx="110" fill="none" stroke="url(#bpRim)" stroke-width="3"/><g id="bp-mark" transform="translate(256 256) scale(1) translate(-256 -256) translate(-6 0)"><path d="M138 90H280A70 70 0 0 1 306 225A100 100 0 0 1 278 422H138Z" fill="none" stroke="url(#bpGold)" stroke-width="22" stroke-linejoin="round"/><path d="M204 372V160H262A46 46 0 0 1 262 252H204" fill="none" stroke="url(#bpGold)" stroke-width="42" stroke-linejoin="round"/><circle cx="282" cy="342" r="15" fill="url(#bpGold)"/></g></svg></button><div><span class="badge badge-amber">BioPeat</span><h1><span id="header-user-name">Mi perfil</span> <span class="subtext">/ tu día, sencillo</span></h1><div class="subtext" id="header-profile">Nutrición con contexto</div></div></div><div class="header-actions"><button class="btn bp-theme-toggle" data-no-tr="1" data-theme-toggle="1" id="bp-theme-btn" type="button"></button><span class="pill" id="storage-status">Guardado</span></div></header>
@@ -6148,6 +6205,7 @@ body.bp-light .gp-dot{fill:#ffffff!important;stroke:#0284c7!important}
  Metas del día: SIEMPRE con targetFor(fecha) / dayGoal(). Nunca guardar metas calculadas dentro de cada día.
  Migraciones: upgradeToNN(s,o) se ejecuta UNA vez: comprobar (Number(o.appRevision)||0)<NN y subir APP_REVISION.
  Registro de cambios (una línea por versión, la más nueva arriba; detalle en CONTEXTO_BIOPEAT.md):
+   v64 · Gemini · Corrección visual completa en modo claro y oscuro (guía, menú Más, barra inferior sin cortes, batido y contrastes).
    v63 · Gemini · Contraste completo en modo claro para todos los textos, etiquetas, chips, batido, pauta, nutrientes y huecos.
    v62 · Gemini · Modo claro y modo oscuro con interruptor, logo alineado en cabecera, botones de comida centrados y reparto muscular sin cortes.
    v61 · Gemini · Rediseño visual y ergonómico móvil (contraste oscuro limpio, espaciado uniforme, iconos SVG y barra flotante).
@@ -6250,7 +6308,7 @@ function optLine(k,goal,unit){
 function optRefHTML(k,goal,unit){const z=optInfo(k,goal);return '<p class="progress-note"><b>'+esc(optLine(k,goal,unit))+'.</b> '+esc(z.ref)+'</p>';}
 const microKind=k=>LIMIT.has(k)?'limit':DEPOSIT.has(k)?'deposit':'daily';
 const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'], ACTIVITIES=['Entreno','Descanso','Entreno','Descanso','Entreno','Descanso','Descanso'];
-const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v63', APP_REVISION=26;
+const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v64', APP_REVISION=26;
 let LANG=(()=>{try{const l=localStorage.getItem('bp_lang');if(l==='es'||l==='en')return l;}catch(e){}return /^es\b/i.test(navigator.language||'es')?'es':'en';})();
 const LOC=()=>LANG==='en'?'en-GB':'es-ES';
 const $=id=>document.getElementById(id), own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k), clone=x=>JSON.parse(JSON.stringify(x));
@@ -7545,7 +7603,7 @@ function toggleTheme(){
 syncThemeUI();
 onClick(e=>{if(e.target.closest('[data-theme-toggle]'))toggleTheme();});
 let scrollPending=false;
-function syncDatePill(){const pill=$('date-pill'),card=$('date').closest('section'),r=card.getBoundingClientRect(),today=date===localDate();pill.hidden=r.bottom>0;pill.textContent=(today?'Hoy · ':'Editando · ')+new Date(date+'T12:00:00').toLocaleDateString(LOC(),{weekday:'short',day:'numeric',month:'short'});pill.classList.toggle('past',!today);$('bp-menu-btn')?.classList.toggle('scrolled',window.scrollY>68);}
+function syncDatePill(){const pill=$('date-pill'),card=$('date').closest('section'),r=card.getBoundingClientRect(),today=date===localDate();pill.hidden=r.bottom>0;pill.textContent=(today?'Hoy · ':'Editando · ')+new Date(date+'T12:00:00').toLocaleDateString(LOC(),{weekday:'short',day:'numeric',month:'short'});pill.classList.toggle('past',!today);$('bp-menu-btn')?.classList.toggle('scrolled',r.bottom<=0);}
 $('date-pill').onclick=()=>$('date').closest('section').scrollIntoView({block:'start',behavior:'smooth'});
 window.addEventListener('scroll',()=>{if(scrollPending)return;scrollPending=true;requestAnimationFrame(()=>{scrollPending=false;let current='today';for(const el of document.querySelectorAll('main>.view, main>#weekly, main>#exercise'))if(el.getBoundingClientRect().top<innerHeight*.32)current=el.id==='weekly'?'week':el.id==='exercise'?'exercise':el.id.slice(5);view=current;setNav(current);flushLazy();syncDatePill();});},{passive:true});
 const anim=new WeakMap();
