@@ -6095,7 +6095,6 @@ html:has(body.bp-light){background:#f1f5f9!important;color-scheme:light}
 .bottom-nav{bottom:0!important;width:100%!important;max-width:720px!important;padding:6px 10px calc(8px + env(safe-area-inset-bottom))!important;border-radius:22px 22px 0 0!important;border-bottom:0!important}
 .bottom-nav .nav-item[data-view=week] .nav-icon{color:inherit!important}
 #gym-access{width:44px!important;height:44px!important;bottom:calc(76px + env(safe-area-inset-bottom))!important;transition:opacity .18s ease,transform .18s ease}
-#gym-access.active{opacity:0!important;pointer-events:none!important;transform:scale(.85)}
 .whey,.shake-preview,.lens,.lens-ratios>span,.portion-metric,.portion-list button,.extra-chip,.hevy-preview,.gym-ai-output,.week-day-detail,.detail-row,.calendar-summary>span,.calendar-metrics button,.peat26{background:var(--surf)!important;border:1px solid var(--line2)!important}
 .coach-dot{border:1px solid rgba(15,23,42,.22)}
 body.bp-light .brand-icon,body.bp-light #bp-menu-btn:not(.scrolled){box-shadow:0 2px 8px rgba(15,23,42,.12),0 0 0 1px #cbd5e1!important}
@@ -6167,7 +6166,7 @@ body.bp-light #bp-menu-btn.scrolled:not([aria-expanded=true]):not(.bp-dragging){
 .header-bar:has(#bp-menu-btn.scrolled.bp-custom-pos) .brand{padding-left:0!important}
 #gym-access,#gym-access:hover,#gym-access:focus,#gym-access:active{width:50px!important;height:50px!important;min-width:50px!important;min-height:50px!important;bottom:calc(78px + env(safe-area-inset-bottom))!important;background:#162133!important;color:#f6dc9a!important;border:1.5px solid #e9bf5c88!important;box-shadow:0 6px 18px rgba(0,0,0,.45)!important;opacity:1!important;pointer-events:auto!important;transform:none!important}
 #gym-access svg{width:22px!important;height:22px!important}
-#gym-access.active,#gym-access.active:hover,#gym-access.active:focus{background:#e9bf5c!important;color:#0f172a!important;border:2px solid #fbe7a6!important;box-shadow:0 0 0 3px rgba(233,191,92,.3),0 6px 18px rgba(0,0,0,.4)!important}
+#gym-access.active,#gym-access.active:hover,#gym-access.active:focus,#gym-access.active:active{background:#e9bf5c!important;color:#0f172a!important;border:2px solid #fbe7a6!important;box-shadow:0 0 0 3px rgba(233,191,92,.3),0 6px 18px rgba(0,0,0,.4)!important;opacity:1!important;pointer-events:auto!important;visibility:visible!important}
 body.bp-light #gym-access,body.bp-light #gym-access:hover,body.bp-light #gym-access:focus,body.bp-light #gym-access:active{background:#fffbeb!important;color:#b45309!important;border:2px solid #f59e0b!important;box-shadow:0 6px 18px rgba(180,83,9,.2),0 0 0 2px #ffffff!important}
 body.bp-light #gym-access.active,body.bp-light #gym-access.active:hover,body.bp-light #gym-access.active:focus{background:#f59e0b!important;color:#ffffff!important;border:2px solid #b45309!important;box-shadow:0 0 0 3px rgba(245,158,11,.32),0 6px 16px rgba(180,83,9,.25)!important}
 .bp-wiz-steps,.bp-wiz-foot{background:#131d30!important;border-color:var(--line)!important}
@@ -6237,6 +6236,7 @@ body:not(.bp-light) .trend-week,body:not(.bp-light) .week-column,body:not(.bp-li
  Metas del día: SIEMPRE con targetFor(fecha) / dayGoal(). Nunca guardar metas calculadas dentro de cada día.
  Migraciones: upgradeToNN(s,o) se ejecuta UNA vez: comprobar (Number(o.appRevision)||0)<NN y subir APP_REVISION.
  Registro de cambios (una línea por versión, la más nueva arriba; detalle en CONTEXTO_BIOPEAT.md):
+   v67 · Gemini · El botón flotante de gimnasio permanece siempre visible también dentro de la sección de Gimnasio.
    v66 · Gemini · Botón de gimnasio claro/activo según scroll, logo fijo en cabecera al subir, transparencia al hacer scroll y arrastre táctil fluido.
    v65 · Gemini · Logo en modo claro, botón de gimnasio fijo/activo, pie de guía limpio, gesto lateral de menú y botones flotantes arrastrables.
    v64 · Gemini · Corrección visual completa en modo claro y oscuro (guía, menú Más, barra inferior sin cortes, batido y contrastes).
@@ -6342,7 +6342,7 @@ function optLine(k,goal,unit){
 function optRefHTML(k,goal,unit){const z=optInfo(k,goal);return '<p class="progress-note"><b>'+esc(optLine(k,goal,unit))+'.</b> '+esc(z.ref)+'</p>';}
 const microKind=k=>LIMIT.has(k)?'limit':DEPOSIT.has(k)?'deposit':'daily';
 const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'], ACTIVITIES=['Entreno','Descanso','Entreno','Descanso','Entreno','Descanso','Descanso'];
-const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v66', APP_REVISION=26;
+const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v67', APP_REVISION=26;
 let LANG=(()=>{try{const l=localStorage.getItem('bp_lang');if(l==='es'||l==='en')return l;}catch(e){}return /^es\b/i.test(navigator.language||'es')?'es':'en';})();
 const LOC=()=>LANG==='en'?'en-GB':'es-ES';
 const $=id=>document.getElementById(id), own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k), clone=x=>JSON.parse(JSON.stringify(x));
