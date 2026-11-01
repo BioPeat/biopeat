@@ -1,8 +1,8 @@
-# MAPA DEL CÓDIGO · BioPeat v66 (revisión de datos 26)
+# MAPA DEL CÓDIGO · BioPeat v67 (revisión de datos 26)
 
 Generado con `python tools/mapa.py`. No lo edites a mano. Las líneas son orientativas: busca siempre por nombre.
 
-`index.html` (803 KB): CSS (`<style>`) y HTML de las secciones en las líneas 1-6222; todo el JavaScript en `<script id="app">` (desde la línea 6223).
+`index.html` (803 KB): CSS (`<style>`) y HTML de las secciones en las líneas 1-6221; todo el JavaScript en `<script id="app">` (desde la línea 6222).
 
 ## Secciones de la página (id)
 
