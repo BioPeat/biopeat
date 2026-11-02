@@ -24,7 +24,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 <h2>Preparación (solo la primera vez)</h2>
 <ol>
 <li>Sube a GitHub <b>index.html</b> y <b>actualizar.html</b> (Add file → Upload files → Commit changes).</li>
-<li>En Gemini: Gems → «BioPeat Dev» → pega las instrucciones <b>INSTRUCCIONES_GEM_BIOPEAT_DEV_v7.txt</b>. En Claude: Proyectos → «BioPeat Dev» → pega <b>INSTRUCCIONES_CLAUDE_BIOPEAT_DEV_v7.txt</b>. En los dos, sube AGENTS.md, CONTEXTO_BIOPEAT.md y MAPA_DEL_CODIGO.md.</li>
+<li>En Gemini: Gems → «BioPeat Dev» → pega las instrucciones <b>INSTRUCCIONES_GEM_BIOPEAT_DEV_v8.txt</b>. En Claude: Proyectos → «BioPeat Dev» → pega <b>INSTRUCCIONES_CLAUDE_BIOPEAT_DEV_v8.txt</b>. En los dos, sube AGENTS.md, CONTEXTO_BIOPEAT.md y MAPA_DEL_CODIGO.md.</li>
 <li>Guarda esta página en marcadores. Es la dirección de tu app con <b>/actualizar.html</b> al final (ejemplo: <i>tu-usuario.github.io/biopeat/actualizar.html</i>).</li>
 </ol>
 <h2>Cada cambio (unos 5 minutos)</h2>
@@ -36,7 +36,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 <li><b>Si la IA lo ha dividido en partes</b> («PARTE 1 de 3»): cuando la parte 1 salga verde, pulsa «Aplicar la siguiente parte encima», escribe SIGUIENTE en el chat y pega la parte 2. Al final descarga el index.html nuevo una sola vez.</li>
 <li><b>Si sale ✓ verde:</b> para cambios pequeños puedes subirlo directamente. Para cambios grandes: «Copiar texto para la REVISIÓN» → pégalo en el mismo chat. Si la IA contesta «❌ HAY QUE CORREGIR», trata su respuesta como una nueva (vuelve al punto 3).</li>
 <li>Con <b>✅ APROBADO</b>: pulsa «Descargar index.html nuevo» y «Guardar también la versión anterior».</li>
-<li>En GitHub: Add file → Upload files → arrastra el <b>index.html</b> nuevo → Commit changes. Espera 1-2 minutos.</li>
+<li>Copia el <b>index.html</b> nuevo en tu carpeta <b>Documentos\GitHub\biopeat</b> (Reemplazar) y en GitHub Desktop: <b>Fetch origin</b> → resumen «vNN» → <b>Commit to main</b> → <b>Push origin</b>. Espera 1-2 minutos.</li>
 <li>Abre la app, recarga, mira que en Más → Ajustes → Estado de la app sale la versión nueva y haz la prueba que te dijo la IA.</li>
 </ol>
 <h2>Si algo no te gusta después de subirlo</h2>
@@ -67,7 +67,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 </details>
 <details class="card"><summary><b>🤖 Qué subir al Gem de Gemini y al proyecto de Claude tras cada versión</b></summary>
 <ul>
-<li><b>Siempre:</b> CONTEXTO_BIOPEAT.md y MAPA_DEL_CODIGO.md (borra los viejos y sube los nuevos).</li>
+<li><b>Siempre:</b> cuando GitHub salga en verde, en GitHub Desktop pulsa <b>Fetch origin</b> y <b>Pull origin</b> (GitHub actualiza solo la versión, el historial y el mapa). Luego sube al Gem/proyecto CONTEXTO_BIOPEAT.md y MAPA_DEL_CODIGO.md de tu carpeta (borra los viejos).</li>
 <li><b>Solo si cambia:</b> AGENTS.md (lo dirá el mensaje de la versión).</li>
 <li><b>Nunca:</b> index.html. Se lo das en cada chat con el Paso 1 de esta página, así siempre trabaja sobre la versión real.</li>
 <li>Las instrucciones del Gem y del proyecto no se tocan.</li>
@@ -103,7 +103,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 </div>
 
 <div class="card" id="res" hidden><div class="big" id="verdict"></div><ul id="checks"></ul>
-<div id="okbox" hidden><p class="muted">1) Copia el texto de revisión y pégalo en el mismo chat de la IA. 2) Solo con «✅ APROBADO», descarga y sube a GitHub (Add file → Upload files → Commit changes).</p>
+<div id="okbox" hidden><p class="muted">1) Copia el texto de revisión y pégalo en el mismo chat de la IA. 2) Solo con «✅ APROBADO», descarga y súbelo con GitHub Desktop (Commit to main → Push origin).</p>
 <button class="btn green" id="dl-new">⬇ Descargar index.html nuevo</button>
 <button class="btn slate" id="copy-review">Copiar texto para la REVISIÓN</button>
 <button class="btn slate" id="dl-old">⬇ Guardar también la versión anterior (por si acaso)</button>

@@ -73,3 +73,11 @@ Lo usan el Gem de Gemini «BioPeat Dev» y el proyecto de Claude «BioPeat Dev»
 - Si un texto no debe traducirse, ponle `data-no-tr="1"`.
 - Otras piezas de v59: `startStats()` (GoatCounter, sin cookies), mudanza de datos (`packMove`, `checkMove`, `#bp-move=` en el enlace), `inicio.html` (web, privacidad y aviso legal).
 
+### 9. Aspecto, modos y lo que se actualiza solo (desde v68)
+- **Modo claro y oscuro** (`body.bp-light`, preferencia `bp_theme`): todo componente nuevo necesita sus estilos de modo claro (fondo `#f8fafc`, borde `#e2e8f0`, texto `#0f172a`, dorado `#b45309`/`#f59e0b`). Pruébalo en los dos.
+- **Modo resumen** (`body.bp-compact`): solo cifras, gráficos y botones. Todo texto explicativo nuevo (clases `section-note`, `gp-hint`, `rg-goal`…) debe ocultarse en el modo resumen.
+- **Equilibrios del día:** `ratioZones(i)` da la zona «aceptable» (`near`) y la meta corta; `ratioTone(i)` devuelve `ok`, `near`, `warn` o `none`. Colores: verde = bien, lima = aceptable, ámbar = mejorable. La meta se ve siempre en la tarjeta (`.rg-meta`).
+- **Gimnasio:** `gpWeekly` («¿Cuánto entrenas cada semana?», series por semana frente a la media), `gpHeat` («¿Qué días entrenas?», 12 semanas × 7 días) y `gpWeekModal` (músculos y sesiones de una semana).
+- **Primera vez:** el asistente sale solo si el dispositivo no tiene datos, y también al entrar con `?empezar=1` (los botones de `inicio.html`) si no hay comidas ni pauta.
+- **`inicio.html`** comparte `bp_theme` y `bp_lang` con la app y usa su misma estética. Sus textos van en dos bloques `data-lang="es"` / `data-lang="en"`.
+- **Se actualiza solo en GitHub** (no lo hagas a mano): versión, «Qué hace la app (vNN)» e **Historial** de CONTEXTO_BIOPEAT.md (se copia del «Registro de cambios» de index.html) y MAPA_DEL_CODIGO.md. Por eso la línea del Registro de cambios es obligatoria y debe resumir bien el cambio.
