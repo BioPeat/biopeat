@@ -1,6 +1,6 @@
 # CONTEXTO · BioPeat
 
-**Versión actual: v70** (revisión de datos 26)
+**Versión actual: v71** (revisión de datos 26)
 
 Documento maestro. Lo lee la IA que programa BioPeat (Gemini «BioPeat Dev» o Claude). Los cambios se entregan en bloques `@@@` y los aplica y prueba `actualizar.html`. **Se actualiza sustituyendo el texto de cada apartado, nunca añadiendo apartados nuevos al final.** Si algo de aquí contradice al código, manda el código; avisa de la diferencia.
 
@@ -80,7 +80,7 @@ Se guardan por perfil en `state.v54.breakfast` y `state.v54.shake` y se editan e
 - **No inventes cifras atribuidas a Peat.** Donde no hay cifra suya, se usa la meta personal.
 - **Mujer:** la tabla `OPT_FEMALE` cambia solo lo que tiene fuente (se aplica con `applySexOpt()` en cada `render()`): hierro tope 18 mg (oficial; Peat: el estrógeno hace absorber más hierro, «From PMS to Menopause»), zinc 8 mg (oficial), magnesio 400 mg (Peat/Dinkov; «Nutrition for Women»: corta los calambres menstruales), sodio sin restringir (edema premenstrual), y notas de Peat en vitamina A, E, B2 y calcio. `femaleWhy()` añade una frase de Peat para mujer en los equilibrios. **Peat no dio cifras distintas para mujer en PUFA, Ca:P ni C:P: son las mismas (4 g, 1,2 y 3).** Metas de partida de un perfil nuevo: `NEW_PROFILE_MICRO`.
 
-## 6. Qué hace la app (v70)
+## 6. Qué hace la app (v71)
 Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más** (no cambiar el orden) y botón redondo de **Gimnasio**.
 - **Menú lateral** (tocar el logo): Perfiles (tocar = usar; ⚙ = asistente; ✎ renombrar; × borrar; «+ Crear perfil nuevo»), Exportar datos para IA y Pregunta a tu IA. La lista se desplaza sola sin mover la página.
 - **Asistente de perfil** (`wizOpen({mode})`, modos `first` / `new` / `edit`): 5 pasos (Tú · Objetivo · Comidas · Suplementos · Resumen con las metas de un día de entreno y uno de descanso). Sale solo al empezar de cero (con botón para restaurar una copia). Al crear un perfil se puede empezar de cero o copiar la despensa y la pauta del perfil activo. Al guardar, las dosis y aportes de la pauta se conservan (si cambias la dosis, el aporte se escala).
@@ -122,6 +122,7 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **Prohibido** añadir otro `<script>` o «envolver» funciones (`x=function…`, `window.x=…`): la v54 lo hizo y el perfil de mujer volvía a hombre al recargar. `smoke.py` lo detecta y falla.
 
 ## 10. Historial (una línea por versión, máximo 8)
+- **v71 · Gemini:** El equilibrio Vitamina A : D se calcula con la media de depósito de 7 días (comidas + pauta semanal, contando los días que suplementas y los que descansas).
 - **v70 · Gemini:** Botón directo en la tarjeta de Zinc : cobre para añadir o quitar 1 cápsula de Bisglicinato de zinc (25 mg Zn + 1 mg Cu) en el día seleccionado.
 - **v69 · Copilot:** Gimnasio: vuelven las series por semana apiladas por músculo y el mapa de constancia, ahora con media, filtros y detalle al tocar; modo claro legible en gimnasio; el informe para IA explica las metas Peat para que cualquier IA lo entienda; «Para llegar a tus metas» solo sugiere lo que comes tú.
 - **v68 · Copilot:** Equilibrios con zona «aceptable» y meta visible en cada tarjeta, gimnasio con «¿Cuánto entrenas cada semana?» y «¿Qué días entrenas?», el asistente sale siempre la primera vez (también desde la web) y la web de inicio rediseñada.
@@ -129,7 +130,6 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **v66 · Gemini:** Botón de gimnasio claro/activo según scroll, logo fijo en cabecera al subir, transparencia al hacer scroll y arrastre táctil fluido.
 - **v65 · Gemini:** Logo en modo claro, botón de gimnasio fijo/activo, pie de guía limpio, gesto lateral de menú y botones flotantes arrastrables.
 - **v64 · Gemini:** Corrección visual completa en modo claro y oscuro (guía, menú Más, barra inferior sin cortes, batido y contrastes).
-- **v63 · Gemini:** Contraste completo en modo claro para todos los textos, etiquetas, chips, batido, pauta, nutrientes y huecos.
 
 ## 11. Pendiente / ideas
 - Unificar las capas de CSS sin cambiar el aspecto (hay reglas repetidas de varias versiones).
