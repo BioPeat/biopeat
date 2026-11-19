@@ -310,7 +310,7 @@ async def browser_checks():
         r = await ev("requestAI('Responde solo con la palabra OK.').then(x=>x).catch(e=>'ERR '+e.message)")
         ok('Claude responde a través de requestAI') if r == 'OK' else fail('requestAI con Anthropic: ' + str(r))
         await ev("$('ai-mode').value='direct';$('ai-mode').dispatchEvent(new Event('change'));$('gemini-key').value='CLAVE_DE_PRUEBA';syncAI()")
-        ok('Gemini sigue siendo la opción por defecto') if await ev("$('gemini-model').value") == 'gemini-3.8-flash' else fail('Al volver a Gemini el modelo no se restaura')
+        ok('Gemini sigue siendo la opción por defecto') if await ev("$('gemini-model').value") == 'gemini-4-hydrogen' else fail('Al volver a Gemini el modelo no se restaura')
         n0 = await ev("state.workouts18.length")
         strong = 'Date,Workout Name,Duration,Exercise Name,Set Order,Weight,Reps,Distance,Seconds,Notes,Workout Notes,RPE\n2026-10-16 18:00:00,Pierna,1h 5m,Squat (Barbell),1,100,5,0,0,,,8\n2026-10-16 18:00:00,Pierna,1h 5m,Squat (Barbell),2,100,5,0,0,,,8.5\n'
         await pg.set_input_files('#hevy-file', files=[{'name': 'strong.csv', 'mimeType': 'text/csv', 'buffer': strong.encode()}]); await pg.wait_for_timeout(300)
