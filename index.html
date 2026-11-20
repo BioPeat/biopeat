@@ -6374,6 +6374,7 @@ body.bp-light .off-meta{color:#475569!important}
  Metas del día: SIEMPRE con targetFor(fecha) / dayGoal(). Nunca guardar metas calculadas dentro de cada día.
  Migraciones: upgradeToNN(s,o) se ejecuta UNA vez: comprobar (Number(o.appRevision)||0)<NN y subir APP_REVISION.
  Registro de cambios (una línea por versión, la más nueva arriba; detalle en CONTEXTO_BIOPEAT.md):
+   v74 · Antigravity · «¿Qué me falta?» restablece la tarjeta abierta al añadir un alimento sugerido para priorizar siempre el siguiente micronutriente pendiente.
    v73 · Antigravity · IA más rápida y precisa (0 €): motor híbrido con base USDA/BEDCA de 150 alimentos, JSON estructurado con caché de sistema, corrección de thinkingLevel en Gemini 4 Hydrogen, streaming en chat/coach/gym, verificación con Open Food Facts y buscador de productos/códigos de barras, selector de velocidad/precisión y soporte directo para Groq gratis (Llama 4).
    v72 · Antigravity · Auditoría integral: app 100 % pública sin restos personales ni botones de desarrollo, botón de zinc configurable en Zn:Cu que reconoce cualquier suplemento, IA actualizada a Gemini 4 Hydrogen con autodetección de modelos y chat más rápido, contraste Peat/Dinkov (B1/B2/B3, K2 MK-4, vit. E natural), Gimnasio en preguntas numeradas, inglés sin dobles traducciones y CSS optimizado.
    v71 · Gemini · El equilibrio Vitamina A : D se calcula con la media de depósito de 7 días (comidas + pauta semanal, contando los días que suplementas y los que descansas).
@@ -6691,7 +6692,7 @@ function optLine(k,goal,unit){
 function optRefHTML(k,goal,unit){const z=optInfo(k,goal);return '<p class="progress-note"><b>'+esc(optLine(k,goal,unit))+'.</b> '+esc(z.ref)+'</p>';}
 const microKind=k=>LIMIT.has(k)?'limit':DEPOSIT.has(k)?'deposit':'daily';
 const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'], ACTIVITIES=['Entreno','Descanso','Entreno','Descanso','Entreno','Descanso','Descanso'];
-const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v73', APP_REVISION=26;
+const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v74', APP_REVISION=26;
 let LANG=(()=>{try{const l=localStorage.getItem('bp_lang');if(l==='es'||l==='en')return l;}catch(e){}return /^es\b/i.test(navigator.language||'es')?'es':'en';})();
 const LOC=()=>LANG==='en'?'en-GB':'es-ES';
 const $=id=>document.getElementById(id), own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k), clone=x=>JSON.parse(JSON.stringify(x));
@@ -8851,7 +8852,7 @@ function ratioDetail(key){
 <h3 class="rd-h">${i.ok?'Para mantenerlo':'Cómo llegar hoy'}</h3>${znBar}${fixes.length?`<div class="rd-fixes">${fixes.map(x=>`<button class="rd-fix" type="button" data-ratio-add="${esc(x.f.id)}|${x.x}"><b>+ ${fmt(x.x)} ${esc(x.f.unit)} de ${esc(x.f.name.replace(/\s*\((g|ml)\)$/,''))}</b><small>${x.partial?'te acerca: ':''}queda en ${fmt(key==='ad'&&i.solver.target<1?1/x.after:key==='zncu'&&i.solver.target<1?1/x.after:x.after,key==='pufa'?1:2)} : 1 · ${fmt(x.kcal)} kcal · se añade a ${esc(meal)}</small></button>`).join('')}</div>`:''}<ul class="rd-tips">${i.tips.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
 ${top?`<h3 class="rd-h">Lo que más aporta hoy</h3>${top}`:''}`);
 }
-onClick(e=>{const b=e.target.closest('[data-ratio-add]');if(!b)return;attempt(()=>{const [id,amt]=b.dataset.ratioAdd.split('|'),meal=$('meal-select').value,entry=fromFood(id,Number(amt),meal);addEntries([entry],'Añadido a '+meal+': '+entry.name+' · '+fmt(entry.amount)+' '+entry.unit);$('modal').close();});});
+onClick(e=>{const b=e.target.closest('[data-ratio-add]');if(!b)return;attempt(()=>{const [id,amt]=b.dataset.ratioAdd.split('|'),meal=$('meal-select').value,entry=fromFood(id,Number(amt),meal);if(b.classList.contains('gap-fix'))gapOpen=null;addEntries([entry],'Añadido a '+meal+': '+entry.name+' · '+fmt(entry.amount)+' '+entry.unit);$('modal').close();});});
 // Tarjeta de un nutriente: cifra, barra con tu zona ideal en verde y una línea con la zona y de dónde sale.
 function microCardHTML(m,x,personal){
   const goal=personal&&x.goal?x.goal:null,z=optInfo(m.k,x.goal),isMax=!refMode&&(x.kind==='limit'||m.k==='pufa');
