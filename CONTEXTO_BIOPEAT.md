@@ -1,6 +1,6 @@
 # CONTEXTO · BioPeat
 
-**Versión actual: v74** (revisión de datos 26)
+**Versión actual: v75** (revisión de datos 26)
 
 Documento maestro. Lo lee la IA que programa BioPeat (Gemini «BioPeat Dev» o Claude). Los cambios se entregan en bloques `@@@` y los aplica y prueba `actualizar.html`. **Se actualiza sustituyendo el texto de cada apartado, nunca añadiendo apartados nuevos al final.** Si algo de aquí contradice al código, manda el código; avisa de la diferencia.
 
@@ -80,7 +80,7 @@ Se guardan por perfil en `state.v54.breakfast` y `state.v54.shake` y se editan e
 - **No inventes cifras atribuidas a Peat.** Donde no hay cifra suya, se usa la meta personal.
 - **Mujer:** la tabla `OPT_FEMALE` cambia solo lo que tiene fuente (se aplica con `applySexOpt()` en cada `render()`): hierro tope 18 mg (oficial; Peat: el estrógeno hace absorber más hierro, «From PMS to Menopause»), zinc 8 mg (oficial), magnesio 400 mg (Peat/Dinkov; «Nutrition for Women»: corta los calambres menstruales), sodio sin restringir (edema premenstrual), y notas de Peat en vitamina A, E, B2 y calcio. `femaleWhy()` añade una frase de Peat para mujer en los equilibrios. **Peat no dio cifras distintas para mujer en PUFA, Ca:P ni C:P: son las mismas (4 g, 1,2 y 3).** Metas de partida de un perfil nuevo: `NEW_PROFILE_MICRO`.
 
-## 6. Qué hace la app (v74)
+## 6. Qué hace la app (v75)
 Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más** (no cambiar el orden) y botón redondo de **Gimnasio**.
 - **Menú lateral** (tocar el logo): Perfiles (tocar = usar; ⚙ = asistente; ✎ renombrar; × borrar; «+ Crear perfil nuevo»), Exportar datos para IA y Pregunta a tu IA. La lista se desplaza sola sin mover la página.
 - **Asistente de perfil** (`wizOpen({mode})`, modos `first` / `new` / `edit`): 5 pasos (Tú · Objetivo · Comidas · Suplementos · Resumen con las metas de un día de entreno y uno de descanso). Sale solo al empezar de cero (con botón para restaurar una copia). Al crear un perfil se puede empezar de cero o copiar la despensa y la pauta del perfil activo. Al guardar, las dosis y aportes de la pauta se conservan (si cambias la dosis, el aporte se escala).
@@ -122,6 +122,7 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **Prohibido** añadir otro `<script>` o «envolver» funciones (`x=function…`, `window.x=…`): la v54 lo hizo y el perfil de mujer volvía a hombre al recargar. `smoke.py` lo detecta y falla.
 
 ## 10. Historial (una línea por versión, máximo 8)
+- **v75 · Antigravity:** Actualización automática de modelos Gemini antiguos guardados (3.1/2.x) a Gemini 4 Hydrogen / 3.8 Flash gratis, y mejor selección automática en «Probar conexión».
 - **v74 · Antigravity:** «¿Qué me falta?» restablece la tarjeta abierta al añadir un alimento sugerido para priorizar siempre el siguiente micronutriente pendiente.
 - **v73 · Antigravity:** IA más rápida y precisa (0 €): motor híbrido con base USDA/BEDCA de 150 alimentos, JSON estructurado con caché de sistema, corrección de thinkingLevel en Gemini 4 Hydrogen, streaming en chat/coach/gym, verificación con Open Food Facts y buscador de productos/códigos de barras, selector de velocidad/precisión y soporte directo para Groq gratis (Llama 4).
 - **v72 · Antigravity:** Auditoría integral: app 100 % pública sin restos personales ni botones de desarrollo, botón de zinc configurable en Zn:Cu que reconoce cualquier suplemento, IA actualizada a Gemini 4 Hydrogen con autodetección de modelos y chat más rápido, contraste Peat/Dinkov (B1/B2/B3, K2 MK-4, vit. E natural), Gimnasio en preguntas numeradas, inglés sin dobles traducciones y CSS optimizado.
@@ -129,7 +130,6 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **v70 · Gemini:** Botón directo en la tarjeta de Zinc : cobre para añadir o quitar 1 cápsula de Bisglicinato de zinc (25 mg Zn + 1 mg Cu) en el día seleccionado.
 - **v69 · Copilot:** Gimnasio: vuelven las series por semana apiladas por músculo y el mapa de constancia, ahora con media, filtros y detalle al tocar; modo claro legible en gimnasio; el informe para IA explica las metas Peat para que cualquier IA lo entienda; «Para llegar a tus metas» solo sugiere lo que comes tú.
 - **v68 · Copilot:** Equilibrios con zona «aceptable» y meta visible en cada tarjeta, gimnasio con «¿Cuánto entrenas cada semana?» y «¿Qué días entrenas?», el asistente sale siempre la primera vez (también desde la web) y la web de inicio rediseñada.
-- **v67 · Gemini:** El botón flotante de gimnasio permanece siempre visible también dentro de la sección de Gimnasio.
 
 ## 11. Pendiente / ideas
 - Unificar las capas de CSS sin cambiar el aspecto (hay reglas repetidas de varias versiones).
