@@ -6374,6 +6374,7 @@ body.bp-light .off-meta{color:#475569!important}
  Metas del día: SIEMPRE con targetFor(fecha) / dayGoal(). Nunca guardar metas calculadas dentro de cada día.
  Migraciones: upgradeToNN(s,o) se ejecuta UNA vez: comprobar (Number(o.appRevision)||0)<NN y subir APP_REVISION.
  Registro de cambios (una línea por versión, la más nueva arriba; detalle en CONTEXTO_BIOPEAT.md):
+   v75 · Antigravity · Actualización automática de modelos Gemini antiguos guardados (3.1/2.x) a Gemini 4 Hydrogen / 3.8 Flash gratis, y mejor selección automática en «Probar conexión».
    v74 · Antigravity · «¿Qué me falta?» restablece la tarjeta abierta al añadir un alimento sugerido para priorizar siempre el siguiente micronutriente pendiente.
    v73 · Antigravity · IA más rápida y precisa (0 €): motor híbrido con base USDA/BEDCA de 150 alimentos, JSON estructurado con caché de sistema, corrección de thinkingLevel en Gemini 4 Hydrogen, streaming en chat/coach/gym, verificación con Open Food Facts y buscador de productos/códigos de barras, selector de velocidad/precisión y soporte directo para Groq gratis (Llama 4).
    v72 · Antigravity · Auditoría integral: app 100 % pública sin restos personales ni botones de desarrollo, botón de zinc configurable en Zn:Cu que reconoce cualquier suplemento, IA actualizada a Gemini 4 Hydrogen con autodetección de modelos y chat más rápido, contraste Peat/Dinkov (B1/B2/B3, K2 MK-4, vit. E natural), Gimnasio en preguntas numeradas, inglés sin dobles traducciones y CSS optimizado.
@@ -6692,7 +6693,7 @@ function optLine(k,goal,unit){
 function optRefHTML(k,goal,unit){const z=optInfo(k,goal);return '<p class="progress-note"><b>'+esc(optLine(k,goal,unit))+'.</b> '+esc(z.ref)+'</p>';}
 const microKind=k=>LIMIT.has(k)?'limit':DEPOSIT.has(k)?'deposit':'daily';
 const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'], ACTIVITIES=['Entreno','Descanso','Entreno','Descanso','Entreno','Descanso','Descanso'];
-const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v74', APP_REVISION=26;
+const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v75', APP_REVISION=26;
 let LANG=(()=>{try{const l=localStorage.getItem('bp_lang');if(l==='es'||l==='en')return l;}catch(e){}return /^es\b/i.test(navigator.language||'es')?'es':'en';})();
 const LOC=()=>LANG==='en'?'en-GB':'es-ES';
 const $=id=>document.getElementById(id), own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k), clone=x=>JSON.parse(JSON.stringify(x));
@@ -9339,9 +9340,10 @@ async function listModels(mode,key){
   const data=await res.json();
   return (data.data||data.models||[]).map(m=>m.id||m.name).filter(Boolean).slice(0,300);
 }
-const MODEL_PREF=[/gemini-4-hydrogen/,/gemini-4/,/gemini-3\.8-flash/,/gemini-3\.6-flash/,/gemini-3\.5-flash-lite/,/flash(?!.*lite)/,/flash/,/mini/,/haiku/,/sonnet/,/:free$/,/chat/,/gpt/,/llama/,/./];
+const OLD_GEMINI_RE=/^gemini-(?:1\.5|2\.0|2\.5|3(?:\.0|\.1)?-flash|3\.5-flash(?!-lite))/i;
+const MODEL_PREF=[/^gemini-4-hydrogen$/,/^gemini-3\.8-flash$/,/^gemini-3\.6-flash$/,/^gemini-3\.5-flash-lite$/,/^gemma-4-31b-it$/,/^gemini-3\.1-flash-lite$/,/flash(?!.*lite)/,/flash/,/mini/,/haiku/,/sonnet/,/:free$/,/chat/,/gpt/,/llama/,/./];
 function pickModel(ids,mode=$('ai-mode').value){
-  const ok=ids.filter(id=>!/embed|whisper|tts|audio|dall|image|imagen|veo|lyria|aqa|moderation|realtime|transcri|search|gemma-2|guard|safeguard/i.test(id));
+  const ok=ids.filter(id=>!/embed|whisper|tts|audio|dall|image|imagen|veo|lyria|aqa|moderation|realtime|transcri|search|gemma-2|guard|safeguard|live|robotics|computer-use|decision|omni/i.test(id));
   if(mode==='openrouter'){
     const free=ok.filter(id=>/:free$/i.test(id));
     const fVis=free.find(id=>/gemini|llama-4|qwen.*vl|vision|flash/i.test(id));
@@ -9364,7 +9366,7 @@ async function ensureModel(st){
   try{ids=await listModels(mode,key);}catch(e){if(mode==='direct'||$('gemini-model').value.trim())return;throw e;}
   if(ids.length)$('ai-models').innerHTML=ids.map(id=>'<option value="'+esc(id)+'">').join('');
   const cur=$('gemini-model').value.trim();
-  if(!cur||(mode==='direct'&&ids.length&&!ids.includes(cur))){
+  if(!cur||(mode==='direct'&&ids.length&&(!ids.includes(cur)||OLD_GEMINI_RE.test(cur)))){
     const m=pickModel(ids,mode);
     if(m)$('gemini-model').value=m;
     else if(!cur)throw Error('No encuentro un modelo de texto en tu cuenta. Escribe uno a mano.');
@@ -9430,7 +9432,7 @@ function aiConnected(){const m=$('ai-mode').value;return m==='proxy'?!!$('proxy-
 function syncAI(){const ok=aiConnected();$('ai-pill').textContent=ok?($('ai-pill').dataset.tested==='1'?'Conectada ✓':'Clave lista'):'Sin conectar';$('ai-pill').classList.toggle('on',ok);$('connect-ai').textContent=ok?'IA lista · ajustes':'Conectar IA';$('connect-ai').classList.toggle('on',ok);const hint=$('photo-ai-hint');if(hint)hint.hidden=ok;}
 let aiPrefsReady=false;
 function saveAIPrefs(){if(!aiPrefsReady)return;try{if($('ai-remember').checked)localStorage.setItem(AI_PREF,JSON.stringify({key:$('gemini-key').value.trim(),model:$('gemini-model').value.trim(),mode:$('ai-mode').value,proxy:$('proxy-url').value.trim(),base:$('ai-base').value.trim(),speed:$('ai-speed')?.value||'balanced'}));else localStorage.removeItem(AI_PREF);}catch(e){}}
-function loadAIPrefs(){try{const p=JSON.parse(localStorage.getItem(AI_PREF)||'null');aiPrefsReady=true;if(!p)return;if(p.mode&&$('ai-mode').querySelector('option[value="'+p.mode+'"]'))$('ai-mode').value=p.mode;if(p.key)$('gemini-key').value=p.key;if(p.model!=null)$('gemini-model').value=p.model;if(p.proxy)$('proxy-url').value=p.proxy;if(p.base)$('ai-base').value=p.base;if(p.speed&&$('ai-speed')?.querySelector('option[value="'+p.speed+'"]'))$('ai-speed').value=p.speed;$('ai-remember').checked=true;}catch(e){aiPrefsReady=true;}}
+function loadAIPrefs(){try{const p=JSON.parse(localStorage.getItem(AI_PREF)||'null');aiPrefsReady=true;if(!p)return;if(p.mode&&$('ai-mode').querySelector('option[value="'+p.mode+'"]'))$('ai-mode').value=p.mode;if(p.key)$('gemini-key').value=p.key;const isDir=$('ai-mode').value==='direct',upgraded=isDir&&typeof p.model==='string'&&OLD_GEMINI_RE.test(p.model.trim());if(p.model!=null)$('gemini-model').value=upgraded?AI_PROVIDERS.direct.model:p.model;if(p.proxy)$('proxy-url').value=p.proxy;if(p.base)$('ai-base').value=p.base;if(p.speed&&$('ai-speed')?.querySelector('option[value="'+p.speed+'"]'))$('ai-speed').value=p.speed;$('ai-remember').checked=true;if(upgraded)saveAIPrefs();}catch(e){aiPrefsReady=true;}}
 function openAISetup(){$('ai-setup').open=true;$('ai-setup').scrollIntoView({block:'start',behavior:'smooth'});setTimeout(()=>{if($('ai-mode').value==='direct'&&!$('gemini-key').value)$('gemini-key').focus({preventScroll:true});},350);}
 $('connect-ai').onclick=openAISetup;
 for(const id of ['gemini-key','gemini-model','proxy-url','ai-base'])$(id).addEventListener('input',()=>{$('ai-pill').dataset.tested='';saveAIPrefs();syncAI();});
