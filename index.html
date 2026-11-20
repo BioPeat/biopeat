@@ -7354,8 +7354,10 @@ async function hydrateAIItems(rawItems,fallback,usePhoto,aiModel,signal){
       const {nutrients}=sanitizeNutrients(n,grams,o.ref||o.name);
       return cleanEntry({id:uid(),kind:'food',name:o.name||off.name,meal,amount:grams,basis:grams,unit:o.unit==='ml'?'ml':'g',nutrients,note:confNote.slice(0,1500),source:'IA ('+srcTag+') + etiqueta Open Food Facts ('+off.name+')',confirmed:true});
     }
-    if(o.src==='ref'&&o.ref&&REF_MAP.has(o.ref)&&!own(o,'kcal')){
-      const e=fromRef(o.ref,grams,meal,confNote,'IA ('+srcTag+') + base USDA/BEDCA');
+    const refMatch=o.ref&&REF_MAP.has(o.ref)?o.ref:(findRef(o.name||'',false)?.id||'');
+    const hasMacros=['kcal','p','c','f'].every(k=>o[k]!=null&&o[k]!=='');
+    if((o.src==='ref'||!hasMacros)&&refMatch){
+      const e=fromRef(refMatch,grams,meal,confNote,'IA ('+srcTag+') + base USDA/BEDCA');
       return {...e,name:o.name?String(o.name).slice(0,180):e.name,confirmed:true};
     }
     const baseN=cleanNutrients(o,true);
@@ -9128,7 +9130,7 @@ function canonMeal(v,fallback){
   return mealOfWord(n.split(/\s+/).find(w=>mealOfWord(w))||'')||(n==='otro'?'Otro':fallback);
 }
 function localMeal(raw,meal){
-  const stripped=raw.trim().replace(/^(?:hoy\s+)?(?:para\s+)?(?:desayunar|almorzar|comer|merendar|cenar)\s*[:,]?\s*/i,'').replace(/^(?:hoy\s+)?(?:(?:en|para)\s+(?:la|el)\s+)?(?:cena|comida|merienda|desayuno|almuerzo|media ma[ñn]ana|tentempi[eé])\s*[:,]?\s*/i,'').replace(/^(?:me\s+)?(?:he\s+)?(?:comido|cenado|desayunado|merendado|almorzado|tomado|desayun[eé]|com[ií]|merend[eé]|cen[eé]|almorc[eé]|tom[eé])\s*[:,]?\s*/i,'').replace(/\s+(?:en|para)\s+(?:la|el)\s+(?:cena|comida|merienda|desayuno|almuerzo)\s*$/i,'').replace(/\s+y\s+(?:me\s+)?(?:tom[eé]|com[ií]|beb[ií])\s+/gi,'; ').replace(/\s+y\s+(?=\d|(?:un|una|uno|medio|media|dos|tres|cuatro|cinco)\b)/gi,'; ');
+  const stripped=raw.trim().replace(/^(?:hoy\s+)?(?:para\s+)?(?:desayunar|almorzar|comer|merendar|cenar)\s*[:,]?\s*/i,'').replace(/^(?:hoy\s+)?(?:(?:en|para)\s+(?:la|el)\s+)?(?:cena|comida|merienda|desayuno|almuerzo|media ma[ñn]ana|tentempi[eé])\s*[:,]?\s*/i,'').replace(/^(?:me\s+)?(?:he\s+)?(?:comido|cenado|desayunado|merendado|almorzado|tomado|desayun[eé]|com[ií]|merend[eé]|cen[eé]|almorc[eé]|tom[eé])\s*[:,]?\s*/i,'').replace(/\s+(?:en|para)\s+(?:la|el)\s+(?:cena|comida|merienda|desayuno|almuerzo)\s*$/i,'').replace(/\s+y\s+(?:me\s+)?(?:tom[eé]|com[ií]|beb[ií])\s+/gi,'; ').replace(/\s+y\s+(?=\d|(?:un|una|uno|medio|media|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\b)/gi,'; ');
   const old=$('meal-select').value;
   $('meal-select').value=meal;
   try{return parseSmart(stripped.replace(/\b(kg|ml|g)\s+de\s+/gi,'$1 ')).map(e=>({...e,meal}));}finally{$('meal-select').value=old;}
@@ -9144,7 +9146,7 @@ function aiTaskProfile(task,hasImg=false){
   return {think:'low',mediaRes:'MEDIA_RESOLUTION_HIGH',modelHint:''};
 }
 function geminiThinkLevel(model,want){
-  if(!want||want===false||/gemma|gemini-[12]\.0|gemini-1\.5/i.test(model))return null;
+  if(!want||want===false||/gemma|gemini-[12]\./i.test(model))return null;
   const w=want===true?'low':String(want);
   if(/flash-lite|3\.6-flash|3-flash/i.test(model))return w==='off'?'minimal':w;
   return (w==='off'||w==='minimal')?'low':w;
@@ -9217,7 +9219,7 @@ async function callGemini(model,key,prompt,img,signal,opts={}){
     if(res.status===400&&gc.thinkingConfig&&/think/i.test(msg))return callGemini(model,key,prompt,img,signal,{...o,think:false});
     if(res.status===400&&gc.mediaResolution&&/media.?resolution/i.test(msg))return callGemini(model,key,prompt,img,signal,{...o,mediaRes:''});
     if(res.status===400&&gc.responseJsonSchema&&/schema|json|responseMimeType/i.test(msg))return callGemini(model,key,prompt,img,signal,{...o,jsonSchema:null});
-    if(res.status===400&&body.systemInstruction&&/system/i.test(msg))return callGemini(model,key,o.sys+'\n\n'+prompt,img,signal,{...o,sys:''});
+    if(res.status===400&&body.systemInstruction&&/system|developer.?instruction/i.test(msg))return callGemini(model,key,o.sys+'\n\n'+prompt,img,signal,{...o,sys:''});
     if(/api key|API_KEY/i.test(msg)&&(res.status===400||res.status===403))throw aiError('La clave de Gemini no es válida. Cópiala de nuevo en «Conectar IA».');
     throw aiError('Error de la IA (HTTP '+res.status+')'+(res.status===429?' (límite de uso alcanzado)':res.status===404?' (el modelo «'+model+'» no existe)':'')+': '+msg,{retry:res.status===429||res.status===404||res.status>=500,notFound:res.status===404});
   }
@@ -9296,7 +9298,7 @@ async function callChat(mode,model,key,prompt,img,signal,opts={}){
     let data={};try{data=await res.json();}catch(e){throw aiError('La IA no devolvió una respuesta válida (HTTP '+res.status+').',{retry:res.status>=500});}
     const msg=String(data.error?.message||data.message||data.error||'Error de IA').slice(0,250);
     if(res.status===400&&body.temperature!=null&&/temperature/i.test(msg))return callChat(mode,model,key,prompt,img,signal,{...opts,temp:null});
-    if(res.status===400&&body.response_format&&/response_format|json_object/i.test(msg))return callChat(mode,model,key,prompt,img,signal,{...opts,jsonMode:false});
+    if(res.status===400&&body.response_format&&/response_format|json_object|json.?mode/i.test(msg))return callChat(mode,model,key,prompt,img,signal,{...opts,jsonMode:false});
     if(res.status===401||res.status===403)throw aiError('La clave no es válida o no tiene permiso para «'+model+'». Revísala en «Conectar IA».');
     if(img&&res.status===400&&/image|vision|multimodal|content type/i.test(msg))throw aiError('El modelo «'+model+'» no admite fotos. Elige uno con visión o usa texto.');
     if(res.status===402)throw aiError('Tu cuenta de '+aiProv(mode).name+' no tiene saldo para la API.');
@@ -9739,7 +9741,7 @@ async function analyzeDay(usePhoto=false){if(aiBusy)return;const raw=usePhoto?''
   }
   try{const entries=localDay(raw,fallback);addEntries(entries,'Comidas añadidas a '+dt,dt);$('smart-input').value='';$('meal-ai-status').textContent='Añadido sin IA: '+[...new Set(entries.map(e=>e.meal))].join(', ')+' · '+dt+'.';return;}catch(e){if(e.code==='INCOMPLETE'){editFood(e.foodId,{amount:e.amount,meal:mealFromText(raw,fallback)});$('meal-ai-status').textContent='Completa la ficha y se añadirá. No se ha guardado nada todavía.';return;}}
  }
- aiBusy=true;aiController=new AbortController();const controller=aiController;let timedOut=false,secTimer=null,response='',aiModel='';const timer=setTimeout(()=>{timedOut=true;controller.abort();},65000);
+ aiBusy=true;aiController=new AbortController();const t0=Date.now(),controller=aiController;let timedOut=false,secTimer=null,response='',aiModel='';const timer=setTimeout(()=>{timedOut=true;controller.abort();},65000);
  const st=$('photo-status');$('smart-add').disabled=true;$('analyze-photo').disabled=true;$('cancel-ai').hidden=false;$('meal-ai-status').textContent='Analizando para '+dt+'. No se guarda nada hasta validar todos los platos.';
  if(usePhoto){st.classList.remove('form-error');let n=1;const show=()=>st.textContent='Analizando foto'+(aiModel?' con '+aiModel:'')+'… '+n+'s';show();secTimer=setInterval(()=>{n++;show();},1000);}
  try{
@@ -9754,7 +9756,8 @@ async function analyzeDay(usePhoto=false){if(aiBusy)return;const raw=usePhoto?''
   addEntries(entries,'Añadidas '+entries.length+' entradas · '+dt,dt,{remember:true});
   const resumen=entries.map(e=>e.name+' '+fmt(e.amount)+' '+e.unit).join(', '),tot=totals(entries).all;
   if(!usePhoto)$('smart-input').value='';
-  $('meal-ai-status').textContent='Guardado en '+dt+': '+resumen+'. Puedes editar cantidades o deshacer. '+entries.map(e=>e.note).filter(Boolean).join(' ');
+  const secs=((Date.now()-t0)/1000).toFixed(1),mLbl=aiModel?' · '+aiModel:'';
+  $('meal-ai-status').textContent='Guardado en '+dt+' ('+secs+' s'+mLbl+'): '+resumen+'. Puedes editar cantidades o deshacer. '+entries.map(e=>e.note).filter(Boolean).join(' ');
   if(usePhoto){resetPhoto();st.textContent='✓ Foto guardada en '+[...new Set(entries.map(e=>e.meal))].join(', ')+': '+resumen+' · '+fmt(tot.kcal)+' kcal. Revisa los gramos en Registro si algo no cuadra.';}else st.textContent='';
  }catch(e){let msg=e.message;if(e.name==='AbortError')msg=timedOut?'La IA no respondió en 65 s (ni el modelo rápido). Prueba otra vez o usa «Foto en tu chat».':'Análisis cancelado. No se añadió nada.';
   $('meal-ai-status').textContent=msg;if(usePhoto){st.textContent=msg;st.classList.add('form-error');toast(msg);}if(/Falta conectar/.test(msg))openAISetup();throw Error(msg);}
