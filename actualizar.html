@@ -75,7 +75,8 @@ pre{white-space:pre-wrap;word-break:break-word;background:#121e31;padding:10px;b
 <p class="muted">Comprobación: chat nuevo → «¿Qué versión es la actual?». Debe contestar la versión que ves en la app.</p>
 </details>
 <details class="card" id="buzon"><summary><b>💡 Buzón de sugerencias de los usuarios</b></summary>
-<p class="muted">Lo que la gente envía desde la app (Más → Sugerir una mejora) llega solo a tu hoja de Google. Pulsa «Cargar», marca las que quieras aplicar y copia la petición para tu IA. Cuando las publiques, pulsa «Hecha» y dejan de salir. Google tarda hasta 5 minutos en mostrar las nuevas.</p>
+<p class="muted"><b>Panel nuevo (v76):</b> todas las sugerencias enviadas desde la app llegan al instante a tu base privada de Cloudflare D1. Puedes verlas, marcarlas como aceptadas o hechas y ver las estadísticas sin cookies desde aquí: <a class="btn amber" style="width:auto;min-height:40px;padding:0 16px;margin:6px 0" href="https://biopeat-api.dramirezcp7.workers.dev/admin" target="_blank" rel="noopener">Abrir panel /admin ↗</a> (usa tu clave de <code>.biopeat-admin-key.txt</code>, o usa la skill <code>/revisar-sugerencias</code> con la IA).</p>
+<p class="muted">Histórico anterior de Google Forms:</p>
 <button class="btn slate" id="fb-load">Cargar sugerencias</button>
 <label class="muted"><input type="checkbox" id="fb-showdone"> Mostrar también las ya hechas o descartadas</label>
 <div id="fb-list"></div>

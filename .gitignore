@@ -1,0 +1,7 @@
+.biopeat-admin-key.txt
+.env
+.env.*
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

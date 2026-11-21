@@ -27,7 +27,11 @@ def ok(msg):
 # ---------- 1. Comprobaciones estáticas (sin navegador) ----------
 ALLOWED = {'index.html', 'manifest.json', 'sw.js', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png',
            'AGENTS.md', 'CONTEXTO_BIOPEAT.md', 'MAPA_DEL_CODIGO.md', 'README.md', 'tools/sincronizar_version.py',
-           'tests/smoke.py', 'tests/datos_prueba.json', 'tools/mapa.py', '.github/workflows/check.yml', 'actualizar.html', 'inicio.html'}
+           'tools/security_check.py', 'tests/smoke.py', 'tests/datos_prueba.json', 'tools/mapa.py',
+           '.github/workflows/check.yml', '.github/dependabot.yml', '.gitignore',
+           '.agents/skills/revisar-sugerencias/SKILL.md',
+           'cloudflare/schema.sql', 'cloudflare/config.json', 'cloudflare/worker.js',
+           'actualizar.html', 'inicio.html'}
 
 def static_checks():
     print('1. Comprobaciones del código')
@@ -105,11 +109,55 @@ async def browser_checks():
         pg.on('pageerror', lambda e: errs.append(str(e)))
         pg.on('dialog', lambda d: asyncio.ensure_future(d.accept()))
         await pg.route('https://generativelanguage.googleapis.com/**', ai_mock)
-        form_posts = []
-        async def form_mock(route):
-            form_posts.append(route.request.post_data or '')
-            await route.fulfill(status=200, body='ok')
-        await pg.route('https://docs.google.com/**', form_mock)
+        fb_posts = []
+        vaults = {}
+        async def api_mock(route):
+            u = route.request.url
+            m = route.request.method
+            if '/api/feedback' in u and m == 'POST':
+                fb_posts.append(json.loads(route.request.post_data or '{}'))
+                await route.fulfill(status=201, content_type='application/json', body='{"ok":true,"id":42}')
+                return
+            if '/api/ping' in u:
+                await route.fulfill(status=204, body='')
+                return
+            if '/api/vault/' in u:
+                vid = u.rsplit('/', 1)[-1]
+                auth = route.request.headers.get('x-biopeat-auth', '')
+                if not re.match(r'^[a-f0-9]{64}$', auth):
+                    await route.fulfill(status=401, content_type='application/json', body='{"error":"Unauthorized"}'); return
+                row = vaults.get(vid)
+                if m == 'GET':
+                    if not row:
+                        await route.fulfill(status=404, content_type='application/json', body='{"error":"Not found"}'); return
+                    if row['auth'] != auth:
+                        await route.fulfill(status=403, content_type='application/json', body='{"error":"Forbidden"}'); return
+                    await route.fulfill(status=200, content_type='application/json', body=json.dumps({
+                        'iv': row['iv'], 'ciphertext': row['ciphertext'], 'compressed': row['compressed'],
+                        'rev': row['rev'], 'updated_at': row['updated_at']
+                    })); return
+                if m == 'PUT':
+                    b = json.loads(route.request.post_data or '{}')
+                    if row and row['auth'] != auth:
+                        await route.fulfill(status=403, content_type='application/json', body='{"error":"Forbidden"}'); return
+                    if row and (b.get('baseRev') is None or row['rev'] > int(b['baseRev'])):
+                        await route.fulfill(status=409, content_type='application/json', body=json.dumps({
+                            'conflict': True, 'rev': row['rev'], 'iv': row['iv'],
+                            'ciphertext': row['ciphertext'], 'compressed': row['compressed'], 'updated_at': row['updated_at']
+                        })); return
+                    rev = (row['rev'] + 1) if row else 1
+                    vaults[vid] = {
+                        'auth': auth, 'iv': b['iv'], 'ciphertext': b['ciphertext'],
+                        'compressed': bool(b.get('compressed')), 'rev': rev, 'updated_at': 1700000000000
+                    }
+                    await route.fulfill(status=200, content_type='application/json', body=json.dumps({'ok': True, 'rev': rev, 'updated_at': 1700000000000})); return
+                if m == 'DELETE':
+                    if row and row['auth'] != auth:
+                        await route.fulfill(status=403, content_type='application/json', body='{"error":"Forbidden"}'); return
+                    vaults.pop(vid, None)
+                    await route.fulfill(status=200, content_type='application/json', body='{"ok":true}'); return
+            await route.fulfill(status=404, body='{}')
+        await pg.route('https://biopeat-api.dramirezcp7.workers.dev/**', api_mock)
         async def chat_mock(route):
             if route.request.method == 'GET':
                 await route.fulfill(status=200, content_type='application/json', body=json.dumps({'data': [{'id': 'text-embedding-x'}, {'id': 'modelo-mini'}]})); return
@@ -133,9 +181,14 @@ async def browser_checks():
                     await pg.wait_for_timeout(500)
         toast = lambda: ev("document.getElementById('toast').hidden?'':document.getElementById('toast-text').textContent")
 
+        async def clear_storage():
+            await ev("""async()=>{ready=false;try{db?.close();db=null;}catch(e){}try{clearTimeout(deferredSaveTimer);deferredSaveTimer=null;}catch(e){}try{clearTimeout(cloudState?.timer);}catch(e){}localStorage.clear();sessionStorage.clear();await new Promise(r=>{try{const q=indexedDB.deleteDatabase('biopeat_v10');q.onsuccess=q.onerror=q.onblocked=r;setTimeout(r,200);}catch(e){r();}});}""")
+
         async def load(seed):
             await go_url()
-            await ev("r=>{localStorage.clear(); if(r) localStorage.setItem('biopeat_pro_v10', r)}", seed)
+            await clear_storage()
+            if seed:
+                await ev("r=>localStorage.setItem('biopeat_pro_v10', r)", seed)
             await pg.reload()
             try:
                 await pg.wait_for_function("document.body.dataset.ready==='true'", timeout=10000)
@@ -294,11 +347,11 @@ async def browser_checks():
         ok('Los días sin registro del depósito se cuentan aparte (no «parcial»)') if r['days'] + r['unlogged'] == 7 else fail('Depósito: días registrados + sin registro no suman 7: ' + str(r))
         check_errs('v50')
 
-        print('6f. v57: sugerencias por formulario, IA de cualquier proveedor, gimnasio de cualquier app')
+        print('6f. v57/v76: sugerencias al buzón API, IA de cualquier proveedor, gimnasio de cualquier app')
         await ev("openFeedback()")
         await ev("$('fb-title').value='Recetas';$('fb-text').value='Poder guardar recetas con varios ingredientes';$('fb-send').click()"); await pg.wait_for_timeout(500)
-        ok_form = bool(form_posts) and 'entry.244687501=Recetas' in form_posts[-1] and 'entry.1477350599=' in form_posts[-1] and 'entry.1278042396=v' in form_posts[-1]
-        ok('Sugerencia enviada al formulario de Google') if ok_form and await ev("!!$('fb-again')") else fail('La sugerencia no llega al formulario: ' + str(form_posts[-1:])[:200])
+        ok_form = bool(fb_posts) and fb_posts[-1].get('title') == 'Recetas' and fb_posts[-1].get('category') == 'idea' and fb_posts[-1].get('app_version') == 'v76'
+        ok('Sugerencia enviada al buzón API (Cloudflare D1)') if ok_form and await ev("!!$('fb-again')") else fail('La sugerencia no llega a /api/feedback: ' + str(fb_posts[-1:])[:200])
         await ev("$('modal').close()")
         await ev("$('ai-mode').value='openai';$('ai-mode').dispatchEvent(new Event('change'));$('gemini-key').value='sk-prueba';$('gemini-model').value='';syncAI()")
         await ev("$('ai-test').click()"); await pg.wait_for_timeout(800)
@@ -360,7 +413,7 @@ async def browser_checks():
         await ev("setLang('es')"); await pg.wait_for_timeout(150)
         ok('Vuelve al español sin recargar') if 'Hoy' in await ev("document.querySelector('.nav-item[data-view=today]').innerText") and await ev("$('meal-select').selectedOptions[0].textContent") in ('Comida','Desayuno','Merienda','Cena','Media mañana') else fail('No vuelve al español')
         code = await ev("packMove()")
-        await ev("localStorage.clear()")
+        await clear_storage()
         await pg.goto('about:blank'); await pg.goto(url + '#bp-move=' + code); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(700)
         if await ev("!!$('move-ok')"):
             await ev("$('move-ok').click()"); await pg.wait_for_timeout(300)
@@ -385,13 +438,13 @@ async def browser_checks():
         ok('El mapa cambia a 3 meses') if await ev("document.querySelectorAll('#gp-heat .gp-heat>div').length") == 13 else fail('El mapa no cambia a 3 meses')
         r = await ev("(()=>{const t=buildAIExportText('7');return [t.includes('MARCO DE REFERENCIA'),t.includes('Calcio : fósforo: meta'),t.includes('Vitamina D (µg)')]})()")
         ok('El informe para IA explica las metas y zonas para una IA sin contexto') if all(r) else fail('Informe para IA sin marco de referencia: ' + str(r))
-        await go_url(); await ev("localStorage.clear();localStorage.setItem('biopeat_pro_v10',JSON.stringify({version:10,profile:{weight:70,height:170,age:30},days:{},plan:[],v54:{onboardingDone:true}}))")
+        await go_url(); await clear_storage(); await ev("localStorage.setItem('biopeat_pro_v10',JSON.stringify({version:10,profile:{weight:70,height:170,age:30},days:{},plan:[],v54:{onboardingDone:true}}))")
         await pg.goto(url + '?empezar=1'); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(400)
         ok('Desde la web («Empezar») sale el asistente si no hay datos') if await ev("$('modal').open&&!!$('bp-wiz')&&!location.search") else fail('El enlace de la web no abre el asistente')
         await ev("$('modal').close()")
         check_errs('v68')
         print('6e. v56: app pública, guía, Más, sugerencias')
-        await go_url(); await ev("localStorage.clear()"); await pg.reload(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(250)
+        await go_url(); await clear_storage(); await pg.reload(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(250)
         r = await ev("({plan:state.plan.length,ctx:state.context,nes:!!state.foods.nesquik,bk:profV().breakfast.enabled,help:!!document.querySelector('#bp-wiz .bp-wiz-help'),welcome:!!document.querySelector('#bp-wiz .bp-welcome'),name:activeProfileName()})")
         await ev("$('modal').open&&$('modal').close()")
         ok('Usuario nuevo: «Para llegar a tus metas» no sugiere nada todavía') if await ev("$('day-coach').innerHTML.trim()===''") else fail('El usuario nuevo ve sugerencias que no ha comido: ' + (await ev("$('day-coach').innerText"))[:120])
@@ -423,7 +476,7 @@ async def browser_checks():
         ok('B1 normal (tiamina) en usuarios sin benfotiamina') if await ev("metric(MICRO.find(m=>m.k==='b1')).name") == 'B1 · Tiamina' else fail('B1 sigue tratándose como benfotiamina')
         check_errs('v56')
         print('6d. Perfiles y asistente')
-        await go_url(); await ev("localStorage.clear()"); await pg.reload(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(250)
+        await go_url(); await clear_storage(); await pg.reload(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(250)
         ok('Primera vez: se abre el asistente') if await ev("$('modal').open&&!!$('bp-wiz')") else fail('Al empezar de cero no sale el asistente')
         await ev("$('wiz-name').value='Ana';document.querySelector('[data-wiz-sex=female]').click();document.querySelector('[data-wiz-goto=\"5\"]').click()")
         await ev("document.querySelector('[data-wiz-save]').click()"); await pg.wait_for_timeout(200)
@@ -459,11 +512,81 @@ async def browser_checks():
         ok('El antiguo plan personal pasa a metas guardadas (una vez)') if r[0] == 'split' and r[1] > 0 and r[2] > 0 and r[3] == 'prometabolic' and not r[4] else fail('Migración del plan personal: ' + str(r))
         check_errs('perfiles')
         await load(FIXTURE.read_text(encoding='utf-8'))
+        await ev(f"goDate('{DAY}')")
+        print('6j. v76: E2EE, EN parser, recomp IMC, A:D, bio y fluidez')
+        r = await ev("""async()=>{
+          const parsedEn = parseSmart('200 ml whole milk and 2 bananas');
+          const okEn = parsedEn.length === 2 && parsedEn[0].amount === 200 && parsedEn[0].unit === 'ml' && parsedEn[1].amount === 240 && parsedEn.every(x=>x.kind==='food' && x.nutrients?.kcal>0);
+          const prevW = state.profile.weight, prevH = state.profile.height, prevG = state.v54.goalType, prevMg = state.macroGoals, prevTm = state.targetMode, prevFaf = state.v54.faf[2];
+          state.profile.weight = 95; state.profile.height = 178; state.v54.goalType = 'recomp'; state.macroGoals = null; state.targetMode = null; state.v54.faf[2] = FAF[2];
+          const tg = targetFor('2026-10-14');
+          state.profile.weight = prevW; state.profile.height = prevH; state.v54.goalType = prevG; state.macroGoals = prevMg; state.targetMode = prevTm; state.v54.faf[2] = prevFaf;
+          localStorage.setItem('biopeat_ai24', JSON.stringify({key:'SECRET_API_KEY_999'}));
+          const key = ensureSyncKey();
+          const b = buildCloudBundle();
+          const enc = await encryptVaultPayload(b, key);
+          const pushed = await cloudPush({force:true});
+          const leaked = enc.ciphertext.includes('SECRET_API_KEY') || enc.ciphertext.includes('Tortilla') || JSON.stringify(b).includes('SECRET_API_KEY');
+          return {okEn, recompKcal:tg.kcal, recompP:tg.p, recompF:tg.f, adRatio:(NEW_PROFILE_MICRO.male.vitA*3.33)/(NEW_PROFILE_MICRO.male.vitD*40), keyLen:key.length, pushed, leaked, key};
+        }""")
+        ok('Parser EN reconoce varios alimentos sin IA') if r['okEn'] else fail('parseSmart EN falló: ' + str(r))
+        ok(f"Recomp 95 kg ajusta por IMC sin disparar calorías ({r['recompKcal']} kcal, P {r['recompP']}g)") if 1800 <= r['recompKcal'] <= 2850 and r['recompP'] < 180 else fail('targetFor recomp 95kg: ' + str(r))
+        ok(f"Perfil nuevo arranca con A:D en zona verde ({r['adRatio']:.2f}:1)") if 2.0 <= r['adRatio'] <= 4.0 else fail('NEW_PROFILE_MICRO A:D: ' + str(r))
+        ok('E2EE cifra sin filtrar comidas ni claves de IA y sube a bóveda') if r['pushed'] and not r['leaked'] and r['keyLen'] >= 40 else fail('E2EE push/aislamiento: ' + str(r))
+        sync_key = r['key']
+        await clear_storage()
+        restored = await ev("async(k)=>{const res=await cloudPull(k,{apply:true,forceApply:true});return {found:res.found,applied:res.applied,kcal:totals().all.kcal,days:Object.keys(state.days).length};}", sync_key)
+        ok('Recuperación desde nube E2EE tras borrado completo') if restored['found'] and restored['applied'] and restored['days'] >= 3 else fail('E2EE pull falló: ' + str(restored))
+        c409 = await ev("""async(k)=>{
+          ready = true;
+          syncSet(SYNC_KEY_STORE, k);
+          const {vaultId,authToken}=await deriveSyncCreds(k);
+          const remoteBundle=buildCloudBundle();
+          remoteBundle.updated=Date.now()+60000;
+          remoteBundle.main.context='REMOTE_409_WIN';
+          const enc=await encryptVaultPayload(remoteBundle,k);
+          const curRev=getSyncRev();
+          await fetch(CLOUD_API+'/api/vault/'+vaultId,{method:'PUT',headers:{'Content-Type':'application/json','X-BioPeat-Auth':authToken},body:JSON.stringify({iv:enc.iv,ciphertext:enc.ciphertext,compressed:enc.compressed,baseRev:curRev,appVersion:APP_VERSION}),credentials:'omit',mode:'cors'});
+          state.context='LOCAL_STALE'; state.updated=Date.now()-5000;
+          const ps=ensureProfilesStore(); for(const it of Object.values(ps.items||{}))if(it)it.updated=Date.now()-5000; saveProfilesStore(ps);
+          const okPush=await cloudPush({force:true});
+          return {okPush, ctx:state.context, rev:getSyncRev(), err:cloudState.err};
+        }""", sync_key)
+        ok('E2EE resuelve conflicto 409 aplicando copia remota más reciente') if c409['okPush'] and c409['ctx'] == 'REMOTE_409_WIN' and c409['rev'] >= 2 else fail('E2EE 409 conflicto falló: ' + str(c409))
+        await clear_storage()
+        await pg.goto('about:blank')
+        await pg.goto(f'{url}#bp-sync={sync_key}')
+        await pg.wait_for_selector("body[data-ready='true']")
+        for _ in range(40):
+            if await ev("Object.keys(state.days).some(d=>(state.days[d].entries||[]).some(e=>e.kind==='food'))"): break
+            await pg.wait_for_timeout(150)
+        magic = await ev("({hash:location.hash, days:Object.keys(state.days).length, key:getSyncKey()})")
+        ok('Enlace mágico #bp-sync= recupera datos y limpia el hash') if magic['hash'] == '' and magic['days'] >= 3 and magic['key'] == sync_key else fail('Enlace mágico #bp-sync= falló: ' + str(magic))
+        await ev("""async()=>{flushDeferredSave();const r=localStorage.getItem(STORE),p=localStorage.getItem(PROFILES_KEY)||'';const d=await openDB();db=d;await idbReadWrite('readwrite',r,'current');if(p)await idbReadWrite('readwrite',p,'profiles');}""")
+        await ev("localStorage.removeItem(STORE);localStorage.removeItem(PROFILES_KEY);")
+        await pg.reload()
+        await pg.wait_for_selector("body[data-ready='true']")
+        idb_rec = await ev("({days:Object.keys(state.days).length, lsRestored:!!localStorage.getItem(STORE)})")
+        ok('Recuperación desde espejo IndexedDB si localStorage se borra') if idb_rec['days'] >= 3 and idb_rec['lsRestored'] else fail('IDB recovery falló: ' + str(idb_rec))
+        await load(FIXTURE.read_text(encoding='utf-8'))
+        await ev(f"goDate('{DAY}')")
+        await ev("$('bio-temp').value='98.6';$('bio-temp').dispatchEvent(new Event('change'));$('bio-temp').value='36.8';$('bio-temp').dispatchEvent(new Event('change'));$('bio-pulse').value='78';$('bio-pulse').dispatchEvent(new Event('change'));$('bio-energy').value='4';$('bio-energy').dispatchEvent(new Event('change'));flushDeferredSave()")
+        await pg.wait_for_timeout(150)
+        await pg.reload(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await ev(f"goDate('{DAY}')")
+        bio_f = await ev("(()=>{ $('bio-temp').value='98.6'; $('bio-temp').dispatchEvent(new Event('change')); return day().bio?.temp; })()")
+        await ev("$('bio-temp').value='36.8';$('bio-temp').dispatchEvent(new Event('change'));flushDeferredSave()")
+        bio_r = await ev("({b:day().bio,exp:buildAIExportText('7'),fConv:arguments[0]})") if False else await ev("(f=>({b:day().bio,exp:buildAIExportText('7'),fConv:f}))", bio_f)
+        ok('Bio (temp/°F->°C/pulso/energía) persiste y entra en el informe IA') if bio_r['b'] and abs(bio_r['b']['temp'] - 36.8) < 0.01 and abs((bio_r['fConv'] or 0) - 37.0) < 0.15 and bio_r['b']['pulse'] == 78 and '36,8' in bio_r['exp'] else fail('Bio persistencia/export: ' + str(bio_r)[:200])
+        ms_per_tap = await ev("""()=>{const id=day().entries.find(e=>e.kind==='food')?.id;if(!id)return -1;const t0=performance.now();for(let i=0;i<5;i++)stepQuantity(id,i%2?1:-1);return (performance.now()-t0)/5;}""")
+        ok(f'Fluidez de respuesta al pulsar ({ms_per_tap:.1f} ms/toque)') if 0 <= ms_per_tap < 80 else fail(f'Latencia excesiva en toques: {ms_per_tap:.1f} ms')
+        check_errs('v76')
+
+        await load(FIXTURE.read_text(encoding='utf-8'))
         await ev(f"goDate('{DAY}')"); await ev("renderWeekly();renderGym();go('micros')"); await pg.wait_for_timeout(200)
         print('7. Pulsar todos los botones')
         await ev("document.querySelectorAll('details').forEach(d=>d.open=true)")
         n = await ev("""()=>{let i=0;document.querySelectorAll('button').forEach(b=>{if(b.closest('dialog')||b.offsetParent===null)return;b.dataset.t=i++;});return i;}""")
-        skip = re.compile(r'export|backup|forget|import|clear-foods|bp-clip|menu-backup|fb-send|fb-share')
+        skip = re.compile(r'export|backup|forget|import|clear-foods|bp-clip|menu-backup|fb-send|fb-share|cloud-delete|cloud-passmgr|cloud-magic|cloud-link')
         bad = 0
         for i in range(n):
             info = await ev(f"(()=>{{const b=document.querySelector('[data-t=\"{i}\"]');return b?(b.id||'')+' '+b.textContent.trim().slice(0,30):null}})()")
@@ -472,7 +595,7 @@ async def browser_checks():
                 await ev(f"document.querySelector('[data-t=\"{i}\"]').click()")
                 await pg.wait_for_timeout(60)
                 if await ev("$('modal').open"):
-                    await ev("(()=>{const m=$('modal');const bs=[...m.querySelectorAll('button')].filter(x=>!/eliminar|delete/i.test(x.textContent+(x.dataset.deleteworkout||'')+(x.dataset.deletePlan||'')+(x.dataset.deleteFood||'')));for(const x of bs.slice(0,4)){try{x.click()}catch(e){}}})()")
+                    await ev("(()=>{const m=$('modal');const bs=[...m.querySelectorAll('button')].filter(x=>!/eliminar|delete|borrar/i.test(x.textContent+(x.dataset.deleteworkout||'')+(x.dataset.deletePlan||'')+(x.dataset.deleteFood||'')));for(const x of bs.slice(0,4)){try{x.click()}catch(e){}}})()")
                     await pg.wait_for_timeout(60)
                     await ev("$('modal').open&&$('modal').close()")
             except Exception as ex:

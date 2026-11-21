@@ -1,7 +1,7 @@
 {
   "name": "BioPeat",
   "short_name": "BioPeat",
-  "start_url": "./",
+  "start_url": "./?empezar=1",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
@@ -29,7 +29,7 @@
     }
   ],
   "id": "./",
-  "description": "Registra lo que comes y ve tus calorías, macros, 25 vitaminas y minerales y los equilibrios de Ray Peat, con ideas de qué comer. Tus datos se quedan en tu móvil.",
+  "description": "Registra lo que comes y ve tus calorías, macros, 25 vitaminas y minerales y los equilibrios de Ray Peat, con respaldo automático cifrado opcional. Privacidad total.",
   "categories": [
     "health",
     "food",

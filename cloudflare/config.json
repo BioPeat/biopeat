@@ -1,0 +1,9 @@
+{
+  "accountId": "a38b0dc7b72539c49cf44f2617ef396f",
+  "workerName": "biopeat-api",
+  "apiUrl": "https://biopeat-api.dramirezcp7.workers.dev",
+  "adminUrl": "https://biopeat-api.dramirezcp7.workers.dev/admin",
+  "databaseName": "biopeat-db",
+  "databaseId": "9ff7fc2f-e4e0-43c7-a4dd-3b28dd5c65a0",
+  "jurisdiction": "eu"
+}
