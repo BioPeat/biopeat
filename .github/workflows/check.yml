@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Actualizar versión de CONTEXTO y MAPA automáticamente
         run: |
           python3 tools/sincronizar_version.py
