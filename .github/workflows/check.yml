@@ -26,7 +26,7 @@ jobs:
             git commit -am "CONTEXTO y MAPA actualizados solos"
             git push
           fi
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - run: pip install playwright && python -m playwright install --with-deps chromium
