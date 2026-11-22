@@ -350,7 +350,7 @@ async def browser_checks():
         print('6f. v57/v76: sugerencias al buzón API, IA de cualquier proveedor, gimnasio de cualquier app')
         await ev("openFeedback()")
         await ev("$('fb-title').value='Recetas';$('fb-text').value='Poder guardar recetas con varios ingredientes';$('fb-send').click()"); await pg.wait_for_timeout(500)
-        ok_form = bool(fb_posts) and fb_posts[-1].get('title') == 'Recetas' and fb_posts[-1].get('category') == 'idea' and fb_posts[-1].get('app_version') == 'v76'
+        ok_form = bool(fb_posts) and fb_posts[-1].get('title') == 'Recetas' and fb_posts[-1].get('category') == 'idea' and fb_posts[-1].get('app_version') == await ev("APP_VERSION")
         ok('Sugerencia enviada al buzón API (Cloudflare D1)') if ok_form and await ev("!!$('fb-again')") else fail('La sugerencia no llega a /api/feedback: ' + str(fb_posts[-1:])[:200])
         await ev("$('modal').close()")
         await ev("$('ai-mode').value='openai';$('ai-mode').dispatchEvent(new Event('change'));$('gemini-key').value='sk-prueba';$('gemini-model').value='';syncAI()")
