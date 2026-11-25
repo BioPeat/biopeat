@@ -9,9 +9,9 @@
 <meta name="theme-color" content="#0f172a">
 <meta property="og:title" content="BioPeat · Tu nutrición al estilo Ray Peat">
 <meta property="og:description" content="Calcio : fósforo, PUFA, hidratos : proteína, temperatura/pulso y 25 micronutrientes con zonas Peat/Dinkov. Gratis, sin cuenta y con respaldo cifrado E2EE.">
-<meta property="og:image" content="icon-512.png">
-<link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-maskable-512.png">
+<meta property="og:image" content="icon-512.png?v=79">
+<link rel="icon" href="icon-192.png?v=79">
+<link rel="apple-touch-icon" href="icon-maskable-512.png?v=79">
 <link rel="manifest" href="manifest.json">
 <script>
 // Redirección si se abre instalada como PWA; y tema/idioma compartidos con index.html.
@@ -35,7 +35,16 @@ html[lang=es] [data-lang=en],html[lang=en] [data-lang=es]{display:none!important
 .top{position:sticky;top:0;z-index:20;backdrop-filter:saturate(1.5) blur(18px);-webkit-backdrop-filter:saturate(1.5) blur(18px);background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--line)}
 .top .w{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:62px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--txt);text-decoration:none}
-.brand img{width:36px;height:36px;border-radius:10px;box-shadow:0 0 0 1px #e9bf5c55}
+.brand svg{width:36px;height:36px;border-radius:10px;box-shadow:0 0 0 1px #e9bf5c55;flex-shrink:0}
+html[data-theme=light] .brand svg,.s-head-l svg{box-shadow:0 2px 8px #0f172a18}
+.bp-logo-svg .bp-bg{fill:#101D31}
+.bp-logo-svg .bp-rim{stroke:#E9BF5C;stroke-opacity:.48}
+.bp-logo-svg .bp-mark-path{fill:#EBC05B}
+.bp-logo-svg .bp-dot{fill:#F59E0B}
+html[data-theme=light] .bp-logo-svg .bp-bg{fill:#FFFDF7}
+html[data-theme=light] .bp-logo-svg .bp-rim{stroke:#D97706;stroke-opacity:.42}
+html[data-theme=light] .bp-logo-svg .bp-mark-path{fill:#0F172A}
+html[data-theme=light] .bp-logo-svg .bp-dot{fill:#F59E0B}
 .tools{display:flex;align-items:center;gap:6px}
 .chip{min-height:44px;padding:0 12px;border-radius:12px;border:1px solid var(--line2);background:var(--surf);color:var(--txt);font-weight:750;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .chip svg{width:17px;height:17px;color:var(--gold)}
@@ -58,7 +67,7 @@ html[data-theme=light] .hero h1 span{background:linear-gradient(135deg,#d97706,#
 html[data-theme=light] .phone{background:linear-gradient(160deg,#e2e8f0,#cbd5e1);box-shadow:0 30px 70px #0f172a33}
 .screen{border-radius:32px;overflow:hidden;background:var(--bg);padding:14px 12px 12px;display:grid;gap:9px}
 .s-head{display:flex;align-items:center;justify-content:space-between;font-weight:800;font-size:14px}
-.s-head-l{display:flex;align-items:center;gap:8px}.s-head img{width:26px;height:26px;border-radius:8px}
+.s-head-l{display:flex;align-items:center;gap:8px}.s-head svg{width:26px;height:26px;border-radius:8px;flex-shrink:0}
 .s-e2ee{font-size:10px;font-weight:800;padding:3px 7px;border-radius:999px;background:#34d39920;color:var(--ok);border:1px solid #34d39955}
 .s-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:3px}
 .s-tab{min-height:40px;border:0;border-radius:9px;background:transparent;color:var(--mut);font-size:10.5px;font-weight:750;cursor:pointer;padding:0 4px}
@@ -138,7 +147,7 @@ footer{padding:30px 0 110px;border-top:1px solid var(--line);font-size:13px;colo
 </head>
 <body>
 <header class="top"><div class="w">
-<a class="brand" href="#"><img src="icon-192.png" alt="">BioPeat</a>
+<a class="brand" href="#"><svg class="bp-logo-svg" viewBox="0 0 512 512" aria-hidden="true"><rect class="bp-bg" width="512" height="512" rx="116"/><rect class="bp-rim" x="6" y="6" width="500" height="500" rx="110" fill="none" stroke-width="2.5"/><circle class="bp-rim" cx="256" cy="256" r="196" fill="none" stroke-width="2.6"/><circle class="bp-rim" cx="256" cy="256" r="208" fill="none" stroke-width="1" opacity=".35"/><g transform="translate(256 256) scale(0.95) translate(-260 -256)"><path class="bp-mark-path" fill-rule="evenodd" d="M118 154H198A48 48 0 0 1 226 242A56 56 0 0 1 204 358H118Q110 358 110 350V162Q110 154 118 154ZM144 184V235H193A25.5 25.5 0 0 0 193 184ZM144 265V328H198A31.5 31.5 0 0 0 198 265Z"/><path class="bp-mark-path" fill-rule="evenodd" d="M294 154H346A72 72 0 0 1 346 298H326V350Q326 358 318 358H294Q286 358 286 350V162Q286 154 294 154ZM326 185V267H345A41 41 0 0 0 345 185Z"/><circle class="bp-dot" cx="350" cy="226" r="18"/></g></svg>BioPeat</a>
 <div class="tools">
 <button type="button" class="chip" data-l="es" aria-pressed="false">ES</button><button type="button" class="chip" data-l="en" aria-pressed="false">EN</button>
 <button type="button" class="chip" id="theme" aria-label="Modo claro u oscuro"></button>
@@ -163,7 +172,7 @@ footer{padding:30px 0 110px;border-top:1px solid var(--line);font-size:13px;colo
 </div>
 <div style="position:relative">
 <div class="phone" aria-label="Vista previa interactiva de BioPeat"><div class="screen">
-<div class="s-head"><div class="s-head-l"><img src="icon-192.png" alt="">BioPeat</div><span class="s-e2ee">E2EE ✓</span></div>
+<div class="s-head"><div class="s-head-l"><svg class="bp-logo-svg" viewBox="0 0 512 512" aria-hidden="true"><rect class="bp-bg" width="512" height="512" rx="116"/><circle class="bp-rim" cx="256" cy="256" r="196" fill="none" stroke-width="3"/><g transform="translate(256 256) scale(0.95) translate(-260 -256)"><path class="bp-mark-path" fill-rule="evenodd" d="M118 154H198A48 48 0 0 1 226 242A56 56 0 0 1 204 358H118Q110 358 110 350V162Q110 154 118 154ZM144 184V235H193A25.5 25.5 0 0 0 193 184ZM144 265V328H198A31.5 31.5 0 0 0 198 265Z"/><path class="bp-mark-path" fill-rule="evenodd" d="M294 154H346A72 72 0 0 1 346 298H326V350Q326 358 318 358H294Q286 358 286 350V162Q286 154 294 154ZM326 185V267H345A41 41 0 0 0 345 185Z"/><circle class="bp-dot" cx="350" cy="226" r="18"/></g></svg>BioPeat</div><span class="s-e2ee">E2EE ✓</span></div>
 <div class="s-tabs" role="tablist">
 <button type="button" class="s-tab" role="tab" data-mview="today" aria-selected="true"><span data-lang="es">Hoy</span><span data-lang="en">Today</span></button>
 <button type="button" class="s-tab" role="tab" data-mview="bal" aria-selected="false"><span data-lang="es">Ratios</span><span data-lang="en">Balances</span></button>
