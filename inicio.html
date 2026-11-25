@@ -9,8 +9,8 @@
 <meta name="theme-color" content="#0f172a">
 <meta property="og:title" content="BioPeat · Tu nutrición al estilo Ray Peat">
 <meta property="og:description" content="Calcio : fósforo, PUFA, hidratos : proteína, temperatura/pulso y 25 micronutrientes con zonas Peat/Dinkov. Gratis, sin cuenta y con respaldo cifrado E2EE.">
-<meta property="og:image" content="icon-512.png?v=79">
-<link rel="icon" href="icon-192.png?v=79">
+<meta property="og:image" content="icon-512.png?v=80">
+<link rel="icon" href="icon-192.png?v=80">
 <link rel="apple-touch-icon" href="icon-maskable-512.png?v=79">
 <link rel="manifest" href="manifest.json">
 <script>
@@ -37,14 +37,14 @@ html[lang=es] [data-lang=en],html[lang=en] [data-lang=es]{display:none!important
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--txt);text-decoration:none}
 .brand svg{width:36px;height:36px;border-radius:10px;box-shadow:0 0 0 1px #e9bf5c55;flex-shrink:0}
 html[data-theme=light] .brand svg,.s-head-l svg{box-shadow:0 2px 8px #0f172a18}
-.bp-logo-svg .bp-bg{fill:#101D31}
-.bp-logo-svg .bp-rim{stroke:#E9BF5C;stroke-opacity:.48}
-.bp-logo-svg .bp-mark-path{fill:#EBC05B}
-.bp-logo-svg .bp-dot{fill:#F59E0B}
+.bp-logo-svg .bp-bg{fill:#060b15}
+.bp-logo-svg .bp-amb{opacity:1}
+.bp-logo-svg .bp-cradle{fill:#060b15;opacity:1}
+.bp-logo-svg .bp-rim{stroke:#E9BF5C;stroke-opacity:.42}
 html[data-theme=light] .bp-logo-svg .bp-bg{fill:#FFFDF7}
-html[data-theme=light] .bp-logo-svg .bp-rim{stroke:#D97706;stroke-opacity:.42}
-html[data-theme=light] .bp-logo-svg .bp-mark-path{fill:#0F172A}
-html[data-theme=light] .bp-logo-svg .bp-dot{fill:#F59E0B}
+html[data-theme=light] .bp-logo-svg .bp-amb{opacity:.38}
+html[data-theme=light] .bp-logo-svg .bp-cradle{opacity:0}
+html[data-theme=light] .bp-logo-svg .bp-rim{stroke:#D97706;stroke-opacity:.38}
 .tools{display:flex;align-items:center;gap:6px}
 .chip{min-height:44px;padding:0 12px;border-radius:12px;border:1px solid var(--line2);background:var(--surf);color:var(--txt);font-weight:750;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .chip svg{width:17px;height:17px;color:var(--gold)}
@@ -147,7 +147,7 @@ footer{padding:30px 0 110px;border-top:1px solid var(--line);font-size:13px;colo
 </head>
 <body>
 <header class="top"><div class="w">
-<a class="brand" href="#"><svg class="bp-logo-svg" viewBox="0 0 512 512" aria-hidden="true"><rect class="bp-bg" width="512" height="512" rx="116"/><rect class="bp-rim" x="6" y="6" width="500" height="500" rx="110" fill="none" stroke-width="2.5"/><circle class="bp-rim" cx="256" cy="256" r="196" fill="none" stroke-width="2.6"/><circle class="bp-rim" cx="256" cy="256" r="208" fill="none" stroke-width="1" opacity=".35"/><g transform="translate(256 256) scale(0.95) translate(-260 -256)"><path class="bp-mark-path" fill-rule="evenodd" d="M118 154H198A48 48 0 0 1 226 242A56 56 0 0 1 204 358H118Q110 358 110 350V162Q110 154 118 154ZM144 184V235H193A25.5 25.5 0 0 0 193 184ZM144 265V328H198A31.5 31.5 0 0 0 198 265Z"/><path class="bp-mark-path" fill-rule="evenodd" d="M294 154H346A72 72 0 0 1 346 298H326V350Q326 358 318 358H294Q286 358 286 350V162Q286 154 294 154ZM326 185V267H345A41 41 0 0 0 345 185Z"/><circle class="bp-dot" cx="350" cy="226" r="18"/></g></svg>BioPeat</a>
+<a class="brand" href="#"><svg class="bp-logo-svg" viewBox="0 0 1024 1024" aria-hidden="true"><defs><radialGradient id="sf1Amb" cx="49%" cy="52%" r="38%"><stop offset="0%" stop-color="#ffbf47" stop-opacity=".38"/><stop offset="55%" stop-color="#e08819" stop-opacity=".12"/><stop offset="100%" stop-color="#04070e" stop-opacity="0"/></radialGradient><linearGradient id="sf1Cr" x1="14%" y1="16%" x2="86%" y2="88%"><stop offset="0%" stop-color="#fff6cf"/><stop offset="22%" stop-color="#f8cd5c"/><stop offset="52%" stop-color="#dc881c"/><stop offset="82%" stop-color="#9c4c09"/><stop offset="100%" stop-color="#5e2803"/></linearGradient><linearGradient id="sf1CrIn" x1="18%" y1="78%" x2="82%" y2="22%"><stop offset="0%" stop-color="#522102"/><stop offset="40%" stop-color="#9e4d09"/><stop offset="80%" stop-color="#e89a25"/><stop offset="100%" stop-color="#ffd978"/></linearGradient><linearGradient id="sf1Fl" x1="22%" y1="4%" x2="84%" y2="96%"><stop offset="0%" stop-color="#fffbe6"/><stop offset="20%" stop-color="#ffe184"/><stop offset="48%" stop-color="#f2a829"/><stop offset="80%" stop-color="#c2630c"/><stop offset="100%" stop-color="#6b2c03"/></linearGradient><linearGradient id="sf1FlS" x1="0%" y1="12%" x2="100%" y2="88%"><stop offset="0%" stop-color="#cf7512"/><stop offset="50%" stop-color="#873a05"/><stop offset="100%" stop-color="#3b1501"/></linearGradient><radialGradient id="sf1Orb" cx="38%" cy="32%" r="68%"><stop offset="0%" stop-color="#fffef5"/><stop offset="25%" stop-color="#ffeb9c"/><stop offset="55%" stop-color="#f6ad2d"/><stop offset="85%" stop-color="#c4630a"/><stop offset="100%" stop-color="#8f3d04"/></radialGradient></defs><rect class="bp-bg" width="1024" height="1024" rx="232"/><circle class="bp-amb" cx="512" cy="526" r="395" fill="url(#sf1Amb)"/><rect class="bp-rim" x="12" y="12" width="1000" height="1000" rx="220" fill="none" stroke-width="6"/><g transform="translate(512 512) scale(1.06) translate(-512 -512)"><circle class="bp-cradle" cx="502" cy="548" r="220"/><path fill="url(#sf1Cr)" d="M450 322C324 366 252 488 278 620C304 750 426 830 560 810C670 794 750 710 770 594C730 676 648 734 548 738C420 744 330 648 330 520C330 432 378 360 450 322Z"/><path fill="url(#sf1CrIn)" d="M450 322C378 360 330 432 330 520C330 648 420 744 548 738C648 734 730 676 770 594C726 666 644 714 544 714C426 714 348 628 350 516C352 434 392 364 450 322Z"/><path fill="#fffbe8" opacity=".78" d="M446 326C328 370 260 488 284 614C306 724 404 798 520 804C412 790 326 716 304 608C282 496 342 384 446 326Z"/><circle cx="496" cy="574" r="95" fill="url(#sf1Orb)"/><ellipse cx="466" cy="540" rx="34" ry="22" transform="rotate(-32 466 540)" fill="#fff" opacity=".55"/><path fill="url(#sf1FlS)" d="M522 198C488 266 490 328 546 384C604 442 646 490 636 578C628 634 588 682 520 714C622 694 704 618 712 518C720 420 658 360 594 304C548 264 526 234 522 198Z"/><path fill="url(#sf1Fl)" d="M522 198C456 268 450 358 522 428C586 490 616 546 594 622C580 668 554 696 520 714C604 690 672 620 682 526C692 436 636 376 578 320C536 280 514 240 522 198Z"/><path fill="#fffbe8" opacity=".82" d="M522 206C472 270 470 344 534 408C596 470 634 522 624 606C642 532 610 466 548 400C492 342 488 272 522 206Z"/></g></svg>BioPeat</a>
 <div class="tools">
 <button type="button" class="chip" data-l="es" aria-pressed="false">ES</button><button type="button" class="chip" data-l="en" aria-pressed="false">EN</button>
 <button type="button" class="chip" id="theme" aria-label="Modo claro u oscuro"></button>
@@ -172,7 +172,7 @@ footer{padding:30px 0 110px;border-top:1px solid var(--line);font-size:13px;colo
 </div>
 <div style="position:relative">
 <div class="phone" aria-label="Vista previa interactiva de BioPeat"><div class="screen">
-<div class="s-head"><div class="s-head-l"><svg class="bp-logo-svg" viewBox="0 0 512 512" aria-hidden="true"><rect class="bp-bg" width="512" height="512" rx="116"/><circle class="bp-rim" cx="256" cy="256" r="196" fill="none" stroke-width="3"/><g transform="translate(256 256) scale(0.95) translate(-260 -256)"><path class="bp-mark-path" fill-rule="evenodd" d="M118 154H198A48 48 0 0 1 226 242A56 56 0 0 1 204 358H118Q110 358 110 350V162Q110 154 118 154ZM144 184V235H193A25.5 25.5 0 0 0 193 184ZM144 265V328H198A31.5 31.5 0 0 0 198 265Z"/><path class="bp-mark-path" fill-rule="evenodd" d="M294 154H346A72 72 0 0 1 346 298H326V350Q326 358 318 358H294Q286 358 286 350V162Q286 154 294 154ZM326 185V267H345A41 41 0 0 0 345 185Z"/><circle class="bp-dot" cx="350" cy="226" r="18"/></g></svg>BioPeat</div><span class="s-e2ee">E2EE ✓</span></div>
+<div class="s-head"><div class="s-head-l"><svg class="bp-logo-svg" viewBox="0 0 1024 1024" aria-hidden="true"><rect class="bp-bg" width="1024" height="1024" rx="232"/><circle class="bp-amb" cx="512" cy="526" r="395" fill="url(#sf1Amb)"/><rect class="bp-rim" x="12" y="12" width="1000" height="1000" rx="220" fill="none" stroke-width="6"/><g transform="translate(512 512) scale(1.06) translate(-512 -512)"><circle class="bp-cradle" cx="502" cy="548" r="220"/><path fill="url(#sf1Cr)" d="M450 322C324 366 252 488 278 620C304 750 426 830 560 810C670 794 750 710 770 594C730 676 648 734 548 738C420 744 330 648 330 520C330 432 378 360 450 322Z"/><path fill="url(#sf1CrIn)" d="M450 322C378 360 330 432 330 520C330 648 420 744 548 738C648 734 730 676 770 594C726 666 644 714 544 714C426 714 348 628 350 516C352 434 392 364 450 322Z"/><circle cx="496" cy="574" r="95" fill="url(#sf1Orb)"/><path fill="url(#sf1FlS)" d="M522 198C488 266 490 328 546 384C604 442 646 490 636 578C628 634 588 682 520 714C622 694 704 618 712 518C720 420 658 360 594 304C548 264 526 234 522 198Z"/><path fill="url(#sf1Fl)" d="M522 198C456 268 450 358 522 428C586 490 616 546 594 622C580 668 554 696 520 714C604 690 672 620 682 526C692 436 636 376 578 320C536 280 514 240 522 198Z"/></g></svg>BioPeat</div><span class="s-e2ee">E2EE ✓</span></div>
 <div class="s-tabs" role="tablist">
 <button type="button" class="s-tab" role="tab" data-mview="today" aria-selected="true"><span data-lang="es">Hoy</span><span data-lang="en">Today</span></button>
 <button type="button" class="s-tab" role="tab" data-mview="bal" aria-selected="false"><span data-lang="es">Ratios</span><span data-lang="en">Balances</span></button>

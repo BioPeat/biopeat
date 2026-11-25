@@ -1,6 +1,6 @@
 # CONTEXTO · BioPeat
 
-**Versión actual: v79** (revisión de datos 26)
+**Versión actual: v80** (revisión de datos 26)
 
 Documento maestro. Lo lee la IA que programa BioPeat (Gemini «BioPeat Dev» o Claude). Los cambios se entregan en bloques `@@@` y los aplica y prueba `actualizar.html`. **Se actualiza sustituyendo el texto de cada apartado, nunca añadiendo apartados nuevos al final.** Si algo de aquí contradice al código, manda el código; avisa de la diferencia.
 
@@ -80,7 +80,7 @@ Se guardan por perfil en `state.v54.breakfast` y `state.v54.shake` y se editan e
 - **No inventes cifras atribuidas a Peat.** Donde no hay cifra suya, se usa la meta personal.
 - **Mujer:** la tabla `OPT_FEMALE` cambia solo lo que tiene fuente (se aplica con `applySexOpt()` en cada `render()`): hierro tope 18 mg (oficial; Peat: el estrógeno hace absorber más hierro, «From PMS to Menopause»), zinc 8 mg (oficial), magnesio 400 mg (Peat/Dinkov; «Nutrition for Women»: corta los calambres menstruales), sodio sin restringir (edema premenstrual), y notas de Peat en vitamina A, E, B2 y calcio. `femaleWhy()` añade una frase de Peat para mujer en los equilibrios. **Peat no dio cifras distintas para mujer en PUFA, Ca:P ni C:P: son las mismas (4 g, 1,2 y 3).** Metas de partida de un perfil nuevo: `NEW_PROFILE_MICRO`.
 
-## 6. Qué hace la app (v79)
+## 6. Qué hace la app (v80)
 Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más** (no cambiar el orden) y botón redondo de **Gimnasio**.
 - **Menú lateral** (tocar el logo): Perfiles (tocar = usar; ⚙ = asistente; ✎ renombrar; × borrar; «+ Crear perfil nuevo»), Exportar datos para IA y Pregunta a tu IA. La lista se desplaza sola sin mover la página.
 - **Asistente de perfil** (`wizOpen({mode})`, modos `first` / `new` / `edit`): 5 pasos (Tú · Objetivo · Comidas · Suplementos · Resumen con las metas de un día de entreno y uno de descanso). Sale solo al empezar de cero (con botón para restaurar una copia). Al crear un perfil se puede empezar de cero o copiar la despensa y la pauta del perfil activo. Al guardar, las dosis y aportes de la pauta se conservan (si cambias la dosis, el aporte se escala).
@@ -122,6 +122,7 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **Prohibido** añadir otro `<script>` o «envolver» funciones (`x=function…`, `window.x=…`): la v54 lo hizo y el perfil de mujer volvía a hombre al recargar. `smoke.py` lo detecta y falla.
 
 ## 10. Historial (una línea por versión, máximo 8)
+- **v80 · Antigravity:** Nuevo logotipo definitivo Llama Solar Áurea (Master v2) en toda la app (claro y oscuro), web de inicio e iconos PWA.
 - **v79 · Antigravity:** Nuevo logotipo BP geométrico solar en la app (claro y oscuro), web de inicio e iconos PWA.
 - **v78 · Antigravity:** Ajustes y sincronización en la nube simplificados sin tecnicismos: guía clara en 2 pasos para conectar dispositivos y recuperar tras desinstalar, y envío/guardado del enlace personal en un toque (WhatsApp, Notas, correo o copiar).
 - **v77 · Antigravity:** Corrección de solapamientos en mapa visual de micronutrientes y calendario, reorganización de Ajustes ocultando funciones técnicas, rediseño compacto de sugerencias del día y retirada del botón de ajustes externo en Zinc : cobre.
@@ -129,7 +130,6 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **v75 · Antigravity:** Actualización automática de modelos Gemini antiguos guardados (3.1/2.x) a Gemini 4 Hydrogen / 3.8 Flash gratis, y mejor selección automática en «Probar conexión».
 - **v74 · Antigravity:** «¿Qué me falta?» restablece la tarjeta abierta al añadir un alimento sugerido para priorizar siempre el siguiente micronutriente pendiente.
 - **v73 · Antigravity:** IA más rápida y precisa (0 €): motor híbrido con base USDA/BEDCA de 150 alimentos, JSON estructurado con caché de sistema, corrección de thinkingLevel en Gemini 4 Hydrogen, streaming en chat/coach/gym, verificación con Open Food Facts y buscador de productos/códigos de barras, selector de velocidad/precisión y soporte directo para Groq gratis (Llama 4).
-- **v72 · Antigravity:** Auditoría integral: app 100 % pública sin restos personales ni botones de desarrollo, botón de zinc configurable en Zn:Cu que reconoce cualquier suplemento, IA actualizada a Gemini 4 Hydrogen con autodetección de modelos y chat más rápido, contraste Peat/Dinkov (B1/B2/B3, K2 MK-4, vit. E natural), Gimnasio en preguntas numeradas, inglés sin dobles traducciones y CSS optimizado.
 
 ## 11. Pendiente / ideas
 - Unificar las capas de CSS sin cambiar el aspecto (hay reglas repetidas de varias versiones).
