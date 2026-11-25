@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://biopeat-api.dramirezcp7.workers.dev https://*.goatcounter.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
 <title>BioPeat · Tu nutrición al estilo Ray Peat, clara de un vistazo</title>
 <meta name="description" content="BioPeat: apunta lo que comes y mira tus calorías, macros, 25 vitaminas y minerales y los equilibrios de Ray Peat. Gratis, sin cuenta, cifrado de extremo a extremo y listo en tu móvil.">
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#080e1a">
 <meta property="og:title" content="BioPeat · Tu nutrición al estilo Ray Peat">
 <meta property="og:description" content="Calcio : fósforo, PUFA, hidratos : proteína, temperatura/pulso y 25 micronutrientes con zonas Peat/Dinkov. Gratis, sin cuenta y con respaldo cifrado E2EE.">
 <meta property="og:image" content="icon-512.png?v=80">
@@ -23,349 +23,1424 @@
 })();
 </script>
 <style>
-:root{--bg:#0f172a;--card:#162133;--surf:#1b2840;--line:#ffffff14;--line2:#ffffff24;--txt:#f8fafc;--mut:#94a3b8;--gold:#e9bf5c;--gold2:#f6dc9a;--goldtxt:#f6dc9a;--ok:#34d399;--amb:#fbbf24;--sky:#38bdf8;--shadow:0 6px 24px #00000040;--glow:radial-gradient(900px 520px at 12% -160px,#e9bf5c22,transparent 70%),radial-gradient(700px 500px at 100% 10%,#38bdf812,transparent 70%)}
-html[data-theme=light]{--bg:#f1f5f9;--card:#ffffff;--surf:#f8fafc;--line:#e2e8f0;--line2:#cbd5e1;--txt:#0f172a;--mut:#475569;--goldtxt:#b45309;--ok:#059669;--amb:#d97706;--sky:#0284c7;--shadow:0 4px 18px #0f172a14;--glow:radial-gradient(900px 520px at 12% -160px,#fef3c7,transparent 70%),radial-gradient(700px 500px at 100% 10%,#e0f2fe,transparent 70%);color-scheme:light}
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-html{scroll-behavior:smooth;background:var(--bg)}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--glow),var(--bg);color:var(--txt);line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-.006em}
-a{color:var(--goldtxt)}
-.w{max-width:1040px;margin:0 auto;padding:0 20px}
-html[lang=es] [data-lang=en],html[lang=en] [data-lang=es]{display:none!important}
-.top{position:sticky;top:0;z-index:20;backdrop-filter:saturate(1.5) blur(18px);-webkit-backdrop-filter:saturate(1.5) blur(18px);background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--line)}
-.top .w{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:62px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--txt);text-decoration:none}
-.brand svg{width:36px;height:36px;border-radius:10px;box-shadow:0 0 0 1px #e9bf5c55;flex-shrink:0}
-html[data-theme=light] .brand svg,.s-head-l svg{box-shadow:0 2px 8px #0f172a18}
-.bp-logo-svg .bp-bg{fill:#060b15}
-.bp-logo-svg .bp-amb{opacity:1}
-.bp-logo-svg .bp-cradle{fill:#060b15;opacity:1}
-.bp-logo-svg .bp-rim{stroke:#E9BF5C;stroke-opacity:.42}
-html[data-theme=light] .bp-logo-svg .bp-bg{fill:#FFFDF7}
-html[data-theme=light] .bp-logo-svg .bp-amb{opacity:.38}
-html[data-theme=light] .bp-logo-svg .bp-cradle{opacity:0}
-html[data-theme=light] .bp-logo-svg .bp-rim{stroke:#D97706;stroke-opacity:.38}
-.tools{display:flex;align-items:center;gap:6px}
-.chip{min-height:44px;padding:0 12px;border-radius:12px;border:1px solid var(--line2);background:var(--surf);color:var(--txt);font-weight:750;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
-.chip svg{width:17px;height:17px;color:var(--gold)}
-.chip[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:#0f172a}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:16px;font-weight:800;font-size:16.5px;text-decoration:none;border:0;cursor:pointer;transition:transform .12s ease,filter .15s ease}
-.btn:active{transform:scale(.98)}.btn:hover{filter:brightness(1.05)}
-.btn-gold{background:linear-gradient(135deg,#f6dc9a,#e9bf5c 55%,#d4a53f);color:#0f172a;box-shadow:0 10px 30px #e9bf5c44,inset 0 1px 0 #ffffff55}
-.btn-ghost{background:var(--surf);color:var(--txt);border:1px solid var(--line2)}
-.top .btn{min-height:44px;padding:0 14px;font-size:13.5px;border-radius:12px}
-.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;padding:46px 0 30px}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;border:1px solid #e9bf5c55;background:#e9bf5c14;color:var(--goldtxt);font-size:13px;font-weight:750}
-.hero h1{font-size:clamp(34px,5.4vw,56px);line-height:1.05;letter-spacing:-.035em;margin:16px 0 14px}
-.hero h1 span{background:linear-gradient(135deg,#f6dc9a,#e9bf5c 50%,#c99634);-webkit-background-clip:text;background-clip:text;color:transparent}
-html[data-theme=light] .hero h1 span{background:linear-gradient(135deg,#d97706,#b45309);-webkit-background-clip:text;background-clip:text}
-.lead{font-size:18px;color:var(--mut);margin:0 0 24px;max-width:560px}
-.ctas{display:flex;flex-wrap:wrap;gap:10px}
-.trust{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:18px;font-size:13.5px;color:var(--mut)}
-.trust-it{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}.trust svg{width:16px;height:16px;color:var(--ok);flex-shrink:0}
-.phone{position:relative;width:min(340px,100%);margin:0 auto;border-radius:42px;padding:12px;background:linear-gradient(160deg,#2a3a55,#0b111e);box-shadow:0 30px 80px #00000066,0 0 0 1px #ffffff22}
-html[data-theme=light] .phone{background:linear-gradient(160deg,#e2e8f0,#cbd5e1);box-shadow:0 30px 70px #0f172a33}
-.screen{border-radius:32px;overflow:hidden;background:var(--bg);padding:14px 12px 12px;display:grid;gap:9px}
-.s-head{display:flex;align-items:center;justify-content:space-between;font-weight:800;font-size:14px}
-.s-head-l{display:flex;align-items:center;gap:8px}.s-head svg{width:26px;height:26px;border-radius:8px;flex-shrink:0}
-.s-e2ee{font-size:10px;font-weight:800;padding:3px 7px;border-radius:999px;background:#34d39920;color:var(--ok);border:1px solid #34d39955}
-.s-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:3px}
-.s-tab{min-height:40px;border:0;border-radius:9px;background:transparent;color:var(--mut);font-size:10.5px;font-weight:750;cursor:pointer;padding:0 4px}
-.s-tab[aria-selected=true]{background:var(--gold);color:#0f172a}
-.s-pane{display:grid;gap:8px;min-height:300px;align-content:start}
-.s-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:11px}
-.s-energy small{font-size:10px;letter-spacing:.06em;color:var(--goldtxt);font-weight:800}
-.s-energy div{display:flex;justify-content:space-between;align-items:baseline}
-.s-energy b{font-size:26px;letter-spacing:-.04em}.s-energy em{font-style:normal;font-size:20px;font-weight:800;color:var(--goldtxt)}
-.s-track{height:7px;border-radius:6px;background:#0b111e;overflow:hidden;margin-top:7px}html[data-theme=light] .s-track,html[data-theme=light] .s-bar{background:#e2e8f0}
-.s-track i{display:block;height:100%;width:78%;background:linear-gradient(90deg,#c99634,#e9bf5c,#f6dc9a)}
-.s-rings{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.s-ring{text-align:center;font-size:10.5px;color:var(--mut)}
-.s-ring svg{width:100%;max-width:72px;transform:rotate(-90deg)}
-.s-ring circle{fill:none;stroke-width:9}.s-ring .bg{stroke:#0b111e}html[data-theme=light] .s-ring .bg{stroke:#e2e8f0}
-.s-ring .v{position:relative;margin-top:-49px;height:49px;font-weight:800;font-size:14.5px;color:var(--txt);display:flex;align-items:center;justify-content:center}
-.s-ratio{display:grid;gap:6px}
-.s-ratio .r1{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:750}.s-ratio .r1 b{margin-left:auto;color:var(--ok)}
-.s-dot{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:900;background:var(--ok);color:#06281d}
-.s-bar{position:relative;height:8px;border-radius:6px;background:#0b111e}
-.s-bar i{position:absolute;top:0;bottom:0;border-radius:6px}
-.s-bar b{position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#f8fafc;border:2px solid var(--bg)}
-html[data-theme=light] .s-bar b{background:#0f172a;border-color:#fff}
-.s-tip{font-size:11px;color:var(--mut)}
-.s-nrow{display:grid;gap:4px;font-size:11px}.s-nrow div{display:flex;justify-content:space-between;font-weight:750}.s-nrow span{color:var(--ok)}
-.s-gym{display:flex;align-items:flex-end;gap:5px;height:78px;padding-top:10px}
-.s-gym i{flex:1;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,var(--gold),#c9963488)}
-.float{position:absolute;padding:8px 12px;border-radius:14px;background:var(--card);border:1px solid var(--line2);box-shadow:var(--shadow);font-size:12.5px;font-weight:750;white-space:nowrap;pointer-events:none;z-index:2}
-.float.f1{left:-42px;top:-14px}.float.f2{right:-28px;bottom:-14px}.float i{font-style:normal;color:var(--ok)}
-section{padding:46px 0}
-h2{font-size:clamp(26px,3.6vw,36px);letter-spacing:-.03em;line-height:1.15;margin:0 0 10px}
-.sub{color:var(--mut);font-size:16.5px;margin:0 0 26px;max-width:640px}
-.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--goldtxt);font-weight:800;margin-bottom:8px}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}
-.card h3{margin:12px 0 6px;font-size:17px;letter-spacing:-.01em}
-.card p{margin:0;color:var(--mut);font-size:14.5px}
-.ico{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:#e9bf5c1a;border:1px solid #e9bf5c40;color:var(--goldtxt)}
-.ico svg{width:22px;height:22px}
-.balances{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
-.bal{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;text-align:center}
-.bal b{display:block;font-size:20px;letter-spacing:-.02em;color:var(--goldtxt)}.bal span{font-size:13px;color:var(--mut)}
-.vs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
-.vs .card ul{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:8px}
-.vs li{display:flex;gap:9px;align-items:flex-start;font-size:14.5px}.vs li svg{flex:none;width:18px;height:18px;margin-top:3px}
-.vs .no svg{color:#94a3b8}.vs .yes{border-color:#e9bf5c66}.vs .yes svg{color:var(--ok)}
-.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;counter-reset:s}
-.step .n{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:var(--gold);color:#0f172a}
-.privacy{display:grid;grid-template-columns:1fr 1.2fr;gap:24px;align-items:center;background:linear-gradient(135deg,#e9bf5c14,transparent),var(--card);border:1px solid #e9bf5c40;border-radius:26px;padding:30px}
-.privacy ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
-.privacy li{display:flex;gap:10px;font-size:15px}.privacy li svg{flex:none;width:20px;height:20px;color:var(--ok);margin-top:2px}
-.install{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.install ol{margin:10px 0 0;padding-left:20px;color:var(--mut)}.install li{margin:5px 0}.install b{color:var(--txt)}
-details{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin:10px 0}
-summary{cursor:pointer;font-weight:750;font-size:15.5px;min-height:28px}
-details p{color:var(--mut);margin:10px 0 2px}
-.final{text-align:center;padding:40px 24px;border-radius:28px;background:radial-gradient(500px 220px at 50% 0,#e9bf5c26,transparent 70%),var(--card);border:1px solid #e9bf5c40}
-.final p{color:var(--mut);margin:0 auto 22px;max-width:520px}
-.legal{font-size:14.5px}.legal li,.legal p{color:var(--mut)}.legal b{color:var(--txt)}
-footer{padding:30px 0 110px;border-top:1px solid var(--line);font-size:13px;color:var(--mut);text-align:center}
-.sticky{position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:30;display:none}
-.sticky .btn{width:100%}
-@media (max-width:1020px){.float{display:none}}
-@media (max-width:860px){
-  .hero{grid-template-columns:1fr;padding-top:28px;text-align:left}
-  .grid,.steps{grid-template-columns:1fr 1fr}.balances{grid-template-columns:repeat(3,1fr)}
-  .privacy,.install,.vs{grid-template-columns:1fr}
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+:root {
+  --bg: #080e1a;
+  --surface: #0f172a;
+  --surface-alt: #131f35;
+  --ink: #f8fafc;
+  --muted: #9fb0c7;
+  --line: rgba(248, 250, 252, 0.13);
+  --gold: #e9bf5c;
+  --gold-ink: #080e1a;
+  --gold-txt: #f6dc9a;
+  --ok: #34d399;
+  --hero-glow: rgba(233, 191, 92, 0.14);
+  --solar-stroke: rgba(246, 220, 154, 0.12);
+  --solar-accent: rgba(233, 191, 92, 0.42);
+  --cta-bg: #e9bf5c;
+  --cta-ink: #080e1a;
+  --cta-hover: #f3d27a;
+  --track-bg: #060b14;
+  --bezel: #040811;
+
+  --t-h2: clamp(1.75rem, 3vw, 2.5rem);
+  --t-body: 1rem;
+  --t-sm: 0.875rem;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: dark;
 }
-@media (max-width:560px){
-  .grid,.steps{grid-template-columns:1fr}.balances{grid-template-columns:1fr 1fr}
-  .top .btn{display:none}.sticky{display:block}.float{display:none}
-  .hero h1{font-size:36px}.lead{font-size:16.5px}
-  section{padding:34px 0}
+
+html[data-theme="light"] {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-alt: #eef2f6;
+  --ink: #0f172a;
+  --muted: #475569;
+  --line: #dce3ec;
+  --gold: #d97706;
+  --gold-ink: #ffffff;
+  --gold-txt: #b45309;
+  --ok: #059669;
+  --hero-glow: rgba(245, 158, 11, 0.12);
+  --solar-stroke: rgba(15, 23, 42, 0.08);
+  --solar-accent: rgba(180, 83, 9, 0.36);
+  --cta-bg: #0f172a;
+  --cta-ink: #ffffff;
+  --cta-hover: #1e293b;
+  --track-bg: #e2e8f0;
+  --bezel: #0f172a;
+  color-scheme: light;
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+html { scroll-behavior: smooth; background: var(--bg); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: var(--t-body);
+  line-height: 1.55;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: var(--gold-txt); }
+button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent; }
+html[lang="es"] [data-lang="en"], html[lang="en"] [data-lang="es"] { display: none !important; }
+
+.w {
+  width: min(1120px, calc(100% - 32px));
+  margin-inline: auto;
+}
+
+.skip {
+  position: fixed;
+  left: 16px;
+  top: -80px;
+  z-index: 100;
+  background: var(--cta-bg);
+  color: var(--cta-ink);
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: var(--t-sm);
+  text-decoration: none;
+}
+.skip:focus { top: 16px; }
+
+/* Header: single line, borderless at y=0, separated on scroll */
+.top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background-color 200ms var(--ease), border-color 200ms var(--ease);
+}
+
+.top.scrolled {
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom-color: var(--line);
+}
+
+.top .w {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+
+.brand-wordmark {
+  font-size: 1.1875rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+.brand svg {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  flex-shrink: 0;
+}
+
+.bp-logo-svg .bp-bg { fill: #060b15; }
+.bp-logo-svg .bp-amb { opacity: 1; }
+.bp-logo-svg .bp-cradle { fill: #060b15; opacity: 1; }
+.bp-logo-svg .bp-rim { stroke: #E9BF5C; stroke-opacity: .42; }
+html[data-theme="light"] .bp-logo-svg .bp-bg { fill: #FFFDF7; }
+html[data-theme="light"] .bp-logo-svg .bp-amb { opacity: .38; }
+html[data-theme="light"] .bp-logo-svg .bp-cradle { opacity: 0; }
+html[data-theme="light"] .bp-logo-svg .bp-rim { stroke: #D97706; stroke-opacity: .38; }
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-link {
+  font-size: var(--t-sm);
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 160ms var(--ease);
+}
+.nav-link:hover { color: var(--ink); }
+
+.lang-switch {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.lang-btn {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms var(--ease), color 160ms var(--ease);
+}
+
+.lang-btn[aria-pressed="true"] {
+  background: var(--cta-bg);
+  color: var(--cta-ink);
+}
+
+.theme-btn {
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: border-color 160ms var(--ease), background-color 160ms var(--ease);
+}
+.theme-btn:hover { background: var(--surface-alt); }
+.theme-btn svg { width: 16px; height: 16px; color: var(--gold-txt); flex-shrink: 0; }
+
+/* Hero: full-bleed from y=0 with solar geometry */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(85% 55% at 50% 0%, var(--hero-glow) 0%, transparent 72%),
+    var(--bg);
+  padding: 112px 0 80px;
+}
+
+.solar-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero h1 {
+  margin: 0;
+  max-width: 16ch;
+  font-size: clamp(2.5rem, 6vw, 4.75rem);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.lead {
+  margin: 22px 0 0;
+  max-width: 56ch;
+  font-size: var(--t-body);
+  color: var(--muted);
+}
+
+.ctas {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 8px;
+  border: 0;
+  font-size: var(--t-body);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 180ms var(--ease), background-color 180ms var(--ease);
+}
+.btn:hover { transform: translateY(-1px); }
+
+.btn-primary {
+  background: var(--cta-bg);
+  color: var(--cta-ink);
+}
+.btn-primary:hover { background: var(--cta-hover); }
+
+.link-subtle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 4px;
+  font-size: var(--t-body);
+  font-weight: 500;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 160ms var(--ease);
+}
+.link-subtle:hover { border-bottom-color: var(--ink); }
+
+/* Interactive phone stage */
+.stage {
+  margin-top: 48px;
+  width: min(860px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.s-tabs {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.s-tab {
+  min-height: 38px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  font-size: var(--t-sm);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 180ms var(--ease), color 180ms var(--ease);
+}
+
+.s-tab[aria-selected="true"] {
+  background: var(--cta-bg);
+  color: var(--cta-ink);
+  font-weight: 600;
+}
+
+.phone {
+  width: 100%;
+  padding: 28px;
+  border-radius: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  text-align: left;
+}
+
+.screen {
+  display: grid;
+  gap: 16px;
+}
+
+.s-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  font-weight: 700;
+  font-size: var(--t-body);
+}
+
+.s-head-l {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.s-head-l svg {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+}
+
+.s-head-meta {
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--ok);
+}
+
+.s-pane {
+  display: grid;
+  gap: 14px;
+}
+
+.s-card {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.s-card:last-child { border-bottom: 0; padding-bottom: 0; }
+
+.s-energy-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.s-energy b {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.s-energy em {
+  font-style: normal;
+  font-size: var(--t-body);
+  font-weight: 700;
+  color: var(--gold-txt);
+}
+
+.s-track {
+  height: 8px;
+  border-radius: 6px;
+  background: var(--track-bg);
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.s-track i {
+  display: block;
+  height: 100%;
+  width: 78%;
+  background: var(--gold);
+}
+
+.s-rings {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.s-ring {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-sm);
+  color: var(--muted);
+}
+
+.s-ring-wrap {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+}
+
+.s-ring svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.s-ring circle { fill: none; stroke-width: 8; }
+.s-ring .bg { stroke: var(--track-bg); }
+
+.s-ring .v {
+  font-weight: 700;
+  font-size: var(--t-sm);
+  color: var(--ink);
+}
+
+.s-ratio {
+  display: grid;
+  gap: 8px;
+}
+
+.s-ratio .r1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: var(--t-body);
+  font-weight: 600;
+}
+.s-ratio .r1 b { color: var(--ok); }
+
+.s-bar {
+  position: relative;
+  height: 8px;
+  border-radius: 6px;
+  background: var(--track-bg);
+}
+.s-bar i { position: absolute; top: 0; bottom: 0; border-radius: 6px; }
+.s-bar b {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--surface);
+}
+
+.s-tip {
+  font-size: var(--t-sm);
+  color: var(--muted);
+}
+
+.s-nrow { display: grid; gap: 6px; }
+.s-nrow-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--t-body);
+  font-weight: 600;
+}
+.s-nrow-top span:last-child { color: var(--ok); }
+
+.s-gym {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 84px;
+  padding-top: 12px;
+}
+.s-gym i {
+  flex: 1;
+  border-radius: 4px 4px 0 0;
+  background: var(--gold);
+  opacity: 0.85;
+}
+
+/* Sections */
+.section {
+  padding: 84px 0;
+  border-top: 1px solid var(--line);
+}
+
+.section-alt {
+  background: var(--surface-alt);
+}
+
+.section h2 {
+  margin: 0 0 16px;
+  max-width: 24ch;
+  font-size: var(--t-h2);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.sub {
+  margin: 0 0 36px;
+  max-width: 60ch;
+  color: var(--muted);
+}
+
+/* 5 balances ruled strip */
+.balances {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.bal {
+  padding: 20px 16px 20px 0;
+}
+.bal + .bal {
+  padding-left: 16px;
+  border-left: 1px solid var(--line);
+}
+.bal b {
+  display: block;
+  font-size: var(--t-body);
+  font-weight: 700;
+  color: var(--gold-txt);
+  margin-bottom: 4px;
+}
+.bal span {
+  font-size: var(--t-sm);
+  color: var(--muted);
+}
+
+/* Comparison 2-col */
+.vs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 40px;
+}
+
+.vs-col {
+  padding: 24px 0 0;
+  border-top: 2px solid var(--line);
+}
+.vs-col.yes { border-top-color: var(--gold); }
+.vs-col h3 {
+  margin: 0 0 14px;
+  font-size: var(--t-body);
+  font-weight: 700;
+}
+.vs-col ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+.vs-col li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: var(--muted);
+}
+.vs-col.yes li { color: var(--ink); }
+.vs-col li svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 3px; }
+.vs-col.no li svg { color: var(--muted); }
+.vs-col.yes li svg { color: var(--ok); }
+
+/* 6 features architectural grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  margin-top: 32px;
+}
+
+.feat {
+  padding: 28px 24px 28px 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.feat-ico {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--gold-txt);
+}
+.feat-ico svg { width: 22px; height: 22px; }
+
+.feat h3 {
+  margin: 0 0 6px;
+  font-size: var(--t-body);
+  font-weight: 700;
+}
+.feat p {
+  margin: 0;
+  max-width: 34ch;
+  color: var(--muted);
+}
+
+/* 3 Steps */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  margin-top: 32px;
+}
+
+.step {
+  padding: 28px 28px 0 0;
+}
+.step + .step {
+  padding-left: 28px;
+  border-left: 1px solid var(--line);
+}
+.step-num {
+  display: block;
+  margin-bottom: 10px;
+  font-size: var(--t-sm);
+  font-weight: 700;
+  color: var(--gold-txt);
+}
+.step h3 {
+  margin: 0 0 6px;
+  font-size: var(--t-body);
+  font-weight: 700;
+}
+.step p {
+  margin: 0;
+  max-width: 34ch;
+  color: var(--muted);
+}
+
+/* Privacy split */
+.privacy {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 48px;
+  align-items: start;
+}
+.privacy h2 { margin-bottom: 14px; }
+.privacy .sub { margin-bottom: 0; }
+.privacy ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.privacy li {
+  display: flex;
+  gap: 12px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+.privacy li svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; color: var(--ok); }
+
+/* Install steps 2-col */
+.install {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 32px;
+  border-top: 1px solid var(--line);
+}
+.install-col {
+  padding-top: 24px;
+}
+.install-col h3 {
+  margin: 0 0 12px;
+  font-size: var(--t-body);
+  font-weight: 700;
+}
+.install-col ol {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--muted);
+}
+.install-col li { margin: 8px 0; }
+.install-col b { color: var(--ink); }
+
+/* FAQ 2-col */
+.faq-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 48px;
+  align-items: start;
+}
+.faq-layout h2 { margin: 0; }
+.faq-list { border-top: 1px solid var(--line); }
+.faq-list details { border-bottom: 1px solid var(--line); }
+.faq-list summary {
+  list-style: none;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+  font-size: var(--t-body);
+  font-weight: 700;
+}
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after {
+  content: "+";
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--muted);
+  transition: transform 180ms var(--ease);
+}
+.faq-list details[open] summary::after { transform: rotate(45deg); }
+.faq-list details p {
+  margin: 0 0 20px;
+  max-width: 58ch;
+  color: var(--muted);
+}
+
+/* Final CTA band */
+.final {
+  padding: 80px 0;
+  border-top: 1px solid var(--line);
+}
+.final-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+.final h2 { margin: 0 0 8px; }
+.final p { margin: 0; max-width: 52ch; color: var(--muted); }
+
+/* Legal */
+.legal h2 { margin-bottom: 20px; }
+.legal p, .legal li { color: var(--muted); max-width: 72ch; }
+.legal b { color: var(--ink); }
+.legal ul { padding-left: 20px; display: grid; gap: 10px; }
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 28px 0 40px;
+  font-size: var(--t-sm);
+  color: var(--muted);
+}
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* Sticky mobile CTA */
+.sticky {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 35;
+  display: none;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+  transform: translateY(100%);
+  transition: transform 220ms var(--ease);
+}
+.sticky.visible { transform: translateY(0); }
+.sticky .btn { width: 100%; }
+
+@media (max-width: 960px) {
+  .balances { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .bal:nth-child(4) { padding-left: 0; border-left: 0; }
+  .bal:nth-child(4), .bal:nth-child(5) { border-top: 1px solid var(--line); }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .privacy, .faq-layout { grid-template-columns: 1fr; gap: 28px; }
+}
+
+@media (max-width: 720px) {
+  .nav-link { display: none; }
+  .hero { padding: 96px 0 56px; }
+  .section { padding: 64px 0; }
+  .vs, .install, .steps { grid-template-columns: 1fr; gap: 24px; }
+  .step { padding: 20px 0; border-bottom: 1px solid var(--line); }
+  .step + .step { padding-left: 0; border-left: 0; }
+  .grid { grid-template-columns: 1fr; }
+  .feat { padding-right: 0; }
+  .balances { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bal { padding: 16px 12px 16px 0; }
+  .bal + .bal { padding-left: 12px; }
+  .bal:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .bal:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .sticky { display: block; }
+  body { padding-bottom: 74px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
 </style>
 </head>
 <body>
-<header class="top"><div class="w">
-<a class="brand" href="#"><svg class="bp-logo-svg" viewBox="0 0 1024 1024" aria-hidden="true"><defs><radialGradient id="sf1Amb" cx="49%" cy="52%" r="38%"><stop offset="0%" stop-color="#ffbf47" stop-opacity=".38"/><stop offset="55%" stop-color="#e08819" stop-opacity=".12"/><stop offset="100%" stop-color="#04070e" stop-opacity="0"/></radialGradient><linearGradient id="sf1Cr" x1="14%" y1="16%" x2="86%" y2="88%"><stop offset="0%" stop-color="#fff6cf"/><stop offset="22%" stop-color="#f8cd5c"/><stop offset="52%" stop-color="#dc881c"/><stop offset="82%" stop-color="#9c4c09"/><stop offset="100%" stop-color="#5e2803"/></linearGradient><linearGradient id="sf1CrIn" x1="18%" y1="78%" x2="82%" y2="22%"><stop offset="0%" stop-color="#522102"/><stop offset="40%" stop-color="#9e4d09"/><stop offset="80%" stop-color="#e89a25"/><stop offset="100%" stop-color="#ffd978"/></linearGradient><linearGradient id="sf1Fl" x1="22%" y1="4%" x2="84%" y2="96%"><stop offset="0%" stop-color="#fffbe6"/><stop offset="20%" stop-color="#ffe184"/><stop offset="48%" stop-color="#f2a829"/><stop offset="80%" stop-color="#c2630c"/><stop offset="100%" stop-color="#6b2c03"/></linearGradient><linearGradient id="sf1FlS" x1="0%" y1="12%" x2="100%" y2="88%"><stop offset="0%" stop-color="#cf7512"/><stop offset="50%" stop-color="#873a05"/><stop offset="100%" stop-color="#3b1501"/></linearGradient><radialGradient id="sf1Orb" cx="38%" cy="32%" r="68%"><stop offset="0%" stop-color="#fffef5"/><stop offset="25%" stop-color="#ffeb9c"/><stop offset="55%" stop-color="#f6ad2d"/><stop offset="85%" stop-color="#c4630a"/><stop offset="100%" stop-color="#8f3d04"/></radialGradient></defs><rect class="bp-bg" width="1024" height="1024" rx="232"/><circle class="bp-amb" cx="512" cy="526" r="395" fill="url(#sf1Amb)"/><rect class="bp-rim" x="12" y="12" width="1000" height="1000" rx="220" fill="none" stroke-width="6"/><g transform="translate(512 512) scale(1.06) translate(-512 -512)"><circle class="bp-cradle" cx="502" cy="548" r="220"/><path fill="url(#sf1Cr)" d="M450 322C324 366 252 488 278 620C304 750 426 830 560 810C670 794 750 710 770 594C730 676 648 734 548 738C420 744 330 648 330 520C330 432 378 360 450 322Z"/><path fill="url(#sf1CrIn)" d="M450 322C378 360 330 432 330 520C330 648 420 744 548 738C648 734 730 676 770 594C726 666 644 714 544 714C426 714 348 628 350 516C352 434 392 364 450 322Z"/><path fill="#fffbe8" opacity=".78" d="M446 326C328 370 260 488 284 614C306 724 404 798 520 804C412 790 326 716 304 608C282 496 342 384 446 326Z"/><circle cx="496" cy="574" r="95" fill="url(#sf1Orb)"/><ellipse cx="466" cy="540" rx="34" ry="22" transform="rotate(-32 466 540)" fill="#fff" opacity=".55"/><path fill="url(#sf1FlS)" d="M522 198C488 266 490 328 546 384C604 442 646 490 636 578C628 634 588 682 520 714C622 694 704 618 712 518C720 420 658 360 594 304C548 264 526 234 522 198Z"/><path fill="url(#sf1Fl)" d="M522 198C456 268 450 358 522 428C586 490 616 546 594 622C580 668 554 696 520 714C604 690 672 620 682 526C692 436 636 376 578 320C536 280 514 240 522 198Z"/><path fill="#fffbe8" opacity=".82" d="M522 206C472 270 470 344 534 408C596 470 634 522 624 606C642 532 610 466 548 400C492 342 488 272 522 206Z"/></g></svg>BioPeat</a>
-<div class="tools">
-<button type="button" class="chip" data-l="es" aria-pressed="false">ES</button><button type="button" class="chip" data-l="en" aria-pressed="false">EN</button>
-<button type="button" class="chip" id="theme" aria-label="Modo claro u oscuro"></button>
-<a class="btn btn-gold" href="./?empezar=1"><span data-lang="es">Abrir la app</span><span data-lang="en">Open the app</span></a>
-</div></div></header>
+<a class="skip" href="#contenido" data-lang="es">Saltar al contenido</a>
+<a class="skip" href="#contenido" data-lang="en">Skip to content</a>
 
-<main class="w">
-<div class="hero">
-<div>
-<span class="pill"><span data-lang="es">Gratis · sin cuenta · cifrado de extremo a extremo</span><span data-lang="en">Free · no account · end-to-end encrypted</span></span>
-<h1 data-lang="es">Tu nutrición al estilo <span>Ray Peat</span>, clara de un vistazo.</h1>
-<h1 data-lang="en">Eat the <span>Ray Peat</span> way, and see it at a glance.</h1>
-<p class="lead" data-lang="es">Escribe lo que comes (o escanea la etiqueta) y BioPeat calcula calorías, macros y 25 micronutrientes, vigila los equilibrios Peat/Dinkov y guarda una copia cifrada para no perder tus datos jamás.</p>
-<p class="lead" data-lang="en">Type what you eat (or scan a label) and BioPeat tracks calories, macros and 25 micronutrients, watches Peat/Dinkov balances and keeps an encrypted backup so you never lose your data.</p>
-<div class="ctas">
-<a class="btn btn-gold" href="./?empezar=1"><span data-lang="es">Empezar gratis</span><span data-lang="en">Start for free</span></a>
-<a class="btn btn-ghost" href="#como"><span data-lang="es">Cómo funciona</span><span data-lang="en">How it works</span></a>
-<button type="button" class="btn btn-ghost" id="install" hidden><span data-lang="es">Instalar en el móvil</span><span data-lang="en">Install app</span></button>
-<a class="btn btn-ghost" id="install-ios" href="./?empezar=1&instalar=ios" hidden><span data-lang="es">Instalar en iPhone</span><span data-lang="en">Install on iPhone</span></a>
-</div>
-<div class="trust"><span class="trust-it"><span data-i="check"></span><span data-lang="es">Android, iPhone y PC</span><span data-lang="en">Android, iPhone & Desktop</span></span><span class="trust-it"><span data-i="check"></span><span data-lang="es">Cifrado en tu dispositivo (AES-256)</span><span data-lang="en">On-device encryption (AES-256)</span></span><span class="trust-it"><span data-i="check"></span><span data-lang="es">Configurado en 2 minutos</span><span data-lang="en">Set up in 2 minutes</span></span></div>
-</div>
-<div style="position:relative">
-<div class="phone" aria-label="Vista previa interactiva de BioPeat"><div class="screen">
-<div class="s-head"><div class="s-head-l"><svg class="bp-logo-svg" viewBox="0 0 1024 1024" aria-hidden="true"><rect class="bp-bg" width="1024" height="1024" rx="232"/><circle class="bp-amb" cx="512" cy="526" r="395" fill="url(#sf1Amb)"/><rect class="bp-rim" x="12" y="12" width="1000" height="1000" rx="220" fill="none" stroke-width="6"/><g transform="translate(512 512) scale(1.06) translate(-512 -512)"><circle class="bp-cradle" cx="502" cy="548" r="220"/><path fill="url(#sf1Cr)" d="M450 322C324 366 252 488 278 620C304 750 426 830 560 810C670 794 750 710 770 594C730 676 648 734 548 738C420 744 330 648 330 520C330 432 378 360 450 322Z"/><path fill="url(#sf1CrIn)" d="M450 322C378 360 330 432 330 520C330 648 420 744 548 738C648 734 730 676 770 594C726 666 644 714 544 714C426 714 348 628 350 516C352 434 392 364 450 322Z"/><circle cx="496" cy="574" r="95" fill="url(#sf1Orb)"/><path fill="url(#sf1FlS)" d="M522 198C488 266 490 328 546 384C604 442 646 490 636 578C628 634 588 682 520 714C622 694 704 618 712 518C720 420 658 360 594 304C548 264 526 234 522 198Z"/><path fill="url(#sf1Fl)" d="M522 198C456 268 450 358 522 428C586 490 616 546 594 622C580 668 554 696 520 714C604 690 672 620 682 526C692 436 636 376 578 320C536 280 514 240 522 198Z"/></g></svg>BioPeat</div><span class="s-e2ee">E2EE ✓</span></div>
-<div class="s-tabs" role="tablist">
-<button type="button" class="s-tab" role="tab" data-mview="today" aria-selected="true"><span data-lang="es">Hoy</span><span data-lang="en">Today</span></button>
-<button type="button" class="s-tab" role="tab" data-mview="bal" aria-selected="false"><span data-lang="es">Ratios</span><span data-lang="en">Balances</span></button>
-<button type="button" class="s-tab" role="tab" data-mview="micro" aria-selected="false"><span data-lang="es">Micros</span><span data-lang="en">Micros</span></button>
-<button type="button" class="s-tab" role="tab" data-mview="gym" aria-selected="false"><span data-lang="es">Gym</span><span data-lang="en">Gym</span></button>
-</div>
-<div class="s-pane" data-mpane="today">
-<div class="s-card s-energy"><small data-lang="es">ENERGÍA DEL DÍA</small><small data-lang="en">TODAY'S ENERGY</small><div><b>2.180 <span style="font-size:13px;color:var(--mut)">kcal</span></b><em>78%</em></div><div class="s-track"><i></i></div></div>
-<div class="s-rings">
-<div class="s-ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="40" stroke="#38bdf8" stroke-linecap="round" pathLength="100" stroke-dasharray="84 100"/></svg><div class="v">84%</div><span data-lang="es">Hidratos</span><span data-lang="en">Carbs</span></div>
-<div class="s-ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="40" stroke="#10b981" stroke-linecap="round" pathLength="100" stroke-dasharray="92 100"/></svg><div class="v">92%</div><span data-lang="es">Proteína</span><span data-lang="en">Protein</span></div>
-<div class="s-ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="40" stroke="#fbbf24" stroke-linecap="round" pathLength="100" stroke-dasharray="62 100"/></svg><div class="v">62%</div><span data-lang="es">Grasa</span><span data-lang="en">Fat</span></div>
-</div>
-<div class="s-card s-ratio"><div class="r1"><span class="s-dot">✓</span><span data-lang="es">Temp. y pulso (opcional)</span><span data-lang="en">Temp &amp; pulse (optional)</span><b data-lang="es">36,8 °C · 79 lpm</b><b data-lang="en">36.8 °C · 79 bpm</b></div><div class="s-tip" data-lang="es">En rango Peat · + Añadir comida con un toque</div><div class="s-tip" data-lang="en">In Peat range · + Add meal in one tap</div></div>
-</div>
-<div class="s-pane" data-mpane="bal" hidden>
-<div class="s-card s-ratio"><div class="r1"><span class="s-dot">✓</span><span data-lang="es">Calcio : fósforo</span><span data-lang="en">Calcium : phosphorus</span><b>1,34 : 1</b></div><div class="s-bar"><i style="left:60%;width:40%;background:#34d39955"></i><i style="left:47%;width:13%;background:#bef26440"></i><b style="left:67%"></b></div><div class="s-tip" data-lang="es">Meta ≥ 1,2 : 1 · lácteos protegen hueso y PTH</div><div class="s-tip" data-lang="en">Goal ≥ 1.2 : 1 · dairy protects bone &amp; PTH</div></div>
-<div class="s-card s-ratio"><div class="r1"><span class="s-dot">✓</span><span>PUFA</span><b>2,1 g</b></div><div class="s-bar"><i style="left:0;width:50%;background:#34d39955"></i><b style="left:26%"></b></div><div class="s-tip" data-lang="es">Te quedan 1,9 g hasta tu límite personal</div><div class="s-tip" data-lang="en">1.9 g left under your personal limit</div></div>
-<div class="s-card s-ratio"><div class="r1"><span class="s-dot">✓</span><span>A : D (7 d) · Zn : Cu</span><b>2,8 : 1 · 10 : 1</b></div><div class="s-tip" data-lang="es">Las 5 proporciones Peat con soluciones de 1 toque</div><div class="s-tip" data-lang="en">All 5 Peat balances with 1-tap food fixes</div></div>
-</div>
-<div class="s-pane" data-mpane="micro" hidden>
-<div class="s-card s-nrow"><div><span data-lang="es">Calcio (Ca)</span><span data-lang="en">Calcium (Ca)</span><span>2.140 mg · 107%</span></div><div class="s-track"><i style="width:94%;background:var(--ok)"></i></div><small class="s-tip" data-lang="es">Meta 2.000 mg · Peat/Dinkov</small><small class="s-tip" data-lang="en">Goal 2,000 mg · Peat/Dinkov</small></div>
-<div class="s-card s-nrow"><div><span data-lang="es">Hierro (máx.)</span><span data-lang="en">Iron (max)</span><span>7,2 mg · 51%</span></div><div class="s-track"><i style="width:51%;background:var(--ok)"></i></div><small class="s-tip" data-lang="es">Escudo Peat: mejor por debajo · media 7 d</small><small class="s-tip" data-lang="en">Peat shield: keep low · 7-day store</small></div>
-<div class="s-card s-nrow"><div><span data-lang="es">Vitamina D (7 d)</span><span data-lang="en">Vitamin D (7d)</span><span>54 µg · 108%</span></div><div class="s-track"><i style="width:90%;background:var(--ok)"></i></div><small class="s-tip" data-lang="es">Tanque semanal · comparable con UE/EE. UU.</small><small class="s-tip" data-lang="en">Weekly tank · compare with EU/US refs</small></div>
-</div>
-<div class="s-pane" data-mpane="gym" hidden>
-<div class="s-card s-energy"><small data-lang="es">CONSTANCIA · 12 SEMANAS</small><small data-lang="en">CONSISTENCY · 12 WEEKS</small><div><b>42 <span style="font-size:13px;color:var(--mut)" data-lang="es">series/sem</span><span style="font-size:13px;color:var(--mut)" data-lang="en">sets/wk</span></b><em>Hevy · Strong</em></div>
-<div class="s-gym"><i style="height:45%"></i><i style="height:68%"></i><i style="height:60%"></i><i style="height:82%"></i><i style="height:74%"></i><i style="height:95%"></i><i style="height:88%"></i><i style="height:100%"></i></div></div>
-<div class="s-card s-tip" data-lang="es">Importa Hevy, Strong, Fitbod o FitNotes y compáralo con tu proteína e hidratos reales.</div>
-<div class="s-card s-tip" data-lang="en">Import Hevy, Strong, Fitbod or FitNotes CSVs and track alongside real carbs &amp; protein.</div>
-</div>
-</div></div>
-<div class="float f1"><i>+</i> <span data-lang="es">250 ml leche entera</span><span data-lang="en">250 ml whole milk</span></div>
-<div class="float f2">🌡️ <span data-lang="es">36,8 °C · Ca:P verde</span><span data-lang="en">36.8 °C · Ca:P green</span></div>
-</div>
-</div>
+<header class="top" id="siteHeader">
+  <div class="w">
+    <a class="brand" href="#">
+      <svg class="bp-logo-svg" viewBox="0 0 1024 1024" aria-hidden="true">
+        <defs>
+          <radialGradient id="sf1Amb" cx="49%" cy="52%" r="38%"><stop offset="0%" stop-color="#ffbf47" stop-opacity=".38"/><stop offset="55%" stop-color="#e08819" stop-opacity=".12"/><stop offset="100%" stop-color="#04070e" stop-opacity="0"/></radialGradient>
+          <linearGradient id="sf1Cr" x1="14%" y1="16%" x2="86%" y2="88%"><stop offset="0%" stop-color="#fff6cf"/><stop offset="22%" stop-color="#f8cd5c"/><stop offset="52%" stop-color="#dc881c"/><stop offset="82%" stop-color="#9c4c09"/><stop offset="100%" stop-color="#5e2803"/></linearGradient>
+          <linearGradient id="sf1CrIn" x1="18%" y1="78%" x2="82%" y2="22%"><stop offset="0%" stop-color="#522102"/><stop offset="40%" stop-color="#9e4d09"/><stop offset="80%" stop-color="#e89a25"/><stop offset="100%" stop-color="#ffd978"/></linearGradient>
+          <linearGradient id="sf1Fl" x1="22%" y1="4%" x2="84%" y2="96%"><stop offset="0%" stop-color="#fffbe6"/><stop offset="20%" stop-color="#ffe184"/><stop offset="48%" stop-color="#f2a829"/><stop offset="80%" stop-color="#c2630c"/><stop offset="100%" stop-color="#6b2c03"/></linearGradient>
+          <linearGradient id="sf1FlS" x1="0%" y1="12%" x2="100%" y2="88%"><stop offset="0%" stop-color="#cf7512"/><stop offset="50%" stop-color="#873a05"/><stop offset="100%" stop-color="#3b1501"/></linearGradient>
+          <radialGradient id="sf1Orb" cx="38%" cy="32%" r="68%"><stop offset="0%" stop-color="#fffef5"/><stop offset="25%" stop-color="#ffeb9c"/><stop offset="55%" stop-color="#f6ad2d"/><stop offset="85%" stop-color="#c4630a"/><stop offset="100%" stop-color="#8f3d04"/></radialGradient>
+        </defs>
+        <rect class="bp-bg" width="1024" height="1024" rx="232"/>
+        <circle class="bp-amb" cx="512" cy="526" r="395" fill="url(#sf1Amb)"/>
+        <rect class="bp-rim" x="12" y="12" width="1000" height="1000" rx="220" fill="none" stroke-width="6"/>
+        <g transform="translate(512 512) scale(1.06) translate(-512 -512)">
+          <circle class="bp-cradle" cx="502" cy="548" r="220"/>
+          <path fill="url(#sf1Cr)" d="M450 322C324 366 252 488 278 620C304 750 426 830 560 810C670 794 750 710 770 594C730 676 648 734 548 738C420 744 330 648 330 520C330 432 378 360 450 322Z"/>
+          <path fill="url(#sf1CrIn)" d="M450 322C378 360 330 432 330 520C330 648 420 744 548 738C648 734 730 676 770 594C726 666 644 714 544 714C426 714 348 628 350 516C352 434 392 364 450 322Z"/>
+          <path fill="#fffbe8" opacity=".78" d="M446 326C328 370 260 488 284 614C306 724 404 798 520 804C412 790 326 716 304 608C282 496 342 384 446 326Z"/>
+          <circle cx="496" cy="574" r="95" fill="url(#sf1Orb)"/>
+          <ellipse cx="466" cy="540" rx="34" ry="22" transform="rotate(-32 466 540)" fill="#fff" opacity=".55"/>
+          <path fill="url(#sf1FlS)" d="M522 198C488 266 490 328 546 384C604 442 646 490 636 578C628 634 588 682 520 714C622 694 704 618 712 518C720 420 658 360 594 304C548 264 526 234 522 198Z"/>
+          <path fill="url(#sf1Fl)" d="M522 198C456 268 450 358 522 428C586 490 616 546 594 622C580 668 554 696 520 714C604 690 672 620 682 526C692 436 636 376 578 320C536 280 514 240 522 198Z"/>
+          <path fill="#fffbe8" opacity=".82" d="M522 206C472 270 470 344 534 408C596 470 634 522 624 606C642 532 610 466 548 400C492 342 488 272 522 206Z"/>
+        </g>
+      </svg>
+      <span class="brand-wordmark">BioPeat</span>
+    </a>
 
-<section id="como">
-<div class="eyebrow" data-lang="es">Por qué BioPeat</div><div class="eyebrow" data-lang="en">Why BioPeat</div>
-<h2 data-lang="es">Lo que otras apps no miran, a la vista.</h2><h2 data-lang="en">What other apps don't look at, in plain sight.</h2>
-<p class="sub" data-lang="es">Las apps de siempre cuentan calorías. BioPeat vigila los cinco equilibrios que Ray Peat y Georgi Dinkov consideraban clave, con un semáforo, por qué importan y qué comer para ajustarlos en un toque.</p>
-<p class="sub" data-lang="en">Typical apps count calories. BioPeat watches the five balances Ray Peat and Georgi Dinkov considered key, with a traffic light, why they matter and 1-tap food ideas.</p>
-<div class="balances">
-<div class="bal"><b>Ca : P</b><span data-lang="es">calcio : fósforo</span><span data-lang="en">calcium : phosphorus</span></div>
-<div class="bal"><b>PUFA</b><span data-lang="es">grasas inestables</span><span data-lang="en">unstable fats</span></div>
-<div class="bal"><b>C : P</b><span data-lang="es">hidratos : proteína</span><span data-lang="en">carbs : protein</span></div>
-<div class="bal"><b>A : D</b><span data-lang="es">vitaminas A y D</span><span data-lang="en">vitamins A and D</span></div>
-<div class="bal"><b>Zn : Cu</b><span data-lang="es">zinc : cobre</span><span data-lang="en">zinc : copper</span></div>
-</div>
-<div class="vs">
-<div class="card no"><b data-lang="es">Un contador normal</b><b data-lang="en">A regular tracker</b><ul>
-<li><span data-i="x"></span><span data-lang="es">Calorías y poco más</span><span data-lang="en">Calories and not much else</span></li>
-<li><span data-i="x"></span><span data-lang="es">Te pide cuenta, correo y suscripción</span><span data-lang="en">Asks for an account, email and subscription</span></li>
-<li><span data-i="x"></span><span data-lang="es">Lee tu historial en sus servidores o vende datos</span><span data-lang="en">Reads your logs on their servers or sells data</span></li></ul></div>
-<div class="card yes"><b data-lang="es">BioPeat</b><b data-lang="en">BioPeat</b><ul>
-<li><span data-i="check"></span><span data-lang="es">Equilibrios Peat y 25 micronutrientes con su zona ideal y su fuente</span><span data-lang="en">Peat balances and 25 micronutrients with their ideal range and source</span></li>
-<li><span data-i="check"></span><span data-lang="es">Parser bilingüe ES/EN, escáner de códigos y soluciones de 1 toque</span><span data-lang="en">Bilingual ES/EN parser, barcode scanner and 1-tap food suggestions</span></li>
-<li><span data-i="check"></span><span data-lang="es">Gratis, sin cuenta y con respaldo cifrado de extremo a extremo (conocimiento cero)</span><span data-lang="en">Free, no account, with zero-knowledge end-to-end encrypted backup</span></li></ul></div>
-</div>
-</section>
+    <div class="tools">
+      <a class="nav-link" href="#como"><span data-lang="es">Equilibrios</span><span data-lang="en">Balances</span></a>
+      <a class="nav-link" href="#instalar"><span data-lang="es">Instalar</span><span data-lang="en">Install</span></a>
+      <a class="nav-link" href="#privacidad"><span data-lang="es">Privacidad</span><span data-lang="en">Privacy</span></a>
+      <div class="lang-switch" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-l="es" aria-pressed="false">ES</button>
+        <button type="button" class="lang-btn" data-l="en" aria-pressed="false">EN</button>
+      </div>
+      <button type="button" class="theme-btn" id="theme" aria-label="Modo claro u oscuro"></button>
+    </div>
+  </div>
+</header>
 
-<section>
-<div class="eyebrow" data-lang="es">Todo lo que incluye</div><div class="eyebrow" data-lang="en">Everything included</div>
-<h2 data-lang="es">Pensada para usarla con una mano, cada día.</h2><h2 data-lang="en">Built to use with one hand, every day.</h2>
-<div class="grid">
-<div class="card"><div class="ico" data-i="bolt"></div><h3 data-lang="es">Apuntar en segundos</h3><h3 data-lang="en">Log in seconds</h3><p data-lang="es">En español o inglés («200 ml whole milk and 2 bananas»), foto, código de barras o tu desayuno de un toque.</p><p data-lang="en">In English or Spanish ("200 ml whole milk and 2 bananas"), photo, barcode scan or your 1-tap breakfast.</p></div>
-<div class="card"><div class="ico" data-i="scale"></div><h3 data-lang="es">Equilibrio del día y bio</h3><h3 data-lang="en">Balances &amp; bio markers</h3><p data-lang="es">Los 5 ratios Peat con soluciones de 1 toque y ficha opcional de temperatura, pulso y energía.</p><p data-lang="en">All 5 Peat ratios with 1-tap meal ideas plus optional daily temperature, pulse and energy card.</p></div>
-<div class="card"><div class="ico" data-i="flask"></div><h3 data-lang="es">25 micronutrientes</h3><h3 data-lang="en">25 micronutrients</h3><p data-lang="es">Con zonas Peat/Dinkov, depósitos de 7 días y comparación oficial UE (EFSA) o EE. UU. (NIH).</p><p data-lang="en">Peat/Dinkov ranges, 7-day tank stores and optional comparison with EU (EFSA) or US (NIH) references.</p></div>
-<div class="card"><div class="ico" data-i="cal"></div><h3 data-lang="es">Tu semana y despensa</h3><h3 data-lang="en">Your week &amp; pantry</h3><p data-lang="es">¿Cómo voy?, ¿qué me falta?, calendario, raciones en vivo con Ca:P y grasas reales vs PUFA.</p><p data-lang="en">Progress overview, deficiency finder, calendar, live portion simulation with Ca:P and real fat breakdown.</p></div>
-<div class="card"><div class="ico" data-i="gym"></div><h3 data-lang="es">Gimnasio</h3><h3 data-lang="en">Gym</h3><p data-lang="es">Importa Hevy, Strong, Fitbod o FitNotes y míralo junto a tu proteína e hidratos reales.</p><p data-lang="en">Import Hevy, Strong, Fitbod or FitNotes CSVs and track alongside real protein &amp; carbs.</p></div>
-<div class="card"><div class="ico" data-i="spark"></div><h3 data-lang="es">Tu IA, opcional</h3><h3 data-lang="en">Your AI, optional</h3><p data-lang="es">Fotos y chat con Gemini o Groq (gratis), ChatGPT o Claude. Sin IA ni internet también funciona.</p><p data-lang="en">Photo &amp; chat analysis with Gemini or Groq (free), ChatGPT or Claude. Works 100% without AI too.</p></div>
-</div>
-</section>
+<main id="contenido">
+  <section class="hero" id="hero">
+    <svg class="solar-art" viewBox="0 0 1440 860" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <circle cx="720" cy="430" r="240" fill="none" stroke="var(--solar-stroke)" stroke-width="1.2"/>
+      <circle cx="720" cy="430" r="390" fill="none" stroke="var(--solar-stroke)" stroke-width="1.2"/>
+      <circle cx="720" cy="430" r="550" fill="none" stroke="var(--solar-stroke)" stroke-width="1.2"/>
+      <path d="M180 620 A600 600 0 0 1 1260 620" fill="none" stroke="var(--solar-accent)" stroke-width="1.5"/>
+    </svg>
 
-<section>
-<div class="eyebrow" data-lang="es">Empieza hoy</div><div class="eyebrow" data-lang="en">Start today</div>
-<h2 data-lang="es">Tres pasos y listo.</h2><h2 data-lang="en">Three steps and you're done.</h2>
-<div class="steps">
-<div class="card step"><div class="n">1</div><h3 data-lang="es">Crea tu perfil</h3><h3 data-lang="en">Create your profile</h3><p data-lang="es">Un asistente en kg o libras te guía: medidas, objetivo, semana rápida y «Lo básico de Peat».</p><p data-lang="en">A wizard in kg or lb guides you: stats, goal, quick week schedule and optional "Peat basics".</p></div>
-<div class="card step"><div class="n">2</div><h3 data-lang="es">Apunta lo que comes</h3><h3 data-lang="en">Log what you eat</h3><p data-lang="es">Texto bilingüe, foto, producto/código o comidas habituales. Tu despensa aprende sola.</p><p data-lang="en">Bilingual text, photo, barcode/label lookup or usual meals. Your pantry learns what you eat.</p></div>
-<div class="card step"><div class="n">3</div><h3 data-lang="es">Mira qué te falta</h3><h3 data-lang="en">See what's missing</h3><p data-lang="es">Equilibrios, micronutrientes, ideas concretas con «+ Añadir» y respaldo cifrado automático.</p><p data-lang="en">Balances, micronutrients, 1-tap "+ Add" suggestions and automatic encrypted backup.</p></div>
-</div>
-</section>
+    <div class="w hero-inner">
+      <h1 data-lang="es">Tu nutrición Ray Peat, clara en segundos.</h1>
+      <h1 data-lang="en">Ray Peat nutrition, clear in seconds.</h1>
 
-<section>
-<div class="privacy">
-<div><div class="eyebrow" data-lang="es">Privacidad Zero-Knowledge</div><div class="eyebrow" data-lang="en">Zero-Knowledge Privacy</div><h2 data-lang="es">Nadie más puede leer tus datos.</h2><h2 data-lang="en">Nobody else can read your data.</h2><p class="sub" style="margin:0" data-lang="es">Se guardan en tu dispositivo y se cifran con AES-256-GCM antes de cualquier respaldo en la nube europea.</p><p class="sub" style="margin:0" data-lang="en">Stored on your device and encrypted with AES-256-GCM before leaving for our EU cloud vault.</p></div>
-<ul>
-<li><span data-i="check"></span><span data-lang="es">Sin cuenta, correo ni registro; tu clave secreta nace y vive solo en tu dispositivo</span><span data-lang="en">No account, email or login; your secret key is created and kept only on your device</span></li>
-<li><span data-i="check"></span><span data-lang="es">Respaldo automático cifrado para recuperar todo si desinstalas o cambias de móvil</span><span data-lang="en">Automatic encrypted backup to recover everything if you reinstall or switch phones</span></li>
-<li><span data-i="check"></span><span data-lang="es">Sin anuncios ni cookies; puedes borrar tu copia de la nube en un toque cuando quieras</span><span data-lang="en">No ads or cookies; delete your cloud vault anytime in one tap</span></li>
-</ul></div>
-</section>
+      <p class="lead" data-lang="es">Apunta lo que comes o escanea una etiqueta: BioPeat vigila los 5 equilibrios clave y 25 micronutrientes, gratis y cifrado en tu móvil.</p>
+      <p class="lead" data-lang="en">Type what you eat or scan a label: BioPeat watches the 5 key balances and 25 micronutrients, free and encrypted on your phone.</p>
 
-<section id="instalar">
-<div class="eyebrow" data-lang="es">Instalación</div><div class="eyebrow" data-lang="en">Install</div>
-<h2 data-lang="es">Instálala como una app (30 segundos).</h2><h2 data-lang="en">Install it like an app (30 seconds).</h2>
-<div class="install">
-<div class="card"><h3>Android / Chrome</h3><ol data-lang="es"><li>Abre BioPeat en <b>Chrome</b> o Edge.</li><li>Toca <b>⋮</b> → <b>Instalar app</b> (o el botón «Instalar» arriba).</li><li>Ábrela desde su icono.</li></ol><ol data-lang="en"><li>Open BioPeat in <b>Chrome</b> or Edge.</li><li>Tap <b>⋮</b> → <b>Install app</b> (or "Install app" above).</li><li>Open it from its icon.</li></ol></div>
-<div class="card"><h3>iPhone / iPad</h3><ol data-lang="es"><li>Abre BioPeat en <b>Safari</b>.</li><li>Toca <b>Compartir</b> (□↑) → <b>Añadir a pantalla de inicio</b>.</li><li>Activa «Guardar clave en iCloud» en Ajustes para no perder nada.</li></ol><ol data-lang="en"><li>Open BioPeat in <b>Safari</b>.</li><li>Tap <b>Share</b> (□↑) → <b>Add to Home Screen</b>.</li><li>Save your key to iCloud Passwords in Settings so you never lose data.</li></ol></div>
-</div>
-</section>
+      <div class="ctas">
+        <a class="btn btn-primary" id="heroStart" href="./?empezar=1">
+          <span data-lang="es">Empezar gratis</span>
+          <span data-lang="en">Start for free</span>
+        </a>
+        <button type="button" class="link-subtle" id="install" hidden>
+          <span data-lang="es">Instalar en el móvil</span>
+          <span data-lang="en">Install app</span>
+        </button>
+        <a class="link-subtle" id="install-ios" href="./?empezar=1&amp;instalar=ios" hidden>
+          <span data-lang="es">Instalar en iPhone</span>
+          <span data-lang="en">Install on iPhone</span>
+        </a>
+      </div>
 
-<section>
-<h2 data-lang="es">Preguntas frecuentes</h2><h2 data-lang="en">FAQ</h2>
-<div data-lang="es">
-<details><summary>¿Es gratis?</summary><p>Sí, del todo. Sin anuncios, sin cuentas y sin suscripciones.</p></details>
-<details><summary>¿Pierdo mis datos si desinstalo la app o borro caché?</summary><p>BioPeat guarda copia local en dos almacenamientos (localStorage + IndexedDB) y activa un respaldo cifrado de extremo a extremo (AES-256-GCM). Si guardas tu clave en iCloud/Google o copias el enlace de recuperación (Más → Ajustes), recuperas todo en segundos.</p></details>
-<details><summary>¿Puede el creador ver lo que como?</summary><p>No. Los datos se cifran en tu dispositivo antes de enviarse; el servidor solo guarda bloques cifrados incomprensibles y un identificador hash. Ni siquiera podemos descifrarlos.</p></details>
-<details><summary>¿Necesito una IA?</summary><p>No. El parser en español/inglés, los códigos de barras (Open Food Facts), las raciones y tus 25 micronutrientes funcionan sin IA. Puedes conectar la tuya (Gemini o Groq son gratis) si quieres analizar fotos.</p></details>
-<details><summary>¿Es consejo médico?</summary><p>No. Es una herramienta personal para registrar y entender tu alimentación. Consulta a un profesional para cualquier decisión médica.</p></details>
-</div>
-<div data-lang="en">
-<details><summary>Is it free?</summary><p>Yes, completely. No ads, no accounts and no subscriptions.</p></details>
-<details><summary>Do I lose my data if I uninstall or clear browser cache?</summary><p>BioPeat keeps two local stores (localStorage + IndexedDB) plus automatic end-to-end encrypted cloud backup (AES-256-GCM). Saving your key to iCloud/Google or copying your recovery link (More → Settings) lets you restore in seconds.</p></details>
-<details><summary>Can the developer see what I eat?</summary><p>No. Everything is encrypted on your device before leaving; our EU server only stores unreadable ciphertext. We cannot decrypt it.</p></details>
-<details><summary>Do I need an AI key?</summary><p>No. Bilingual ES/EN text parsing, barcode scanning (Open Food Facts) and all 25 micronutrients work without AI. Connecting Gemini or Groq (free) is optional for meal photos.</p></details>
-<details><summary>Is it medical advice?</summary><p>No. It's a personal tool to log and understand what you eat. Talk to a healthcare professional about any medical decision.</p></details>
-</div>
-</section>
+      <div class="stage">
+        <div class="s-tabs" role="tablist" aria-label="Vista previa">
+          <button type="button" class="s-tab" role="tab" data-mview="today" aria-selected="true"><span data-lang="es">Hoy</span><span data-lang="en">Today</span></button>
+          <button type="button" class="s-tab" role="tab" data-mview="bal" aria-selected="false"><span data-lang="es">Ratios</span><span data-lang="en">Balances</span></button>
+          <button type="button" class="s-tab" role="tab" data-mview="micro" aria-selected="false"><span data-lang="es">Micros</span><span data-lang="en">Micros</span></button>
+          <button type="button" class="s-tab" role="tab" data-mview="gym" aria-selected="false"><span data-lang="es">Gym</span><span data-lang="en">Gym</span></button>
+        </div>
 
-<section>
-<div class="final"><h2 data-lang="es">Empieza en 2 minutos.</h2><h2 data-lang="en">Start in 2 minutes.</h2><p data-lang="es">Gratis, sin cuenta, bilingüe y con tus datos cifrados bajo tu control.</p><p data-lang="en">Free, no account, bilingual and encrypted under your control.</p><a class="btn btn-gold" href="./?empezar=1"><span data-lang="es">Empezar gratis</span><span data-lang="en">Start for free</span></a></div>
-</section>
+        <div class="phone" aria-label="Vista previa interactiva de BioPeat">
+          <div class="screen">
+            <div class="s-head">
+              <div class="s-head-l">
+                <svg class="bp-logo-svg" viewBox="0 0 1024 1024" aria-hidden="true">
+                  <rect class="bp-bg" width="1024" height="1024" rx="232"/>
+                  <circle class="bp-amb" cx="512" cy="526" r="395" fill="url(#sf1Amb)"/>
+                  <rect class="bp-rim" x="12" y="12" width="1000" height="1000" rx="220" fill="none" stroke-width="6"/>
+                  <g transform="translate(512 512) scale(1.06) translate(-512 -512)">
+                    <circle class="bp-cradle" cx="502" cy="548" r="220"/>
+                    <path fill="url(#sf1Cr)" d="M450 322C324 366 252 488 278 620C304 750 426 830 560 810C670 794 750 710 770 594C730 676 648 734 548 738C420 744 330 648 330 520C330 432 378 360 450 322Z"/>
+                    <path fill="url(#sf1CrIn)" d="M450 322C378 360 330 432 330 520C330 648 420 744 548 738C648 734 730 676 770 594C726 666 644 714 544 714C426 714 348 628 350 516C352 434 392 364 450 322Z"/>
+                    <circle cx="496" cy="574" r="95" fill="url(#sf1Orb)"/>
+                    <path fill="url(#sf1FlS)" d="M522 198C488 266 490 328 546 384C604 442 646 490 636 578C628 634 588 682 520 714C622 694 704 618 712 518C720 420 658 360 594 304C548 264 526 234 522 198Z"/>
+                    <path fill="url(#sf1Fl)" d="M522 198C456 268 450 358 522 428C586 490 616 546 594 622C580 668 554 696 520 714C604 690 672 620 682 526C692 436 636 376 578 320C536 280 514 240 522 198Z"/>
+                  </g>
+                </svg>
+                <span>BioPeat</span>
+              </div>
+              <span class="s-head-meta">AES-256</span>
+            </div>
 
-<section class="legal card" id="privacidad">
-<h2 data-lang="es">Política de privacidad (RGPD)</h2><h2 data-lang="en">Privacy policy (GDPR)</h2>
-<div data-lang="es">
-<p><b>Responsable:</b> el creador de BioPeat (proyecto personal e independiente). Contacto: <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a>.</p>
-<ul>
-<li><b>Tus datos de comida, salud y entrenos:</b> viven en tu dispositivo (localStorage + IndexedDB). Si mantienes activo el respaldo automático cifrado (por defecto activado, desactivable en Ajustes), tu dispositivo cifra tus datos con <b>AES-256-GCM</b> antes de guardarlos en Cloudflare D1 (región Unión Europea). El servidor no posee la clave y es técnicamente incapaz de leer el contenido. Puedes pausarlo o borrar tu bóveda de la nube en un toque desde Más → Ajustes → Borrar copia de la nube.</li>
-<li><b>Claves de IA:</b> tu clave API personal de Gemini/Groq/OpenAI/Claude jamás se incluye en las copias de seguridad locales ni en la bóveda cifrada en la nube.</li>
-<li><b>Estadísticas anónimas sin cookies:</b> registramos contadores agregados diarios sin cookies (Cloudflare Worker UE + GoatCounter). Las IPs nunca se almacenan en base de datos: para contar visitantes únicos diarios usamos un hash criptográfico diario rotado con sal secreta que caduca automáticamente, descartando los registros a los 90 días.</li>
-<li><b>Sugerencias:</b> si envías una mejora voluntaria desde la app, se guarda en D1 (tipo, título, texto, versión, idioma y dispositivo si lo marcas). No pidas ni incluyas datos personales ni médicos.</li>
-<li><b>IA externa y Open Food Facts:</b> solo cuando pides analizar una foto/texto con IA o buscas un código de barras, tu navegador contacta directamente con ese proveedor bajo su propia política.</li>
-<li><b>Tus derechos:</b> puedes borrar tu bóveda cifrada al instante desde Ajustes, exportar tu JSON completo o escribir a <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a> para retirar una sugerencia o ejercer tus derechos ante la AEPD.</li>
-</ul>
-</div>
-<div data-lang="en">
-<p><b>Controller:</b> creator of BioPeat (personal, independent project). Contact: <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a>.</p>
-<ul>
-<li><b>Your food, bio and workout data:</b> stays on your device (localStorage + IndexedDB). When automatic encrypted backup is enabled (default on, toggleable in Settings), your device encrypts backups with <b>AES-256-GCM</b> before uploading ciphertext to Cloudflare D1 (European Union jurisdiction). The server never receives your key and cannot decrypt your data. Pause or delete your cloud vault anytime in one tap under More → Settings.</li>
-<li><b>AI keys:</b> your AI API keys are never included in JSON/HTML exports or cloud backups.</li>
-<li><b>Cookie-free anonymous metrics:</b> we record aggregate daily counts without cookies or persistent IP storage (EU Cloudflare Worker + GoatCounter). Daily unique counts use a salted cryptographic hash purged automatically after 90 days.</li>
-<li><b>Suggestions:</b> if you submit a voluntary improvement, only what you enter plus optional version/device tag is saved. Do not include personal or medical details.</li>
-<li><b>External AI &amp; Open Food Facts:</b> only contacted directly by your browser when you trigger an AI request or barcode/product lookup.</li>
-<li><b>Your rights:</b> delete your cloud vault in one tap from Settings, export JSON anytime, or email <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a> regarding any suggestion removal or GDPR request.</li>
-</ul>
-</div>
-</section>
-<div style="height:14px"></div>
+            <div class="s-pane" data-mpane="today">
+              <div class="s-card s-energy">
+                <span class="s-tip" data-lang="es">Energía del día</span>
+                <span class="s-tip" data-lang="en">Today's energy</span>
+                <div class="s-energy-row">
+                  <b>2.180 <span class="s-tip">kcal</span></b>
+                  <em>78%</em>
+                </div>
+                <div class="s-track"><i></i></div>
+              </div>
+              <div class="s-rings">
+                <div class="s-ring">
+                  <div class="s-ring-wrap">
+                    <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="40" stroke="#38bdf8" stroke-linecap="round" pathLength="100" stroke-dasharray="84 100"/></svg>
+                    <div class="v">84%</div>
+                  </div>
+                  <span data-lang="es">Hidratos</span><span data-lang="en">Carbs</span>
+                </div>
+                <div class="s-ring">
+                  <div class="s-ring-wrap">
+                    <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="40" stroke="#10b981" stroke-linecap="round" pathLength="100" stroke-dasharray="92 100"/></svg>
+                    <div class="v">92%</div>
+                  </div>
+                  <span data-lang="es">Proteína</span><span data-lang="en">Protein</span>
+                </div>
+                <div class="s-ring">
+                  <div class="s-ring-wrap">
+                    <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="40" stroke="#fbbf24" stroke-linecap="round" pathLength="100" stroke-dasharray="62 100"/></svg>
+                    <div class="v">62%</div>
+                  </div>
+                  <span data-lang="es">Grasa</span><span data-lang="en">Fat</span>
+                </div>
+              </div>
+              <div class="s-card s-ratio">
+                <div class="r1">
+                  <span data-lang="es">Temperatura y pulso</span>
+                  <span data-lang="en">Temperature &amp; pulse</span>
+                  <b data-lang="es">36,8 °C · 79 lpm</b>
+                  <b data-lang="en">36.8 °C · 79 bpm</b>
+                </div>
+                <div class="s-tip" data-lang="es">En rango Peat · añade comida en un toque</div>
+                <div class="s-tip" data-lang="en">In Peat range · add meals in one tap</div>
+              </div>
+            </div>
 
-<section class="legal card" id="aviso-legal">
-<h2 data-lang="es">Aviso legal</h2><h2 data-lang="en">Legal notice</h2>
-<div data-lang="es">
-<ul>
-<li><b>No es consejo médico.</b> BioPeat es una herramienta informativa para registrar lo que comes. No diagnostica, no trata ni sustituye a un profesional de la salud. Consulta a tu médico antes de cambiar tu dieta, tus suplementos o tu medicación.</li>
-<li><b>Proyecto independiente.</b> BioPeat no tiene relación con Ray Peat, Georgi Dinkov ni raypeat.com. Las referencias resumen textos públicos y fuentes comunitarias citadas en la app.</li>
-<li><b>Sin garantías.</b> Las cifras nutricionales son estimaciones (USDA, BEDCA, Open Food Facts o IA) y pueden contener errores. La app se ofrece gratis, tal cual.</li>
-<li><b>Contacto:</b> <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a>.</li>
-</ul>
-</div>
-<div data-lang="en">
-<ul>
-<li><b>Not medical advice.</b> BioPeat is an informational logging tool. It does not diagnose, treat or replace medical professionals. Consult your doctor before changing your diet, supplements or medication.</li>
-<li><b>Independent project.</b> BioPeat is not affiliated with Ray Peat, Georgi Dinkov or raypeat.com. Notes summarize public texts and referenced sources inside the app.</li>
-<li><b>No warranty.</b> Nutrient values are estimates (USDA, BEDCA, Open Food Facts or AI) and may contain inaccuracies. Provided free, as is.</li>
-<li><b>Contact:</b> <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a>.</li>
-</ul>
-</div>
-</section>
+            <div class="s-pane" data-mpane="bal" hidden>
+              <div class="s-card s-ratio">
+                <div class="r1"><span data-lang="es">Calcio : fósforo</span><span data-lang="en">Calcium : phosphorus</span><b>1,34 : 1</b></div>
+                <div class="s-bar"><i style="left:60%;width:40%;background:#34d39955"></i><i style="left:47%;width:13%;background:#bef26440"></i><b style="left:67%"></b></div>
+                <div class="s-tip" data-lang="es">Meta ≥ 1,2 : 1 · lácteos protegen hueso y PTH</div>
+                <div class="s-tip" data-lang="en">Goal ≥ 1.2 : 1 · dairy protects bone &amp; PTH</div>
+              </div>
+              <div class="s-card s-ratio">
+                <div class="r1"><span>PUFA</span><b>2,1 g</b></div>
+                <div class="s-bar"><i style="left:0;width:50%;background:#34d39955"></i><b style="left:26%"></b></div>
+                <div class="s-tip" data-lang="es">Te quedan 1,9 g hasta tu límite personal</div>
+                <div class="s-tip" data-lang="en">1.9 g left under your personal limit</div>
+              </div>
+              <div class="s-card s-ratio">
+                <div class="r1"><span>A : D (7 d) · Zn : Cu</span><b>2,8 : 1 · 10 : 1</b></div>
+                <div class="s-tip" data-lang="es">Las 5 proporciones Peat con soluciones de 1 toque</div>
+                <div class="s-tip" data-lang="en">All 5 Peat balances with 1-tap food fixes</div>
+              </div>
+            </div>
 
+            <div class="s-pane" data-mpane="micro" hidden>
+              <div class="s-card s-nrow">
+                <div class="s-nrow-top"><span data-lang="es">Calcio (Ca)</span><span data-lang="en">Calcium (Ca)</span><span>2.140 mg · 107%</span></div>
+                <div class="s-track"><i style="width:94%;background:var(--ok)"></i></div>
+                <span class="s-tip" data-lang="es">Meta 2.000 mg · Peat/Dinkov</span>
+                <span class="s-tip" data-lang="en">Goal 2,000 mg · Peat/Dinkov</span>
+              </div>
+              <div class="s-card s-nrow">
+                <div class="s-nrow-top"><span data-lang="es">Hierro (máx.)</span><span data-lang="en">Iron (max)</span><span>7,2 mg · 51%</span></div>
+                <div class="s-track"><i style="width:51%;background:var(--ok)"></i></div>
+                <span class="s-tip" data-lang="es">Escudo Peat: mejor por debajo · media 7 d</span>
+                <span class="s-tip" data-lang="en">Peat shield: keep low · 7-day store</span>
+              </div>
+              <div class="s-card s-nrow">
+                <div class="s-nrow-top"><span data-lang="es">Vitamina D (7 d)</span><span data-lang="en">Vitamin D (7d)</span><span>54 µg · 108%</span></div>
+                <div class="s-track"><i style="width:90%;background:var(--ok)"></i></div>
+                <span class="s-tip" data-lang="es">Tanque semanal · comparable con UE/EE. UU.</span>
+                <span class="s-tip" data-lang="en">Weekly tank · compare with EU/US refs</span>
+              </div>
+            </div>
+
+            <div class="s-pane" data-mpane="gym" hidden>
+              <div class="s-card s-energy">
+                <span class="s-tip" data-lang="es">Constancia · 12 semanas</span>
+                <span class="s-tip" data-lang="en">Consistency · 12 weeks</span>
+                <div class="s-energy-row">
+                  <b>42 <span class="s-tip" data-lang="es">series/sem</span><span class="s-tip" data-lang="en">sets/wk</span></b>
+                  <em>Hevy · Strong</em>
+                </div>
+                <div class="s-gym"><i style="height:45%"></i><i style="height:68%"></i><i style="height:60%"></i><i style="height:82%"></i><i style="height:74%"></i><i style="height:95%"></i><i style="height:88%"></i><i style="height:100%"></i></div>
+              </div>
+              <div class="s-card s-tip" data-lang="es">Importa Hevy, Strong, Fitbod o FitNotes y compáralo con tu proteína e hidratos reales.</div>
+              <div class="s-card s-tip" data-lang="en">Import Hevy, Strong, Fitbod or FitNotes CSVs and track alongside real carbs &amp; protein.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="como">
+    <div class="w">
+      <h2 data-lang="es">Lo que otras apps pasan por alto.</h2>
+      <h2 data-lang="en">What other apps overlook.</h2>
+      <p class="sub" data-lang="es">Las apps de siempre cuentan calorías. BioPeat vigila los cinco equilibrios que Ray Peat y Georgi Dinkov consideraban clave, con un semáforo, por qué importan y qué comer para ajustarlos en un toque.</p>
+      <p class="sub" data-lang="en">Typical apps count calories. BioPeat watches the five balances Ray Peat and Georgi Dinkov considered key, with a traffic light, why they matter and 1-tap food ideas.</p>
+
+      <div class="balances">
+        <div class="bal"><b>Ca : P</b><span data-lang="es">Calcio y fósforo</span><span data-lang="en">Calcium : phosphorus</span></div>
+        <div class="bal"><b>PUFA</b><span data-lang="es">Grasas inestables</span><span data-lang="en">Unstable fats</span></div>
+        <div class="bal"><b>C : P</b><span data-lang="es">Hidratos y proteína</span><span data-lang="en">Carbs : protein</span></div>
+        <div class="bal"><b>A : D</b><span data-lang="es">Vitaminas A y D</span><span data-lang="en">Vitamins A and D</span></div>
+        <div class="bal"><b>Zn : Cu</b><span data-lang="es">Zinc y cobre</span><span data-lang="en">Zinc : copper</span></div>
+      </div>
+
+      <div class="vs">
+        <div class="vs-col no">
+          <h3 data-lang="es">Un contador normal</h3>
+          <h3 data-lang="en">A regular tracker</h3>
+          <ul>
+            <li><span data-i="x"></span><span data-lang="es">Calorías y poco más</span><span data-lang="en">Calories and not much else</span></li>
+            <li><span data-i="x"></span><span data-lang="es">Te pide cuenta, correo y suscripción</span><span data-lang="en">Asks for an account, email and subscription</span></li>
+            <li><span data-i="x"></span><span data-lang="es">Lee tu historial en sus servidores o vende datos</span><span data-lang="en">Reads your logs on their servers or sells data</span></li>
+          </ul>
+        </div>
+        <div class="vs-col yes">
+          <h3>BioPeat</h3>
+          <ul>
+            <li><span data-i="check"></span><span data-lang="es">Equilibrios Peat y 25 micronutrientes con su zona ideal y su fuente</span><span data-lang="en">Peat balances and 25 micronutrients with their ideal range and source</span></li>
+            <li><span data-i="check"></span><span data-lang="es">Parser bilingüe ES/EN, escáner de códigos y soluciones de 1 toque</span><span data-lang="en">Bilingual ES/EN parser, barcode scanner and 1-tap food suggestions</span></li>
+            <li><span data-i="check"></span><span data-lang="es">Gratis, sin cuenta y con respaldo cifrado de extremo a extremo</span><span data-lang="en">Free, no account, with zero-knowledge end-to-end encrypted backup</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="w">
+      <h2 data-lang="es">Pensada para usarla con una mano cada día.</h2>
+      <h2 data-lang="en">Built for one-handed daily use.</h2>
+      <div class="grid">
+        <article class="feat">
+          <div class="feat-ico" data-i="bolt"></div>
+          <div>
+            <h3 data-lang="es">Apuntar en segundos</h3>
+            <h3 data-lang="en">Log in seconds</h3>
+            <p data-lang="es">En español o inglés, foto, código de barras o tu desayuno habitual en un toque.</p>
+            <p data-lang="en">In English or Spanish, photo, barcode scan or your usual breakfast in one tap.</p>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat-ico" data-i="scale"></div>
+          <div>
+            <h3 data-lang="es">Equilibrios y bio</h3>
+            <h3 data-lang="en">Balances &amp; bio markers</h3>
+            <p data-lang="es">Los 5 ratios Peat con ideas de 1 toque y ficha opcional de temperatura y pulso.</p>
+            <p data-lang="en">All 5 Peat ratios with 1-tap meal ideas plus optional daily temperature and pulse.</p>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat-ico" data-i="flask"></div>
+          <div>
+            <h3 data-lang="es">25 micronutrientes</h3>
+            <h3 data-lang="en">25 micronutrients</h3>
+            <p data-lang="es">Zonas Peat/Dinkov, depósitos semanales y comparación oficial UE (EFSA) o EE. UU. (NIH).</p>
+            <p data-lang="en">Peat/Dinkov ranges, 7-day tank stores and EU (EFSA) or US (NIH) references.</p>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat-ico" data-i="cal"></div>
+          <div>
+            <h3 data-lang="es">Semana y despensa</h3>
+            <h3 data-lang="en">Week &amp; pantry</h3>
+            <p data-lang="es">Calendario, qué falta en tu día y raciones en vivo con Ca:P y grasas reales frente a PUFA.</p>
+            <p data-lang="en">Calendar, deficiency finder and live portion simulation with Ca:P and fat breakdown.</p>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat-ico" data-i="gym"></div>
+          <div>
+            <h3 data-lang="es">Gimnasio</h3>
+            <h3 data-lang="en">Gym</h3>
+            <p data-lang="es">Importa Hevy, Strong, Fitbod o FitNotes y míralo junto a tu proteína e hidratos reales.</p>
+            <p data-lang="en">Import Hevy, Strong, Fitbod or FitNotes CSVs and track alongside real protein &amp; carbs.</p>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat-ico" data-i="spark"></div>
+          <div>
+            <h3 data-lang="es">Tu IA, opcional</h3>
+            <h3 data-lang="en">Your AI, optional</h3>
+            <p data-lang="es">Fotos y chat con Gemini o Groq (gratis), ChatGPT o Claude. También funciona sin IA ni red.</p>
+            <p data-lang="en">Photo &amp; chat analysis with Gemini or Groq (free), ChatGPT or Claude. Works offline too.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="w">
+      <h2 data-lang="es">Tres pasos y listo.</h2>
+      <h2 data-lang="en">Three steps and you're done.</h2>
+      <div class="steps">
+        <article class="step">
+          <span class="step-num" data-lang="es">Paso 1</span>
+          <span class="step-num" data-lang="en">Step 1</span>
+          <h3 data-lang="es">Crea tu perfil</h3>
+          <h3 data-lang="en">Create your profile</h3>
+          <p data-lang="es">Un asistente en kg o libras te guía: medidas, objetivo, semana rápida y «Lo básico de Peat».</p>
+          <p data-lang="en">A wizard in kg or lb guides you: stats, goal, quick week schedule and optional "Peat basics".</p>
+        </article>
+        <article class="step">
+          <span class="step-num" data-lang="es">Paso 2</span>
+          <span class="step-num" data-lang="en">Step 2</span>
+          <h3 data-lang="es">Apunta lo que comes</h3>
+          <h3 data-lang="en">Log what you eat</h3>
+          <p data-lang="es">Texto bilingüe, foto, código de barras o comidas habituales. Tu despensa aprende sola.</p>
+          <p data-lang="en">Bilingual text, photo, barcode lookup or usual meals. Your pantry learns what you eat.</p>
+        </article>
+        <article class="step">
+          <span class="step-num" data-lang="es">Paso 3</span>
+          <span class="step-num" data-lang="en">Step 3</span>
+          <h3 data-lang="es">Mira qué te falta</h3>
+          <h3 data-lang="en">See what's missing</h3>
+          <p data-lang="es">Equilibrios, micronutrientes, ideas concretas con «+ Añadir» y respaldo cifrado automático.</p>
+          <p data-lang="en">Balances, micronutrients, 1-tap "+ Add" suggestions and automatic encrypted backup.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="w privacy">
+      <div>
+        <h2 data-lang="es">Nadie más puede leer tus datos.</h2>
+        <h2 data-lang="en">Nobody else can read your data.</h2>
+        <p class="sub" data-lang="es">Se guardan en tu dispositivo y se cifran con AES-256-GCM antes de cualquier respaldo en la nube europea.</p>
+        <p class="sub" data-lang="en">Stored on your device and encrypted with AES-256-GCM before leaving for our EU cloud vault.</p>
+      </div>
+      <ul>
+        <li><span data-i="check"></span><span data-lang="es">Sin cuenta, correo ni registro; tu clave secreta nace y vive solo en tu dispositivo</span><span data-lang="en">No account, email or login; your secret key is created and kept only on your device</span></li>
+        <li><span data-i="check"></span><span data-lang="es">Respaldo automático cifrado para recuperar todo si desinstalas o cambias de móvil</span><span data-lang="en">Automatic encrypted backup to recover everything if you reinstall or switch phones</span></li>
+        <li><span data-i="check"></span><span data-lang="es">Sin anuncios ni cookies; puedes borrar tu copia de la nube en un toque cuando quieras</span><span data-lang="en">No ads or cookies; delete your cloud vault anytime in one tap</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="instalar">
+    <div class="w">
+      <h2 data-lang="es">Instálala como aplicación en 30 segundos.</h2>
+      <h2 data-lang="en">Install it like an app in 30 seconds.</h2>
+      <div class="install">
+        <div class="install-col">
+          <h3>Android / Chrome</h3>
+          <ol data-lang="es"><li>Abre BioPeat en <b>Chrome</b> o Edge.</li><li>Toca <b>⋮</b> → <b>Instalar app</b> (o el botón «Instalar» arriba).</li><li>Ábrela desde su icono.</li></ol>
+          <ol data-lang="en"><li>Open BioPeat in <b>Chrome</b> or Edge.</li><li>Tap <b>⋮</b> → <b>Install app</b> (or "Install app" above).</li><li>Open it from its icon.</li></ol>
+        </div>
+        <div class="install-col">
+          <h3>iPhone / iPad</h3>
+          <ol data-lang="es"><li>Abre BioPeat en <b>Safari</b>.</li><li>Toca <b>Compartir</b> (□↑) → <b>Añadir a pantalla de inicio</b>.</li><li>Activa «Guardar clave en iCloud» en Ajustes para no perder nada.</li></ol>
+          <ol data-lang="en"><li>Open BioPeat in <b>Safari</b>.</li><li>Tap <b>Share</b> (□↑) → <b>Add to Home Screen</b>.</li><li>Save your key to iCloud Passwords in Settings so you never lose data.</li></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="w faq-layout">
+      <h2 data-lang="es">Preguntas frecuentes</h2>
+      <h2 data-lang="en">FAQ</h2>
+      <div>
+        <div class="faq-list" data-lang="es">
+          <details><summary>¿Es gratis?</summary><p>Sí, del todo. Sin anuncios, sin cuentas y sin suscripciones.</p></details>
+          <details><summary>¿Pierdo mis datos si desinstalo la app o borro caché?</summary><p>BioPeat guarda copia local en dos almacenamientos (localStorage + IndexedDB) y activa un respaldo cifrado de extremo a extremo (AES-256-GCM). Si guardas tu clave en iCloud/Google o copias el enlace de recuperación (Más → Ajustes), recuperas todo en segundos.</p></details>
+          <details><summary>¿Puede el creador ver lo que como?</summary><p>No. Los datos se cifran en tu dispositivo antes de enviarse; el servidor solo guarda bloques cifrados incomprensibles y un identificador hash. Ni siquiera podemos descifrarlos.</p></details>
+          <details><summary>¿Necesito una IA?</summary><p>No. El parser en español/inglés, los códigos de barras (Open Food Facts), las raciones y tus 25 micronutrientes funcionan sin IA. Puedes conectar la tuya (Gemini o Groq son gratis) si quieres analizar fotos.</p></details>
+          <details><summary>¿Es consejo médico?</summary><p>No. Es una herramienta personal para registrar y entender tu alimentación. Consulta a un profesional para cualquier decisión médica.</p></details>
+        </div>
+        <div class="faq-list" data-lang="en">
+          <details><summary>Is it free?</summary><p>Yes, completely. No ads, no accounts and no subscriptions.</p></details>
+          <details><summary>Do I lose my data if I uninstall or clear browser cache?</summary><p>BioPeat keeps two local stores (localStorage + IndexedDB) plus automatic end-to-end encrypted cloud backup (AES-256-GCM). Saving your key to iCloud/Google or copying your recovery link (More → Settings) lets you restore in seconds.</p></details>
+          <details><summary>Can the developer see what I eat?</summary><p>No. Everything is encrypted on your device before leaving; our EU server only stores unreadable ciphertext. We cannot decrypt it.</p></details>
+          <details><summary>Do I need an AI key?</summary><p>No. Bilingual ES/EN text parsing, barcode scanning (Open Food Facts) and all 25 micronutrients work without AI. Connecting Gemini or Groq (free) is optional for meal photos.</p></details>
+          <details><summary>Is it medical advice?</summary><p>No. It's a personal tool to log and understand what you eat. Talk to a healthcare professional about any medical decision.</p></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="w final-inner">
+      <div>
+        <h2 data-lang="es">Empieza en dos minutos.</h2>
+        <h2 data-lang="en">Start in two minutes.</h2>
+        <p data-lang="es">Gratis, sin cuenta, bilingüe y con tus datos cifrados bajo tu control.</p>
+        <p data-lang="en">Free, no account, bilingual and encrypted under your control.</p>
+      </div>
+      <a class="btn btn-primary" href="./?empezar=1">
+        <span data-lang="es">Empezar gratis</span>
+        <span data-lang="en">Start for free</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section legal" id="privacidad">
+    <div class="w">
+      <h2 data-lang="es">Política de privacidad (RGPD)</h2>
+      <h2 data-lang="en">Privacy policy (GDPR)</h2>
+      <div data-lang="es">
+        <p><b>Responsable:</b> el creador de BioPeat (proyecto personal e independiente). Contacto: <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a>.</p>
+        <ul>
+          <li><b>Tus datos de comida, salud y entrenos:</b> viven en tu dispositivo (localStorage + IndexedDB). Si mantienes activo el respaldo automático cifrado (por defecto activado, desactivable en Ajustes), tu dispositivo cifra tus datos con <b>AES-256-GCM</b> antes de guardarlos en Cloudflare D1 (región Unión Europea). El servidor no posee la clave y es técnicamente incapaz de leer el contenido. Puedes pausarlo o borrar tu bóveda de la nube en un toque desde Más → Ajustes → Borrar copia de la nube.</li>
+          <li><b>Claves de IA:</b> tu clave API personal de Gemini/Groq/OpenAI/Claude jamás se incluye en las copias de seguridad locales ni en la bóveda cifrada en la nube.</li>
+          <li><b>Estadísticas anónimas sin cookies:</b> registramos contadores agregados diarios sin cookies (Cloudflare Worker UE + GoatCounter). Las IPs nunca se almacenan en base de datos: para contar visitantes únicos diarios usamos un hash criptográfico diario rotado con sal secreta que caduca automáticamente, descartando los registros a los 90 días.</li>
+          <li><b>Sugerencias:</b> si envías una mejora voluntaria desde la app, se guarda en D1 (tipo, título, texto, versión, idioma y dispositivo si lo marcas). No pidas ni incluyas datos personales ni médicos.</li>
+          <li><b>IA externa y Open Food Facts:</b> solo cuando pides analizar una foto/texto con IA o buscas un código de barras, tu navegador contacta directamente con ese proveedor bajo su propia política.</li>
+          <li><b>Tus derechos:</b> puedes borrar tu bóveda cifrada al instante desde Ajustes, exportar tu JSON completo o escribir a <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a> para retirar una sugerencia o ejercer tus derechos ante la AEPD.</li>
+        </ul>
+      </div>
+      <div data-lang="en">
+        <p><b>Controller:</b> creator of BioPeat (personal, independent project). Contact: <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a>.</p>
+        <ul>
+          <li><b>Your food, bio and workout data:</b> stays on your device (localStorage + IndexedDB). When automatic encrypted backup is enabled (default on, toggleable in Settings), your device encrypts backups with <b>AES-256-GCM</b> before uploading ciphertext to Cloudflare D1 (European Union jurisdiction). The server never receives your key and cannot decrypt your data. Pause or delete your cloud vault anytime in one tap under More → Settings.</li>
+          <li><b>AI keys:</b> your AI API keys are never included in JSON/HTML exports or cloud backups.</li>
+          <li><b>Cookie-free anonymous metrics:</b> we record aggregate daily counts without cookies or persistent IP storage (EU Cloudflare Worker + GoatCounter). Daily unique counts use a salted cryptographic hash purged automatically after 90 days.</li>
+          <li><b>Suggestions:</b> if you submit a voluntary improvement, only what you enter plus optional version/device tag is saved. Do not include personal or medical details.</li>
+          <li><b>External AI &amp; Open Food Facts:</b> only contacted directly by your browser when you trigger an AI request or barcode/product lookup.</li>
+          <li><b>Your rights:</b> delete your cloud vault in one tap from Settings, export JSON anytime, or email <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a> regarding any suggestion removal or GDPR request.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section legal" id="aviso-legal">
+    <div class="w">
+      <h2 data-lang="es">Aviso legal</h2>
+      <h2 data-lang="en">Legal notice</h2>
+      <div data-lang="es">
+        <ul>
+          <li><b>No es consejo médico.</b> BioPeat es una herramienta informativa para registrar lo que comes. No diagnostica, no trata ni sustituye a un profesional de la salud. Consulta a tu médico antes de cambiar tu dieta, tus suplementos o tu medicación.</li>
+          <li><b>Proyecto independiente.</b> BioPeat no tiene relación con Ray Peat, Georgi Dinkov ni raypeat.com. Las referencias resumen textos públicos y fuentes comunitarias citadas en la app.</li>
+          <li><b>Sin garantías.</b> Las cifras nutricionales son estimaciones (USDA, BEDCA, Open Food Facts o IA) y pueden contener errores. La app se ofrece gratis, tal cual.</li>
+          <li><b>Contacto:</b> <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a>.</li>
+        </ul>
+      </div>
+      <div data-lang="en">
+        <ul>
+          <li><b>Not medical advice.</b> BioPeat is an informational logging tool. It does not diagnose, treat or replace medical professionals. Consult your doctor before changing your diet, supplements or medication.</li>
+          <li><b>Independent project.</b> BioPeat is not affiliated with Ray Peat, Georgi Dinkov or raypeat.com. Notes summarize public texts and referenced sources inside the app.</li>
+          <li><b>No warranty.</b> Nutrient values are estimates (USDA, BEDCA, Open Food Facts or AI) and may contain inaccuracies. Provided free, as is.</li>
+          <li><b>Contact:</b> <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 </main>
-<footer><div class="w"><span data-lang="es">BioPeat · gratis, sin cuenta, cifrado E2EE · proyecto independiente, sin relación con Ray Peat</span><span data-lang="en">BioPeat · free, no account, E2EE · independent project, not affiliated with Ray Peat</span><br><a href="./?empezar=1">App</a> · <a href="#privacidad" data-lang="es">Privacidad</a><a href="#privacidad" data-lang="en">Privacy</a> · <a href="#aviso-legal" data-lang="es">Aviso legal</a><a href="#aviso-legal" data-lang="en">Legal notice</a> · <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a></div></footer>
-<div class="sticky"><a class="btn btn-gold" href="./?empezar=1"><span data-lang="es">Empezar gratis</span><span data-lang="en">Start for free</span></a></div>
+
+<footer>
+  <div class="w footer-inner">
+    <span data-lang="es">BioPeat · gratis, sin cuenta, cifrado E2EE · proyecto independiente, sin relación con Ray Peat</span>
+    <span data-lang="en">BioPeat · free, no account, E2EE · independent project, not affiliated with Ray Peat</span>
+    <div class="footer-links">
+      <a href="./?empezar=1">App</a>
+      <a href="#privacidad" data-lang="es">Privacidad</a><a href="#privacidad" data-lang="en">Privacy</a>
+      <a href="#aviso-legal" data-lang="es">Aviso legal</a><a href="#aviso-legal" data-lang="en">Legal notice</a>
+      <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a>
+    </div>
+  </div>
+</footer>
+
+<div class="sticky">
+  <a class="btn btn-primary" href="./?empezar=1">
+    <span data-lang="es">Empezar gratis</span>
+    <span data-lang="en">Start for free</span>
+  </a>
+</div>
+
 <script>
 (function(){
-  var I={check:'<path d="M20 6L9 17l-5-5"/>',x:'<path d="M18 6L6 18M6 6l12 12"/>',bolt:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',scale:'<path d="M12 3v18M5 7h14M5 7l-3 7a4 4 0 0 0 6 0zM19 7l-3 7a4 4 0 0 0 6 0z"/>',flask:'<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-9V3"/>',cal:'<rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/>',gym:'<path d="M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12"/>',spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',moon:'<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>'};
-  var svg=function(n){return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+I[n]+'</svg>';};
+  var I={
+    check:'<path d="M20 6L9 17l-5-5"/>',
+    x:'<path d="M18 6L6 18M6 6l12 12"/>',
+    bolt:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+    scale:'<path d="M12 3v18M5 7h14M5 7l-3 7a4 4 0 0 0 6 0zM19 7l-3 7a4 4 0 0 0 6 0z"/>',
+    flask:'<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-9V3"/>',
+    cal:'<rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/>',
+    gym:'<path d="M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12"/>',
+    spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
+    sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    moon:'<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>'
+  };
+  var svg=function(n){return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+I[n]+'</svg>';};
   document.querySelectorAll('[data-i]').forEach(function(e){e.innerHTML=svg(e.getAttribute('data-i'));});
   var d=document.documentElement;
-  function setLang(x){d.lang=x;document.querySelectorAll('[data-l]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.l===x));});var ph=document.querySelector('.phone');if(ph)ph.setAttribute('aria-label',x==='en'?'Interactive BioPeat preview':'Vista previa interactiva de BioPeat');var th=document.getElementById('theme');if(th)th.setAttribute('aria-label',x==='en'?'Toggle dark or light theme':'Modo claro u oscuro');try{localStorage.setItem('bp_lang',x);}catch(e){}}
-  function setTheme(t){d.dataset.theme=t;var light=t==='light',en=d.lang==='en';document.getElementById('theme').innerHTML=svg(light?'moon':'sun')+'<span>'+(light?(en?'Dark':'Oscuro'):(en?'Light':'Claro'))+'</span>';document.querySelector('meta[name=theme-color]').setAttribute('content',light?'#f1f5f9':'#0f172a');try{localStorage.setItem('bp_theme',t);}catch(e){}}
+  function setLang(x){
+    d.lang=x;
+    document.querySelectorAll('[data-l]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.l===x));});
+    var ph=document.querySelector('.phone');
+    if(ph)ph.setAttribute('aria-label',x==='en'?'Interactive BioPeat preview':'Vista previa interactiva de BioPeat');
+    var th=document.getElementById('theme');
+    if(th)th.setAttribute('aria-label',x==='en'?'Toggle dark or light theme':'Modo claro u oscuro');
+    try{localStorage.setItem('bp_lang',x);}catch(e){}
+  }
+  function setTheme(t){
+    d.dataset.theme=t;
+    var light=t==='light',en=d.lang==='en';
+    document.getElementById('theme').innerHTML=svg(light?'moon':'sun')+'<span>'+(light?(en?'Dark':'Oscuro'):(en?'Light':'Claro'))+'</span>';
+    document.querySelector('meta[name=theme-color]').setAttribute('content',light?'#f8fafc':'#080e1a');
+    try{localStorage.setItem('bp_theme',t);}catch(e){}
+  }
   document.querySelectorAll('[data-l]').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.l);setTheme(d.dataset.theme);});});
   document.getElementById('theme').addEventListener('click',function(){setTheme(d.dataset.theme==='light'?'dark':'light');});
   setLang(d.lang);setTheme(d.dataset.theme||'dark');
-  document.querySelectorAll('[data-mview]').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      var v=btn.dataset.mview;
-      document.querySelectorAll('[data-mview]').forEach(function(b){b.setAttribute('aria-selected',String(b===btn));});
-      document.querySelectorAll('[data-mpane]').forEach(function(p){p.hidden=p.dataset.mpane!==v;});
+
+  var tabs=[].slice.call(document.querySelectorAll('[data-mview]'));
+  function selectTab(btn){
+    var v=btn.dataset.mview;
+    tabs.forEach(function(b){b.setAttribute('aria-selected',String(b===btn));});
+    document.querySelectorAll('[data-mpane]').forEach(function(p){p.hidden=p.dataset.mpane!==v;});
+  }
+  tabs.forEach(function(btn,idx){
+    btn.addEventListener('click',function(){selectTab(btn);});
+    btn.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'){e.preventDefault();var n=tabs[(idx+1)%tabs.length];selectTab(n);n.focus();}
+      if(e.key==='ArrowLeft'){e.preventDefault();var p=tabs[(idx-1+tabs.length)%tabs.length];selectTab(p);p.focus();}
     });
   });
+
+  var hdr=document.getElementById('siteHeader'),heroStart=document.getElementById('heroStart'),sticky=document.querySelector('.sticky');
+  function onScroll(){if(hdr)hdr.classList.toggle('scrolled',window.scrollY>24);}
+  window.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+  if('IntersectionObserver' in window&&heroStart&&sticky){
+    new IntersectionObserver(function(es){
+      var out=!es[0].isIntersecting&&es[0].boundingClientRect.top<0;
+      sticky.classList.toggle('visible',out);
+    },{threshold:0}).observe(heroStart);
+  }
+
   var deferred=null,ib=document.getElementById('install'),iosBtn=document.getElementById('install-ios'),ua=navigator.userAgent||'';
   if(/iphone|ipad|ipod/i.test(ua)&&!navigator.standalone&&iosBtn)iosBtn.hidden=false;
   addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;ib.hidden=false;});
@@ -377,7 +1452,7 @@ footer{padding:30px 0 110px;border-top:1px solid var(--line);font-size:13px;colo
     try{
       if(!sessionStorage.getItem('bp_lpv')){
         sessionStorage.setItem('bp_lpv','1');
-        fetch('https://biopeat-api.dramirezcp7.workers.dev/api/ping',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({surface:'landing',lang:d.lang,theme:d.dataset.theme||'dark',event:'pageview',ver:'v76'}),credentials:'omit',mode:'cors',keepalive:true}).catch(function(){});
+        fetch('https://biopeat-api.dramirezcp7.workers.dev/api/ping',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({surface:'landing',lang:d.lang,theme:d.dataset.theme||'dark',event:'pageview',ver:'v80'}),credentials:'omit',mode:'cors',keepalive:true}).catch(function(){});
       }
     }catch(e){}
   }
