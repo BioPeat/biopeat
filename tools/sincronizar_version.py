@@ -3,7 +3,7 @@
 #  - «## 6. Qué hace la app (vNN)» con la versión actual.
 #  - «## 10. Historial»: las 8 últimas líneas del «Registro de cambios» de index.html (así lo que haga Gemini o Claude queda apuntado solo).
 import re, pathlib
-idx = pathlib.Path('index.html').read_text(encoding='utf-8')
+idx = (pathlib.Path('assets/app.js') if pathlib.Path('assets/app.js').exists() else pathlib.Path('index.html')).read_text(encoding='utf-8')
 ctx_p = pathlib.Path('CONTEXTO_BIOPEAT.md')
 ctx = ctx_p.read_text(encoding='utf-8')
 v = re.search(r"APP_VERSION\s*=\s*.(v\d+)", idx)

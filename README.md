@@ -1,8 +1,8 @@
 # BioPeat
 
-App de nutrición bioenergética gratuita con enfoque Ray Peat / Georgi Dinkov, en un solo archivo (`index.html`), publicada con GitHub Pages e instalable como PWA en Android, iPhone y ordenador.
+App de nutrición bioenergética gratuita con enfoque Ray Peat / Georgi Dinkov, modularizada (`index.html`, `assets/styles.css`, `assets/data.js`, `assets/app.js`, `assets/i18n-en.js`), publicada con GitHub Pages e instalable como PWA en Android, iPhone y ordenador.
 
-- **Web de presentación:** [inicio.html](inicio.html) (qué es, mockup interactivo de 4 pestañas, instalación inteligente por dispositivo, privacidad RGPD y aviso legal, en español e inglés).
+- **Web de presentación:** [inicio.html](inicio.html) (simulador interactivo + tour automático, instalación universal para Chrome, Brave, Instagram y Safari, privacidad RGPD/CCPA y aviso legal, en español e inglés).
 - **Idiomas:** español e inglés (`I18N_EN` y parser bilingüe `parseSmart` ES/EN + Open Food Facts + escáner de códigos de barras con cámara).
 - **Privacidad y respaldo cifrado E2EE:** los datos se guardan localmente (`localStorage` + espejo automático en `IndexedDB`) y se cifran en el propio dispositivo con **AES-256-GCM** antes de guardarse opcionalmente en nuestra bóveda zero-knowledge (`cloudflare/worker.js` + D1 UE), con recuperación mediante gestor de contraseñas o enlace secreto `#bp-sync=`. Nunca se suben claves de IA.
 - **Sugerencias y estadísticas sin cookies:** llegan automáticamente a Cloudflare D1 mediante `/api/feedback` y `/api/ping`. Se gestionan en el panel privado `/admin` o con Antigravity usando `.agents/skills/revisar-sugerencias/SKILL.md` (y `actualizar.html` enlaza al panel).

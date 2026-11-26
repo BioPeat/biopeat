@@ -9,17 +9,29 @@
 <meta name="theme-color" content="#080e1a">
 <meta property="og:title" content="BioPeat · Tu nutrición al estilo Ray Peat">
 <meta property="og:description" content="Calcio : fósforo, PUFA, hidratos : proteína, temperatura/pulso y 25 micronutrientes con zonas Peat/Dinkov. Gratis, sin cuenta y con respaldo cifrado E2EE.">
-<meta property="og:image" content="icon-512.png?v=80">
-<link rel="icon" href="icon-192.png?v=80">
-<link rel="apple-touch-icon" href="icon-maskable-512.png?v=79">
+<meta property="og:image" content="icon-512.png?v=81">
+<link rel="icon" href="icon-192.png?v=81">
+<link rel="apple-touch-icon" href="icon-maskable-512.png?v=81">
 <link rel="manifest" href="manifest.json">
 <script>
 // Redirección si se abre instalada como PWA; y tema/idioma compartidos con index.html.
 (function(){
   try{if(window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true){location.replace('./?empezar=1');return;}}catch(e){}
-  var d=document.documentElement,t='dark',l='es';
-  try{t=localStorage.getItem('bp_theme')==='light'?'light':'dark';l=localStorage.getItem('bp_lang')||(/^es\b/i.test(navigator.language||'es')?'es':'en');}catch(e){}
-  d.dataset.theme=t;d.lang=l==='en'?'en':'es';
+  var d=document.documentElement,t='dark',l='en';
+  try{
+    var q=new URLSearchParams(location.search),ql=q.get('lang');
+    if(ql==='es'||ql==='en'){l=ql;localStorage.setItem('bp_lang',l);}
+    else{
+      var sl=localStorage.getItem('bp_lang');
+      if(sl==='es'||sl==='en')l=sl;
+      else{
+        var nav=(navigator.languages&&navigator.languages[0])||navigator.language||'en';
+        l=/^es\b/i.test(nav)?'es':'en';
+      }
+    }
+    t=localStorage.getItem('bp_theme')==='light'?'light':'dark';
+  }catch(e){}
+  d.dataset.theme=t;d.lang=l==='es'?'es':'en';
 })();
 </script>
 <style>
@@ -405,6 +417,123 @@ html[data-theme="light"] .bp-logo-svg .bp-rim { stroke: #D97706; stroke-opacity:
   font-weight: 600;
   color: var(--ok);
 }
+
+.inapp-bar {
+  width: min(720px, 100%);
+  margin: 0 auto 18px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--surface-alt);
+  border: 1px solid var(--gold);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: left;
+  font-size: var(--t-sm);
+}
+.demo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+.demo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.demo-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: var(--ok);
+}
+.demo-btn {
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sim-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.sim-chip {
+  min-height: 38px;
+  padding: 6px 12px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: var(--surface-alt);
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sim-chip:hover { border-color: var(--gold); }
+.sim-chip.added { border-color: var(--ok); color: var(--ok); }
+.sim-action {
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: 9px;
+  border: 1px solid var(--gold);
+  background: color-mix(in srgb, var(--gold) 15%, transparent);
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sim-nav {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  margin-top: 4px;
+}
+.sim-nav button {
+  min-height: 36px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sim-nav button[aria-current="true"] {
+  background: var(--surface-alt);
+  color: var(--gold-txt);
+}
+.inst-dlg {
+  width: min(460px, calc(100% - 24px));
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--ink);
+  padding: 20px;
+}
+.inst-dlg::backdrop { background: rgba(4, 8, 17, 0.72); backdrop-filter: blur(4px); }
+.inst-dlg h3 { margin: 0 0 10px; font-size: 1.125rem; }
+.inst-dlg ol { margin: 0 0 16px; padding-left: 20px; color: var(--muted); display: grid; gap: 8px; }
+.inst-dlg b { color: var(--ink); }
+.inst-dlg-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.inst-dlg-close { min-width: 36px; min-height: 36px; border: 1px solid var(--line); border-radius: 8px; background: transparent; cursor: pointer; font-size: 1.1rem; }
 
 .s-pane {
   display: grid;
@@ -944,6 +1073,15 @@ footer {
     </svg>
 
     <div class="w hero-inner">
+      <div class="inapp-bar" id="inapp-bar" hidden>
+        <span data-lang="es">Estás en el navegador de Instagram/red social. Ábrela en Chrome o Safari para instalar la app.</span>
+        <span data-lang="en">You're inside an in-app browser. Open in Chrome or Safari to install the app.</span>
+        <button type="button" class="btn btn-primary" style="min-height:38px;padding:0 14px;font-size:0.85rem" id="inapp-open">
+          <span data-lang="es">Abrir para instalar</span>
+          <span data-lang="en">Open to install</span>
+        </button>
+      </div>
+
       <h1 data-lang="es">Tu nutrición Ray Peat, clara en segundos.</h1>
       <h1 data-lang="en">Ray Peat nutrition, clear in seconds.</h1>
 
@@ -951,29 +1089,30 @@ footer {
       <p class="lead" data-lang="en">Type what you eat or scan a label: BioPeat watches the 5 key balances and 25 micronutrients, free and encrypted on your phone.</p>
 
       <div class="ctas">
-        <a class="btn btn-primary" id="heroStart" href="./?empezar=1">
-          <span data-lang="es">Empezar gratis</span>
-          <span data-lang="en">Start for free</span>
-        </a>
-        <button type="button" class="link-subtle" id="install" hidden>
-          <span data-lang="es">Instalar en el móvil</span>
-          <span data-lang="en">Install app</span>
+        <button type="button" class="btn btn-primary" id="install">
+          <span data-lang="es">Instalar app gratis</span>
+          <span data-lang="en">Install free app</span>
         </button>
-        <a class="link-subtle" id="install-ios" href="./?empezar=1&amp;instalar=ios" hidden>
-          <span data-lang="es">Instalar en iPhone</span>
-          <span data-lang="en">Install on iPhone</span>
+        <a class="link-subtle" id="heroStart" href="./?empezar=1">
+          <span data-lang="es">Probar en el navegador</span>
+          <span data-lang="en">Try in browser</span>
         </a>
       </div>
 
       <div class="stage">
+        <div class="demo-bar">
+          <span class="demo-pill"><span class="demo-dot" id="demo-dot"></span><span id="demo-lbl" data-lang="es">Demo automática · toca cualquier botón para probar</span><span id="demo-lbl-en" data-lang="en">Auto demo · tap anything to try live</span></span>
+          <button type="button" class="demo-btn" id="demo-toggle">⏸</button>
+        </div>
         <div class="s-tabs" role="tablist" aria-label="Vista previa">
           <button type="button" class="s-tab" role="tab" data-mview="today" aria-selected="true"><span data-lang="es">Hoy</span><span data-lang="en">Today</span></button>
+          <button type="button" class="s-tab" role="tab" data-mview="add" aria-selected="false"><span data-lang="es">Añadir</span><span data-lang="en">Add</span></button>
           <button type="button" class="s-tab" role="tab" data-mview="bal" aria-selected="false"><span data-lang="es">Ratios</span><span data-lang="en">Balances</span></button>
           <button type="button" class="s-tab" role="tab" data-mview="micro" aria-selected="false"><span data-lang="es">Micros</span><span data-lang="en">Micros</span></button>
           <button type="button" class="s-tab" role="tab" data-mview="gym" aria-selected="false"><span data-lang="es">Gym</span><span data-lang="en">Gym</span></button>
         </div>
 
-        <div class="phone" aria-label="Vista previa interactiva de BioPeat">
+        <div class="phone" aria-label="Simulador interactivo de BioPeat">
           <div class="screen">
             <div class="s-head">
               <div class="s-head-l">
@@ -1000,34 +1139,39 @@ footer {
                 <span class="s-tip" data-lang="es">Energía del día</span>
                 <span class="s-tip" data-lang="en">Today's energy</span>
                 <div class="s-energy-row">
-                  <b>2.180 <span class="s-tip">kcal</span></b>
-                  <em>78%</em>
+                  <b><span id="sim-kcal">2.180</span> <span class="s-tip">kcal</span></b>
+                  <em id="sim-kcal-pct">78%</em>
                 </div>
-                <div class="s-track"><i></i></div>
+                <div class="s-track"><i id="sim-kcal-bar" style="width:78%"></i></div>
               </div>
               <div class="s-rings">
                 <div class="s-ring">
                   <div class="s-ring-wrap">
-                    <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="40" stroke="#38bdf8" stroke-linecap="round" pathLength="100" stroke-dasharray="84 100"/></svg>
-                    <div class="v">84%</div>
+                    <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="40"/><circle id="sim-c-ring" cx="50" cy="50" r="40" stroke="#38bdf8" stroke-linecap="round" pathLength="100" stroke-dasharray="84 100"/></svg>
+                    <div class="v" id="sim-c-pct">84%</div>
                   </div>
                   <span data-lang="es">Hidratos</span><span data-lang="en">Carbs</span>
                 </div>
                 <div class="s-ring">
                   <div class="s-ring-wrap">
-                    <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="40" stroke="#10b981" stroke-linecap="round" pathLength="100" stroke-dasharray="92 100"/></svg>
-                    <div class="v">92%</div>
+                    <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="40"/><circle id="sim-p-ring" cx="50" cy="50" r="40" stroke="#10b981" stroke-linecap="round" pathLength="100" stroke-dasharray="92 100"/></svg>
+                    <div class="v" id="sim-p-pct">92%</div>
                   </div>
                   <span data-lang="es">Proteína</span><span data-lang="en">Protein</span>
                 </div>
                 <div class="s-ring">
                   <div class="s-ring-wrap">
-                    <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="40" stroke="#fbbf24" stroke-linecap="round" pathLength="100" stroke-dasharray="62 100"/></svg>
-                    <div class="v">62%</div>
+                    <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="40"/><circle id="sim-f-ring" cx="50" cy="50" r="40" stroke="#fbbf24" stroke-linecap="round" pathLength="100" stroke-dasharray="62 100"/></svg>
+                    <div class="v" id="sim-f-pct">62%</div>
                   </div>
                   <span data-lang="es">Grasa</span><span data-lang="en">Fat</span>
                 </div>
               </div>
+              <button type="button" class="sim-action" id="sim-quick-add">
+                <span data-lang="es">+ Añadir 250 ml leche + 15 g miel</span>
+                <span data-lang="en">+ Add 250 ml milk + 15 g honey</span>
+                <b>+200 kcal</b>
+              </button>
               <div class="s-card s-ratio">
                 <div class="r1">
                   <span data-lang="es">Temperatura y pulso</span>
@@ -1035,14 +1179,29 @@ footer {
                   <b data-lang="es">36,8 °C · 79 lpm</b>
                   <b data-lang="en">36.8 °C · 79 bpm</b>
                 </div>
-                <div class="s-tip" data-lang="es">En rango Peat · añade comida en un toque</div>
-                <div class="s-tip" data-lang="en">In Peat range · add meals in one tap</div>
+                <div class="s-tip" data-lang="es">En rango Peat · toca arriba para probar</div>
+                <div class="s-tip" data-lang="en">In Peat range · tap above to try live</div>
               </div>
+            </div>
+
+            <div class="s-pane" data-mpane="add" hidden>
+              <div class="s-card">
+                <span class="s-tip" data-lang="es">Escribe normal («una galleta», «200 ml leche»), sube foto o escanea etiqueta</span>
+                <span class="s-tip" data-lang="en">Type naturally ("1 cookie", "200 ml milk"), snap a photo or scan barcode</span>
+                <div class="sim-chips" style="margin-top:10px">
+                  <button type="button" class="sim-chip" data-sim-food="milk">+ 250 ml leche (153 kcal)</button>
+                  <button type="button" class="sim-chip" data-sim-food="banana">+ 1 plátano (107 kcal)</button>
+                  <button type="button" class="sim-chip" data-sim-food="eggs">+ 2 huevos (170 kcal)</button>
+                  <button type="button" class="sim-chip" data-sim-food="cookie">+ 1 galleta (96 kcal)</button>
+                </div>
+              </div>
+              <div class="s-card s-tip" id="sim-add-log" data-lang="es">Despensa inteligente: recuerda el peso de cada unidad y calcula sin gastar IA.</div>
+              <div class="s-card s-tip" id="sim-add-log-en" data-lang="en">Smart pantry: remembers unit weights and logs instantly without AI calls.</div>
             </div>
 
             <div class="s-pane" data-mpane="bal" hidden>
               <div class="s-card s-ratio">
-                <div class="r1"><span data-lang="es">Calcio : fósforo</span><span data-lang="en">Calcium : phosphorus</span><b>1,34 : 1</b></div>
+                <div class="r1"><span data-lang="es">Calcio : fósforo</span><span data-lang="en">Calcium : phosphorus</span><b id="sim-cap">1,34 : 1</b></div>
                 <div class="s-bar"><i style="left:60%;width:40%;background:#34d39955"></i><i style="left:47%;width:13%;background:#bef26440"></i><b style="left:67%"></b></div>
                 <div class="s-tip" data-lang="es">Meta ≥ 1,2 : 1 · lácteos protegen hueso y PTH</div>
                 <div class="s-tip" data-lang="en">Goal ≥ 1.2 : 1 · dairy protects bone &amp; PTH</div>
@@ -1062,8 +1221,8 @@ footer {
 
             <div class="s-pane" data-mpane="micro" hidden>
               <div class="s-card s-nrow">
-                <div class="s-nrow-top"><span data-lang="es">Calcio (Ca)</span><span data-lang="en">Calcium (Ca)</span><span>2.140 mg · 107%</span></div>
-                <div class="s-track"><i style="width:94%;background:var(--ok)"></i></div>
+                <div class="s-nrow-top"><span data-lang="es">Calcio (Ca)</span><span data-lang="en">Calcium (Ca)</span><span id="sim-ca">2.140 mg · 107%</span></div>
+                <div class="s-track"><i id="sim-ca-bar" style="width:94%;background:var(--ok)"></i></div>
                 <span class="s-tip" data-lang="es">Meta 2.000 mg · Peat/Dinkov</span>
                 <span class="s-tip" data-lang="en">Goal 2,000 mg · Peat/Dinkov</span>
               </div>
@@ -1086,13 +1245,21 @@ footer {
                 <span class="s-tip" data-lang="es">Constancia · 12 semanas</span>
                 <span class="s-tip" data-lang="en">Consistency · 12 weeks</span>
                 <div class="s-energy-row">
-                  <b>42 <span class="s-tip" data-lang="es">series/sem</span><span class="s-tip" data-lang="en">sets/wk</span></b>
+                  <b>42 <span data-lang="es">series/sem</span><span data-lang="en">sets/wk</span></b>
                   <em>Hevy · Strong</em>
                 </div>
                 <div class="s-gym"><i style="height:45%"></i><i style="height:68%"></i><i style="height:60%"></i><i style="height:82%"></i><i style="height:74%"></i><i style="height:95%"></i><i style="height:88%"></i><i style="height:100%"></i></div>
               </div>
-              <div class="s-card s-tip" data-lang="es">Importa Hevy, Strong, Fitbod o FitNotes y compáralo con tu proteína e hidratos reales.</div>
-              <div class="s-card s-tip" data-lang="en">Import Hevy, Strong, Fitbod or FitNotes CSVs and track alongside real carbs &amp; protein.</div>
+              <div class="s-card s-tip" data-lang="es"><b>Resumen IA:</b> Lo que va bien · Qué mejorar · 3 consejos rápidos juntando tus cargas con tu comida.</div>
+              <div class="s-card s-tip" data-lang="en"><b>AI Summary:</b> What's going well · What to improve · 3 quick tips combining lifts and nutrition.</div>
+            </div>
+
+            <div class="sim-nav" aria-hidden="true">
+              <button type="button" data-mview-nav="today" aria-current="true"><span data-lang="es">Hoy</span><span data-lang="en">Today</span></button>
+              <button type="button" data-mview-nav="add"><span data-lang="es">Añadir</span><span data-lang="en">Add</span></button>
+              <button type="button" data-mview-nav="bal"><span data-lang="es">Ratios</span><span data-lang="en">Ratios</span></button>
+              <button type="button" data-mview-nav="micro"><span data-lang="es">Micros</span><span data-lang="en">Micros</span></button>
+              <button type="button" data-mview-nav="gym">Gym</button>
             </div>
           </div>
         </div>
@@ -1318,7 +1485,7 @@ footer {
           <li><b>Estadísticas anónimas sin cookies:</b> registramos contadores agregados diarios sin cookies (Cloudflare Worker UE + GoatCounter). Las IPs nunca se almacenan en base de datos: para contar visitantes únicos diarios usamos un hash criptográfico diario rotado con sal secreta que caduca automáticamente, descartando los registros a los 90 días.</li>
           <li><b>Sugerencias:</b> si envías una mejora voluntaria desde la app, se guarda en D1 (tipo, título, texto, versión, idioma y dispositivo si lo marcas). No pidas ni incluyas datos personales ni médicos.</li>
           <li><b>IA externa y Open Food Facts:</b> solo cuando pides analizar una foto/texto con IA o buscas un código de barras, tu navegador contacta directamente con ese proveedor bajo su propia política.</li>
-          <li><b>Tus derechos:</b> puedes borrar tu bóveda cifrada al instante desde Ajustes, exportar tu JSON completo o escribir a <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a> para retirar una sugerencia o ejercer tus derechos ante la AEPD.</li>
+          <li><b>Tus derechos:</b> puedes borrar tu bóveda cifrada al instante desde Ajustes, exportar tu JSON completo o escribir a <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a> para retirar una sugerencia o ejercer tus derechos ante la AEPD / RGPD / CCPA. Uso recomendado para mayores de 16 años.</li>
         </ul>
       </div>
       <div data-lang="en">
@@ -1329,7 +1496,7 @@ footer {
           <li><b>Cookie-free anonymous metrics:</b> we record aggregate daily counts without cookies or persistent IP storage (EU Cloudflare Worker + GoatCounter). Daily unique counts use a salted cryptographic hash purged automatically after 90 days.</li>
           <li><b>Suggestions:</b> if you submit a voluntary improvement, only what you enter plus optional version/device tag is saved. Do not include personal or medical details.</li>
           <li><b>External AI &amp; Open Food Facts:</b> only contacted directly by your browser when you trigger an AI request or barcode/product lookup.</li>
-          <li><b>Your rights:</b> delete your cloud vault in one tap from Settings, export JSON anytime, or email <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a> regarding any suggestion removal or GDPR request.</li>
+          <li><b>Your rights (GDPR &amp; CCPA/international):</b> we never sell or share personal data. Delete your cloud vault in one tap from Settings, export JSON anytime, or email <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a> regarding any suggestion removal or privacy request. Intended for users aged 16+.</li>
         </ul>
       </div>
     </div>
@@ -1373,11 +1540,19 @@ footer {
 </footer>
 
 <div class="sticky">
-  <a class="btn btn-primary" href="./?empezar=1">
-    <span data-lang="es">Empezar gratis</span>
-    <span data-lang="en">Start for free</span>
-  </a>
+  <button type="button" class="btn btn-primary" id="sticky-install">
+    <span data-lang="es">Instalar app gratis</span>
+    <span data-lang="en">Install free app</span>
+  </button>
 </div>
+
+<dialog class="inst-dlg" id="inst-dlg">
+  <div class="inst-dlg-head">
+    <h3 id="inst-dlg-title">Instalar BioPeat</h3>
+    <button type="button" class="inst-dlg-close" id="inst-dlg-close" aria-label="Cerrar">×</button>
+  </div>
+  <div id="inst-dlg-body"></div>
+</dialog>
 
 <script>
 (function(){
@@ -1397,12 +1572,17 @@ footer {
   document.querySelectorAll('[data-i]').forEach(function(e){e.innerHTML=svg(e.getAttribute('data-i'));});
   var d=document.documentElement;
   function setLang(x){
+    x=x==='es'?'es':'en';
     d.lang=x;
     document.querySelectorAll('[data-l]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.l===x));});
     var ph=document.querySelector('.phone');
-    if(ph)ph.setAttribute('aria-label',x==='en'?'Interactive BioPeat preview':'Vista previa interactiva de BioPeat');
+    if(ph)ph.setAttribute('aria-label',x==='en'?'Interactive BioPeat simulator':'Simulador interactivo de BioPeat');
     var th=document.getElementById('theme');
     if(th)th.setAttribute('aria-label',x==='en'?'Toggle dark or light theme':'Modo claro u oscuro');
+    document.title=x==='en'?'BioPeat · Ray Peat nutrition, clear at a glance':'BioPeat · Tu nutrición al estilo Ray Peat, clara de un vistazo';
+    var md=document.querySelector('meta[name=description]');
+    if(md)md.setAttribute('content',x==='en'?'Log meals, track 25 micronutrients and the 5 Ray Peat balances. Free, private, end-to-end encrypted.':'Apunta lo que comes y mira tus calorías, macros, 25 vitaminas y minerales y los equilibrios de Ray Peat. Gratis, sin cuenta y cifrado.');
+    document.querySelectorAll('a[href^="./?empezar=1"]').forEach(function(a){a.setAttribute('href','./?empezar=1&lang='+x);});
     try{localStorage.setItem('bp_lang',x);}catch(e){}
   }
   function setTheme(t){
@@ -1417,18 +1597,80 @@ footer {
   setLang(d.lang);setTheme(d.dataset.theme||'dark');
 
   var tabs=[].slice.call(document.querySelectorAll('[data-mview]'));
-  function selectTab(btn){
-    var v=btn.dataset.mview;
-    tabs.forEach(function(b){b.setAttribute('aria-selected',String(b===btn));});
+  var navBtns=[].slice.call(document.querySelectorAll('[data-mview-nav]'));
+  var simKcal=2180,simC=84,simP=92,simF=62,simCa=2140,simCap=1.34;
+  function paintSim(){
+    var pct=Math.min(140,Math.round(simKcal/2800*100));
+    document.getElementById('sim-kcal').textContent=simKcal.toLocaleString(d.lang==='en'?'en-GB':'es-ES');
+    document.getElementById('sim-kcal-pct').textContent=pct+'%';
+    document.getElementById('sim-kcal-bar').style.width=Math.min(100,pct)+'%';
+    document.getElementById('sim-c-pct').textContent=simC+'%';
+    document.getElementById('sim-p-pct').textContent=simP+'%';
+    document.getElementById('sim-f-pct').textContent=simF+'%';
+    document.getElementById('sim-c-ring').setAttribute('stroke-dasharray',Math.min(100,simC)+' 100');
+    document.getElementById('sim-p-ring').setAttribute('stroke-dasharray',Math.min(100,simP)+' 100');
+    document.getElementById('sim-f-ring').setAttribute('stroke-dasharray',Math.min(100,simF)+' 100');
+    document.getElementById('sim-cap').textContent=(d.lang==='en'?simCap.toFixed(2):simCap.toFixed(2).replace('.',','))+' : 1';
+    var caPct=Math.round(simCa/2000*100);
+    document.getElementById('sim-ca').textContent=simCa.toLocaleString(d.lang==='en'?'en-GB':'es-ES')+' mg · '+caPct+'%';
+    document.getElementById('sim-ca-bar').style.width=Math.min(100,caPct)+'%';
+  }
+  function addSimFood(kcal,c,p,f,ca,capD,msgEs,msgEn){
+    simKcal+=kcal;simC+=c;simP+=p;simF+=f;simCa+=ca;simCap=Math.min(1.8,simCap+capD);
+    paintSim();
+    var lEs=document.getElementById('sim-add-log'),lEn=document.getElementById('sim-add-log-en');
+    if(lEs&&msgEs)lEs.textContent='✓ '+msgEs+' · Total: '+simKcal.toLocaleString('es-ES')+' kcal';
+    if(lEn&&msgEn)lEn.textContent='✓ '+msgEn+' · Total: '+simKcal.toLocaleString('en-GB')+' kcal';
+  }
+  var demoAuto=true,demoTimer=null;
+  function stopDemo(){
+    if(!demoAuto)return;
+    demoAuto=false;
+    if(demoTimer){clearInterval(demoTimer);demoTimer=null;}
+    var tog=document.getElementById('demo-toggle');if(tog)tog.textContent='▶';
+    var dot=document.getElementById('demo-dot');if(dot)dot.style.background='var(--gold)';
+    var l1=document.getElementById('demo-lbl'),l2=document.getElementById('demo-lbl-en');
+    if(l1)l1.textContent='Modo interactivo · prueba cualquier pantalla';
+    if(l2)l2.textContent='Interactive mode · test any screen';
+  }
+  function selectTab(v){
+    tabs.forEach(function(b){b.setAttribute('aria-selected',String(b.dataset.mview===v));});
+    navBtns.forEach(function(b){b.setAttribute('aria-current',String(b.dataset.mviewNav===v));});
     document.querySelectorAll('[data-mpane]').forEach(function(p){p.hidden=p.dataset.mpane!==v;});
   }
   tabs.forEach(function(btn,idx){
-    btn.addEventListener('click',function(){selectTab(btn);});
+    btn.addEventListener('click',function(){stopDemo();selectTab(btn.dataset.mview);});
     btn.addEventListener('keydown',function(e){
-      if(e.key==='ArrowRight'){e.preventDefault();var n=tabs[(idx+1)%tabs.length];selectTab(n);n.focus();}
-      if(e.key==='ArrowLeft'){e.preventDefault();var p=tabs[(idx-1+tabs.length)%tabs.length];selectTab(p);p.focus();}
+      if(e.key==='ArrowRight'){e.preventDefault();stopDemo();var n=tabs[(idx+1)%tabs.length];selectTab(n.dataset.mview);n.focus();}
+      if(e.key==='ArrowLeft'){e.preventDefault();stopDemo();var p=tabs[(idx-1+tabs.length)%tabs.length];selectTab(p.dataset.mview);p.focus();}
     });
   });
+  navBtns.forEach(function(b){b.addEventListener('click',function(){stopDemo();selectTab(b.dataset.mviewNav);});});
+  document.getElementById('sim-quick-add')?.addEventListener('click',function(){
+    stopDemo();addSimFood(200,8,5,5,300,0.06,'Leche + miel añadidos','Milk + honey logged');
+  });
+  var FOODS_SIM={
+    milk:[153,4,6,5,300,0.06,'250 ml leche entera añadidos','250 ml whole milk logged'],
+    banana:[107,8,1,0,6,0,'1 plátano (120 g) añadido','1 banana (120 g) logged'],
+    eggs:[170,1,9,8,55,0,'2 huevos (110 g) añadidos','2 eggs (110 g) logged'],
+    cookie:[96,4,1,3,10,0,'1 galleta (20 g) añadida','1 cookie (20 g) logged']
+  };
+  document.querySelectorAll('[data-sim-food]').forEach(function(b){
+    b.addEventListener('click',function(){
+      stopDemo();var f=FOODS_SIM[b.dataset.simFood];if(!f)return;
+      b.classList.add('added');addSimFood(f[0],f[1],f[2],f[3],f[4],f[5],f[6],f[7]);
+    });
+  });
+  var demoOrder=['today','add','bal','micro','gym'],demoIdx=0;
+  function startDemo(){
+    demoAuto=true;
+    var tog=document.getElementById('demo-toggle');if(tog)tog.textContent='⏸';
+    var dot=document.getElementById('demo-dot');if(dot)dot.style.background='var(--ok)';
+    if(demoTimer)clearInterval(demoTimer);
+    demoTimer=setInterval(function(){demoIdx=(demoIdx+1)%demoOrder.length;selectTab(demoOrder[demoIdx]);},4200);
+  }
+  document.getElementById('demo-toggle')?.addEventListener('click',function(){if(demoAuto)stopDemo();else startDemo();});
+  startDemo();
 
   var hdr=document.getElementById('siteHeader'),heroStart=document.getElementById('heroStart'),sticky=document.querySelector('.sticky');
   function onScroll(){if(hdr)hdr.classList.toggle('scrolled',window.scrollY>24);}
@@ -1441,10 +1683,43 @@ footer {
     },{threshold:0}).observe(heroStart);
   }
 
-  var deferred=null,ib=document.getElementById('install'),iosBtn=document.getElementById('install-ios'),ua=navigator.userAgent||'';
-  if(/iphone|ipad|ipod/i.test(ua)&&!navigator.standalone&&iosBtn)iosBtn.hidden=false;
-  addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;ib.hidden=false;});
-  ib.addEventListener('click',function(){if(!deferred){location.hash='#instalar';return;}deferred.prompt();deferred.userChoice.finally(function(){deferred=null;ib.hidden=true;});});
+  var deferred=null,ib=document.getElementById('install'),sb=document.getElementById('sticky-install'),ua=navigator.userAgent||'';
+  var isInApp=/Instagram|FBAN|FBAV|FB_IAB|Line|TikTok|BytedanceWebview|wv\b/i.test(ua);
+  var isIOS=/iphone|ipad|ipod/i.test(ua),isAndroid=/android/i.test(ua),isBrave=Boolean(navigator.brave)||/\bBrave\b/i.test(ua);
+  var dlg=document.getElementById('inst-dlg'),dlgT=document.getElementById('inst-dlg-title'),dlgB=document.getElementById('inst-dlg-body');
+  if(isInApp){document.getElementById('inapp-bar').hidden=false;}
+  addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;});
+  function openInstallFlow(){
+    var en=d.lang==='en',appUrl=new URL('./?empezar=1&lang='+(en?'en':'es'),location.href).href;
+    if(deferred){deferred.prompt();deferred.userChoice.finally(function(){deferred=null;});return;}
+    if(isInApp&&isAndroid){
+      location.href='intent://'+appUrl.replace(/^https?:\/\//,'')+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(appUrl)+';end';
+    }
+    if(isInApp){
+      dlgT.textContent=en?'Open outside Instagram / app':'Abrir fuera de Instagram para instalar';
+      dlgB.innerHTML=isIOS
+        ?(en?'<ol><li>Tap <b>⋯</b> (bottom or top right) and pick <b>Open in Safari</b>.</li><li>In Safari tap <b>Share</b> (□↑) → <b>Add to Home Screen</b>.</li></ol>':'<ol><li>Toca <b>⋯</b> (arriba o abajo a la derecha) y elige <b>Abrir en Safari</b>.</li><li>En Safari toca <b>Compartir</b> (□↑) → <b>Añadir a pantalla de inicio</b>.</li></ol>')
+        :(en?'<ol><li>Tap <b>⋮</b> (top right) and pick <b>Open in Chrome</b>.</li><li>Once in Chrome, tap <b>Install app</b>.</li></ol>':'<ol><li>Toca <b>⋮</b> (arriba a la derecha) y elige <b>Abrir en el navegador / Chrome</b>.</li><li>En Chrome pulsa <b>Instalar app</b>.</li></ol>');
+      dlg.showModal();return;
+    }
+    if(isIOS){
+      dlgT.textContent=en?'Install on iPhone / iPad':'Instalar en iPhone / iPad';
+      dlgB.innerHTML=en?'<ol><li>Open this page in <b>Safari</b>.</li><li>Tap <b>Share</b> (□↑) → <b>Add to Home Screen</b>.</li></ol><a class="btn btn-primary" style="width:100%" href="'+appUrl+'">Open app now</a>':'<ol><li>Abre esta web en <b>Safari</b>.</li><li>Toca <b>Compartir</b> (□↑) → <b>Añadir a pantalla de inicio</b>.</li></ol><a class="btn btn-primary" style="width:100%" href="'+appUrl+'">Abrir app ahora</a>';
+      dlg.showModal();return;
+    }
+    if(isBrave){
+      dlgT.textContent=en?'Install on Brave':'Instalar en Brave';
+      dlgB.innerHTML=en?'<ol><li>Tap Brave menu <b>⋮</b> (top or bottom right).</li><li>Tap <b>Add to Home screen</b> → <b>Install</b>.</li></ol><a class="btn btn-primary" style="width:100%" href="'+appUrl+'">Open app</a>':'<ol><li>Toca el menú <b>⋮</b> de Brave (arriba o abajo a la derecha).</li><li>Elige <b>Añadir a la pantalla de inicio</b> → <b>Instalar</b>.</li></ol><a class="btn btn-primary" style="width:100%" href="'+appUrl+'">Abrir app</a>';
+      dlg.showModal();return;
+    }
+    dlgT.textContent=en?'Install BioPeat':'Instalar BioPeat';
+    dlgB.innerHTML=en?'<ol><li>Tap browser menu <b>⋮</b> (Chrome or Edge).</li><li>Tap <b>Install app</b> or <b>Add to Home screen</b>.</li></ol><a class="btn btn-primary" style="width:100%" href="'+appUrl+'">Open app now</a>':'<ol><li>Toca el menú <b>⋮</b> de tu navegador (Chrome o Edge).</li><li>Pulsa <b>Instalar aplicación</b> o <b>Añadir a pantalla de inicio</b>.</li></ol><a class="btn btn-primary" style="width:100%" href="'+appUrl+'">Abrir app ahora</a>';
+    dlg.showModal();
+  }
+  ib.addEventListener('click',openInstallFlow);
+  if(sb)sb.addEventListener('click',openInstallFlow);
+  document.getElementById('inapp-open')?.addEventListener('click',openInstallFlow);
+  document.getElementById('inst-dlg-close')?.addEventListener('click',function(){dlg.close();});
   if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(function(){});
   if(/github\.io$|^biopeat\./.test(location.hostname)){
     var s=document.createElement('script');s.async=true;s.referrerPolicy='no-referrer';s.crossOrigin='anonymous';
@@ -1452,7 +1727,7 @@ footer {
     try{
       if(!sessionStorage.getItem('bp_lpv')){
         sessionStorage.setItem('bp_lpv','1');
-        fetch('https://biopeat-api.dramirezcp7.workers.dev/api/ping',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({surface:'landing',lang:d.lang,theme:d.dataset.theme||'dark',event:'pageview',ver:'v80'}),credentials:'omit',mode:'cors',keepalive:true}).catch(function(){});
+        fetch('https://biopeat-api.dramirezcp7.workers.dev/api/ping',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({surface:'landing',lang:d.lang,theme:d.dataset.theme||'dark',event:'pageview',ver:'v81'}),credentials:'omit',mode:'cors',keepalive:true}).catch(function(){});
       }
     }catch(e){}
   }

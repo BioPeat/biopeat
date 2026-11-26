@@ -635,6 +635,8 @@ export default {
 
     // Admin API
     if (url.pathname.startsWith('/api/admin/')) {
+      const okAdmPre = await checkRateLimit(env, 'admin_pre', ip, 60, 3600);
+      if (!okAdmPre) return jsonResp({ error: 'Too many requests' }, 429, origin);
       if (!(await requireAdmin(request, env))) {
         const okAdm = await checkRateLimit(env, 'admin_fail', ip, 12, 3600);
         if (!okAdm) return jsonResp({ error: 'Too many requests' }, 429, origin);

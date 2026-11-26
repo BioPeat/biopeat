@@ -11,8 +11,8 @@ Lo usan el Gem de Gemini «BioPeat Dev» y el proyecto de Claude «BioPeat Dev»
 6. Con «✅ APROBADO», Diego sube el `index.html` nuevo a GitHub.
 
 ## 1. Archivos del repositorio
-`index.html`, `actualizar.html`, `manifest.json`, `sw.js`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `AGENTS.md`, `CONTEXTO_BIOPEAT.md`, `MAPA_DEL_CODIGO.md`, `README.md`, `tests/smoke.py`, `tests/datos_prueba.json`, `tools/mapa.py`, `tools/sincronizar_version.py`, `.github/workflows/check.yml`. GitHub regenera solo la versión de `CONTEXTO_BIOPEAT.md` y `MAPA_DEL_CODIGO.md` en cada subida: no los edites para eso.
-- Normalmente solo cambias `index.html`. No crees archivos nuevos.
+`index.html`, `inicio.html`, `assets/styles.css`, `assets/data.js`, `assets/app.js`, `assets/i18n-en.js`, `manifest.json`, `sw.js`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `AGENTS.md`, `CONTEXTO_BIOPEAT.md`, `MAPA_DEL_CODIGO.md`, `README.md`, `tests/smoke.py`, `tests/datos_prueba.json`, `tools/mapa.py`, `tools/security_check.py`, `tools/sincronizar_version.py`, `.github/workflows/check.yml`. GitHub regenera solo la versión de `CONTEXTO_BIOPEAT.md` y `MAPA_DEL_CODIGO.md` en cada subida: no los edites para eso.
+- La app usa arquitectura modular (`assets/styles.css`, `assets/data.js`, `assets/app.js`, `assets/i18n-en.js`); `actualizar.html` fue retirado en v81. No crees archivos innecesarios.
 
 ## 2. Cómo editar
 - Entrega los cambios como bloques `@@@ BUSCAR n` / `@@@ CAMBIAR POR` / `@@@ FIN`. El texto de BUSCAR se copia **literalmente** del archivo y debe aparecer **exactamente una vez**. `actualizar.html` rechaza cualquier bloque que no cumpla esto.

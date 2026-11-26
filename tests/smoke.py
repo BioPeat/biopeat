@@ -31,13 +31,20 @@ ALLOWED = {'index.html', 'manifest.json', 'sw.js', 'icon-192.png', 'icon-512.png
            '.github/workflows/check.yml', '.github/dependabot.yml', '.gitignore',
            '.agents/skills/revisar-sugerencias/SKILL.md',
            'cloudflare/schema.sql', 'cloudflare/config.json', 'cloudflare/worker.js',
-           'actualizar.html', 'inicio.html'}
+           'inicio.html', 'assets/styles.css', 'assets/data.js', 'assets/app.js', 'assets/i18n-en.js'}
 
 def static_checks():
     print('1. Comprobaciones del código')
     html = (ROOT / 'index.html').read_text(encoding='utf-8')
-    a = html.index('<script id="app">')
-    page, js = html[:a], html[a:]
+    css_p = ROOT / 'assets' / 'styles.css'
+    data_p = ROOT / 'assets' / 'data.js'
+    app_p = ROOT / 'assets' / 'app.js'
+    i18n_p = ROOT / 'assets' / 'i18n-en.js'
+    if not (css_p.exists() and data_p.exists() and app_p.exists() and i18n_p.exists()):
+        fail('Falta alguno de los archivos modulares en assets/')
+        return
+    js = data_p.read_text(encoding='utf-8') + '\n' + app_p.read_text(encoding='utf-8')
+    page = html
     ids = set(re.findall(r'id="([^"$]+)"', page)) | set(re.findall(r'id="([^"$]+)"', js)) | set(re.findall(r"\.id\s*=\s*'([^']+)'", js))
     used = set(re.findall(r"\$\('([^']+)'\)", js))
     missing = sorted(u for u in used if u not in ids)
@@ -46,9 +53,8 @@ def static_checks():
     dups = sorted({n for n in names if names.count(n) > 1})
     fail('Funciones definidas dos veces: ' + ', '.join(dups)) if dups else ok('Ninguna función duplicada')
     if re.search(r'\balert\(', js): fail('Hay alert(): usa toast()')
-    # Un solo script de la app: nada de bloques añadidos al final ni de funciones «envueltas» (rompió v54).
-    extra = [m for m in re.findall(r'<script([^>]*)>([\s\S]*?)</script>', html) if len(m[1]) > 400 and 'id="app"' not in m[0] and 'biopeat-seed' not in m[0]]
-    fail('Hay otro <script> con código además de <script id="app">: intégralo en el principal') if extra else ok('Un solo script de la app')
+    extra = [m for m in re.findall(r'<script([^>]*)>([\s\S]*?)</script>', html) if len(m[1]) > 800 and 'id="app"' not in m[0] and 'biopeat-seed' not in m[0]]
+    fail('Hay script inline grande en index.html: muévelo a assets/') if extra else ok('Arquitectura modular limpia')
     reas = sorted({n for n in set(names) if re.search(r'(?<![\w$.])(?:window\.)?' + re.escape(n) + r'\s*=\s*(?:async\s+)?(?:function\b|\([^)]*\)\s*=>)', js)})
     fail('Funciones reasignadas (parches): ' + ', '.join(reas) + '. Cambia la función original en su sitio') if reas else ok('Ninguna función reasignada')
     if re.search(r'window\.\$\s*=', js): fail('No reasignes window.$')
@@ -605,6 +611,54 @@ async def browser_checks():
             if errs:
                 bad += 1; fail(f'Botón «{info}» provoca error: {errs[0][:200]}'); errs.clear()
         ok(f'{n} botones pulsados sin errores') if not bad else None
+
+        print('8. Comprobaciones v81 (despensa por unidades, topbar, inicio.html, inglés automático)')
+        # 8a. Despensa por unidades: «una galleta príncipe» NO debe guardar 1 g
+        await load(FIXTURE.read_text(encoding='utf-8'))
+        await ev("""(()=>{state.foods['ai_galleta_principe']=cleanFood('ai_galleta_principe',{name:'Galleta Príncipe (una unidad)',unit:'g',basis:100,source:'IA',keywords:['galleta principe'],nutrients:{kcal:480,p:6,c:68,f:20}});$('smart-input').value='una galleta principe';})()""")
+        await ev("$('smart-add').click()")
+        await pg.wait_for_timeout(150)
+        unit_modal = await ev("$('modal').open && !!$('unit-w-val')")
+        if unit_modal:
+            await ev("$('unit-w-val').value='20'; $('unit-w-form').requestSubmit()")
+            await pg.wait_for_timeout(150)
+            added_g = await ev("day().entries.filter(e=>e.foodId==='ai_galleta_principe').at(-1)?.amount")
+            ok('Despensa por unidades pide peso (20 g) y no guarda 1 g') if added_g == 20 else fail(f'Despensa por unidades guardó {added_g} g')
+        else:
+            fail('No abrió el modal de peso por unidad para «una galleta principe»')
+
+        # 8b. Barra superior fija al hacer scroll
+        await ev("window.scrollTo(0, 700)")
+        await pg.wait_for_timeout(150)
+        top_ok = await ev("(()=>{syncDatePill();return !$('bp-topbar').hidden && $('bp-topbar').getBoundingClientRect().height>=44;})()")
+        ok('Barra superior fija visible al hacer scroll') if top_ok else fail('Barra superior fija no aparece al hacer scroll')
+
+        # 8c. inicio.html en navegador normal + simulador + Instagram UA
+        inicio_url = f'http://127.0.0.1:{port}/inicio.html'
+        ig_ctx = await b.new_context(viewport={'width': 400, 'height': 850}, user_agent='Mozilla/5.0 (Linux; Android 14) Instagram 310.0.0.0')
+        ig_pg = await ig_ctx.new_page()
+        ig_errs = []
+        ig_pg.on('pageerror', lambda e: ig_errs.append(str(e)))
+        await ig_pg.goto(inicio_url, wait_until='load')
+        ig_info = await ig_pg.evaluate("""(()=>{
+            const ib=document.getElementById('install'), bar=document.getElementById('inapp-bar');
+            const k0=document.getElementById('sim-kcal')?.textContent;
+            document.getElementById('sim-quick-add')?.click();
+            const k1=document.getElementById('sim-kcal')?.textContent;
+            return {instVisible: !ib.hidden, inappVisible: !bar.hidden, k0, k1};
+        })()""")
+        ok('inicio.html: instalar visible, aviso Instagram y simulador vivo') if ig_info['instVisible'] and ig_info['inappVisible'] and ig_info['k0'] != ig_info['k1'] and not ig_errs else fail(f'inicio.html fallo: {ig_info} {ig_errs}')
+        await ig_ctx.close()
+
+        # 8d. Idioma automático en inglés para países no hispanohablantes
+        en_ctx = await b.new_context(viewport={'width': 400, 'height': 850}, locale='en-US')
+        en_pg = await en_ctx.new_page()
+        await en_pg.goto(url, wait_until='load')
+        await en_pg.wait_for_function("document.body.dataset.ready==='true'")
+        en_lang = await en_pg.evaluate("({lang:document.documentElement.lang, dict:Object.keys(window.I18N_EN||{}).length})")
+        ok('Idioma automático en inglés fuera de países hispanohablantes') if en_lang['lang'] == 'en' and en_lang['dict'] > 100 else fail(f'Auto-inglés falló: {en_lang}')
+        await en_ctx.close()
+
         await b.close()
 
 async def main():

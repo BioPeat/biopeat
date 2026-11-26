@@ -6,13 +6,15 @@ import re
 from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 html = (ROOT / 'index.html').read_text(encoding='utf-8')
-lines = html.split('\n')
-ver = re.search(r"APP_VERSION='(v\d+)'", html).group(1)
-rev = re.search(r"APP_REVISION=(\d+)", html).group(1)
-start = next(i for i, l in enumerate(lines) if '<script id="app">' in l)
+app_p = ROOT / 'assets' / 'app.js'
+js_src = app_p.read_text(encoding='utf-8') if app_p.exists() else html
+lines = js_src.split('\n')
+ver = re.search(r"APP_VERSION='(v\d+)'", js_src).group(1)
+rev = re.search(r"APP_REVISION=(\d+)", js_src).group(1)
+start = 0 if app_p.exists() else next(i for i, l in enumerate(lines) if '<script id="app">' in l)
 out = [f'# MAPA DEL CÓDIGO · BioPeat {ver} (revisión de datos {rev})', '',
        'Generado con `python tools/mapa.py`. No lo edites a mano. Las líneas son orientativas: busca siempre por nombre.', '',
-       f'`index.html` ({len(html)//1024} KB): CSS (`<style>`) y HTML de las secciones en las líneas 1-{start}; todo el JavaScript en `<script id="app">` (desde la línea {start+1}).', '',
+       f'Arquitectura modular: `index.html` ({len(html)//1024} KB), `assets/styles.css`, `assets/data.js`, `assets/app.js` ({len(js_src)//1024} KB) y `assets/i18n-en.js`.', '',
        '## Secciones de la página (id)', '']
 for m in re.finditer(r'<section([^>]*)>', html):
     a = m.group(1)

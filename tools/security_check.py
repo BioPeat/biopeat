@@ -41,9 +41,14 @@ def main():
         ROOT / "index.html",
         ROOT / "inicio.html",
         ROOT / "sw.js",
+        ROOT / "assets" / "data.js",
+        ROOT / "assets" / "app.js",
+        ROOT / "assets" / "i18n-en.js",
         ROOT / "cloudflare" / "worker.js",
     ]
     for p in code_files:
+        if not p.exists():
+            continue
         txt = p.read_text(encoding="utf-8")
         if re.search(r"(?<![.\w$])eval\s*\(", txt):
             fail(f"{p.name}: contiene eval()")
@@ -54,9 +59,9 @@ def main():
     ok("Sin eval(), new Function() ni document.write()")
 
     # 3. Aislamiento de claves IA y clave de respaldo en storableState / portable
-    idx = (ROOT / "index.html").read_text(encoding="utf-8")
+    idx = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
     m_st = re.search(r"function storableState\(\)\{[\s\S]*?\n\}", idx)
-    m_pt = re.search(r"function portable\(\)\{[\s\S]*?\n\}", idx)
+    m_pt = re.search(r"(?:async\s+)?function portable\(\)\{[\s\S]*?\n\}", idx)
     m_cb = re.search(r"function buildCloudBundle\(\)\{[\s\S]*?\n\}", idx)
     for fn_name, m in (("storableState", m_st), ("portable", m_pt), ("buildCloudBundle", m_cb)):
         if not m:
