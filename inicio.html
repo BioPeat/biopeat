@@ -1727,7 +1727,7 @@ footer {
     try{
       if(!sessionStorage.getItem('bp_lpv')){
         sessionStorage.setItem('bp_lpv','1');
-        fetch('https://biopeat-api.dramirezcp7.workers.dev/api/ping',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({surface:'landing',lang:d.lang,theme:d.dataset.theme||'dark',event:'pageview',ver:'v81'}),credentials:'omit',mode:'cors',keepalive:true}).catch(function(){});
+        fetch('https://biopeat-api.dramirezcp7.workers.dev/api/ping',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({surface:'landing',lang:d.lang,theme:d.dataset.theme||'dark',event:'pageview',ver:'v82'}),credentials:'omit',mode:'cors',keepalive:true}).catch(function(){});
       }
     }catch(e){}
   }

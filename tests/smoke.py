@@ -651,10 +651,10 @@ async def browser_checks():
         await ig_ctx.close()
 
         # 8d. Idioma automático en inglés para países no hispanohablantes
-        en_ctx = await b.new_context(viewport={'width': 400, 'height': 850}, locale='en-US')
+        en_ctx = await b.new_context(viewport={'width': 400, 'height': 850}, locale='en-US', bypass_csp=True)
         en_pg = await en_ctx.new_page()
         await en_pg.goto(url, wait_until='load')
-        await en_pg.wait_for_function("document.body.dataset.ready==='true'")
+        await en_pg.wait_for_function("() => document.body.dataset.ready==='true'")
         en_lang = await en_pg.evaluate("({lang:document.documentElement.lang, dict:Object.keys(window.I18N_EN||{}).length})")
         ok('Idioma automático en inglés fuera de países hispanohablantes') if en_lang['lang'] == 'en' and en_lang['dict'] > 100 else fail(f'Auto-inglés falló: {en_lang}')
         await en_ctx.close()
