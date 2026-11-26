@@ -627,11 +627,11 @@ async def browser_checks():
         else:
             fail('No abrió el modal de peso por unidad para «una galleta principe»')
 
-        # 8b. Barra superior fija al hacer scroll
+        # 8b. Controles flotantes al hacer scroll (logo, tema arriba-derecha, gym flotante)
         await ev("window.scrollTo(0, 700)")
         await pg.wait_for_timeout(150)
-        top_ok = await ev("(()=>{syncDatePill();return !$('bp-topbar').hidden && $('bp-topbar').getBoundingClientRect().height>=44;})()")
-        ok('Barra superior fija visible al hacer scroll') if top_ok else fail('Barra superior fija no aparece al hacer scroll')
+        top_ok = await ev("(()=>{syncDatePill();return $('bp-menu-btn').classList.contains('scrolled') && !$('bp-top-theme').hidden && $('bp-top-theme').getBoundingClientRect().right>320 && $('gym-access').getBoundingClientRect().width>=40;})()")
+        ok('Controles flotantes visibles al hacer scroll') if top_ok else fail('Controles flotantes no aparecen al hacer scroll')
 
         # 8c. inicio.html en navegador normal + simulador + Instagram UA
         inicio_url = f'http://127.0.0.1:{port}/inicio.html'
