@@ -14,6 +14,7 @@
  Metas del día: SIEMPRE con targetFor(fecha) / dayGoal(). Nunca guardar metas calculadas dentro de cada día.
  Migraciones: upgradeToNN(s,o) se ejecuta UNA vez: comprobar (Number(o.appRevision)||0)<NN y subir APP_REVISION.
  Registro de cambios (una línea por versión, la más nueva arriba; detalle en CONTEXTO_BIOPEAT.md):
+   v85 · Antigravity · Pantalla de arranque animada mejorada: siempre sobre fondo negro desde el primer fotograma (CSS crítico inline y precarga del icono), visible ~0,9 s con entrada y pulso dorado del logo + marca BioPeat antes de desvanecerse suavemente hacia la app.
    v84 · Antigravity + Claude · Fluidez (propuestas Copilot adaptadas a arquitectura modular): pantalla de arranque animada (#bp-splash) en modo claro/oscuro, content-visibility ampliado a todas las secciones fuera de pantalla, guardado asíncrono tras pintar (queueSave/flushQueuedSave) con protección en cierre y segundo plano, respuesta táctil inmediata con animaciones suaves y comprobación de versión sin caché en sw.js.
    v83 · Antigravity · Botones flotantes arrastrables de menú (logo semitransparente) y gimnasio, botón flotante semitransparente de modo claro/oscuro arriba a la derecha al hacer scroll, corrección de solape en porcentajes de macros y mismos 3 anillos compactos en Modo resumen.
    v82 · Antigravity · Restaurado «Foto en tu chat» en Añadir, rediseño above-the-fold de Hoy (cabecera y fecha compactas, sin banner redundante si hay nube, anillos limpios), botón de Gimnasio integrado en barra superior sin solapar contenido, importador CSV plegado tras importar, content-visibility CSS, eliminación de código muerto y memoización de Gimnasio.
@@ -141,7 +142,7 @@ function optLine(k,goal,unit){
   return 'Meta '+fmt(z.goal,2)+u+src;
 }
 function optRefHTML(k,goal,unit){const z=optInfo(k,goal);return '<p class="progress-note"><b>'+esc(optLine(k,goal,unit))+'.</b> '+esc(z.ref)+'</p>';}
-const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v84', APP_REVISION=27, CLOUD_API='https://biopeat-api.dramirezcp7.workers.dev';
+const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v85', APP_REVISION=27, CLOUD_API='https://biopeat-api.dramirezcp7.workers.dev';
 let LANG=(()=>{if(window.__BP_INIT_LANG__==='es'||window.__BP_INIT_LANG__==='en')return window.__BP_INIT_LANG__;try{const l=localStorage.getItem('bp_lang');if(l==='es'||l==='en')return l;}catch(e){}const nav=(navigator.languages&&navigator.languages[0])||navigator.language||'en';return /^es\b/i.test(nav)?'es':'en';})();
 const LOC=()=>LANG==='en'?'en-GB':'es-ES';
 const $=id=>document.getElementById(id), own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k), clone=x=>JSON.parse(JSON.stringify(x));
@@ -1049,9 +1050,9 @@ async function portable(){
   doc.querySelector('#ai-pill')?.removeAttribute('data-tested');
   try{
     const [cssTxt,dataTxt,appTxt]=await Promise.all([
-      fetch('assets/styles.css?v=84').then(r=>r.ok?r.text():'').catch(()=>''),
-      fetch('assets/data.js?v=84').then(r=>r.ok?r.text():'').catch(()=>''),
-      fetch('assets/app.js?v=84').then(r=>r.ok?r.text():'').catch(()=>'')
+      fetch('assets/styles.css?v=85').then(r=>r.ok?r.text():'').catch(()=>''),
+      fetch('assets/data.js?v=85').then(r=>r.ok?r.text():'').catch(()=>''),
+      fetch('assets/app.js?v=85').then(r=>r.ok?r.text():'').catch(()=>'')
     ]);
     if(cssTxt){const lk=doc.querySelector('link[href*="assets/styles.css"]');if(lk){const st=document.createElement('style');st.id='app-style';st.textContent=cssTxt;lk.replaceWith(st);}}
     if(dataTxt&&appTxt){
@@ -2205,6 +2206,7 @@ $('import-json').onchange=async e=>{const file=e.target.files[0];if(!file)return
   let recOk=false;
   if(!raw&&!seed&&!moveCode&&!syncCode&&!getSyncKey()){recOk=await trySilentPassMgrRecovery();if(recOk)state.v54.onboardingDone=true;}
   document.body.dataset.ready='true';
+  {const left=Math.max(0,900-(Date.now()-(window.__BP_T0||Date.now())));setTimeout(()=>{document.body.dataset.splashDone='true';},left);}
   if(moveCode)setTimeout(()=>attempt(()=>checkMove(moveCode)),80);
   else if(syncCode)setTimeout(()=>attempt(()=>applySyncKey(syncCode,{confirmed:false})),80);
   else{
@@ -5479,7 +5481,7 @@ function loadEnDict(){
   if(enDictPromise)return enDictPromise;
   enDictPromise=new Promise(res=>{
     const s=document.createElement('script');
-    s.src='assets/i18n-en.js?v=84';
+    s.src='assets/i18n-en.js?v=85';
     s.onload=()=>{if(window.I18N_EN)Object.assign(I18N_EN,window.I18N_EN);trLowMap=null;res();};
     s.onerror=()=>res();
     document.head.appendChild(s);

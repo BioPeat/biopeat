@@ -1,17 +1,17 @@
 // BioPeat · service worker v12 (Stale-While-Revalidate).
 // Responde al instante desde caché (<50 ms) y actualiza los archivos en segundo plano cuando hay red.
-const CACHE = 'biopeat-v15';
+const CACHE = 'biopeat-v16';
 const PRECACHE = [
   './',
   'index.html',
   'inicio.html',
   'manifest.json',
-  'assets/styles.css?v=84',
-  'assets/data.js?v=84',
-  'assets/app.js?v=84',
-  'icon-192.png?v=84',
-  'icon-512.png?v=84',
-  'icon-maskable-512.png?v=84'
+  'assets/styles.css?v=85',
+  'assets/data.js?v=85',
+  'assets/app.js?v=85',
+  'icon-192.png?v=85',
+  'icon-512.png?v=85',
+  'icon-maskable-512.png?v=85'
 ];
 
 self.addEventListener('install', e => {
