@@ -6452,13 +6452,7 @@ body.bp-light .bp-top-theme{background:rgba(255,255,255,.88)!important;color:#b4
 .ring-label{font-size:16px!important;line-height:1!important;letter-spacing:-.03em!important}
 .ring-over[stroke-dasharray^="0 "]{display:none!important}
 #exercise .section-heading{background:transparent!important;border:0!important;padding:0!important;box-shadow:none!important}
-/* v84-v85: fluidez y pantalla de arranque negra visible desde el primer fotograma */
-#bp-splash{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;pointer-events:none;background:radial-gradient(circle at 50% 42%,#2a1c08 0,#0b101b 42%,#05080f 78%);transition:opacity .38s ease,transform .38s ease,visibility 0s linear .38s}
-#bp-splash .bp-splash-in{display:grid;justify-items:center;gap:14px}
-#bp-splash img{width:104px;height:104px;border-radius:26px;box-shadow:0 0 0 1px #e9bf5c44,0 14px 48px #e9bf5c48}
-#bp-splash .bp-splash-name{font:700 18px/1 system-ui,-apple-system,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#f6dc9a}
-body[data-splash-done="true"] #bp-splash{opacity:0;transform:scale(1.04);visibility:hidden}
-body[data-splash-done="true"] #bp-splash,body[data-splash-done="true"] #bp-splash *{animation:none!important}
+/* v86: fluidez pura sin splash artificial (content-visibility, toque inmediato y micro-transiciones en overlays) */
 main>#view-add,main>#view-log,main>#view-micros,main>#view-supplements,main>#weekly,main>#exercise,main>#view-settings{content-visibility:auto;overflow-clip-margin:48px}
 main>#view-add{contain-intrinsic-size:auto 1350px}
 main>#view-log{contain-intrinsic-size:auto 2800px}
@@ -6470,24 +6464,12 @@ main>#view-settings{contain-intrinsic-size:auto 1750px}
 :where(button,[role="button"]){touch-action:manipulation}
 button:not(.btn):not(:disabled):active,.nav-item:active{opacity:.78}
 @media (prefers-reduced-motion:no-preference){
-  #bp-splash img{animation:bpSplashIn .58s cubic-bezier(.16,1,.3,1) both,bpSplashPulse .75s ease-in-out .58s 2 alternate}
-  #bp-splash .bp-splash-name{animation:bpSplashTxt .48s cubic-bezier(.16,1,.3,1) .16s both}
-  #bp-splash{animation:bpSplashSafe .35s linear 5s forwards}
-  body[data-splash-done="true"] .container>header.card{animation:bpRise .42s cubic-bezier(.2,.8,.2,1) backwards}
-  body[data-splash-done="true"] main>#view-today{animation:bpRise .46s cubic-bezier(.2,.8,.2,1) .05s backwards}
-  body[data-splash-done="true"] .bottom-nav{animation:bpNavIn .5s cubic-bezier(.2,.8,.2,1) .1s backwards}
   .toast:not([hidden]){animation:bpToast .24s cubic-bezier(.2,.8,.2,1) backwards}
   .bp-drawer:not([hidden]){animation:bpDrawer .26s cubic-bezier(.2,.8,.2,1) backwards}
   .bp-drawer-backdrop:not([hidden]){animation:bpFade .22s ease backwards}
   .bp-acc[open]>.bp-acc-body,.bp-sub-acc[open]>.bp-sub-body{animation:bpFade .2s ease backwards}
   .update-bar{animation:bpToast .3s cubic-bezier(.2,.8,.2,1) backwards}
 }
-@keyframes bpSplashPulse{from{scale:1;filter:drop-shadow(0 0 10px #e9bf5c33)}to{scale:1.05;filter:drop-shadow(0 0 22px #e9bf5c77)}}
-@keyframes bpSplashIn{from{opacity:0;scale:.72;filter:brightness(.7)}to{opacity:1;scale:1;filter:brightness(1)}}
-@keyframes bpSplashTxt{from{opacity:0;translate:0 10px}to{opacity:.95;translate:0 0}}
-@keyframes bpSplashSafe{to{opacity:0;visibility:hidden}}
-@keyframes bpRise{from{opacity:0;translate:0 10px}to{opacity:1;translate:0 0}}
-@keyframes bpNavIn{from{opacity:0;translate:0 18px}to{opacity:1;translate:0 0}}
 @keyframes bpToast{from{opacity:0;translate:0 12px}to{opacity:1;translate:0 0}}
 @keyframes bpDrawer{from{opacity:.3;translate:-28px 0}to{opacity:1;translate:0 0}}
 @keyframes bpFade{from{opacity:0}to{opacity:1}}

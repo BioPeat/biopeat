@@ -1,8 +1,8 @@
-# MAPA DEL CÓDIGO · BioPeat v85 (revisión de datos 27)
+# MAPA DEL CÓDIGO · BioPeat v86 (revisión de datos 27)
 
 Generado con `python tools/mapa.py`. No lo edites a mano. Las líneas son orientativas: busca siempre por nombre.
 
-Arquitectura modular: `index.html` (66 KB), `assets/styles.css`, `assets/data.js`, `assets/app.js` (513 KB) y `assets/i18n-en.js`.
+Arquitectura modular: `index.html` (65 KB), `assets/styles.css`, `assets/data.js`, `assets/app.js` (514 KB) y `assets/i18n-en.js`.
 
 ## Secciones de la página (id)
 
@@ -19,182 +19,182 @@ Arquitectura modular: `index.html` (66 KB), `assets/styles.css`, `assets/data.js
 
 ## JavaScript: bloques y funciones (en orden)
 
-- L74 constante `REF_MAP` — Valores de referencia USDA FoodData Central por 100 g (aprox.). Revisa tu etiqueta si difiere.
-- L75 constante `REF_CACHE`
-- L77 `ensureRefIndex()`
-- L84 `refNutrients(id)`
-- L92 constante `STRIP_PREP_RE`
-- L93 `findRef(text,strict=false)`
-- L116 `refCatalogCompact()`
-- L117 `fromRef(id,amount,meal,note='',srcText='')`
-- L122 `optInfo(k,goal)`
-- L129 `optState(k,v,goal)` — Estado de un valor frente a su zona: 'none' | 'low' | 'ok' | 'high' | 'ref'
-- L137 `optLine(k,goal,unit)`
-- L144 `optRefHTML(k,goal,unit)`
-- L145 constante `FAF`
-- L147 constante `LOC`
-- L151 `number(v,min=0,max=1e6)`
-- L157 `decimalInputs(root=document)`
-- L158 `localDate(d=new Date()`
-- L159 `validDate(s)`
-- L164 `shift(s,n)`
-- L172 `stripProto(o)`
-- L179 `cleanBio(b)`
-- L188 constante `CONTEXT` — Contexto libre de cada perfil (lo escribe el usuario en sus notas). Vacío por defecto.
-- L190 constante `GOAL_TYPES` — Ajustes de perfil por defecto (se usan ya en defaults(), por eso van aquí arriba). Detalle en «Perfiles: sexo, objetivo…».
-- L196 constante `DAY_TYPES`
-- L197 constante `NEW_V54`
-- L201 `defaults()` — Usuario nuevo: sin pauta, sin desayuno ni batido fijos y sin alimentos de marca; el asistente lo configura.
-- L204 `bmr(w=state.profile.weight)` — Mifflin-St Jeor: +5 en hombre, -161 en mujer.
-- L210 `targetFor(d)` — Prioridad: 1) ajuste manual de ese día (state.days[d].macroGoals) 2) metas globales (targetMode all/split) 3) plan por defecto.
-- L235 `cleanNutrients(o,required=false)`
-- L247 `cleanEntry(e)`
-- L252 `cleanPlan(p)`
-- L256 `planEntry(p)`
-- L265 `seedPlan(d,whichDate)`
-- L269 `ensureDay(d=date)`
-- L276 `effectiveEntries(d=day()`
-- L277 constante `SALTED_IDS`
-- L278 constante `SWEET_RE`
-- L279 `inferFatShares(e,txt=normalize((e?.name||'')`
-- L297 `inferredNutrients(e)`
-- L339 `totals(entries)`
-- L351 `change(fn,message='Guardado')`
-- L357 `afterPaint(fn)`
-- L358 `queueSave(idle=false)`
-- L365 `flushQueuedSave(hard=false)`
-- L370 `undo()`
-- L378 `toast(text,canUndo=false)`
-- L386 constante `CLICK_HANDLERS` — Un solo listener de clic para toda la página; cada sección registra su manejador con onClick().
-- L387 `onClick(fn)`
-- L389 `attempt(fn)`
-- L393 `modal(title,body)`
-- L402 `modalRestore()`
-- L412 `afterModal(fn)` — Cierra la ventana y espera a que el historial se asiente antes de desplazar la página.
-- L413 `modalBack()`
-- L414 `goDate(d)`
-- L421 `renderHeader()`
-- L434 `renderRows(entries)`
-- L438 `entryValues(e)`
-- L439 `renderLog()`
-- L446 `fromFood(id,amount,meal)`
-- L452 `pantryId(name)`
-- L454 `rememberFood(e)` — Guarda en Mi despensa (por 100 g) un plato analizado por la IA, para reconocerlo después sin IA.
-- L473 `addEntries(entries,message='Añadido',d=date,opts={})`
-- L482 `recipe(kind)`
-- L489 `summary(entries)`
-- L493 `renderPresetInfo()`
-- L506 `stripCode(raw)`
-- L512 `sanitizeNutrients(o,grams=100,fallbackRefId='')`
-- L539 `parseBIO(raw,meal=$('meal-select')`
-- L551 `parseSmart(raw)`
-- L555 constante `COUNT`
-- L556 constante `UNIT_RE`
-- L620 `offToNutrients(nut={},fallbackName='')` — Open Food Facts (gratis, sin clave, CORS nativo): consulta por código de barras o texto.
-- L641 `lookupOFFBarcode(code,signal,ms=3200)`
-- L657 `searchOFF(query,signal,ms=4500)`
-- L676 `openProductSearch()`
-- L715 `nutrientFields(n,prefix='n_')`
-- L716 `readNutrients(form,prefix='n_')`
-- L721 `editEntry(id)`
-- L730 `editFood(id,pending=null)`
-- L735 `usageStats(days=90)`
-- L743 `renderFoods(forceList=false)`
-- L755 `nutrientSources(key)`
-- L762 constante `SUPP_SLOTS` — Tu pauta de hoy: checklist por momento del día. Marcar = toma confirmada; desmarcar = vuelve a prevista.
-- L763 `suppSlot(meal)`
-- L764 `renderSupps()`
-- L779 `editPlan(id)`
-- L786 `renderSettings()`
+- L75 constante `REF_MAP` — Valores de referencia USDA FoodData Central por 100 g (aprox.). Revisa tu etiqueta si difiere.
+- L76 constante `REF_CACHE`
+- L78 `ensureRefIndex()`
+- L85 `refNutrients(id)`
+- L93 constante `STRIP_PREP_RE`
+- L94 `findRef(text,strict=false)`
+- L117 `refCatalogCompact()`
+- L118 `fromRef(id,amount,meal,note='',srcText='')`
+- L123 `optInfo(k,goal)`
+- L130 `optState(k,v,goal)` — Estado de un valor frente a su zona: 'none' | 'low' | 'ok' | 'high' | 'ref'
+- L138 `optLine(k,goal,unit)`
+- L145 `optRefHTML(k,goal,unit)`
+- L146 constante `FAF`
+- L148 constante `LOC`
+- L152 `number(v,min=0,max=1e6)`
+- L158 `decimalInputs(root=document)`
+- L159 `localDate(d=new Date()`
+- L160 `validDate(s)`
+- L165 `shift(s,n)`
+- L173 `stripProto(o)`
+- L180 `cleanBio(b)`
+- L189 constante `CONTEXT` — Contexto libre de cada perfil (lo escribe el usuario en sus notas). Vacío por defecto.
+- L191 constante `GOAL_TYPES` — Ajustes de perfil por defecto (se usan ya en defaults(), por eso van aquí arriba). Detalle en «Perfiles: sexo, objetivo…».
+- L197 constante `DAY_TYPES`
+- L198 constante `NEW_V54`
+- L202 `defaults()` — Usuario nuevo: sin pauta, sin desayuno ni batido fijos y sin alimentos de marca; el asistente lo configura.
+- L205 `bmr(w=state.profile.weight)` — Mifflin-St Jeor: +5 en hombre, -161 en mujer.
+- L211 `targetFor(d)` — Prioridad: 1) ajuste manual de ese día (state.days[d].macroGoals) 2) metas globales (targetMode all/split) 3) plan por defecto.
+- L236 `cleanNutrients(o,required=false)`
+- L248 `cleanEntry(e)`
+- L253 `cleanPlan(p)`
+- L257 `planEntry(p)`
+- L266 `seedPlan(d,whichDate)`
+- L270 `ensureDay(d=date)`
+- L277 `effectiveEntries(d=day()`
+- L278 constante `SALTED_IDS`
+- L279 constante `SWEET_RE`
+- L280 `inferFatShares(e,txt=normalize((e?.name||'')`
+- L298 `inferredNutrients(e)`
+- L340 `totals(entries)`
+- L352 `change(fn,message='Guardado')`
+- L358 `afterPaint(fn)`
+- L359 `queueSave(idle=false)`
+- L366 `flushQueuedSave(hard=false)`
+- L371 `undo()`
+- L379 `toast(text,canUndo=false)`
+- L387 constante `CLICK_HANDLERS` — Un solo listener de clic para toda la página; cada sección registra su manejador con onClick().
+- L388 `onClick(fn)`
+- L390 `attempt(fn)`
+- L394 `modal(title,body)`
+- L403 `modalRestore()`
+- L413 `afterModal(fn)` — Cierra la ventana y espera a que el historial se asiente antes de desplazar la página.
+- L414 `modalBack()`
+- L415 `goDate(d)`
+- L422 `renderHeader()`
+- L435 `renderRows(entries)`
+- L439 `entryValues(e)`
+- L440 `renderLog()`
+- L447 `fromFood(id,amount,meal)`
+- L453 `pantryId(name)`
+- L455 `rememberFood(e)` — Guarda en Mi despensa (por 100 g) un plato analizado por la IA, para reconocerlo después sin IA.
+- L474 `addEntries(entries,message='Añadido',d=date,opts={})`
+- L483 `recipe(kind)`
+- L490 `summary(entries)`
+- L494 `renderPresetInfo()`
+- L507 `stripCode(raw)`
+- L513 `sanitizeNutrients(o,grams=100,fallbackRefId='')`
+- L540 `parseBIO(raw,meal=$('meal-select')`
+- L552 `parseSmart(raw)`
+- L556 constante `COUNT`
+- L557 constante `UNIT_RE`
+- L621 `offToNutrients(nut={},fallbackName='')` — Open Food Facts (gratis, sin clave, CORS nativo): consulta por código de barras o texto.
+- L642 `lookupOFFBarcode(code,signal,ms=3200)`
+- L658 `searchOFF(query,signal,ms=4500)`
+- L677 `openProductSearch()`
+- L716 `nutrientFields(n,prefix='n_')`
+- L717 `readNutrients(form,prefix='n_')`
+- L722 `editEntry(id)`
+- L731 `editFood(id,pending=null)`
+- L736 `usageStats(days=90)`
+- L744 `renderFoods(forceList=false)`
+- L756 `nutrientSources(key)`
+- L763 constante `SUPP_SLOTS` — Tu pauta de hoy: checklist por momento del día. Marcar = toma confirmada; desmarcar = vuelve a prevista.
+- L764 `suppSlot(meal)`
+- L765 `renderSupps()`
+- L780 `editPlan(id)`
+- L787 `renderSettings()`
 
 ### IA y fotos: prompt BIOPEAT (ración completa; lo desconocido queda null, nunca 0)
 
-- L807 `makePrompt(meal='Comida',note='')`
-- L812 `pantryHint()` — Prompt específico de FOTO: un objeto por ingrediente, con tamaño estimado por referencias y tu despensa como base.
-- L816 `pantryCompact()`
-- L820 constante `MEAL_AI_SCHEMA`
-- L861 `mealSystemPrompt(usePhoto)`
-- L877 `hydrateAIItems(rawItems,fallback,usePhoto,aiModel,signal)`
-- L926 `photoPrompt(meal,note)`
-- L929 `resetPhoto()`
-- L940 `openPhoto()`
-- L946 `shrinkPhoto(file)`
-- L949 `selectPhoto(file)`
+- L808 `makePrompt(meal='Comida',note='')`
+- L813 `pantryHint()` — Prompt específico de FOTO: un objeto por ingrediente, con tamaño estimado por referencias y tu despensa como base.
+- L817 `pantryCompact()`
+- L821 constante `MEAL_AI_SCHEMA`
+- L862 `mealSystemPrompt(usePhoto)`
+- L878 `hydrateAIItems(rawItems,fallback,usePhoto,aiModel,signal)`
+- L927 `photoPrompt(meal,note)`
+- L930 `resetPhoto()`
+- L941 `openPhoto()`
+- L947 `shrinkPhoto(file)`
+- L950 `selectPhoto(file)`
 
 ### Datos: validación, migración de copias antiguas, almacenamiento y copias
 
-- L975 `cleanDayGoals(g)` — Valida un ajuste manual de macros de un día: {p,f} y opcionalmente kcal.
-- L982 `cleanFood(id,f)`
-- L989 `migrateBase(o)`
-- L1009 `download(name,text,type)`
-- L1018 `portable()`
-- L1072 `syncAppIcons()`
-- L1080 `downloadAppIcons()`
-- L1117 constante `PROFILES_KEY`
-- L1119 `ensureProfilesStore()`
-- L1139 `resetProfileSessionUI()`
-- L1146 `saveProfilesStore(st)`
-- L1155 `syncCurrentProfileToStore(snapObj=null,immediate=true)`
-- L1166 `activeProfileName()`
-- L1170 `renderProfilesList()`
-- L1212 `switchProfile(id)`
-- L1234 `deleteProfileById(id)`
-- L1259 `refreshDrawerSummary()`
-- L1276 `toggleLeftDrawer(force)`
-- L1291 `buildAIExportText(rangeOverride)`
-- L1546 `copyAIExport()`
-- L1560 `downloadAIExport()`
-- L1569 `renderDrawerChat()`
-- L1588 `buildDrawerChatContext()`
-- L1627 `buildDrawerChatPrompt(question)`
-- L1639 `askDrawerAI(rawQuestion)`
-- L1728 constante `CLOUD_OFF_KEY`
-- L1739 `bytesToB64(u8)`
-- L1740 `b64ToBytes(s)`
-- L1741 `bytesToB64Url(u8)`
-- L1742 `sha256Hex(str)`
-- L1743 `sha256Bytes(str)`
-- L1744 `generateSyncKey()`
-- L1745 `ensureSyncKey()`
-- L1746 `mirrorSyncKey(k)`
-- L1747 `deriveSyncCreds(keyStr)`
-- L1753 `hasMeaningfulData()`
-- L1760 `buildCloudBundle()`
-- L1767 `encryptVaultPayload(obj,keyStr)`
-- L1775 `readDecompressedText(bytes,maxBytes=10*1024*1024)`
-- L1791 `decryptVaultPayload(resp,keyStr)`
-- L1803 `bundleHash(bundle)`
-- L1807 `applyCloudBundle(o,rev=1)`
-- L1817 `cloudPull(keyStr,opts={})`
-- L1837 `cloudPush(opts={})`
-- L1874 `scheduleCloudPush()`
-- L1880 `scheduleAutoCloudPull(delayMs=120)`
-- L1894 `saveSyncToPassMgr()`
-- L1901 `trySilentPassMgrRecovery()`
-- L1911 `extractSyncKeyInput(val)`
-- L1917 `applySyncKey(rawKey,opts={})`
-- L1938 `takeSyncCode()`
-- L1949 `renderCloudStatus()`
-- L1972 `buildMagicSyncUrl()`
-- L1979 `openMagicSyncModal()`
-- L1988 `shareMagicSyncLink()`
-- L1995 `copyMagicSyncLink()`
-- L2000 `openCloudLinkModal()`
-- L2003 `deleteCloudBackup(confirmed=false)`
-- L2040 `mirrorToIDB(raw,profRaw)`
-- L2043 `storageStatus()`
-- L2050 `idbReadWrite(mode,value,key='current')`
-- L2051 `openDB()`
-- L2053 `flushDeferredSave()`
-- L2064 `save(skipCloud=false)`
+- L976 `cleanDayGoals(g)` — Valida un ajuste manual de macros de un día: {p,f} y opcionalmente kcal.
+- L983 `cleanFood(id,f)`
+- L990 `migrateBase(o)`
+- L1010 `download(name,text,type)`
+- L1019 `portable()`
+- L1073 `syncAppIcons()`
+- L1081 `downloadAppIcons()`
+- L1118 constante `PROFILES_KEY`
+- L1120 `ensureProfilesStore()`
+- L1140 `resetProfileSessionUI()`
+- L1147 `saveProfilesStore(st)`
+- L1156 `syncCurrentProfileToStore(snapObj=null,immediate=true)`
+- L1167 `activeProfileName()`
+- L1171 `renderProfilesList()`
+- L1213 `switchProfile(id)`
+- L1235 `deleteProfileById(id)`
+- L1260 `refreshDrawerSummary()`
+- L1277 `toggleLeftDrawer(force)`
+- L1292 `buildAIExportText(rangeOverride)`
+- L1547 `copyAIExport()`
+- L1561 `downloadAIExport()`
+- L1570 `renderDrawerChat()`
+- L1589 `buildDrawerChatContext()`
+- L1628 `buildDrawerChatPrompt(question)`
+- L1640 `askDrawerAI(rawQuestion)`
+- L1729 constante `CLOUD_OFF_KEY`
+- L1740 `bytesToB64(u8)`
+- L1741 `b64ToBytes(s)`
+- L1742 `bytesToB64Url(u8)`
+- L1743 `sha256Hex(str)`
+- L1744 `sha256Bytes(str)`
+- L1745 `generateSyncKey()`
+- L1746 `ensureSyncKey()`
+- L1747 `mirrorSyncKey(k)`
+- L1748 `deriveSyncCreds(keyStr)`
+- L1754 `hasMeaningfulData()`
+- L1761 `buildCloudBundle()`
+- L1768 `encryptVaultPayload(obj,keyStr)`
+- L1776 `readDecompressedText(bytes,maxBytes=10*1024*1024)`
+- L1792 `decryptVaultPayload(resp,keyStr)`
+- L1804 `bundleHash(bundle)`
+- L1808 `applyCloudBundle(o,rev=1)`
+- L1818 `cloudPull(keyStr,opts={})`
+- L1838 `cloudPush(opts={})`
+- L1875 `scheduleCloudPush()`
+- L1881 `scheduleAutoCloudPull(delayMs=120)`
+- L1895 `saveSyncToPassMgr()`
+- L1902 `trySilentPassMgrRecovery()`
+- L1912 `extractSyncKeyInput(val)`
+- L1918 `applySyncKey(rawKey,opts={})`
+- L1939 `takeSyncCode()`
+- L1950 `renderCloudStatus()`
+- L1973 `buildMagicSyncUrl()`
+- L1980 `openMagicSyncModal()`
+- L1989 `shareMagicSyncLink()`
+- L1996 `copyMagicSyncLink()`
+- L2001 `openCloudLinkModal()`
+- L2004 `deleteCloudBackup(confirmed=false)`
+- L2041 `mirrorToIDB(raw,profRaw)`
+- L2044 `storageStatus()`
+- L2051 `idbReadWrite(mode,value,key='current')`
+- L2052 `openDB()`
+- L2054 `flushDeferredSave()`
+- L2065 `save(skipCloud=false)`
 
 ### Eventos generales: añadir con un toque, editar, eliminar
 
-- L2093 `setQuantity(id,value,msg='Cantidad actualizada')`
-- L2097 `niceStep(v)`
-- L2098 `stepQuantity(id,dir)`
-- L2152 `renderAppInfo(force=false)`
-- L2184 `init()`
+- L2094 `setQuantity(id,value,msg='Cantidad actualizada')`
+- L2098 `niceStep(v)`
+- L2099 `stepQuantity(id,dir)`
+- L2153 `renderAppInfo(force=false)`
+- L2185 `init()`
 - L2221 `upgradeTo11(s,o)` — Revisión 11 (antigua): solo marca la revisión. La corrección de la pauta de entonces ya está en los datos.
 
 ### Navegación: una sola página; la barra inferior solo desplaza
