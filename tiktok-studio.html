@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; media-src 'self' blob:; connect-src 'self' https://biopeat-api.dramirezcp7.workers.dev; object-src 'none'; base-uri 'self'; form-action 'self';">
+<title>BioPeat Studio · Share Videos to TikTok</title>
+<meta name="description" content="Connect your TikTok account and publish educational nutrition videos directly to TikTok with BioPeat Studio.">
+<link rel="icon" href="icon-192.png?v=83">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+:root{
+  --bg:#09090b;--card:#111114;--surf:#17171b;--ink:#f4f4f5;--mut:#a1a1aa;
+  --line:#27272a;--gold:#e9bf5c;--ok:#34d399;--warn:#fbbf24;--bad:#fb7185;
+  --cta-bg:#f4f4f5;--cta-ink:#09090b;color-scheme:dark;
+}
+html[data-theme="light"]{
+  --bg:#f6f5f1;--card:#ffffff;--surf:#f1efe9;--ink:#111114;--mut:#52525b;
+  --line:#e4e4e7;--gold:#b45309;--ok:#059669;--warn:#d97706;--bad:#e11d48;
+  --cta-bg:#111114;--cta-ink:#ffffff;color-scheme:light;
+}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--gold)}
+.wrap{width:min(920px,calc(100% - 32px));margin:0 auto;padding:20px 0 64px}
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:800;font-size:18px}
+.brand img{width:30px;height:30px;border-radius:8px}
+nav{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:16px}
+h1{margin:0 0 6px;font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.02em}
+h2{margin:0 0 12px;font-size:1.15rem}
+.mut{color:var(--mut);font-size:0.9rem}
+.btn{min-height:42px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:var(--surf);color:var(--ink);font-weight:700;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn-pri{background:var(--cta-bg);color:var(--cta-ink);border-color:var(--cta-bg)}
+.btn-pri:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.field{margin-bottom:14px}
+.field label.lbl{display:block;font-weight:600;font-size:13.5px;margin-bottom:6px}
+input[type="text"],select,input[type="file"]{width:100%;background:var(--surf);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;font-size:14px}
+.chk-list{display:flex;flex-wrap:wrap;gap:16px}
+.chk{display:inline-flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.chk input:disabled+span{opacity:.45;cursor:not-allowed}
+.switch-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:var(--surf);border:1px solid var(--line);border-radius:10px}
+.notice{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surf);font-size:13.5px;margin-top:8px}
+.notice.warn{border-color:var(--warn);color:var(--warn)}
+.notice.bad{border-color:var(--bad);color:var(--bad)}
+.notice.ok{border-color:var(--ok);color:var(--ok)}
+.creator-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.creator-id{display:flex;align-items:center;gap:12px}
+.creator-id img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:1px solid var(--line)}
+.grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start}
+@media(max-width:740px){.grid2{grid-template-columns:1fr}}
+video{width:100%;max-height:360px;border-radius:10px;background:#000;border:1px solid var(--line)}
+.vid-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.vid-item{background:var(--surf);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:13px}
+.vid-item img{width:100%;aspect-ratio:9/16;max-height:180px;object-fit:cover;border-radius:8px;margin-bottom:8px;background:#000}
+footer{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:13.5px;color:var(--mut)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="brand" href="inicio.html">
+      <img src="icon-192.png?v=83" alt="BioPeat Studio">
+      <span>BioPeat Studio</span>
+    </a>
+    <nav>
+      <a href="inicio.html">Home</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+    </nav>
+  </header>
+
+  <section class="card">
+    <h1>BioPeat Studio · TikTok Direct Post</h1>
+    <p class="mut">Connect your TikTok creator account with Login Kit and publish educational nutrition videos directly to TikTok.</p>
+
+    <div id="auth-disconnected">
+      <button type="button" class="btn btn-pri" id="btn-connect">Continue with TikTok</button>
+      <div id="config-msg" class="notice warn" hidden></div>
+    </div>
+
+    <div id="auth-connected" class="creator-bar" hidden>
+      <div class="creator-id">
+        <img id="creator-avatar" src="icon-192.png?v=83" alt="Creator avatar">
+        <div>
+          <strong id="creator-name">@creator</strong>
+          <div class="mut" id="creator-meta">Loading creator publishing limits…</div>
+        </div>
+      </div>
+      <div class="row">
+        <button type="button" class="btn" id="btn-refresh">Refresh</button>
+        <button type="button" class="btn" id="btn-disconnect">Disconnect</button>
+      </div>
+    </div>
+    <div id="auth-status" class="notice" hidden></div>
+  </section>
+
+  <section class="card" id="publish-card" hidden>
+    <h2>Publish Video to TikTok</h2>
+    <div id="creator-blocked" class="notice bad" hidden></div>
+
+    <div class="grid2">
+      <div>
+        <div class="field">
+          <label class="lbl" for="video-file">Select video (.mp4 / .mov)</label>
+          <input type="file" id="video-file" accept="video/mp4,video/quicktime,.mp4,.mov">
+          <div id="video-duration-msg" class="mut" style="margin-top:4px"></div>
+        </div>
+
+        <div class="field">
+          <label class="lbl" for="post-title">Title / Caption</label>
+          <input type="text" id="post-title" maxlength="150" placeholder="Write a title for your TikTok video…">
+        </div>
+
+        <div class="field">
+          <label class="lbl" for="privacy-select">Privacy Status *</label>
+          <select id="privacy-select" required>
+            <option value="" disabled selected>Select privacy status…</option>
+          </select>
+          <div id="privacy-hint" class="notice warn" hidden></div>
+        </div>
+
+        <div class="field">
+          <span class="lbl">Allow users to</span>
+          <div class="chk-list">
+            <label class="chk"><input type="checkbox" id="allow-comment"><span>Comment</span></label>
+            <label class="chk"><input type="checkbox" id="allow-duet"><span>Duet</span></label>
+            <label class="chk"><input type="checkbox" id="allow-stitch"><span>Stitch</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="switch-row">
+            <div>
+              <strong>Disclose video content</strong>
+              <div class="mut">Turn on to disclose if this video promotes yourself, a third party, or both.</div>
+            </div>
+            <input type="checkbox" id="disclosure-toggle" aria-label="Disclose video content">
+          </div>
+          <div id="disclosure-options" style="margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:10px" hidden>
+            <div class="chk-list">
+              <label class="chk"><input type="checkbox" id="disc-brand"><span>Your brand</span></label>
+              <label class="chk"><input type="checkbox" id="disc-branded"><span>Branded content</span></label>
+            </div>
+            <div id="disclosure-prompt" class="notice" hidden></div>
+          </div>
+        </div>
+
+        <p class="mut" id="consent-text">
+          By posting, you agree to TikTok's <a href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en" target="_blank" rel="noopener">Music Usage Confirmation</a>.
+        </p>
+
+        <div class="row">
+          <button type="button" class="btn btn-pri" id="btn-publish" disabled>Publish to TikTok</button>
+        </div>
+        <div id="publish-status" class="notice" hidden></div>
+      </div>
+
+      <div>
+        <video id="video-preview" controls playsinline hidden></video>
+        <div id="preview-placeholder" class="notice">Video preview will appear here after selecting a file.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="videos-card" hidden>
+    <div class="row" style="justify-content:space-between;margin-bottom:12px">
+      <h2 style="margin:0">Recent TikTok Videos</h2>
+      <button type="button" class="btn" id="btn-load-videos">Reload list</button>
+    </div>
+    <div id="videos-list" class="vid-list"></div>
+  </section>
+
+  <footer>
+    <span>BioPeat Studio · <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a></span>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a href="inicio.html">Home</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  const API = 'https://biopeat-api.dramirezcp7.workers.dev';
+  const REDIRECT_URI = 'https://biopeat.github.io/biopeat/tiktok-studio.html';
+  const SCOPES = 'user.info.basic,video.publish,video.upload,video.list';
+  const PRIV_LABELS = {
+    PUBLIC_TO_EVERYONE: 'Everyone (Public)',
+    MUTUAL_FOLLOW_FRIENDS: 'Friends (Mutual followers)',
+    FOLLOWER_OF_CREATOR: 'Followers',
+    SELF_ONLY: 'Only me (Private)'
+  };
+
+  let clientKey = '';
+  let creatorInfo = null;
+  let selectedFile = null;
+  let selectedDuration = 0;
+  let previewObjUrl = null;
+
+  const $ = id => document.getElementById(id);
+  const getToken = () => sessionStorage.getItem('bp_tt_token') || '';
+  const setToken = t => { if (t) sessionStorage.setItem('bp_tt_token', t); else sessionStorage.removeItem('bp_tt_token'); };
+
+  function showNotice(el, msg, cls) {
+    el.textContent = msg;
+    el.className = 'notice' + (cls ? ' ' + cls : '');
+    el.hidden = !msg;
+  }
+
+  function b64url(bytes) {
+    let s = '';
+    for (let i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  async function pkcePair() {
+    const arr = new Uint8Array(32);
+    crypto.getRandomValues(arr);
+    const verifier = b64url(arr);
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier));
+    const challenge = b64url(new Uint8Array(digest));
+    return { verifier, challenge };
+  }
+
+  async function loadConfig() {
+    try {
+      const r = await fetch(API + '/api/tiktok/config');
+      const d = await r.json();
+      clientKey = d.client_key || '';
+      if (!d.configured || !clientKey) {
+        showNotice($('config-msg'), 'TikTok OAuth client is not configured yet on the Worker.', 'warn');
+        $('btn-connect').disabled = true;
+      }
+    } catch (e) {
+      showNotice($('config-msg'), 'Could not reach BioPeat API config: ' + e.message, 'bad');
+    }
+  }
+
+  async function handleCallback() {
+    const qs = new URLSearchParams(location.search);
+    const code = qs.get('code');
+    const err = qs.get('error');
+    if (err) {
+      showNotice($('auth-status'), 'TikTok authorization error: ' + (qs.get('error_description') || err), 'bad');
+      history.replaceState({}, '', location.pathname);
+      return;
+    }
+    if (!code) return;
+    const verifier = sessionStorage.getItem('bp_tt_verifier') || '';
+    sessionStorage.removeItem('bp_tt_verifier');
+    history.replaceState({}, '', location.pathname);
+    if (!verifier) {
+      showNotice($('auth-status'), 'Missing PKCE verifier in session. Please click Continue with TikTok again.', 'bad');
+      return;
+    }
+    showNotice($('auth-status'), 'Completing TikTok sign-in…', '');
+    const r = await fetch(API + '/api/tiktok/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, redirect_uri: REDIRECT_URI, code_verifier: verifier })
+    });
+    const d = await r.json();
+    if (!d.access_token) {
+      showNotice($('auth-status'), 'Token exchange failed: ' + JSON.stringify(d.error || d), 'bad');
+      return;
+    }
+    setToken(d.access_token);
+    showNotice($('auth-status'), '', '');
+  }
+
+  async function startLogin() {
+    if (!clientKey) return;
+    const { verifier, challenge } = await pkcePair();
+    const state = b64url(crypto.getRandomValues(new Uint8Array(12)));
+    sessionStorage.setItem('bp_tt_verifier', verifier);
+    const params = new URLSearchParams({
+      client_key: clientKey,
+      response_type: 'code',
+      scope: SCOPES,
+      redirect_uri: REDIRECT_URI,
+      state,
+      code_challenge: challenge,
+      code_challenge_method: 'S256'
+    });
+    location.href = 'https://www.tiktok.com/v2/auth/authorize/?' + params.toString();
+  }
+
+  async function apiPost(path, body) {
+    const tok = getToken();
+    const r = await fetch(API + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tok },
+      body: JSON.stringify(body || {})
+    });
+    return r.json();
+  }
+
+  function applyCreatorInfo(info, user) {
+    creatorInfo = info || {};
+    const name = creatorInfo.creator_nickname || user.display_name || user.username || 'TikTok Creator';
+    const handle = creatorInfo.creator_username ? '@' + creatorInfo.creator_username : '';
+    $('creator-name').textContent = handle ? `${name} (${handle})` : name;
+    if (creatorInfo.creator_avatar_url || user.avatar_url) {
+      $('creator-avatar').src = creatorInfo.creator_avatar_url || user.avatar_url;
+    }
+    const maxSec = Number(creatorInfo.max_video_post_duration_sec || 0);
+    $('creator-meta').textContent = maxSec ? `Max video duration: ${maxSec}s` : 'Connected';
+
+    const sel = $('privacy-select');
+    sel.innerHTML = '<option value="" disabled selected>Select privacy status…</option>';
+    const opts = Array.isArray(creatorInfo.privacy_level_options) ? creatorInfo.privacy_level_options : [];
+    for (const opt of opts) {
+      const o = document.createElement('option');
+      o.value = opt;
+      o.textContent = PRIV_LABELS[opt] || opt;
+      sel.appendChild(o);
+    }
+
+    $('allow-comment').checked = false;
+    $('allow-duet').checked = false;
+    $('allow-stitch').checked = false;
+    $('allow-comment').disabled = Boolean(creatorInfo.comment_disabled);
+    $('allow-duet').disabled = Boolean(creatorInfo.duet_disabled);
+    $('allow-stitch').disabled = Boolean(creatorInfo.stitch_disabled);
+
+    if (creatorInfo.can_post === false) {
+      showNotice($('creator-blocked'), 'You have reached your TikTok posting limit right now. Please try again later.', 'bad');
+    } else {
+      showNotice($('creator-blocked'), '', '');
+    }
+    updateFormState();
+  }
+
+  function updateFormState() {
+    const discOn = $('disclosure-toggle').checked;
+    $('disclosure-options').hidden = !discOn;
+    const brand = $('disc-brand').checked;
+    const branded = $('disc-branded').checked;
+
+    const sel = $('privacy-select');
+    const selfOpt = Array.from(sel.options).find(o => o.value === 'SELF_ONLY');
+    if (selfOpt) {
+      selfOpt.disabled = discOn && branded;
+      if (discOn && branded && sel.value === 'SELF_ONLY') {
+        sel.value = '';
+        showNotice($('privacy-hint'), 'Branded content visibility cannot be set to private.', 'warn');
+      } else if (!(discOn && branded)) {
+        showNotice($('privacy-hint'), '', '');
+      }
+    }
+
+    const promptEl = $('disclosure-prompt');
+    if (discOn) {
+      if (brand && branded) {
+        showNotice(promptEl, "Your video will be labeled as 'Paid partnership'", '');
+      } else if (branded) {
+        showNotice(promptEl, "Your video will be labeled as 'Paid partnership'", '');
+      } else if (brand) {
+        showNotice(promptEl, "Your video will be labeled as 'Promotional content'", '');
+      } else {
+        showNotice(promptEl, 'You need to indicate if your content promotes yourself, a third party, or both.', 'warn');
+      }
+    } else {
+      showNotice(promptEl, '', '');
+    }
+
+    const consentEl = $('consent-text');
+    if (discOn && branded) {
+      consentEl.innerHTML = 'By posting, you agree to TikTok\'s <a href="https://www.tiktok.com/legal/page/global/bc-policy/en" target="_blank" rel="noopener">Branded Content Policy</a> and <a href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en" target="_blank" rel="noopener">Music Usage Confirmation</a>.';
+    } else {
+      consentEl.innerHTML = 'By posting, you agree to TikTok\'s <a href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en" target="_blank" rel="noopener">Music Usage Confirmation</a>.';
+    }
+
+    const maxSec = Number((creatorInfo && creatorInfo.max_video_post_duration_sec) || 0);
+    const durOk = !selectedFile || !maxSec || !selectedDuration || selectedDuration <= maxSec;
+    const canPost = !creatorInfo || creatorInfo.can_post !== false;
+    const discOk = !discOn || brand || branded;
+    const privOk = Boolean(sel.value);
+    const titleOk = Boolean($('post-title').value.trim());
+
+    $('btn-publish').disabled = !(selectedFile && durOk && canPost && discOk && privOk && titleOk);
+  }
+
+  async function loadVideos() {
+    const listEl = $('videos-list');
+    listEl.innerHTML = '<div class="mut">Loading recent videos…</div>';
+    const d = await apiPost('/api/tiktok/video-list', { max_count: 6 });
+    const vids = (d.data && d.data.videos) || [];
+    if (!vids.length) {
+      listEl.innerHTML = '<div class="mut">No recent videos returned yet.</div>';
+      return;
+    }
+    listEl.innerHTML = '';
+    for (const v of vids) {
+      const card = document.createElement('div');
+      card.className = 'vid-item';
+      if (v.cover_image_url) {
+        const img = document.createElement('img');
+        img.src = v.cover_image_url;
+        img.alt = v.title || 'TikTok video';
+        card.appendChild(img);
+      }
+      const title = document.createElement('div');
+      title.textContent = (v.title || 'Untitled video').slice(0, 80);
+      card.appendChild(title);
+      listEl.appendChild(card);
+    }
+  }
+
+  async function loadSession() {
+    const tok = getToken();
+    if (!tok) {
+      $('auth-disconnected').hidden = false;
+      $('auth-connected').hidden = true;
+      $('publish-card').hidden = true;
+      $('videos-card').hidden = true;
+      return;
+    }
+    $('auth-disconnected').hidden = true;
+    $('auth-connected').hidden = false;
+    $('publish-card').hidden = false;
+    $('videos-card').hidden = false;
+
+    const [uRes, cRes] = await Promise.all([
+      apiPost('/api/tiktok/user-info', {}),
+      apiPost('/api/tiktok/creator-info', {})
+    ]);
+    if (cRes.error && cRes.error.code && cRes.error.code !== 'ok') {
+      showNotice($('auth-status'), 'Creator info error: ' + (cRes.error.message || cRes.error.code), 'bad');
+    } else {
+      showNotice($('auth-status'), '', '');
+    }
+    const user = (uRes.data && uRes.data.user) || {};
+    applyCreatorInfo(cRes.data || {}, user);
+    loadVideos().catch(() => {});
+  }
+
+  async function publishVideo() {
+    if (!selectedFile) return;
+    $('btn-publish').disabled = true;
+    const st = $('publish-status');
+    showNotice(st, 'Initializing Direct Post upload…', '');
+
+    const discOn = $('disclosure-toggle').checked;
+    const postInfo = {
+      title: $('post-title').value.trim().slice(0, 150),
+      privacy_level: $('privacy-select').value,
+      disable_comment: !$('allow-comment').checked,
+      disable_duet: !$('allow-duet').checked,
+      disable_stitch: !$('allow-stitch').checked
+    };
+    if (discOn) {
+      postInfo.brand_content_toggle = $('disc-branded').checked;
+      postInfo.brand_organic_toggle = $('disc-brand').checked;
+    }
+
+    const size = selectedFile.size;
+    const init = await apiPost('/api/tiktok/publish-init', {
+      post_info: postInfo,
+      source_info: { source: 'FILE_UPLOAD', video_size: size, chunk_size: size, total_chunk_count: 1 }
+    });
+    if (!init.data || !init.data.upload_url) {
+      showNotice(st, 'Publish init failed: ' + JSON.stringify(init.error || init), 'bad');
+      updateFormState();
+      return;
+    }
+
+    showNotice(st, 'Uploading video bytes to TikTok…', '');
+    const putResp = await fetch(API + '/api/tiktok/upload', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': selectedFile.type || 'video/mp4',
+        'Content-Range': `bytes 0-${size - 1}/${size}`,
+        'X-TikTok-Upload-Url': init.data.upload_url
+      },
+      body: selectedFile
+    });
+    if (!putResp.ok) {
+      showNotice(st, 'Upload failed (HTTP ' + putResp.status + ')', 'bad');
+      updateFormState();
+      return;
+    }
+
+    const pubId = init.data.publish_id;
+    showNotice(st, 'Processing on TikTok… After publishing, it may take a few minutes for your video to process and appear on your TikTok profile.', 'ok');
+    if (pubId) {
+      for (let i = 0; i < 8; i++) {
+        await new Promise(r => setTimeout(r, 2500));
+        const s = await apiPost('/api/tiktok/publish-status', { publish_id: pubId });
+        const sv = s.data && s.data.status;
+        if (sv === 'PUBLISH_COMPLETE') {
+          showNotice(st, 'Published! Status: PUBLISH_COMPLETE. After publishing, it may take a few minutes for your video to process and appear on your TikTok profile.', 'ok');
+          break;
+        }
+        if (sv === 'FAILED') {
+          showNotice(st, 'TikTok processing failed: ' + JSON.stringify(s.data), 'bad');
+          break;
+        }
+      }
+    }
+    updateFormState();
+  }
+
+  $('btn-connect').addEventListener('click', startLogin);
+  $('btn-disconnect').addEventListener('click', () => { setToken(''); loadSession(); });
+  $('btn-refresh').addEventListener('click', loadSession);
+  $('btn-load-videos').addEventListener('click', loadVideos);
+  $('btn-publish').addEventListener('click', publishVideo);
+
+  ['post-title', 'privacy-select', 'disclosure-toggle', 'disc-brand', 'disc-branded'].forEach(id => {
+    $(id).addEventListener('input', updateFormState);
+    $(id).addEventListener('change', updateFormState);
+  });
+
+  $('video-file').addEventListener('change', e => {
+    const f = e.target.files && e.target.files[0];
+    selectedFile = f || null;
+    selectedDuration = 0;
+    if (previewObjUrl) URL.revokeObjectURL(previewObjUrl);
+    if (!f) {
+      $('video-preview').hidden = true;
+      $('preview-placeholder').hidden = false;
+      $('video-duration-msg').textContent = '';
+      updateFormState();
+      return;
+    }
+    previewObjUrl = URL.createObjectURL(f);
+    const vid = $('video-preview');
+    vid.src = previewObjUrl;
+    vid.hidden = false;
+    $('preview-placeholder').hidden = true;
+    vid.onloadedmetadata = () => {
+      selectedDuration = Math.round(vid.duration || 0);
+      const maxSec = Number((creatorInfo && creatorInfo.max_video_post_duration_sec) || 0);
+      if (maxSec && selectedDuration > maxSec) {
+        $('video-duration-msg').textContent = `Duration ${selectedDuration}s exceeds creator max (${maxSec}s).`;
+      } else {
+        $('video-duration-msg').textContent = `Duration: ${selectedDuration}s`;
+      }
+      updateFormState();
+    };
+    updateFormState();
+  });
+
+  (async function init(){
+    await loadConfig();
+    await handleCallback();
+    await loadSession();
+  })();
+})();
+</script>
+</body>
+</html>

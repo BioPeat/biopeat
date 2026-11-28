@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self';">
+<title>BioPeat · Privacy Policy</title>
+<meta name="description" content="Privacy Policy for BioPeat and BioPeat Studio (TikTok API integration, GDPR & E2EE storage).">
+<link rel="icon" href="icon-192.png?v=83">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{--bg:#09090b;--card:#111114;--surf:#17171b;--ink:#f4f4f5;--mut:#a1a1aa;--line:#27272a;--gold:#e9bf5c;color-scheme:dark}
+html[data-theme="light"]{--bg:#f6f5f1;--card:#ffffff;--surf:#f1efe9;--ink:#111114;--mut:#52525b;--line:#e4e4e7;--gold:#b45309;color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--gold)}
+html[lang="es"] [data-lang="en"],html[lang="en"] [data-lang="es"]{display:none!important}
+.wrap{width:min(860px,calc(100% - 32px));margin:0 auto;padding:24px 0 64px}
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:24px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:800;font-size:18px}
+.brand img{width:28px;height:28px;border-radius:7px}
+nav{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:14px}
+.btn{min-height:36px;padding:0 12px;border-radius:8px;border:1px solid var(--line);background:var(--surf);color:var(--ink);font-weight:600;font-size:13px;cursor:pointer}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:18px}
+h1{margin:0 0 8px;font-size:clamp(1.6rem,3vw,2.1rem);letter-spacing:-.02em}
+h2{margin:22px 0 8px;font-size:1.15rem}
+.mut{color:var(--mut);font-size:0.92rem}
+ul{padding-left:20px}
+li{margin-bottom:8px}
+footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:13.5px;color:var(--mut)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="brand" href="inicio.html">
+      <img src="icon-192.png?v=83" alt="BioPeat">
+      <span>BioPeat</span>
+    </a>
+    <nav>
+      <a href="inicio.html" data-lang="en">Home</a><a href="inicio.html" data-lang="es">Inicio</a>
+      <a href="tiktok-studio.html">BioPeat Studio</a>
+      <a href="privacy.html" data-lang="en">Privacy Policy</a><a href="privacy.html" data-lang="es">Privacidad</a>
+      <a href="terms.html" data-lang="en">Terms of Service</a><a href="terms.html" data-lang="es">Términos</a>
+      <button type="button" class="btn" id="lang-btn">ES / EN</button>
+    </nav>
+  </header>
+
+  <main class="card">
+    <div data-lang="en">
+      <h1>Privacy Policy</h1>
+      <p class="mut">Last updated: November 28, 2026 · Controller: BioPeat (independent project) · Contact: <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a></p>
+
+      <h2>1. BioPeat Nutrition App Data</h2>
+      <ul>
+        <li><b>Local-first storage:</b> your food, micronutrient, and workout logs live in your browser (localStorage + IndexedDB).</li>
+        <li><b>Optional E2EE cloud backup:</b> when enabled, your browser encrypts backups with AES-256-GCM before sending ciphertext to Cloudflare D1 (EU). The server cannot decrypt your data and you can delete your vault anytime in Settings.</li>
+        <li><b>Cookie-free anonymous counts:</b> aggregate daily pageviews without cookies or persistent IP storage (purged after 90 days).</li>
+      </ul>
+
+      <h2>2. BioPeat Studio &amp; TikTok API Data</h2>
+      <ul>
+        <li><b>Scopes used:</b> BioPeat Studio requests only <code>user.info.basic</code> (display name and avatar), <code>video.publish</code> (Direct Post), <code>video.upload</code>, and <code>video.list</code> (displaying your recent TikTok posts), solely when you explicitly click "Continue with TikTok" and authorize them.</li>
+        <li><b>Stateless proxy &amp; zero server token storage:</b> our Cloudflare Worker proxy forwards OAuth2 PKCE token exchanges and Content Posting API requests directly to TikTok without storing your TikTok access tokens, refresh tokens, or video files in any database or logs.</li>
+        <li><b>Browser session only:</b> your TikTok OAuth token is kept only in your browser's <code>sessionStorage</code> for the active session and is cleared when you click "Disconnect" or close the tab.</li>
+        <li><b>No selling or sharing:</b> we never sell, rent, or share TikTok user data with third parties.</li>
+      </ul>
+
+      <h2>3. Your Rights (GDPR / CCPA)</h2>
+      <p>You can disconnect TikTok anytime, delete your encrypted vault in Settings, or email <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a> for any privacy request. Intended for users aged 16+.</p>
+    </div>
+
+    <div data-lang="es">
+      <h1>Política de Privacidad</h1>
+      <p class="mut">Última actualización: 28 de noviembre de 2026 · Responsable: BioPeat (proyecto independiente) · Contacto: <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a></p>
+
+      <h2>1. Datos de la app BioPeat</h2>
+      <ul>
+        <li><b>Almacenamiento local:</b> tus registros de comida y entrenos viven en tu dispositivo (localStorage + IndexedDB).</li>
+        <li><b>Respaldo cifrado opcional (E2EE):</b> si está activo, tu navegador cifra los datos con AES-256-GCM antes de guardarlos en Cloudflare D1 (UE). El servidor no puede leerlos.</li>
+        <li><b>Métricas anónimas sin cookies:</b> contadores diarios agregados sin cookies ni almacenamiento de IPs.</li>
+      </ul>
+
+      <h2>2. BioPeat Studio y API de TikTok</h2>
+      <ul>
+        <li><b>Permisos solicitados:</b> BioPeat Studio solo solicita <code>user.info.basic</code>, <code>video.publish</code>, <code>video.upload</code> y <code>video.list</code> cuando pulsas explícitamente «Continue with TikTok» y los autorizas.</li>
+        <li><b>Proxy 100% sin estado:</b> nuestro Worker de Cloudflare reenvía el intercambio OAuth2 PKCE y las peticiones de subida directamente a TikTok sin guardar tokens ni vídeos en bases de datos ni logs.</li>
+        <li><b>Solo en tu sesión:</b> el token de TikTok se guarda únicamente en <code>sessionStorage</code> de tu navegador y se borra al pulsar «Disconnect» o cerrar la pestaña.</li>
+      </ul>
+
+      <h2>3. Tus derechos</h2>
+      <p>Puedes revocar el acceso en cualquier momento o escribir a <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a>. Uso recomendado para mayores de 16 años.</p>
+    </div>
+  </main>
+
+  <footer>
+    <span>BioPeat · <a href="mailto:biopeatapp@gmail.com">biopeatapp@gmail.com</a></span>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a href="inicio.html">Home</a>
+      <a href="tiktok-studio.html">BioPeat Studio</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+    </div>
+  </footer>
+</div>
+<script>
+(function(){
+  var d=document.documentElement;
+  try{
+    var q=new URLSearchParams(location.search).get('lang');
+    if(q==='es'||q==='en')d.lang=q;
+    var t=localStorage.getItem('bp_theme');
+    if(t==='light'||t==='dark')d.dataset.theme=t;
+  }catch(e){}
+  document.getElementById('lang-btn').addEventListener('click',function(){
+    d.lang=d.lang==='en'?'es':'en';
+  });
+})();
+</script>
+</body>
+</html>

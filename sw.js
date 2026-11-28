@@ -1,6 +1,6 @@
 // BioPeat · service worker v12 (Stale-While-Revalidate).
 // Responde al instante desde caché (<50 ms) y actualiza los archivos en segundo plano cuando hay red.
-const CACHE = 'biopeat-v13';
+const CACHE = 'biopeat-v14';
 const PRECACHE = [
   './',
   'index.html',
@@ -29,6 +29,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const r = e.request, u = new URL(r.url);
   if (r.method !== 'GET' || u.origin !== location.origin) return;
+  if (/\/(terms|privacy|tiktok-studio)\.html$|\/tiktok[^/]*\.txt$/i.test(u.pathname)) return;
   const isNav = r.mode === 'navigate';
   const isInicio = /\/inicio\.html$/i.test(u.pathname);
 

@@ -30,7 +30,7 @@ function baseHeaders(origin) {
   if (origin && isAllowedOrigin(origin)) {
     h['Access-Control-Allow-Origin'] = origin;
     h['Access-Control-Allow-Methods'] = 'GET, PUT, POST, PATCH, DELETE, OPTIONS';
-    h['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-BioPeat-Auth';
+    h['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-BioPeat-Auth, X-TikTok-Upload-Url, Content-Range';
     h['Access-Control-Max-Age'] = '86400';
     h['Vary'] = 'Origin';
   }
@@ -733,6 +733,136 @@ export default {
         const id = Number(fbMatch[1]);
         await env.DB.prepare('DELETE FROM feedback WHERE id = ?').bind(id).run();
         return jsonResp({ ok: true }, 200, origin);
+      }
+    }
+
+    // Stateless TikTok OAuth2 + Content Posting API proxy for BioPeat Studio (no token storage)
+    if (url.pathname.startsWith('/api/tiktok/')) {
+      if (url.pathname === '/api/tiktok/config' && request.method === 'GET') {
+        const ck = String(env.TIKTOK_CLIENT_KEY || '').trim();
+        const cs = String(env.TIKTOK_CLIENT_SECRET || '').trim();
+        return jsonResp({ configured: Boolean(ck && cs), client_key: ck }, 200, origin);
+      }
+
+      if (!isAllowedOrigin(origin)) {
+        return jsonResp({ error: 'Origin not allowed' }, 403, origin);
+      }
+
+      if (url.pathname === '/api/tiktok/token' && request.method === 'POST') {
+        const ck = String(env.TIKTOK_CLIENT_KEY || '').trim();
+        const cs = String(env.TIKTOK_CLIENT_SECRET || '').trim();
+        if (!ck || !cs) return jsonResp({ error: 'TikTok client credentials not configured on Worker' }, 503, origin);
+        const parsed = await readLimitedJson(request, 8192);
+        if (parsed.error) return jsonResp({ error: parsed.error }, parsed.status, origin);
+        const b = parsed.data || {};
+        const code = String(b.code || '').trim();
+        const redirectUri = String(b.redirect_uri || '').trim();
+        const verifier = String(b.code_verifier || '').trim();
+        if (!code || !verifier || !redirectUri.startsWith('https://biopeat.github.io/biopeat/')) {
+          return jsonResp({ error: 'Invalid token exchange parameters' }, 400, origin);
+        }
+        const form = new URLSearchParams({
+          client_key: ck,
+          client_secret: cs,
+          code,
+          grant_type: 'authorization_code',
+          redirect_uri: redirectUri,
+          code_verifier: verifier
+        });
+        const ttResp = await fetch('https://open.tiktokapis.com/v2/oauth/token/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: form.toString()
+        });
+        const ttJson = await ttResp.json().catch(() => ({ error: 'Invalid upstream response' }));
+        return jsonResp(ttJson, ttResp.status, origin);
+      }
+
+      if (url.pathname === '/api/tiktok/upload' && request.method === 'PUT') {
+        const uploadUrl = String(request.headers.get('X-TikTok-Upload-Url') || '').trim();
+        let parsedUp;
+        try { parsedUp = new URL(uploadUrl); } catch { parsedUp = null; }
+        if (!parsedUp || parsedUp.protocol !== 'https:' || parsedUp.username || parsedUp.password || !/(^|\.)tiktokapis\.com$/i.test(parsedUp.hostname)) {
+          return jsonResp({ error: 'Invalid TikTok upload URL' }, 400, origin);
+        }
+        const contentLen = Number(request.headers.get('content-length') || 0);
+        if (contentLen > 52428800) {
+          return jsonResp({ error: 'Video exceeds 50 MB limit' }, 413, origin);
+        }
+        const buf = await request.arrayBuffer();
+        if (buf.byteLength > 52428800) {
+          return jsonResp({ error: 'Video exceeds 50 MB limit' }, 413, origin);
+        }
+        const fwdHeaders = { 'Content-Type': request.headers.get('Content-Type') || 'video/mp4' };
+        const cr = request.headers.get('Content-Range');
+        if (cr) fwdHeaders['Content-Range'] = cr;
+        const putResp = await fetch(uploadUrl, { method: 'PUT', headers: fwdHeaders, body: buf });
+        const txt = await putResp.text().catch(() => '');
+        return new Response(txt, { status: putResp.status, headers: baseHeaders(origin) });
+      }
+
+      const auth = request.headers.get('authorization') || '';
+      if (!auth.startsWith('Bearer ')) {
+        return jsonResp({ error: 'Missing Bearer token' }, 401, origin);
+      }
+
+      if (url.pathname === '/api/tiktok/user-info' && request.method === 'POST') {
+        const ttResp = await fetch('https://open.tiktokapis.com/v2/user/info/?fields=open_id,union_id,avatar_url,display_name,username', {
+          method: 'GET',
+          headers: { Authorization: auth }
+        });
+        const ttJson = await ttResp.json().catch(() => ({ error: 'Invalid upstream response' }));
+        return jsonResp(ttJson, ttResp.status, origin);
+      }
+
+      if (url.pathname === '/api/tiktok/creator-info' && request.method === 'POST') {
+        const ttResp = await fetch('https://open.tiktokapis.com/v2/post/publish/creator_info/query/', {
+          method: 'POST',
+          headers: { Authorization: auth, 'Content-Type': 'application/json; charset=UTF-8' },
+          body: '{}'
+        });
+        const ttJson = await ttResp.json().catch(() => ({ error: 'Invalid upstream response' }));
+        return jsonResp(ttJson, ttResp.status, origin);
+      }
+
+      if (url.pathname === '/api/tiktok/video-list' && request.method === 'POST') {
+        const parsed = await readLimitedJson(request, 4096);
+        if (parsed.error) return jsonResp({ error: parsed.error }, parsed.status, origin);
+        const ttResp = await fetch('https://open.tiktokapis.com/v2/video/list/?fields=id,title,create_time,cover_image_url,share_url,view_count,like_count', {
+          method: 'POST',
+          headers: { Authorization: auth, 'Content-Type': 'application/json; charset=UTF-8' },
+          body: JSON.stringify(parsed.data || { max_count: 6 })
+        });
+        const ttJson = await ttResp.json().catch(() => ({ error: 'Invalid upstream response' }));
+        return jsonResp(ttJson, ttResp.status, origin);
+      }
+
+      if (url.pathname === '/api/tiktok/publish-init' && request.method === 'POST') {
+        const parsed = await readLimitedJson(request, 16384);
+        if (parsed.error) return jsonResp({ error: parsed.error }, parsed.status, origin);
+        const isInbox = url.searchParams.get('mode') === 'inbox';
+        const endpoint = isInbox
+          ? 'https://open.tiktokapis.com/v2/post/publish/inbox/video/init/'
+          : 'https://open.tiktokapis.com/v2/post/publish/video/init/';
+        const ttResp = await fetch(endpoint, {
+          method: 'POST',
+          headers: { Authorization: auth, 'Content-Type': 'application/json; charset=UTF-8' },
+          body: JSON.stringify(parsed.data || {})
+        });
+        const ttJson = await ttResp.json().catch(() => ({ error: 'Invalid upstream response' }));
+        return jsonResp(ttJson, ttResp.status, origin);
+      }
+
+      if (url.pathname === '/api/tiktok/publish-status' && request.method === 'POST') {
+        const parsed = await readLimitedJson(request, 4096);
+        if (parsed.error) return jsonResp({ error: parsed.error }, parsed.status, origin);
+        const ttResp = await fetch('https://open.tiktokapis.com/v2/post/publish/status/fetch/', {
+          method: 'POST',
+          headers: { Authorization: auth, 'Content-Type': 'application/json; charset=UTF-8' },
+          body: JSON.stringify(parsed.data || {})
+        });
+        const ttJson = await ttResp.json().catch(() => ({ error: 'Invalid upstream response' }));
+        return jsonResp(ttJson, ttResp.status, origin);
       }
     }
 
