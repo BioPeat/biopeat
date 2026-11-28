@@ -1,6 +1,6 @@
 # CONTEXTO · BioPeat
 
-**Versión actual: v83** (revisión de datos 27)
+**Versión actual: v84** (revisión de datos 27)
 
 Documento maestro. Lo lee la IA que programa BioPeat (Gemini «BioPeat Dev» o Claude). Los cambios se entregan en bloques `@@@` y los aplica y prueba `actualizar.html`. **Se actualiza sustituyendo el texto de cada apartado, nunca añadiendo apartados nuevos al final.** Si algo de aquí contradice al código, manda el código; avisa de la diferencia.
 
@@ -80,7 +80,7 @@ Se guardan por perfil en `state.v54.breakfast` y `state.v54.shake` y se editan e
 - **No inventes cifras atribuidas a Peat.** Donde no hay cifra suya, se usa la meta personal.
 - **Mujer:** la tabla `OPT_FEMALE` cambia solo lo que tiene fuente (se aplica con `applySexOpt()` en cada `render()`): hierro tope 18 mg (oficial; Peat: el estrógeno hace absorber más hierro, «From PMS to Menopause»), zinc 8 mg (oficial), magnesio 400 mg (Peat/Dinkov; «Nutrition for Women»: corta los calambres menstruales), sodio sin restringir (edema premenstrual), y notas de Peat en vitamina A, E, B2 y calcio. `femaleWhy()` añade una frase de Peat para mujer en los equilibrios. **Peat no dio cifras distintas para mujer en PUFA, Ca:P ni C:P: son las mismas (4 g, 1,2 y 3).** Metas de partida de un perfil nuevo: `NEW_PROFILE_MICRO`.
 
-## 6. Qué hace la app (v83)
+## 6. Qué hace la app (v84)
 Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más** (no cambiar el orden) y botón redondo de **Gimnasio**.
 - **Menú lateral** (tocar el logo): Perfiles (tocar = usar; ⚙ = asistente; ✎ renombrar; × borrar; «+ Crear perfil nuevo»), Exportar datos para IA y Pregunta a tu IA. La lista se desplaza sola sin mover la página.
 - **Asistente de perfil** (`wizOpen({mode})`, modos `first` / `new` / `edit`): 5 pasos (Tú · Objetivo · Comidas · Suplementos · Resumen con las metas de un día de entreno y uno de descanso). Sale solo al empezar de cero (con botón para restaurar una copia). Al crear un perfil se puede empezar de cero o copiar la despensa y la pauta del perfil activo. Al guardar, las dosis y aportes de la pauta se conservan (si cambias la dosis, el aporte se escala).
@@ -122,6 +122,7 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **Prohibido** añadir otro `<script>` o «envolver» funciones (`x=function…`, `window.x=…`): la v54 lo hizo y el perfil de mujer volvía a hombre al recargar. `smoke.py` lo detecta y falla.
 
 ## 10. Historial (una línea por versión, máximo 8)
+- **v84 · Antigravity + Claude:** Fluidez (propuestas Copilot adaptadas a arquitectura modular): pantalla de arranque animada (#bp-splash) en modo claro/oscuro, content-visibility ampliado a todas las secciones fuera de pantalla, guardado asíncrono tras pintar (queueSave/flushQueuedSave) con protección en cierre y segundo plano, respuesta táctil inmediata con animaciones suaves y comprobación de versión sin caché en sw.js.
 - **v83 · Antigravity:** Botones flotantes arrastrables de menú (logo semitransparente) y gimnasio, botón flotante semitransparente de modo claro/oscuro arriba a la derecha al hacer scroll, corrección de solape en porcentajes de macros y mismos 3 anillos compactos en Modo resumen.
 - **v82 · Antigravity:** Restaurado «Foto en tu chat» en Añadir, rediseño above-the-fold de Hoy (cabecera y fecha compactas, sin banner redundante si hay nube, anillos limpios), botón de Gimnasio integrado en barra superior sin solapar contenido, importador CSV plegado tras importar, content-visibility CSS, eliminación de código muerto y memoización de Gimnasio.
 - **v81 · Antigravity:** Lanzamiento global: arquitectura modular rápida, caché instantánea, iconos claros, instalación universal (Instagram/Brave/Chrome/iOS) con traspaso de perfil, despensa con peso por unidad, análisis corto de gimnasio con IA, barra superior fija sin solapamientos e inglés automático fuera de países hispanohablantes.
@@ -129,7 +130,6 @@ Una sola página. Barra inferior **Hoy · Registro · Añadir · Semana · Más*
 - **v79 · Antigravity:** Nuevo logotipo BP geométrico solar en la app (claro y oscuro), web de inicio e iconos PWA.
 - **v78 · Antigravity:** Ajustes y sincronización en la nube simplificados sin tecnicismos: guía clara en 2 pasos para conectar dispositivos y recuperar tras desinstalar, y envío/guardado del enlace personal en un toque (WhatsApp, Notas, correo o copiar).
 - **v77 · Antigravity:** Corrección de solapamientos en mapa visual de micronutrientes y calendario, reorganización de Ajustes ocultando funciones técnicas, rediseño compacto de sugerencias del día y retirada del botón de ajustes externo en Zinc : cobre.
-- **v76 · Antigravity:** Lanzamiento global: respaldo automático cifrado E2EE en Cloudflare, buzón de sugerencias y estadísticas privadas sin cookies, parser bilingüe ES/EN, escáner de códigos, marcadores de temperatura/pulso, mejoras de fluidez anti-lag, precisión Peat/Dinkov y auditoría de seguridad/UX.
 
 ## 11. Pendiente / ideas
 - Unificar las capas de CSS sin cambiar el aspecto (hay reglas repetidas de varias versiones).

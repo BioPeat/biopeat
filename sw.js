@@ -1,16 +1,17 @@
 // BioPeat · service worker v12 (Stale-While-Revalidate).
 // Responde al instante desde caché (<50 ms) y actualiza los archivos en segundo plano cuando hay red.
-const CACHE = 'biopeat-v14';
+const CACHE = 'biopeat-v15';
 const PRECACHE = [
   './',
   'index.html',
   'inicio.html',
   'manifest.json',
-  'assets/styles.css?v=83',
-  'assets/data.js?v=83',
-  'assets/app.js?v=83',
-  'icon-192.png?v=83',
-  'icon-512.png?v=83'
+  'assets/styles.css?v=84',
+  'assets/data.js?v=84',
+  'assets/app.js?v=84',
+  'icon-192.png?v=84',
+  'icon-512.png?v=84',
+  'icon-maskable-512.png?v=84'
 ];
 
 self.addEventListener('install', e => {
@@ -30,6 +31,18 @@ self.addEventListener('fetch', e => {
   const r = e.request, u = new URL(r.url);
   if (r.method !== 'GET' || u.origin !== location.origin) return;
   if (/\/(terms|privacy|tiktok-studio)\.html$|\/tiktok[^/]*\.txt$/i.test(u.pathname)) return;
+  if (u.searchParams.has('u')) {
+    e.respondWith(
+      fetch(r, { cache: 'no-store' }).then(res => {
+        if (res && res.ok && res.type === 'basic' && /\/(index\.html)?$/i.test(u.pathname)) {
+          const copy = res.clone();
+          caches.open(CACHE).then(c => c.put('index.html', copy)).catch(() => {});
+        }
+        return res;
+      })
+    );
+    return;
+  }
   const isNav = r.mode === 'navigate';
   const isInicio = /\/inicio\.html$/i.test(u.pathname);
 
@@ -39,7 +52,7 @@ self.addEventListener('fetch', e => {
         exact || cache.match(r, { ignoreSearch: true })
       ).then(cached => {
         const netFetch = fetch(r, { cache: 'no-cache' }).then(res => {
-          if (res && res.ok) {
+          if (res && res.ok && res.type === 'basic' && !u.searchParams.has('u')) {
             const copy = res.clone();
             cache.put(r, copy.clone()).catch(() => {});
             if (isNav) cache.put(isInicio ? 'inicio.html' : 'index.html', copy).catch(() => {});

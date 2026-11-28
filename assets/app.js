@@ -14,6 +14,7 @@
  Metas del día: SIEMPRE con targetFor(fecha) / dayGoal(). Nunca guardar metas calculadas dentro de cada día.
  Migraciones: upgradeToNN(s,o) se ejecuta UNA vez: comprobar (Number(o.appRevision)||0)<NN y subir APP_REVISION.
  Registro de cambios (una línea por versión, la más nueva arriba; detalle en CONTEXTO_BIOPEAT.md):
+   v84 · Antigravity + Claude · Fluidez (propuestas Copilot adaptadas a arquitectura modular): pantalla de arranque animada (#bp-splash) en modo claro/oscuro, content-visibility ampliado a todas las secciones fuera de pantalla, guardado asíncrono tras pintar (queueSave/flushQueuedSave) con protección en cierre y segundo plano, respuesta táctil inmediata con animaciones suaves y comprobación de versión sin caché en sw.js.
    v83 · Antigravity · Botones flotantes arrastrables de menú (logo semitransparente) y gimnasio, botón flotante semitransparente de modo claro/oscuro arriba a la derecha al hacer scroll, corrección de solape en porcentajes de macros y mismos 3 anillos compactos en Modo resumen.
    v82 · Antigravity · Restaurado «Foto en tu chat» en Añadir, rediseño above-the-fold de Hoy (cabecera y fecha compactas, sin banner redundante si hay nube, anillos limpios), botón de Gimnasio integrado en barra superior sin solapar contenido, importador CSV plegado tras importar, content-visibility CSS, eliminación de código muerto y memoización de Gimnasio.
    v81 · Antigravity · Lanzamiento global: arquitectura modular rápida, caché instantánea, iconos claros, instalación universal (Instagram/Brave/Chrome/iOS) con traspaso de perfil, despensa con peso por unidad, análisis corto de gimnasio con IA, barra superior fija sin solapamientos e inglés automático fuera de países hispanohablantes.
@@ -140,7 +141,7 @@ function optLine(k,goal,unit){
   return 'Meta '+fmt(z.goal,2)+u+src;
 }
 function optRefHTML(k,goal,unit){const z=optInfo(k,goal);return '<p class="progress-note"><b>'+esc(optLine(k,goal,unit))+'.</b> '+esc(z.ref)+'</p>';}
-const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v83', APP_REVISION=27, CLOUD_API='https://biopeat-api.dramirezcp7.workers.dev';
+const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v84', APP_REVISION=27, CLOUD_API='https://biopeat-api.dramirezcp7.workers.dev';
 let LANG=(()=>{if(window.__BP_INIT_LANG__==='es'||window.__BP_INIT_LANG__==='en')return window.__BP_INIT_LANG__;try{const l=localStorage.getItem('bp_lang');if(l==='es'||l==='en')return l;}catch(e){}const nav=(navigator.languages&&navigator.languages[0])||navigator.language||'en';return /^es\b/i.test(nav)?'es':'en';})();
 const LOC=()=>LANG==='en'?'en-GB':'es-ES';
 const $=id=>document.getElementById(id), own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k), clone=x=>JSON.parse(JSON.stringify(x));
@@ -348,7 +349,22 @@ function totals(entries){
 const fastClone=x=>typeof structuredClone==='function'?structuredClone(x):clone(x);
 function change(fn,message='Guardado'){
   const before=fastClone(state);
-  try{dayTotalsCache=null;fn();undoStack.push(before);if(undoStack.length>20)undoStack.shift();save();render();toast(message,true);return true;}catch(e){dayTotalsCache=null;state=before;toast(e.message,false);return false;}
+  try{dayTotalsCache=null;fn();undoStack.push(before);if(undoStack.length>20)undoStack.shift();queueSave();render();toast(message,true);return true;}catch(e){dayTotalsCache=null;state=before;toast(e.message,false);return false;}
+}
+// v84: guardar justo después de pintar para que cada toque responda al instante; se fuerza al salir o pasar a segundo plano.
+let saveQueued=false;
+function afterPaint(fn){let done=false;const run=()=>{if(done)return;done=true;fn();};requestAnimationFrame(()=>setTimeout(run,0));setTimeout(run,150);}
+function queueSave(idle=false){
+  if(saveQueued)return;
+  saveQueued=true;
+  if(idle&&window.requestIdleCallback)requestIdleCallback(()=>flushQueuedSave(),{timeout:2500});
+  else if(idle)setTimeout(flushQueuedSave,1200);
+  else afterPaint(flushQueuedSave);
+}
+function flushQueuedSave(hard=false){
+  if(!ready){saveQueued=false;return;}
+  if(saveQueued){saveQueued=false;save();}
+  if(hard)flushDeferredSave();
 }
 function undo(){
   if(!undoStack.length)return;
@@ -1033,9 +1049,9 @@ async function portable(){
   doc.querySelector('#ai-pill')?.removeAttribute('data-tested');
   try{
     const [cssTxt,dataTxt,appTxt]=await Promise.all([
-      fetch('assets/styles.css?v=83').then(r=>r.ok?r.text():'').catch(()=>''),
-      fetch('assets/data.js?v=83').then(r=>r.ok?r.text():'').catch(()=>''),
-      fetch('assets/app.js?v=83').then(r=>r.ok?r.text():'').catch(()=>'')
+      fetch('assets/styles.css?v=84').then(r=>r.ok?r.text():'').catch(()=>''),
+      fetch('assets/data.js?v=84').then(r=>r.ok?r.text():'').catch(()=>''),
+      fetch('assets/app.js?v=84').then(r=>r.ok?r.text():'').catch(()=>'')
     ]);
     if(cssTxt){const lk=doc.querySelector('link[href*="assets/styles.css"]');if(lk){const st=document.createElement('style');st.id='app-style';st.textContent=cssTxt;lk.replaceWith(st);}}
     if(dataTxt&&appTxt){
@@ -2034,6 +2050,7 @@ function idbReadWrite(mode,value,key='current'){return new Promise((resolve,reje
 async function openDB(){return new Promise((resolve,reject)=>{let settled=false;const timer=setTimeout(()=>{settled=true;reject(Error('Almacenamiento bloqueado'));},1500);try{const req=indexedDB.open('biopeat_v10',1);req.onupgradeneeded=()=>req.result.createObjectStore('state');req.onsuccess=()=>{if(settled){req.result.close();return;}settled=true;clearTimeout(timer);resolve(req.result);};req.onerror=()=>{settled=true;clearTimeout(timer);reject(req.error);};req.onblocked=()=>{settled=true;clearTimeout(timer);reject(Error('Almacenamiento bloqueado'));};}catch(e){clearTimeout(timer);settled=true;reject(e);}});}
 let lastSavedBytes=0,deferredSaveTimer=null,deferredRaw='',storagePersistedReq=false;
 function flushDeferredSave(){
+  if(saveQueued&&ready){saveQueued=false;save();}
   if(!deferredSaveTimer)return;
   clearTimeout(deferredSaveTimer);deferredSaveTimer=null;
   if(!ready)return;
@@ -2041,10 +2058,11 @@ function flushDeferredSave(){
   let profRaw='';try{profRaw=localStorage.getItem(PROFILES_KEY)||'';}catch(e){}
   if(deferredRaw&&storageMode==='local')mirrorToIDB(deferredRaw,profRaw);
 }
-window.addEventListener('pagehide',flushDeferredSave);
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushDeferredSave();});
+window.addEventListener('pagehide',()=>flushQueuedSave(true));
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushQueuedSave(true);});
 function save(skipCloud=false){
   if(!ready)return;
+  saveQueued=false;
   if(!storagePersistedReq&&hasMeaningfulData()){storagePersistedReq=true;try{navigator.storage?.persisted?.().then(ok=>{if(!ok)navigator.storage?.persist?.();}).catch(()=>{});}catch(e){}}
   if(!skipCloud||!state.updated)state.updated=Date.now();
   const snap=storableState(),raw=JSON.stringify(snap);
@@ -2194,7 +2212,7 @@ $('import-json').onchange=async e=>{const file=e.target.files[0];if(!file)return
     else{const a=new URLSearchParams(location.search).get('a');if(a==='add'||a==='week')setTimeout(()=>go(a),300);}
     if(!recOk&&syncEnabled()&&getSyncKey())scheduleAutoCloudPull(120);
   }
-  if(!recovery){save();try{syncCurrentProfileToStore(storableState(),true);}catch(e){}}else toast('No se pudo recuperar una copia anterior. Conserva el archivo original antes de modificar datos.');
+  if(!recovery)queueSave(true);else toast('No se pudo recuperar una copia anterior. Conserva el archivo original antes de modificar datos.');
 }
 
 // Revisión 11 (antigua): solo marca la revisión. La corrección de la pauta de entonces ya está en los datos.
@@ -2222,6 +2240,7 @@ const MOON_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
 let bpTheme=(()=>{try{return localStorage.getItem(THEME_KEY)==='light'?'light':'dark';}catch(e){return 'dark';}})();
 function syncThemeUI(){
   const light=bpTheme==='light',en=LANG==='en';
+  document.documentElement.dataset.theme=bpTheme;
   document.body.classList.toggle('bp-light',light);
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content',light?'#f1f5f9':'#0f172a');
   document.querySelector('meta[name="color-scheme"]')?.setAttribute('content',light?'light':'dark');
@@ -4662,6 +4681,7 @@ async function checkUpdate(){
 }
 function showUpdate(v){
   updateShown=true;
+  try{navigator.serviceWorker?.getRegistration?.().then(r=>r?.update?.());}catch(e){}
   const bar=document.createElement('div');bar.className='update-bar';bar.setAttribute('role','status');
   bar.innerHTML=`<span>✨ Hay una versión nueva (v${v}). Tus datos se conservan.</span><button type="button" class="btn btn-amber small" id="update-now">Actualizar</button><button type="button" class="btn ghost small" id="update-later" aria-label="Más tarde">×</button>`;
   document.body.append(bar);
@@ -5459,7 +5479,7 @@ function loadEnDict(){
   if(enDictPromise)return enDictPromise;
   enDictPromise=new Promise(res=>{
     const s=document.createElement('script');
-    s.src='assets/i18n-en.js?v=83';
+    s.src='assets/i18n-en.js?v=84';
     s.onload=()=>{if(window.I18N_EN)Object.assign(I18N_EN,window.I18N_EN);trLowMap=null;res();};
     s.onerror=()=>res();
     document.head.appendChild(s);
