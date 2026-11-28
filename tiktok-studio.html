@@ -187,7 +187,7 @@ footer{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);display
 (function(){
   const API = 'https://biopeat-api.dramirezcp7.workers.dev';
   const REDIRECT_URI = 'https://biopeat.github.io/biopeat/tiktok-studio.html';
-  const SCOPES = 'user.info.basic,video.publish,video.upload,video.list';
+  const SCOPES = 'user.info.basic,video.publish,video.upload';
   const PRIV_LABELS = {
     PUBLIC_TO_EVERYONE: 'Everyone (Public)',
     MUTUAL_FOLLOW_FRIENDS: 'Friends (Mutual followers)',
@@ -423,7 +423,7 @@ footer{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);display
     $('auth-disconnected').hidden = true;
     $('auth-connected').hidden = false;
     $('publish-card').hidden = false;
-    $('videos-card').hidden = false;
+    $('videos-card').hidden = true;
 
     const [uRes, cRes] = await Promise.all([
       apiPost('/api/tiktok/user-info', {}),
@@ -436,7 +436,6 @@ footer{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);display
     }
     const user = (uRes.data && uRes.data.user) || {};
     applyCreatorInfo(cRes.data || {}, user);
-    loadVideos().catch(() => {});
   }
 
   async function publishVideo() {
