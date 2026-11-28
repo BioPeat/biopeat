@@ -6429,7 +6429,7 @@ body.bp-light .bp-cloud-pill.warn{background:#fffbeb!important;color:#b45309!imp
 .bp-date-card{padding:10px 12px!important}
 .bp-datebar-compact{display:grid!important;grid-template-columns:38px minmax(0,1fr) 38px auto;align-items:center;gap:6px!important;margin:0!important}
 .bp-datebar-compact button{min-height:38px!important;padding:0 10px!important}
-.bp-datebar-compact input{min-height:38px!important;padding:6px 8px!important}
+.bp-datebar-compact input{width:100%!important;min-height:38px!important;padding:6px 8px!important;text-align:center}
 .bp-date-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;flex-wrap:wrap}
 .bp-date-meta .day-context{margin:0!important;font-size:12px}
 .bp-date-meta .week-details{margin:0!important}

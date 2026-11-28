@@ -14,6 +14,7 @@
  Metas del día: SIEMPRE con targetFor(fecha) / dayGoal(). Nunca guardar metas calculadas dentro de cada día.
  Migraciones: upgradeToNN(s,o) se ejecuta UNA vez: comprobar (Number(o.appRevision)||0)<NN y subir APP_REVISION.
  Registro de cambios (una línea por versión, la más nueva arriba; detalle en CONTEXTO_BIOPEAT.md):
+   v87 · Antigravity · Selector de fecha centrado ocupando todo el espacio entre las flechas de día anterior y siguiente.
    v86 · Antigravity · Retirada la pantalla de arranque artificial (#bp-splash) para abrir la app al instante tras el icono nativo del sistema, conservando todas las mejoras de fluidez (content-visibility, guardado asíncrono tras pintar, respuesta táctil y caché optimizada).
    v85 · Antigravity · Pantalla de arranque animada mejorada: siempre sobre fondo negro desde el primer fotograma (CSS crítico inline y precarga del icono), visible ~0,9 s con entrada y pulso dorado del logo + marca BioPeat antes de desvanecerse suavemente hacia la app.
    v84 · Antigravity + Claude · Fluidez (propuestas Copilot adaptadas a arquitectura modular): pantalla de arranque animada (#bp-splash) en modo claro/oscuro, content-visibility ampliado a todas las secciones fuera de pantalla, guardado asíncrono tras pintar (queueSave/flushQueuedSave) con protección en cierre y segundo plano, respuesta táctil inmediata con animaciones suaves y comprobación de versión sin caché en sw.js.
@@ -143,7 +144,7 @@ function optLine(k,goal,unit){
   return 'Meta '+fmt(z.goal,2)+u+src;
 }
 function optRefHTML(k,goal,unit){const z=optInfo(k,goal);return '<p class="progress-note"><b>'+esc(optLine(k,goal,unit))+'.</b> '+esc(z.ref)+'</p>';}
-const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v86', APP_REVISION=27, CLOUD_API='https://biopeat-api.dramirezcp7.workers.dev';
+const FAF=[1.65,1.45,1.65,1.45,1.65,1.45,1.45], STORE='biopeat_pro_v10', APP_VERSION='v87', APP_REVISION=27, CLOUD_API='https://biopeat-api.dramirezcp7.workers.dev';
 let LANG=(()=>{if(window.__BP_INIT_LANG__==='es'||window.__BP_INIT_LANG__==='en')return window.__BP_INIT_LANG__;try{const l=localStorage.getItem('bp_lang');if(l==='es'||l==='en')return l;}catch(e){}const nav=(navigator.languages&&navigator.languages[0])||navigator.language||'en';return /^es\b/i.test(nav)?'es':'en';})();
 const LOC=()=>LANG==='en'?'en-GB':'es-ES';
 const $=id=>document.getElementById(id), own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k), clone=x=>JSON.parse(JSON.stringify(x));
@@ -1051,9 +1052,9 @@ async function portable(){
   doc.querySelector('#ai-pill')?.removeAttribute('data-tested');
   try{
     const [cssTxt,dataTxt,appTxt]=await Promise.all([
-      fetch('assets/styles.css?v=86').then(r=>r.ok?r.text():'').catch(()=>''),
-      fetch('assets/data.js?v=86').then(r=>r.ok?r.text():'').catch(()=>''),
-      fetch('assets/app.js?v=86').then(r=>r.ok?r.text():'').catch(()=>'')
+      fetch('assets/styles.css?v=87').then(r=>r.ok?r.text():'').catch(()=>''),
+      fetch('assets/data.js?v=87').then(r=>r.ok?r.text():'').catch(()=>''),
+      fetch('assets/app.js?v=87').then(r=>r.ok?r.text():'').catch(()=>'')
     ]);
     if(cssTxt){const lk=doc.querySelector('link[href*="assets/styles.css"]');if(lk){const st=document.createElement('style');st.id='app-style';st.textContent=cssTxt;lk.replaceWith(st);}}
     if(dataTxt&&appTxt){
@@ -5481,7 +5482,7 @@ function loadEnDict(){
   if(enDictPromise)return enDictPromise;
   enDictPromise=new Promise(res=>{
     const s=document.createElement('script');
-    s.src='assets/i18n-en.js?v=86';
+    s.src='assets/i18n-en.js?v=87';
     s.onload=()=>{if(window.I18N_EN)Object.assign(I18N_EN,window.I18N_EN);trLowMap=null;res();};
     s.onerror=()=>res();
     document.head.appendChild(s);
