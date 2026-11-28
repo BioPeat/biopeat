@@ -197,7 +197,7 @@ async def browser_checks():
                 await ev("r=>localStorage.setItem('biopeat_pro_v10', r)", seed)
             await pg.reload()
             try:
-                await pg.wait_for_function("document.body.dataset.ready==='true'", timeout=10000)
+                await pg.wait_for_function("() => document.body.dataset.ready==='true'", timeout=10000)
             except Exception:
                 raise RuntimeError('la app no termina de arrancar. Errores: ' + (' | '.join(e[:200] for e in errs[:3]) or 'ninguno visible'))
             await pg.wait_for_timeout(300)
@@ -231,7 +231,7 @@ async def browser_checks():
         await ev("editTargets()"); await ev("$('target-mode').value='split';$('target-mode').onchange()")
         await ev("(()=>{const f=$('targets-form');f.m_w_p.value=150;f.m_w_f.value=70;f.m_r_p.value=120;f.m_r_f.value=60;f.requestSubmit();})()")
         await pg.wait_for_timeout(400)
-        await pg.reload(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await ev(f"goDate('{DAY}')")
+        await pg.reload(); await pg.wait_for_function("() => document.body.dataset.ready==='true'"); await ev(f"goDate('{DAY}')")
         n2 = await ev("day().entries.filter(e=>e.kind==='food').length")
         g = await ev("[state.targetMode,dayGoal().p,dayGoal('2026-10-13').p]")
         fail(f'Las comidas no se guardan al recargar ({n} → {n2})') if n2 != n else ok('Las comidas se guardan al recargar')
@@ -420,7 +420,7 @@ async def browser_checks():
         ok('Vuelve al español sin recargar') if 'Hoy' in await ev("document.querySelector('.nav-item[data-view=today]').innerText") and await ev("$('meal-select').selectedOptions[0].textContent") in ('Comida','Desayuno','Merienda','Cena','Media mañana') else fail('No vuelve al español')
         code = await ev("packMove()")
         await clear_storage()
-        await pg.goto('about:blank'); await pg.goto(url + '#bp-move=' + code); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(700)
+        await pg.goto('about:blank'); await pg.goto(url + '#bp-move=' + code); await pg.wait_for_function("() => document.body.dataset.ready==='true'"); await pg.wait_for_timeout(700)
         if await ev("!!$('move-ok')"):
             await ev("$('move-ok').click()"); await pg.wait_for_timeout(300)
         r = await ev("({d:Object.values(state.days).filter(d=>d.entries.some(e=>e.kind==='food')).length,h:location.hash,w:state.workouts18.length})")
@@ -445,12 +445,12 @@ async def browser_checks():
         r = await ev("(()=>{const t=buildAIExportText('7');return [t.includes('MARCO DE REFERENCIA'),t.includes('Calcio : fósforo: meta'),t.includes('Vitamina D (µg)')]})()")
         ok('El informe para IA explica las metas y zonas para una IA sin contexto') if all(r) else fail('Informe para IA sin marco de referencia: ' + str(r))
         await go_url(); await clear_storage(); await ev("localStorage.setItem('biopeat_pro_v10',JSON.stringify({version:10,profile:{weight:70,height:170,age:30},days:{},plan:[],v54:{onboardingDone:true}}))")
-        await pg.goto(url + '?empezar=1'); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(400)
+        await pg.goto(url + '?empezar=1'); await pg.wait_for_function("() => document.body.dataset.ready==='true'"); await pg.wait_for_timeout(400)
         ok('Desde la web («Empezar») sale el asistente si no hay datos') if await ev("$('modal').open&&!!$('bp-wiz')&&!location.search") else fail('El enlace de la web no abre el asistente')
         await ev("$('modal').close()")
         check_errs('v68')
         print('6e. v56: app pública, guía, Más, sugerencias')
-        await go_url(); await clear_storage(); await pg.reload(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(250)
+        await go_url(); await clear_storage(); await pg.reload(); await pg.wait_for_function("() => document.body.dataset.ready==='true'"); await pg.wait_for_timeout(250)
         r = await ev("({plan:state.plan.length,ctx:state.context,nes:!!state.foods.nesquik,bk:profV().breakfast.enabled,help:!!document.querySelector('#bp-wiz .bp-wiz-help'),welcome:!!document.querySelector('#bp-wiz .bp-welcome'),name:activeProfileName()})")
         await ev("$('modal').open&&$('modal').close()")
         ok('Usuario nuevo: «Para llegar a tus metas» no sugiere nada todavía') if await ev("$('day-coach').innerHTML.trim()===''") else fail('El usuario nuevo ve sugerencias que no ha comido: ' + (await ev("$('day-coach').innerText"))[:120])
@@ -482,11 +482,11 @@ async def browser_checks():
         ok('B1 normal (tiamina) en usuarios sin benfotiamina') if await ev("metric(MICRO.find(m=>m.k==='b1')).name") == 'B1 · Tiamina' else fail('B1 sigue tratándose como benfotiamina')
         check_errs('v56')
         print('6d. Perfiles y asistente')
-        await go_url(); await clear_storage(); await pg.reload(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(250)
+        await go_url(); await clear_storage(); await pg.reload(); await pg.wait_for_function("() => document.body.dataset.ready==='true'"); await pg.wait_for_timeout(250)
         ok('Primera vez: se abre el asistente') if await ev("$('modal').open&&!!$('bp-wiz')") else fail('Al empezar de cero no sale el asistente')
         await ev("$('wiz-name').value='Ana';document.querySelector('[data-wiz-sex=female]').click();document.querySelector('[data-wiz-goto=\"5\"]').click()")
         await ev("document.querySelector('[data-wiz-save]').click()"); await pg.wait_for_timeout(200)
-        await pg.reload(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await pg.wait_for_timeout(250)
+        await pg.reload(); await pg.wait_for_function("() => document.body.dataset.ready==='true'"); await pg.wait_for_timeout(250)
         r = await ev("({n:activeProfileName(),sex:state.profile.sex,open:$('modal').open,p:dayGoal().p})")
         ok('Perfil de mujer se conserva al cerrar y abrir la app') if r['sex'] == 'female' and r['n'] == 'Ana' and not r['open'] else fail('Perfil de mujer tras recargar: ' + str(r))
         ok('Mujer: al menos 80 g de proteína') if r['p'] >= 80 else fail('Mujer con menos de 80 g de proteína: ' + str(r['p']))
@@ -578,7 +578,7 @@ async def browser_checks():
         await ev(f"goDate('{DAY}')")
         await ev("$('bio-temp').value='98.6';$('bio-temp').dispatchEvent(new Event('change'));$('bio-temp').value='36.8';$('bio-temp').dispatchEvent(new Event('change'));$('bio-pulse').value='78';$('bio-pulse').dispatchEvent(new Event('change'));$('bio-energy').value='4';$('bio-energy').dispatchEvent(new Event('change'));flushDeferredSave()")
         await pg.wait_for_timeout(150)
-        await pg.reload(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await ev(f"goDate('{DAY}')")
+        await pg.reload(); await pg.wait_for_function("() => document.body.dataset.ready==='true'"); await ev(f"goDate('{DAY}')")
         bio_f = await ev("(()=>{ $('bio-temp').value='98.6'; $('bio-temp').dispatchEvent(new Event('change')); return day().bio?.temp; })()")
         await ev("$('bio-temp').value='36.8';$('bio-temp').dispatchEvent(new Event('change'));flushDeferredSave()")
         bio_r = await ev("({b:day().bio,exp:buildAIExportText('7'),fConv:arguments[0]})") if False else await ev("(f=>({b:day().bio,exp:buildAIExportText('7'),fConv:f}))", bio_f)
@@ -607,7 +607,7 @@ async def browser_checks():
             except Exception as ex:
                 bad += 1; fail(f'Botón «{info}»: {str(ex)[:120]}')
             if not await ev("typeof $==='function'"):
-                bad += 1; fail(f'Botón «{info}» saca de la app (historial): {pg.url}'); await go_url(); await pg.wait_for_function("document.body.dataset.ready==='true'"); await ev("document.querySelectorAll('details').forEach(d=>d.open=true)"); n2=await ev("""()=>{let i=0;document.querySelectorAll('button').forEach(b=>{if(b.closest('dialog')||b.offsetParent===null)return;b.dataset.t=i++;});return i;}""")
+                bad += 1; fail(f'Botón «{info}» saca de la app (historial): {pg.url}'); await go_url(); await pg.wait_for_function("() => document.body.dataset.ready==='true'"); await ev("document.querySelectorAll('details').forEach(d=>d.open=true)"); n2=await ev("""()=>{let i=0;document.querySelectorAll('button').forEach(b=>{if(b.closest('dialog')||b.offsetParent===null)return;b.dataset.t=i++;});return i;}""")
             if errs:
                 bad += 1; fail(f'Botón «{info}» provoca error: {errs[0][:200]}'); errs.clear()
         ok(f'{n} botones pulsados sin errores') if not bad else None
